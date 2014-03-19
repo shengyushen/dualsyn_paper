@@ -1,0 +1,15 @@
+OK	1	blind review, no us we I etc, 
+OK	2	check ref for iccad format
+OK	3	show the infered assertion
+OK	4	unfolded seq changed to state seq
+OK	5	ref to the cade 11 review comment
+OK	7	check the format according to samplems.pdf
+OK	8	informal explanation
+OK	9	check syntax
+OK	10	break too long string
+11	check how can it be scale
+12	futrue work
+13	embed fonts
+
+
+

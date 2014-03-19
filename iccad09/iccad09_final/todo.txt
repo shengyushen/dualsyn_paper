@@ -1,0 +1,15 @@
+1	to debi
+	a	accept confirmation letter			OK	
+	b	scan of above					OK
+	c	scan of acm copy right letter			OK
+2	modify final paper
+	a	consider review 				OK
+	b	check with pdf express
+	c	submit
+3	extra page fee, 		OK	wait for reply
+4	send ppt to review 
+5	registration
+6	invitation letter
+	a	mail version					OK
+	b	paper version
+7	reserve hotel

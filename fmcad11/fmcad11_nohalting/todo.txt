@@ -1,0 +1,20 @@
+1	多个decoder总是让人不舒服，如何剔除他们？
+6	试验结果讲一下两个decoder的事情
+9	讲一下手写assertion是很难的，以便可以容忍两个decoder的坏处
+12	讲一下encoder的c可以送给自己这边的解码器使用，但是，这将导致同时instance多个解码器，增大面积，因此还是很有必要找到单个解码器
+2	However,there may exist multiple decoders simultaneously under this inferred assertion.
+	这句话总是让人不舒服
+
+OK	3	关于fd的书法还是不够明确，和我们基于fd的decoder发掘联系不起来
+OK	4	recurrent diameter和halting algorithm还是太冗长
+OK	5	我自己的内容还是太少
+
+OK	7	检查以下德语的bib拼写 gluck
+OK	8	写一下产生fd函数的算法
+
+11	把infer assertion的部分重新写一下，让他看起来不像iccad
+
+OK	13	jiang的fd和证明是基于单输出的，而我们的是多输出的
+OK	14	不要提到fd，我们自己定义和fd没有联想关系的rd，在相关工作里面提一下fd和decomposition
+OK	15	B使用花体
+16	写清楚tcad的录用论文和试验结果的地址，但是不要明确的在网站上给出引用

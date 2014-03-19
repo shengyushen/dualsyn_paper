@@ -1,0 +1,433 @@
+
+\bibitem{IEEE80211N}
+Chris Kozup.
+Is 802.11n Right for You?
+Mobility blog.
+Retrieved April 27, 2009, from \url{http://blogs.cisco.com/wireless/comments/is_80211n_right_for_you/},
+2008.
+
+\bibitem{BRHDVD}
+Stephen J. Dubner.
+What Are the Lessons of the Blu-Ray/HD-DVD Battle? A Freakonomics Quorum.
+The New York Times.
+Retrieved April 27, 2009, from  \url{http://freakonomics.blogs.nytimes.com/2008/03/04/what-are-the-lessons-of-the-blu-rayhd-dvd-battle-a-freakonomics-quorum/},
+2008.
+
+\bibitem{CoreGen}
+Xilinx Core Generator System.
+Retrieved January 06, 2010, from  \url{http://www.xilinx.com/tools/coregen.htm},
+2008.
+
+\bibitem{DesignWare}
+DesignWare Library .
+Retrieved January 06, 2010, from  \url{http://www.synopsys.com/IP/DESIGNWARE/Pages/default.aspx},
+2008.
+
+\bibitem{CHAFF}
+Matthew W. Moskewicz, Conor F. Madigan, Ying Zhao, Lintao Zhang, Sharad Malik.
+Chaff: Engineering an Efficient SAT Solver.
+In DAC'01,
+pp 530-535,
+2001.
+
+\bibitem{BERKMIN}
+Evguenii I. Goldberg, Yakov Novikov.
+BerkMin: A Fast and Robust Sat-Solver.
+in DATE'02,
+pp 142-149,
+2002.
+
+\bibitem{EXTSAT}
+Niklas E\'en, Niklas S\"orensson.
+Extensible SAT-solver.
+in SAT'03,
+pp 502-518,
+2003.
+
+\bibitem{VERPROOF}
+Evguenii I. Goldberg, Yakov Novikov.
+Verification of Proofs of Unsatisfiability for CNF Formulas.
+in DATE'03,
+10886-10891,
+2003.
+
+\bibitem{VALIDSAT}
+Lintao Zhang, Sharad Malik.
+Validating SAT Solvers Using an Independent Resolution-Based Checker: Practical Implementations and Other Applications.
+in DATE'03,
+10880-10885,
+2003.
+
+\bibitem{SATLOGICMIN}
+Samir Sapra, Michael Theobald, Edmund M. Clarke.
+SAT-Based Algorithms for Logic Minimization.
+in ICCD'03,
+pp 510-519,
+2003.
+
+\bibitem{PRIMECLAUSE}
+HoonSang Jin, Fabio Somenzi.
+Prime clauses for fast enumeration of satisfying assignments to boolean circuits.
+In DAC'05,
+pp 750-753,
+2005.
+
+%\bibitem{CMPMINCEX}
+%Tobias Nopper, Christoph Scholl, Bernd Becker.
+%Computation of minimal counterexamples by using black box techniques and symbolic methods.
+%In ICCAD'07,
+%pp 273-280,
+%2007.
+
+\bibitem{SATUNBMC}
+Kenneth L. McMillan.
+Applying SAT Methods in Unbounded Symbolic Model Checking.
+In CAV'02,
+pp 250-264,
+2002.
+
+\bibitem{MINASS}
+Kavita Ravi, Fabio Somenzi.
+Minimal Assignments for Bounded Model Checking.
+In TACAS'04,
+pp 31-45,
+2004.
+
+\bibitem{EFFCON}
+HoonSang Jin, HyoJung Han, Fabio Somenzi.
+Efficient Conflict Analysis for Finding All Satisfying Assignments of a Boolean Circuit.
+In TACAS'05,
+pp 287-300,
+2005.
+
+
+\bibitem{MINCEX}
+ShengYu Shen, Ying Qin, Sikun Li.
+Minimizing Counterexample with Unit Core Extraction and Incremental SAT.
+In VMCAI'05,
+pp 298-312,
+2005.
+
+\bibitem{MEMEFFALLSAT}
+Orna Grumberg, Assaf Schuster, Avi Yadgar.
+Memory Efficient All-Solutions SAT Solver and Its Application for Reachability Analysis.
+In FMCAD'04,
+pp 275-289,
+2004.
+
+\bibitem{REPARAM}
+Pankaj Chauhan, Edmund M. Clarke, Daniel Kroening.
+A SAT-based algorithm for reparameterization in symbolic simulation.
+In DAC'04,
+pp 524-529,
+2004.
+
+\bibitem{EFFSATUSMCCO}
+Malay K. Ganai, Aarti Gupta, Pranav Ashar.
+Efficient SAT-based unbounded symbolic model checking using circuit cofactoring.
+In ICCAD'04,
+pp 510-517,
+2004.
+
+\bibitem{SMCSAT}
+Armin Biere, Alessandro Cimatti, Edmund M. Clarke, Masahiro Fujita, Yunshan Zhu.
+Symbolic Model Checking Using SAT Procedures instead of BDDs.
+In DAC'99,
+pp 317-320,
+1999.
+
+\bibitem{IEEE80232002}
+%IEEE Std. 802.3ae-2002. Amendment to IEEE Std 802.3-2002
+%Download from  \url{},
+IEEE Standard for Information technology
+Telecommunications and information exchange between systems
+Local and metropolitan area networks
+Specific requirements
+Part 3: Carrier Sense Multiple Access with
+Collision Detection (CSMA/CD) Access Method
+and Physical Layer Specifications
+Amendment: Media Access Control (MAC)
+Parameters, Physical Layers, and Management
+Parameters for 10 Gb/s Operation
+Download from \url{http://people.freebsd.org/~wpaul/802_3ae_2002.pdf}
+
+\bibitem{PCIESPEC}
+PCI Express Base Specification Revision 1.0.
+Download from \url{http://www.pcisig.com}
+
+
+%\bibitem{LOGARTHAUTO}
+%Alonzo Church.
+%Logic,Arithmetic and Automata.
+%International Congress of Mathematicians,
+%pp 23-35,
+%1962
+%
+%\bibitem{SLVSQFSS}
+%J.R. Buchi and L.H. Landweber.
+%Solving sequential conditions by finite-state strategies.
+%Transaction American Mathematic Society, Vol 138:295-311,
+%1969.
+%
+%\bibitem{AUTOINF}
+%M.O. Rabin.
+%Automata on Infinite Objects and Church's Problem,
+%volume 13 of Regional Conference Series in Mathematics.
+%American Mathematic Society, 1972.
+%
+%\bibitem{DSGSYNTMPLG}
+%E.M. Clarke and E.A. Emerson.
+%Design and synthesis of synchronization skeletons using branching time temporal logic.
+%In IBM Workshop on Logics of Programs,LNCS 131,
+%pp 52-71,
+%1981.
+%
+%\bibitem{SYNTMPLGSPC}
+%Z. Manna and P. Wolper.
+%Synthesis of communicating processes from temporal logic specifications.
+%ACM Trans. Prog. Lang. Sys., 6:68-93, 1984.
+%
+%\bibitem{SYNRCTVMD}
+%A. Pnueli and R. Rosner.
+%On the synthesis of a reactive module.
+%In Proc. 16th ACM Symp. Princ. of Prog. Lang.,pages 179-190, 1989.
+%
+%\bibitem{CNTLSYNTMDAUTO}
+%E. Asarin, O. Maler, A. Pnueli, and J. Sifakis.
+%Controller synthesis for timed automata.
+%In IFAC Symposium on System Structure and Control, pages 469-474. Elsevier, 1998.
+%
+%\bibitem{DTMGENGMELTL}
+%R. Alur and S. La Torre.
+%Deterministic generators and games for LTL fragments.
+%ACM Trans. Comput. Log., 5(1):1-25,2004.
+%%\balancecolumns
+%
+%\bibitem{SYNRCTVDES}
+%N. Piterman, A. Pnueli and Y. Saar,
+%Synthesis of Reactive(1) Designs,
+%in VMCAI'06,
+%pp 364-380,
+%2006.
+%
+%\bibitem{CMPLXAUTO}
+%S. Safra.
+%Complexity of Automata on Infinite Objects.
+%PhD thesis, The Weizmann Institute of Science, Rehovot, Israel, March 1989.
+%
+%\bibitem{NEWALGSTRGSYN}
+%Aidan Harding, Mark Ryan, and Pierre-Yves Schobbens.
+%A New Algorithm for Strategy Synthesis in LTL Games.
+%in TACAS'05,
+%pp 477-492,
+%2005.
+%
+%\bibitem{SYNCNTLBNDRPN}
+%Oded Maler, Dejan Nickovic and Amir Pnueli.
+%On Synthesizing Controllers from Bounded-Response Properties.
+%In CAV'07,
+%pp 95-107,
+%2007.
+%
+%\bibitem{ANZU}
+%Barbara Jobstmann, Stefan Galler, Martin Weiglhofer, Roderick Paul Bloem.
+%Anzu: A Tool for Property Synthesis.
+%in CAV'07,
+%pp 258-262,
+%2007.
+%
+%\bibitem{OPTLTLSYN}
+%Barbara Jobstmann, Roderick Bloem.
+%Optimizations for LTL Synthesis.
+%in FMCAD'06,
+%pp 117-124,
+%2006.
+
+\bibitem{MEALY}
+Mealy, George H.
+A Method for Synthesizing Sequential Circuits.
+Bell Systems Technical Journal v 34, pp 1045-1079, 1955.
+
+\bibitem{McCluskey}
+Edward J. McCluskey.
+Logic Design Principles.
+Prentice-Hall,
+1986.
+
+\bibitem{Scherzo}
+Olivier Coudert.
+On Solving Covering Problems.
+In DAC'96,
+pp 197-202,
+1996.
+
+\bibitem{Espresso}
+Richard L. Rudell, Alberto L. Sangiovanni-Vincentelli.
+Multiple-Valued Minimization for PLA Optimization.
+IEEE Transactions on CAD,6(5),
+pp 727-750,
+1987.
+
+\bibitem{Mod2sum}
+Philipp W. Besslich and M. Riege.
+An efficient program for logic synthesis of Mod-2 Sum Expressions.
+In Euro ASIC'91,
+pp 136-141,
+1991.
+
+\bibitem{ANDEXOR}
+Tsutomu Sasao.
+AND-EXOR expressions and their optimization.
+Kluwer Academic Publishers,
+Editor,
+Logic Synthesis and Optimization,
+Boston,
+1993.
+
+\bibitem{Reed}
+Irving S. Reed.
+A class of multiple-error-correcting codes and their decoding scheme.
+IRE Trans. on Inf. Theory, PGIT-4:48-49,
+1954.
+
+\bibitem{FPRM}
+Marc Davio.
+Discrete and switching Functions.
+George and McGraw-Hill, NY,
+1978.
+
+\bibitem{fastexactFPRM}
+Andisheh Sarabi, Marek A. Perkowski.
+Fast Exact and Quasi-Minimal Minimization of Highly Testable Fixed-Polarity AND/XOR Canonical Networks.
+In DAC'92,
+pp 30-35,
+1992.
+
+\bibitem{fastOFDD}
+Rolf Drechsler, Bernd Becker, Michael Theobald.
+Fast OFDD based minimization of fixed polarity Reed-Muller expressions.
+in EURO-DAC'94,
+pp 2-7,
+1994.
+
+\bibitem{lowpowerXOR}
+Unni Narayanan, C. L. Liu.
+Low power logic synthesis for XOR based circuits.
+in ICCAD'97,
+pp 570-574,
+1997.
+
+\bibitem{ShegnYuShen:iccad09}
+ShengYu Shen, JianMin Zhang, Ying Qin and SiKun Li.
+\emph{Synthesizing Complementary Circuits Automatically}.
+in ICCAD'09,
+pp 381-388,
+2009.
+
+\bibitem{Retiming}
+Charles E. Leiserson, James B. Saxe.
+Optimizing Synchronous Systems.
+in FOCS'81,
+pp 23-36,
+1981.
+
+\bibitem{FuncXOR}
+Tomasz S. Czajkowski, Stephen Dean Brown.
+Functionally linear decomposition and synthesis of logic circuits for FPGAs.
+in DAC'08,
+pp 18-23,
+2008.
+
+\bibitem{RestoreSat}
+Renato Bruni, Antonio Sassano.
+Restoring Satisfiability or Maintaining Unsatisfiability by finding small Unsatisfiable Subformulae.
+In LICS Workshop on Theory and Applications of Satisfiability Testing,
+2001.
+
+\bibitem{AMUSE}
+Yoonna Oh, Maher N. Mneimneh, Zaher S. Andraus, Karem A. Sakallah, Igor L. Markov.
+AMUSE: a minimally-unsatisfiable subformula extractor.
+In DAC'04,
+pp 518-523,
+2004.
+
+\bibitem{DOMINSTOR}
+Roman Gershman, Maya Koifman, Ofer Strichman.
+Deriving Small Unsatisfiable Cores with Dominators.
+In CAV'06,
+pp 109-122,
+2006.
+
+\bibitem{MINIMUM}
+In\^es. Lynce and Jo\~ao P. Marques Silva.
+On Computing Minimum Unsatisfiable Cores.
+In SAT'04,
+pp 305-310,
+2004.
+
+\bibitem{MUP}
+Jinbo Huang.
+MUP: a minimal unsatisfiability prover.
+In ASPDAC'05,
+pp 432-437,
+2005.
+
+\bibitem{BranchBoundSMU}
+Maher N. Mneimneh, In\^es. Lynce, Zaher S. Andraus, Jo\~ao P. Marques Silva, Karem A. Sakallah.
+A Branch-and-Bound Algorithm for Extracting Smallest Minimal Unsatisfiable Formulas.
+In SAT'05,
+pp 467-474,
+2005.
+
+\bibitem{BranchBoundSMUJ}
+Mark H. Liffiton, Maher N. Mneimneh, In\^es. Lynce, Zaher S. Andraus, Jo\~ao P. Marques Silva, Karem A. Sakallah.
+A branch and bound algorithm for extracting smallest minimal unsatisfiable subformulas.
+Constraints 14(4): 415-442,
+2009.
+
+
+\bibitem{GreedyGenetic}
+JianMin Zhang, SiKun Li, and ShengYu Shen.
+Extracting minimum unsatisfiable cores with a greedy genetic algorithm.
+In AI'06,
+pp 847-856,
+2006.
+
+\bibitem{ScalableMU}
+Nachum Dershowitz, Ziyad Hanna, Alexander Nadel.
+A Scalable Algorithm for Minimal Unsatisfiable Core Extraction.
+In SAT'06,
+pp 36-41,
+2008.
+
+\bibitem{Trim}
+Mark H. Liffiton, Karem A. Sakallah.
+Searching for Autarkies to Trim Unsatisfiable Clause Sets.
+In SAT'08,
+pp 182-195,
+2008.
+
+
+\bibitem{LocalMU}
+\'Eric Gr\'egoire, Bertrand Mazure, C\'edric Piette.
+Local-search Extraction of MUSes.
+Constraints 12(3),
+pp 325-344,
+2007.
+
+\bibitem{AlgoMUSC}
+Mark H. Liffiton, Karem A. Sakallah.
+Algorithms for Computing Minimal Unsatisfiable Subsets of Constraints.
+J. Autom. Reasoning 40(1),
+pp 1-33,
+2008.
+
+\bibitem{Hitting}
+James Bailey, Peter J. Stuckey.
+Discovery of Minimal Unsatisfiable Subsets of Constraints Using Hitting Set Dualization.
+in PADL'05,
+pp 174-186,
+2005.
+
+\bibitem{IterpoFunc}
+Jie-Hong R. Jiang, Hsuan-Po Lin and Wei-Lun Hung. Interpolating functions from large Boolean relations. in ICCAD'09, pp 779-784, 2009

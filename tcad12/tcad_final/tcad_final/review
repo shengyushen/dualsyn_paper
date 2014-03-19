@@ -1,0 +1,102 @@
+
+
+
+
+
+
+	 	
+Decision Letter (TCAD-2011-0407.R2)
+
+From:
+
+tcad@umn.edu
+
+To:
+
+shengyushen@gmail.com
+
+CC:
+
+sdailey@umn.edu, kunz@eit.uni-kl.de
+
+Subject:
+
+Transactions on Computer-Aided Design of Integrated Circuits and Systems - Decision on Manuscript ID TCAD-2011-0407.R2
+
+Body:
+
+@@date to be populated upon sending@@ 
+
+Dear Dr. Shen: 
+
+It is a pleasure to accept your manuscript entitled "Inferring Assertion for Complementary Synthesis" for publication as a short paper in the Transactions on Computer-Aided Design of Integrated Circuits and Systems. The comments of the reviewer(s) who reviewed your manuscript are included at the foot of this letter.
+
+Instructions for preparing the final manuscript and supporting documents are available at URL: 
+http://www.umn.edu/~tcad/authors/accept.html 
+
+The following wording must appear on the first page of all PDF's when a final paper is submitted: 
+
+Copyright (c) 2011 IEEE. Personal use of this material is 
+permitted. However, permission to use this material 
+for any other purposes must be obtained from the IEEE by
+sending an email to pubs-permissions@ieee.org. 
+
+Please upload all necessary items within the next three weeks. Postponement will cause your paper to be removed from the list awaiting publication. 
+
+
+Thank you for your contribution. 
+
+Sincerely, 
+Prof. Sachin Sapatnekar 
+Editor-in-Chief, Transactions on Computer-Aided Design of Integrated Circuits and Systems 
+tcad@umn.edu 
+
+
+Reviewer(s)' Comments to Author: 
+
+Reviewer: 1 
+Comments to the Author 
+The manuscript has improved further. Performance improvements and bugfixes are welcome too. 
+
+Reviewer: 2 
+Comments to the Author 
+Thanks for the authors' clarification. 
+One minor issue is that "Runtime 2" and "Runtime 3" are not discussed in the main text. 
+Other than that the paper is acceptable for publication. 
+
+Reviewer: 3 
+Comments to the Author 
+You did not address my comment. 
+
+The invariants you generate are very simple (up to 6 variables/pins). 
+Variables of those invariants have simple interpretation (like RESET or TEST_MODE). 
+And even if the meaning of some pin is unknown one can take a look at the manual. 
+So these variables can be set to correct values without checking how many reversible encoders satisfy the invariant. 
+I suggested three ways how my comment can be taken into account. (One of them 
+was just admitting that finding right assigments to the variables of invariants you generated 
+was straightforward.) 
+
+You reply that a CHIP ITSELF (not the invariant you obtained) may have up to 120 pins. 
+So you justify the second part of you paper (about multiple decoders satisfying the same invariant) 
+by referring to the complexity of the first part (where you describe generation of an invariant). 
+
+I am not talking about the complexity of invariant generation. My point is that the second part 
+is redundant for all 4 examples you list in the paper. The reason is that finding correct assignments to the variables of invariants is trivial. 
+These invariants contain a small number of variables. 
+
+
+Associate Editor: Kunz, Wolfgang 
+Comments to the Author: 
+The paper is now almost ready for publication. 
+For your final version, 
+it is important that you address the comments of one of the reviewers regarding invariant generation. 
+He has re-stated and explained his concerns. 
+Please adress them appropriately.
+
+Date Sent:
+
+27-Feb-2012
+
+ 
+
+   

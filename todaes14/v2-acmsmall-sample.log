@@ -1,0 +1,351 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2013.11.27)  15 MAR 2014 22:46
+entering extended mode
+ %&-line parsing enabled.
+**v2-acmsmall-sample.tex
+(./v2-acmsmall-sample.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, loaded.
+(./acmsmall.cls
+Document Class: acmsmall 2012/03/05, fonts included on 28 June 2010
+(./url.sty
+\Urlmuskip=\muskip10
+Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
+)
+ACM, Production Font style: 2010/06/28 by Aptara
+
+Using ACM, TODAES option: 2010/05/04 by Aptara
+
+(/usr/share/texmf-texlive/tex/latex/base/latexsym.sty
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 47.
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/color.sty
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+(/etc/texmf/tex/latex/config/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: dvips.def on input line 130.
+
+(/usr/share/texmf-texlive/tex/latex/graphics/dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/dvipsnam.def
+File: dvipsnam.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/etc/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: dvips.def on input line 91.
+)
+\Gin@req@height=\dimen102
+\Gin@req@width=\dimen103
+)
+Document Class `acmsmall' Electronic Submissions v1.4 <July 09, 2012> (ACM).
+\@firstpg=\count79
+\@lastpg=\count80
+\trimheight=\dimen104
+\trimwidth=\dimen105
+\normaltextheight=\dimen106
+\tempdimen=\dimen107
+\tempbox=\box26
+\tbbox=\box27
+\tabledim=\dimen108
+\symnewlargesymbols=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \bigsqcup on input line 2037.
+\normalparindent=\dimen109
+\footheight=\skip41
+\@maxsep=\skip42
+\@dblmaxsep=\skip43
+\@totalpg=\count81
+\@abstract=\box28
+\@permissionbox=\box29
+\c@part=\count82
+\c@section=\count83
+\c@subsection=\count84
+\c@subsubsection=\count85
+\c@paragraph=\count86
+\enumdim=\dimen110
+\c@theorem=\count87
+\belowcaptionskip=\skip44
+\abovecaptionskip=\skip45
+\c@figure=\count88
+\c@table=\count89
+\@narrowfig=\dimen111
+\@nfigbox=\box30
+\@nfcapbox=\box31
+\@nfigbox=\box32
+\@nfcapbox=\box33
+\bibindent=\dimen112
+LaTeX Font Info:    Overwriting math alphabet `\mathbb' in version `normal'
+(Font)                  OT1/ams/bx/n --> OT1/ams/bx/n on input line 3619.
+LaTeX Font Info:    Overwriting math alphabet `\mathbb' in version `bold'
+(Font)                  OT1/ams/bx/n --> OT1/ams/bx/n on input line 3620.
+) (./algorithm2e.sty
+Package: algorithm2e 2008/00/00 v3.10 algorithms environments
+\c@AlgoLine=\count90
+ (/usr/share/texmf-texlive/tex/latex/base/ifthen.sty
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(/usr/share/texmf-texlive/tex/latex/tools/xspace.sty
+Package: xspace 2006/05/08 v1.12 Space after command names (DPC,MH)
+)
+(/usr/share/texmf-texlive/tex/latex/ltxmisc/relsize.sty
+Package: relsize 2003/07/04 ver 3.1
+)
+********************************************************
+Package `algorithm2e' Release 4.01 -- december 14 2009 --
+- algorithm2e-announce@lirmm.fr mailing list for announcement about releases
+- algorithm2e-discussion@lirmm.fr mailing list for discussion about package
+subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
+- Author: Christophe Fiorio (fiorio@lirmm.fr)
+********************************************************
+\skiptotal=\skip46
+\skiplinenumber=\skip47
+\skiprule=\skip48
+\skiphlne=\skip49
+\skiptext=\skip50
+\skiplength=\skip51
+\algomargin=\skip52
+\skipalgocfslide=\skip53
+\algowidth=\dimen113
+\inoutsize=\dimen114
+\inoutline=\dimen115
+\interspacetitleruled=\dimen116
+\interspacealgoruled=\dimen117
+\interspacetitleboxruled=\dimen118
+\algocf@inoutbox=\box34
+\algocf@inputbox=\box35
+\AlCapSkip=\skip54
+\AlCapHSkip=\skip55
+\algocf@nlbox=\box36
+\algocf@hangingbox=\box37
+\algocf@capbox=\box38
+\algoheightruledefault=\skip56
+\algoheightrule=\skip57
+\algotitleheightruledefault=\skip58
+\algotitleheightrule=\skip59
+\c@algocfline=\count91
+\c@algocfproc=\count92
+\c@algocf=\count93
+\algocf@algoframe=\box39
+\algocf@algobox=\box40
+) (./v2-acmsmall-sample.aux)
+\openout1 = `v2-acmsmall-sample.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Try loading font information for OT1+pnc on input line 33.
+
+(/usr/share/texmf-texlive/tex/latex/psnfss/ot1pnc.fd
+File: ot1pnc.fd 2001/06/04 font definitions for OT1/pnc.
+)
+LaTeX Font Info:    Font shape `OT1/pnc/bx/n' in size <8> not available
+(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 71.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 125.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 125.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 125.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 125.
+
+(/usr/share/texmf-texlive/tex/latex/base/ulasy.fd
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)
+LaTeX Font Info:    Try loading font information for OMS+pnc on input line 125.
+
+
+(/usr/share/texmf-texlive/tex/latex/psnfss/omspnc.fd
+File: omspnc.fd 
+)
+LaTeX Font Info:    Font shape `OMS/pnc/m/n' in size <8> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 125.
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 128.
+
+
+(/usr/share/texmf-texlive/tex/latex/psnfss/ot1phv.fd
+File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
+)
+LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 128.
+LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <9> not available
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 131.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 135.
+
+Overfull \vbox (72.27pt too high) has occurred while \output is active []
+
+ [1
+
+]
+File: nonuniq.eps Graphic file (type eps)
+
+<nonuniq.eps>
+LaTeX Font Info:    Font shape `OT1/pnc/bx/n' in size <10> not available
+(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 208.
+
+Underfull \vbox (badness 3250) has occurred while \output is active []
+
+ [2]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [3]
+File: pcln.eps Graphic file (type eps)
+
+<pcln.eps> [4]
+LaTeX Font Info:    Font shape `OT1/pnc/bx/n' in size <9> not available
+(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 517.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <9> on input line 517.
+LaTeX Font Info:    Font shape `OT1/pnc/bx/n' in size <7> not available
+(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 519.
+LaTeX Font Info:    Font shape `OT1/pnc/bx/n' in size <6.25002> not available
+(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 519.
+ [5]
+Underfull \vbox (badness 2401) has occurred while \output is active []
+
+ [6]
+[7]
+Underfull \hbox (badness 1796) in paragraph at lines 774--777
+[]\OT1/pnc/m/n/10 If $\OML/cmm/m/it/10 F[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 p; 
+l; r\OT1/cmr/m/n/10 )$ \OT1/pnc/m/n/10 is sat-is-fi-able, then $[]$ can-not be 
+uniquely de-ter-mined by $\OML/cmm/m/it/10 <
+ []
+
+[8]
+Underfull \hbox (badness 1776) in paragraph at lines 890--896
+[]\OT1/pnc/m/n/10 If $\OML/cmm/m/it/10 F[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 p; 
+l; r\OT1/cmr/m/n/10 )$ \OT1/pnc/m/n/10 is sat-is-fi-able, then $[]$ can-not be 
+uniquely de-ter-mined by $\OML/cmm/m/it/10 <
+ []
+
+[9]
+File: mono.eps Graphic file (type eps)
+ <mono.eps> [10] [11]
+Underfull \hbox (badness 4096) in paragraph at lines 1524--1532
+[]\OT1/pnc/m/n/10 Algorithm 2[] costs 0.924754 sec-onds to iden-tify the flow c
+on-trol vari-able
+ []
+
+[12] [13]
+Underfull \hbox (badness 2269) in paragraph at lines 1686--1692
+[]\OT1/pnc/m/n/10 Algorithm 2[] costs 11.750317 sec-onds to iden-tify the flow 
+con-trol vari-ables
+ []
+
+[14]
+Underfull \hbox (badness 10000) in paragraph at lines 1743--1745
+[]\OT1/pnc/m/n/10 The ini-tial work on de-riv-ing pro-gram in-ver-sion used pro
+of-based ap-
+ []
+
+[15] (./v2-acmsmall-sample.bbl
+Underfull \hbox (badness 2856) in paragraph at lines 38--48
+[]\OT1/pnc/m/n/8 Karin Avnit, Vi-jay D'Silva, Ar-cot Sowmya, S. Ramesh, and Sri
+ Parameswaran. 2009. Prov-ably
+ []
+
+
+Underfull \hbox (badness 2173) in paragraph at lines 38--48
+\OT1/pnc/m/n/8 cor-rect on-chip com-mu-ni-ca-tion: A for-mal ap-proach to au-to
+-matic pro-to-col con-verter syn-the-sis.
+ []
+
+
+Underfull \hbox (badness 3601) in paragraph at lines 146--155
+[]\OT1/pnc/m/n/8 Robert Gl[]uck and Masahiko Kawabe. 2005. A method for au-to-m
+atic pro-gram in-ver-sion based
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 146--155
+\OT1/pnc/m/n/8 on LR(0) pars-ing. \OT1/pnc/m/it/8 Jour-nal Fun-da-menta In-for-
+mat-i-cae \OT1/pnc/m/n/8 66, 4 (Jan-uary 2005), 367--395.
+ []
+
+[16]
+Underfull \hbox (badness 1596) in paragraph at lines 194--203
+[]\OT1/pnc/m/n/8 Hsiou-Yuan Liu, Yen-Cheng Chou, Chen-Hsuan Lin, and Jie-Hong R
+. Jiang. 2011. To-wards com-
+ []
+
+
+Underfull \hbox (badness 2452) in paragraph at lines 194--203
+\OT1/pnc/m/n/8 pletely au-to-matic de-coder syn-the-sis. In \OT1/pnc/m/it/8 Pro
+-ceed-ings of the 2011 In-ter-na-tional Con-fer-ence on
+ []
+
+
+Underfull \hbox (badness 1048) in paragraph at lines 194--203
+\OT1/pnc/m/it/8 Computer-Aided De-sign, IC-CAD 2011 (IC-CAD '11)\OT1/pnc/m/n/8 
+. IEEE Press, San Jose, CA, USA, 389--395.
+ []
+
+
+Underfull \hbox (badness 4913) in paragraph at lines 207--215
+[]\OT1/pnc/m/n/8 Kenneth L. McMil-lan. 2003. In-ter-po-la-tion and sat-based mo
+del check-ing. In \OT1/pnc/m/it/8 Com-puter Aided
+ []
+
+
+Underfull \hbox (badness 4168) in paragraph at lines 207--215
+\OT1/pnc/m/it/8 Ver-i-fi-ca-tion, 15th In-ter-na-tional Con-fer-ence, CAV 2003\
+OT1/pnc/m/n/8 , Fabio Somenzi War-ren A. Hunt Jr.
+ []
+
+
+Underfull \hbox (badness 2088) in paragraph at lines 260--270
+\OT1/pnc/m/n/8 ing Al-go-rithm to De-ter-mine the Ex-is-tence of the De-coder. 
+\OT1/pnc/m/it/8 IEEE Trans-ac-tions on Computer-
+ []
+
+
+Underfull \hbox (badness 4341) in paragraph at lines 260--270
+\OT1/pnc/m/it/8 Aided De-sign of In-te-grated Cir-cuits and Sys-tems \OT1/pnc/m
+/n/8 30, 10 (Oc-to-ber 2011), 30:1556--30:1563.
+ []
+
+) [17] [1
+
+] (./v2-acmsmall-sample.aux) )
+(\end occurred inside a group at level 1)
+
+### simple group (level 1) entered at line 1751 ({)
+### bottom level 
+Here is how much of TeX's memory you used:
+ 2649 strings out of 495062
+ 32930 string characters out of 1182643
+ 112870 words of memory out of 3000000
+ 5822 multiletter control sequences out of 15000+50000
+ 18756 words of font info for 56 fonts, out of 3000000 for 9000
+ 28 hyphenation exceptions out of 8191
+ 32i,18n,30p,368b,502s stack positions out of 5000i,500n,10000p,200000b,50000s
+
+Output written on v2-acmsmall-sample.dvi (18 pages, 107260 bytes).

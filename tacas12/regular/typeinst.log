@@ -1,0 +1,286 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2011.4.11)  1 DEC 2011 21:44
+entering extended mode
+ %&-line parsing enabled.
+**typeinst.tex
+(./typeinst.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, loaded.
+(./llncs.cls
+Document Class: llncs 2010/07/12 v2.17 
+ LaTeX document class for Lecture Notes in Computer Science
+(/usr/share/texmf-texlive/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texmf-texlive/tex/latex/base/size10.clo
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/share/texmf-texlive/tex/latex/tools/multicol.sty
+Package: multicol 2008/12/05 v1.6h multicolumn formatting (FMi)
+\c@tracingmulticols=\count87
+\mult@box=\box26
+\multicol@leftmargin=\dimen103
+\c@unbalance=\count88
+\c@collectmore=\count89
+\doublecol@number=\count90
+\multicoltolerance=\count91
+\multicolpretolerance=\count92
+\full@width=\dimen104
+\page@free=\dimen105
+\premulticols=\dimen106
+\postmulticols=\dimen107
+\multicolsep=\skip43
+\multicolbaselineskip=\skip44
+\partial@page=\box27
+\last@line=\box28
+\mult@rightbox=\box29
+\mult@grightbox=\box30
+\mult@gfirstbox=\box31
+\mult@firstbox=\box32
+\@tempa=\box33
+\@tempa=\box34
+\@tempa=\box35
+\@tempa=\box36
+\@tempa=\box37
+\@tempa=\box38
+\@tempa=\box39
+\@tempa=\box40
+\@tempa=\box41
+\@tempa=\box42
+\@tempa=\box43
+\@tempa=\box44
+\@tempa=\box45
+\@tempa=\box46
+\@tempa=\box47
+\@tempa=\box48
+\@tempa=\box49
+\c@columnbadness=\count93
+\c@finalcolumnbadness=\count94
+\last@try=\dimen108
+\multicolovershoot=\dimen109
+\multicolundershoot=\dimen110
+\mult@nat@firstbox=\box50
+\colbreak@box=\box51
+)
+(/usr/share/texmf-texlive/tex/latex/oberdiek/aliascnt.sty
+Package: aliascnt 2009/09/08 v1.3 Alias counter (HO)
+
+(/usr/share/texmf-texlive/tex/latex/carlisle/remreset.sty))
+\c@chapter=\count95
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 362.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 363.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 364.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 365.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 366.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 367.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 368.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 369.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 370.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 371.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 372.
+\tocchpnum=\dimen111
+\tocsecnum=\dimen112
+\tocsectotal=\dimen113
+\tocsubsecnum=\dimen114
+\tocsubsectotal=\dimen115
+\tocsubsubsecnum=\dimen116
+\tocsubsubsectotal=\dimen117
+\tocparanum=\dimen118
+\tocparatotal=\dimen119
+\tocsubparanum=\dimen120
+\@tempcntc=\count96
+\fnindent=\dimen121
+\c@@inst=\count97
+\c@@auth=\count98
+\c@auco=\count99
+\instindent=\dimen122
+\authrun=\box52
+\authorrunning=\toks14
+\tocauthor=\toks15
+\titrun=\box53
+\titlerunning=\toks16
+\toctitle=\toks17
+\c@theorem=\count100
+\c@case=\count101
+\c@conjecture=\count102
+\c@corollary=\count103
+\c@definition=\count104
+\c@example=\count105
+\c@exercise=\count106
+\c@lemma=\count107
+\c@note=\count108
+\c@problem=\count109
+\c@property=\count110
+\c@proposition=\count111
+\c@question=\count112
+\c@solution=\count113
+\c@remark=\count114
+\headlineindent=\dimen123
+)
+(/usr/share/texmf-texlive/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2009/06/22 v3.00
+
+(/usr/share/texmf-texlive/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2009/06/22 v3.00 Basic AMSFonts support
+\@emptytoks=\toks18
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 96.
+))
+(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks19
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/etc/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: dvips.def on input line 91.
+
+(/usr/share/texmf-texlive/tex/latex/graphics/dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen124
+\Gin@req@width=\dimen125
+)
+(/usr/share/texmf-texlive/tex/latex/ltxmisc/url.sty
+\Urlmuskip=\muskip10
+Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
+)
+\c@algorithm=\count115
+ (./typeinst.aux)
+\openout1 = `typeinst.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Try loading font information for U+msa on input line 75.
+
+(/usr/share/texmf-texlive/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2009/06/22 v3.00 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 75.
+
+(/usr/share/texmf-texlive/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2009/06/22 v3.00 AMS symbols B
+) [1
+
+
+]
+File: arch.eps Graphic file (type eps)
+ <arch.eps> [2]
+[3]
+File: halting.eps Graphic file (type eps)
+ <halting.eps> [4]
+File: pc.eps Graphic file (type eps)
+ <pc.eps>
+File: ln.eps Graphic file (type eps)
+ <ln.eps> [5] [6]
+File: infer.eps Graphic file (type eps)
+ <infer.eps>
+File: lninfer.eps Graphic file (type eps)
+ <lninfer.eps>
+[7]
+File: fdtest_dec.eps Graphic file (type eps)
+ <fdtest_dec.eps> [8]
+File: fdtest_infer.eps Graphic file (type eps)
+ <fdtest_infer.eps> [9]
+Overfull \hbox (0.6771pt too wide) in paragraph at lines 552--557
+\OT1/cmr/m/n/10 ring mode, the user needs to run the com-mand "make in-fer[]mul
+tidec[]not[]charfirst
+ []
+
+[10]
+Overfull \hbox (2.13968pt too wide) in paragraph at lines 656--658
+[]\OT1/cmr/bx/n/10 For T2 eth-er-net\OT1/cmr/m/n/10 : \OT1/cmtt/m/n/10 ( ( link
+[]up[]loc & !reset[]tx & !txd[]sel[1] & !jitt
+ []
+
+
+Overfull \hbox (4.8333pt too wide) in paragraph at lines 656--658
+\OT1/cmtt/m/n/10 er[]study[]pci[1] & !txd[]sel[0] & !jitter[]study[]pci[0] ) | 
+( !link[]up[]l
+ []
+
+
+Overfull \hbox (8.61325pt too wide) in paragraph at lines 656--658
+\OT1/cmtt/m/n/10 oc & !reset[]tx & !txd[]sel[1] & tx[]enc[]conf[]sel[3] & tx[]e
+nc[]conf[]sel[2]
+ []
+
+
+Overfull \hbox (2.52335pt too wide) in paragraph at lines 656--658
+\OT1/cmtt/m/n/10 & !jitter[]study[]pci[1] & !txd[]sel[0] & !jitter[]study[]pci[
+0] ) | ( !l
+ []
+
+
+Overfull \hbox (17.64316pt too wide) in paragraph at lines 656--658
+\OT1/cmtt/m/n/10 ink[]up[]loc & !reset[]tx & !txd[]sel[1] & tx[]enc[]conf[]sel[
+3] & !tx[]enc[]conf
+ []
+
+
+Overfull \hbox (14.70325pt too wide) in paragraph at lines 656--658
+[]\OT1/cmtt/m/n/10 sel[2] & tx[]enc[]conf[]sel[1] & !jitter[]study[]pci[1] & !t
+xd[]sel[0] & !ji
+ []
+
+
+Overfull \hbox (4.8333pt too wide) in paragraph at lines 656--658
+\OT1/cmtt/m/n/10 tter[]study[]pci[0] ) | ( !link[]up[]loc & !reset[]tx & !txd[]
+sel[1] & !tx[]
+ []
+
+
+Overfull \hbox (1.8933pt too wide) in paragraph at lines 656--658
+\OT1/cmtt/m/n/10 enc[]conf[]sel[3] & !tx[]enc[]conf[]sel[2] & tx[]enc[]conf[]se
+l[1] & !jitter[]
+ []
+
+
+Overfull \hbox (10.08325pt too wide) in paragraph at lines 656--658
+\OT1/cmtt/m/n/10 study[]pci[1] & !txd[]sel[0] & !jitter[]study[]pci[0] & tx[]en
+c[]conf[]sel[0]
+ []
+
+[11] [12] [13] (./typeinst.aux) ) 
+Here is how much of TeX's memory you used:
+ 1384 strings out of 495062
+ 15907 string characters out of 1182644
+ 77769 words of memory out of 3000000
+ 4561 multiletter control sequences out of 15000+50000
+ 13396 words of font info for 51 fonts, out of 3000000 for 9000
+ 28 hyphenation exceptions out of 8191
+ 29i,8n,24p,754b,345s stack positions out of 5000i,500n,10000p,200000b,50000s
+
+Output written on typeinst.dvi (13 pages, 44216 bytes).

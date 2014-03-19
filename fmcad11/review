@@ -1,0 +1,220 @@
+---------------------- REVIEW 1 ---------------------
+PAPER: 5
+TITLE: Synthesizing ​Complementary​ Circuits without Manually Specifying Assertions
+AUTHORS: Shengyu Shen, Ying Qin, Jianmin Zhang and Sikun Li
+
+OVERALL RATING: -1 (weak reject)
+REVIEWER'S CONFIDENCE: 1 (low)
+
+This paper presents a way to construct a ​complementing​ circuit decoder.
+The idea is to present an automatic construction of the circuit, and
+complement it with some ways to deal with situations such as unreachable
+states, etc. This is done through the use of Craig's ​interpolation​.
+
+The problem of building a ​complementing​ circuit (automata) decoder
+was presented in a previous paper by the same authors. The problem
+of optimizing the design is presented here. It is not clear to
+me whether it has a great importance on building the decoder. Would
+things go wrong if they are not treated? (as we do not reach them
+anyway). It seems a bit a simplistic problem, and a reasonable solution.
+
+The paper is very technical, and mostly consists of encoding the problem
+as formulas with many indexes. This makes the reading and assessing the
+relevance of the problem and the inginuity of the solution. Thus, I can
+say very little about that.
+
+
+----------------------- REVIEW 2 ---------------------
+PAPER: 5
+TITLE: Synthesizing ​Complementary​ Circuits without Manually Specifying Assertions
+AUTHORS: Shengyu Shen, Ying Qin, Jianmin Zhang and Sikun Li
+
+OVERALL RATING: -2 (reject)
+REVIEWER'S CONFIDENCE: 3 (high)
+
+The authors present an approach to ​automatically​ obtain assertions 
+for ​complementary​ circuits. Therefore, various formal techniques 
+(e.g. Boolean ​satisfiabilit​y, ​interpolation​, etc.) are utilized. 
+
+The topic as well as the general goal of the paper is well motivated and clear. 
+​Unfortunately​, the description of the actual approach is poor and really hard 
+to follow. The authors fail to keep the reader in the loop. 
+Indeed, many details are presented and explained; but the authors miss to put 
+them in an intuitive and clear context. Instead, the authors are constantly
+ referring to different lines of their algorithm, previously discussed equations
+, and a bunch of different variables. In all these descriptions, the reader 
+loses track of the big picture. Neither the general idea nor its 
+​completeness/​correctness can be comprehended from the given description. 
+
+I recommend to ​significantly​ revise the description, particularly considering thereby
+(1) to illustrate the general idea and the key steps of the approach first and
+(2) illustrate the respective steps by means of examples.
+
+Even in the description of the experimental results, it remains unclear what 
+actually has been done. For example in Section VI.B, the authors simply 
+copied and pasted the outcome (i.e. the inferred assertions) of their approach
+ into the paper. It remained unclear what they mean or what can be concluded 
+from them. No benefits of the proposed approach are shown or discussed. 
+In fact, a (probably) similar approach based on [3] leads to very similar 
+results in much less run-time (the authors try to justify that by mentioning 
+that, considering the pin number, the run-time could even be worse). Overall, 
+all this does not sound very convincing.
+
+The proposed work has very close relations to reversible ​circuits/reve​rsible 
+logic. In fact, reversible circuits in general allow computations in both 
+“directions” (i.e. once you have e.g. an encoding circuit, you get the decoding 
+circuit “for free” just by performing the computation in the backward direction).
+ Here, similar problems as discussed in the paper at hand have to be considered 
+(e.g. so called constant inputs and garbage outputs occur in reversible logic 
+leading to certain restrictions in the backward (​complementary​) computation).
+ In the recent years, many design methods for reversible circuits have been 
+introduced (even hardware description languages are available). None of this 
+work is discussed. 
+
+Minor comments:
+* For Fig. 1, the authors state that “no matter what the value of c, in can be 
+uniquely determined by out.” I do not see that. I believe the value of c is 
+important. Otherwise, out=2 could either lead to in=1 or in=0, i.e. 
+there is no unique mapping. 
+
+* The authors mentioned that the assertions have to be manually specified so 
+far. It remains unclear if this only holds for the approaches previously 
+proposed by the authors (i.e. for [1,2]) or for all existing approaches. 
+In general, it seems that the authors focused on their own work only. 
+
+* The authors cited two Wikipedia-references (namely [6,7]). 
+I doubt that Wikipedia is an acceptable source in scientific work.
+
+
+----------------------- REVIEW 3 ---------------------
+PAPER: 5
+TITLE: Synthesizing ​Complementary​ Circuits without Manually Specifying Assertions
+AUTHORS: Shengyu Shen, Ying Qin, Jianmin Zhang and Sikun Li
+
+OVERALL RATING: -1 (weak reject)
+REVIEWER'S CONFIDENCE: 2 (medium)
+
+This paper presents an approach to ​automatically​ find necessary
+assertions during the synthesis of ​complementary​ circuits.  In prior
+work, the authors have shown how a decoder can be constructed
+​automatically​ from the ​corresponding​ encoder if possible, and how
+non-existence can be proven otherwise.  As a prerequisite for this
+synthesis approach, some assertions on the ​configuration​ of the
+encoder (e.g., that it is not in test mode, or that it is not reset in
+mid operation) must be stated; otherwise a ​complementary​ circuit might
+not exist.  In this paper, the authors show how such assertions can be
+computed ​automatically​. 
+
+The presentation of the technical content builds a lot on the
+​aformentioned​ prior work by the authors, and is not very
+self-contained.  Thus, some interesting questions remain unanswered,
+while space is wasted to explain commonly known concepts such as SAT
+solvers, CNF formulas, and cofactors.  E.g., why is E \models LN
+equivalent to the *negation* of E \models PC (Theorem 2)? (This would
+mean that LN = ~PC, correct?)  The definition of F_LN is not clear to
+me at all.  It appears to be different from the formula derived in
+[3] and no explanation is given.  All in all, the paper is hard to
+follow and does not clearly separate the different levels of ​abstraction.q​
+
+It is not quite clear what the contribution of this paper is.  The
+synthesis of ​complementary​ circuits itself has already been described
+in prior work (by the same authors).  Thus, the novelty of this paper
+is the automatic generation of the assertions only.  For this, I fail
+to see the motivation for employing automation.  For the first three
+out of the five experimental circuits used, the assertions generated
+look quite simple, even if one does not know anything about the
+circuits.  Even for very complex circuits, it should be easy for the
+designer of any circuit to specify for which ​configuration​ values the
+circuit is in normal operation and for which it is in test mode, sleep
+mode, etc.
+
+ The assertions addressed concern ​combinational​ ​configuration​ inputs.
+Sequential inputs, such as a mode bit set at the beginning of
+operation, or even the beginning of an arbitrary-length transition,
+are not supported.  (They could be converted to ​combinational​ inputs,
+but this would require some ​understanding​ of the circuit.  In fact,
+might it be useful to infer facts about the initial state of the
+bounded trace?)
+
+Summing up, I think that in its present form the paper is not very
+self- contained and lacks proper motivation of its ​significance.​
+
+
+Other questions / Editorial remarks:
+
+In II-B, formulas F_PC and P_LN have a free variable c that should
+apperently be quantified ​existentially​ (or mentioned in the list of
+free variables)
+
+Section V-B, last sentence:
+Why is the number of decoders necessarily finite? 
+
+Section III, page 4, first column:
+I think the references to Line 4 (of Algorithm 1) should actually be to Line 5.
+
+Several theorems have an empty pair of parentheses after their number.
+
+Several spaces are missing, in particular before opening parenthesis, and 
+sometimes after punctuation marks.
+
+Section III-B, page 4, first column, last paragraph:
+I think "4th line" should be "3rd line".
+
+todo
+Section VI-D, second paragraph:
+Why does your approach produce decoders, for which the necessary ​configuration​
+prerquisite is "False".  I.e., decoders that cannot be used under any existing
+​configuration​? 
+How can you confirm the correctness of a formal method by dynamic simulation?
+
+Table 1, Caption:
+"Information of Benchmarks" --> "Information on Benchmarks"
+
+
+----------------------- REVIEW 4 ---------------------
+PAPER: 5
+TITLE: Synthesizing ​Complementary​ Circuits without Manually Specifying Assertions
+AUTHORS: Shengyu Shen, Ying Qin, Jianmin Zhang and Sikun Li
+
+OVERALL RATING: 0 (borderline paper)
+REVIEWER'S CONFIDENCE: 3 (high)
+
+The paper presents two extensions of the authors' work on synthesizing
+​complementary​ sequential circuits (decoders) given the encoder
+circuits.  The encoder circuit is assumed to have a set of (1) data
+inputs, (2) ​configuration​ inputs, and (3) data outputs. The
+​configuration​ inputs are the parameters of the encoder and are
+constant during encoding.
+
+The first proposed extension tackles the problem that the encoder
+circuit might also have ​configuration​s (e.g., error ​configuration​s) in
+which no decoder exists. Therefore, the authors present a method to
+​automatically​ derive assertions ​characterizin​g all assignments to the
+​configuration​ inputs for which a decoder exists.  (The authors say
+that there exists a decoder for a ​configuration​ c, if there exists a
+windows around the current output value for c such that the current
+input value is uniquely defined by the values in this window.)
+
+The second extension deals with the cases in which multiple decoder
+exists for the derived assertion on the ​configuration​ inputs. In this
+case, the author propose to enumerate all possible decoder using
+AllSAT.
+
+Major comments:
+
+The general idea of synthesizing ​complementary​ circuits is interesting
+and the idea of using a sliding window is clever.  Furthermore, the
+SAT encoding to establish a complete algorithm is also very nice.
+However, all these ideas were published before and the two proposed
+extensions subject of this paper (section 3 and 5) are less exciting.
+
+Minor comments:
+
+- ​preliminaries​: The "​uninitialized​ recurrence diameter" is not used.
+
+- section 4 has been published before and is not necessary to 
+understand section 3 and 5.
+
+- I would add more examples, since you already published three papers
+  with the same five examples.
+

@@ -1,0 +1,584 @@
+#container {
+	font-size: 14px;
+	/* color: #000000; */
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	width: 950px;
+	/* background-color: #FFFFFF; */
+	color: inherit;
+	background: none;
+	/* background-image: none; */
+	top: 14px;
+	left: 30px;
+	/* border-top-width: thin; */
+	/* border-right-width: thin; */
+	/* border-bottom-width: thin; */
+	/* border-left-width: thin; */
+	/* border-top-style: solid; */
+	/* border-right-style: solid; */
+	/* border-bottom-style: solid; */
+	/* border-left-style: solid; */
+	/* border-top-color: #999999; */
+	/* border-right-color: #999999; */
+	/* border-bottom-color: #999999; */
+	/* border-left-color: #999999; */
+	margin: 5px;
+	padding: 0px 0px 0px 0px; 
+	/* border-top-style: solid; */
+	text-decoration: none;
+}
+
+
+span {
+	text-decoration: none;
+	font-family: verdana;
+} 
+span.uptitle {
+	color: #00659C;
+	background: none;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 24px;
+	font-family: verdana;
+} 
+span.title {
+	color: #f3f121;
+	background: none;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 24px;
+	font-family: verdana;
+} 
+
+a {
+	color: #00659c;
+	background: none;
+	text-decoration: none;
+	font-weight: bold;
+} 
+a:hover {
+	color: #00659c;
+	background: none;
+	text-decoration: underline; 
+	font-weight: bold;
+}
+a:visited {
+	color: #551a8b;
+	background: none;
+	text-decoration: none;
+	font-weight: bold;
+}
+a.javaeff {
+	color: #000000;
+	background: none;
+	text-decoration: none;
+} 
+
+p.maintitle {
+	color: #00659c;
+	background: none;
+	text-align: center;
+	font-size: 24px;
+} 
+p.title {
+	color: #00659c;
+	background: none;
+	text-align: center;
+	font-size: 18px;
+} 
+p.text {
+	text-align: justify;
+}
+p.textall {
+	text-align: center;
+}
+p.textallbig {
+	text-align: center;
+	font-size: 18px;
+}
+ 
+li.text {
+	text-align: justify;
+} 
+
+ol.text {
+	text-align: justify;
+} 
+
+input.btn {
+	color: #00659c;
+	background: #CCCCFF none;
+	font-weight: bold;
+        padding: 5px;
+        width: 160px;
+    }
+input.btn:hover {
+	color: #00659c;
+	background: #00CCFF none;
+	font-weight: bold;
+        padding: 5px;
+        width: 160px;
+}
+/* input.btn:active {
+	color: #00659c;
+	background: #CCCCFF none;
+	font-weight: bold;
+        padding: 5px;
+        width: 160px;
+} */
+input.btn[disabled] {
+	color: #8e8e8a;
+	background: #e6e8ea none;
+	font-weight: bold;
+        padding: 5px;
+        width: 160px;
+    }
+input.btn[disabled]:hover {
+	color: #404040;
+	background: #888888 none;
+	font-weight: bold;
+        padding: 5px;
+        width: 160px;
+}
+/* input.btn[disabled]:active {
+	color: #8e8e8a;
+	background: #e6e8ea none;
+	font-weight: bold;
+        padding: 5px;
+        width: 160px;
+} */
+
+table.text {
+	color: #000000;
+	background: #E6EEFF none;
+	text-align: center;
+	font-size: 10px;
+} 
+
+table.big {
+	color: #000000;
+	background: #E6EEFF none;
+	text-align: center;
+} 
+
+select.selectBox {
+	width: 780px;
+}
+
+#container #header {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	height: 1px;
+	padding-top: 5px;
+	padding-right: 5px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	/* color: #273366; */
+	color: #00659c;
+	background: inherit;
+	margin-left: 15px;
+	margin-top: 6px;
+	margin-right: 6px;
+	margin-bottom: 6px;
+	border-top-color: #ECE9D8;
+	border-right-color: #ECE9D8;
+	border-bottom-color: #ECE9D8;
+	border-left-color: #ECE9D8;
+	position: relative;
+	/* background-image: url(img/Logo_trasp.gif); */
+}
+
+
+#container #navOr {
+	height: 85px;
+	padding: 0px;
+	font-size: 19px;
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: left;
+	font-weight: bold;
+	width: 760px;
+	color: #FEFEFE;
+	/* background: none repeat-x right bottom; */
+	margin: 2px;
+	/* background: url(images/tabella_first.png) repeat; */
+}
+#container #navOr a {
+	height: 84px;
+	width: 249px;
+	text-decoration: none;
+	display: block;
+	float: left;
+	text-align: center;
+	padding-right: 0px;
+	font-size: 19px;
+	font-weight: bold;
+	color: #f3f121;
+	padding-left: 0px;
+	margin-left: 0px;
+	line-height: 25px;
+	border: 1px solid #bbbbbb;
+	background: url(images/tabella_first1.png) repeat;
+	/* background: url(images/button_off.gif) repeat; */
+}
+#container #navOr a:hover {
+	color: #273366;
+	background: url(images/button_on.gif);
+}
+
+#container #left {
+	width: 100px;
+	float: left;
+	text-align: left;
+}
+#container #left #links li {
+	margin: 0px;
+	list-style-type: none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	line-height: 17px;
+	color: inherit;
+	background: #99FF00 none;
+	padding: 0px;
+}
+#container #left #links ul {
+	list-style-image: none;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	color: inherit;
+	background: #FF3366 none;
+}
+#container #left #links a {
+	width: 100px;
+	color: inherit;
+	background: #FFFFFF none;
+	display: block;
+	height: 21px;
+	padding-top: 1px;
+	text-decoration: none;
+	padding-left: 2px;
+	border: thin solid #FF9900;
+}
+#container #navOr ul {
+	list-style-type: none;
+	margin: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 3px;
+}
+#container #left #links a:hover {
+	color: inherit;
+	background: #00FFFF;
+}
+#container #navOr li {
+	display: inline;
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+
+}
+
+#container #central {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	margin-left: 135px;
+	margin-top: 2px;
+	text-align: left;
+	padding-top: 2px;
+	padding-right: 2px;
+	padding-bottom: 2px;
+	padding-left: 10px;
+	right: 80px;
+}
+#container #navOr2 {
+	height: 30px;
+	color: inherit;
+	background: #006699;
+}
+
+#container #central p {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+#container #central h1 {
+	font-family: "Comic Sans MS";
+	font-size: 24px;
+	font-style: italic;
+	font-weight: bold;
+	color: #273366;	
+	background: none;
+}
+
+#container #foot {
+	clear: both;
+	height: 30px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-align: right;
+	color: #FFFFFF;
+	background: #800040;
+	vertical-align: middle;
+	width: 760px;
+	padding: 0px;
+}
+#container #index h1 {
+	font-family: "Comic Sans MS";
+	font-size: 24px;
+	font-style: italic;
+	font-weight: bold;
+	/* color: #800040; */
+	padding-top: 0px;
+	padding-left: 1px;
+	margin-top: 0px;
+	margin-left: 1px;
+}
+
+#container #index {
+	width: 760px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	padding-top: 5px;
+	padding-left: 5px;
+}
+#container #left #links table {
+	text-decoration: none;
+	width: 135px;
+	margin-top: 30px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	/* color: #FFFFFF; */
+	font-size: 14px;
+}
+body {
+	color: inherit;
+	background: #E6EEFF;
+}
+body.mainpage {
+	color: inherit;
+	background: #E6EEFF url(images/tabella1.png) no-repeat center 135px;
+}
+body.otherpage {
+	color: inherit;
+	background: #E6EEFF url(images/tabella1_small.png) no-repeat center 135px;
+}
+body.firstpage {
+	color: inherit;
+}
+
+
+
+/* NEW EXPERIMENTS */
+
+.wrapper {
+	width: 900px;
+	margin: 0 auto;
+	text-align: left;
+	color: inherit;
+	background: #FFFFFF;	
+}
+
+.header {
+	position: fixed;
+	top: 0px;
+	width: 900px;
+}
+
+.logo {
+	color: inherit;
+	background: #fff;
+}
+
+img {
+	border: 0;
+}
+
+.menubar {
+	height: 46px;
+	left: 200px;
+	color: inherit;
+	background: #fff;
+	width: 100%;
+}
+
+.menu{
+	text-align: center;
+	width:139px;
+	font-size: 14px;
+}
+
+.menulittle{
+	text-align: left;
+	width:290px;
+	font-size: 12px;
+}
+
+
+.mmenu, .mmenu ul{
+	z-index: 999;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	color: inherit;
+	background: url(images/tabella2.png) -30px;
+	position: relative;
+}
+
+.mmenu a {
+	color: #000066; /* font color in the main menu */
+	background: none;
+/*	font-size: 14px;    */
+	padding: 4px;
+	display: block;			/* this helps make sure the link covers 100% area */
+	position: relative;		/* this helps make sure IE5 hover works on link */
+	border: 1px solid #eeeeee;
+	text-decoration: none;
+/*	width: 400px;       */           /* Need to specify a width - this is used to open sub menu with margin-left */
+}	
+
+.mmenu a:hover {
+	position: relative;
+	color: #331734;
+	background: #e0e1fb;
+}
+
+.mmenu ul a {
+	padding: 1px;
+}
+
+.mmenu li {
+	float: left;
+	font-family: verdana;
+	font-size: 11px;
+} /* color of the menu - not selected */
+
+.mmenu li:hover {
+	position: relative;
+	z-index: 999;
+}
+
+.mmenu li ul {
+	color: inherit;
+	background: #eeeeee;
+	padding: 1px;
+	display: none;
+	border:1px solid #bbbbbb;
+	position: absolute;
+}
+
+.mmenu ul li ul {
+	margin-left: 200px;
+	margin-top: -30px;
+} /* default top and left positioning for sub sub menus (this is specified in the list to make adhoc changes)*/
+
+.mmenu ul li {
+	clear: both;
+	color: inherit;
+	background: url(images/tabella2.png) -30px;
+} /* color of the menulittle - not selected */
+
+.mmenu a:active, .mmenu a:focus {
+	background:#e0e1fb;
+	color: #331734;
+	background: inherit;
+	border: 1px solid #bbbbbb;
+}
+
+.mmenu li a:hover {
+	color: #331734;
+	background: #e0e1fb;
+	border:1px solid #bbbbbb;
+	text-decoration: none;
+} /* background: color of the menu and menulittle - selected */
+
+.mmenu li:hover ul {
+	display: block;
+	position: absolute;
+} /*sub menu from vertical parent positioning */
+
+.mmenu table {
+	position: absolute;
+	left: -4px;
+	top: 8px;
+	font-size: 14px;
+	height: 25px;
+}
+
+.mmenu img {
+	border: 0;
+	vertical-align: middle;
+	padding-right: 2px;
+}
+
+.mmenu a:hover {
+	color: #331734;
+	background: #e0e1fb;
+	text-decoration: none;
+	border: 1px solid #bbbbbb;
+}
+
+.menudownarrow {
+	padding-left: 5px;
+	border: 0;
+	right: 0;
+	position: relative;
+	vertical-align: middle;
+}
+
+.menuarrow {
+	padding-top: 6px;
+	padding-right: 5px;
+	border: 0;
+	right: 0;
+	position: absolute;
+	vertical-align: middle;
+}
+
+.mmenu a:hover ul ul {
+	visibility: hidden;
+}
+
+.mmenu a:hover ul a:hover ul ul{
+	visibility: hidden;
+}
+
+.mmenu a:hover ul a:hover ul a:hover ul ul {
+	visibility: hidden;
+}
+
+.mmenu a:hover ul a:hover ul a:hover ul a:hover ul ul {
+	visibility:hidden;
+}
+
+.mmenu a:hover ul a:hover ul a:hover ul a:hover ul a:hover ul ul {
+	visibility:hidden;
+}	
+
+.mmenu a:hover ul{
+	visibility: visible;
+}
+
+.mmenu a:hover ul a:hover ul{
+	visibility: visible;
+}
+
+.mmenu a:hover ul a:hover ul a:hover ul {
+	visibility: visible;
+}
+
+.mmenu a:hover ul a:hover ul a:hover ul a:hover ul {
+	visibility: visible;
+}
+
+.mmenu a:hover ul a:hover ul a:hover ul a:hover ul a:hover ul{
+	visibility:visible;
+}
+
+.mmenu a:hover ul a:hover ul a:hover ul a:hover ul a:hover ul a:hover ul {
+	visibility:visible;
+}
+	

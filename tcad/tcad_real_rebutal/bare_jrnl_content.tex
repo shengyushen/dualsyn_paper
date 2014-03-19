@@ -1,0 +1,2676 @@
+
+%% bare_jrnl.tex
+%% V1.3
+%% 2007/01/11
+%% by Michael Shell
+%% see http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.7 or later) with an IEEE journal paper.
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/
+%% and
+%% http://www.ieee.org/
+
+
+
+% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
+% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
+% *** with production work. IEEE's font choices can trigger bugs that do  ***
+% *** not appear when using other class files.                            ***
+% The testflow support page is at:
+% http://www.michaelshell.org/tex/testflow/
+
+
+%%*************************************************************************
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE!
+%% User assumes all risk.
+%% In no event shall IEEE or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%%
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%
+%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
+%% distributed and modified. A copy of the LPPL, version 1.3, is included
+%% in the base LaTeX documentation of all distributions of LaTeX released
+%% 2003/12/01 or later.
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%
+%% File list of work: IEEEtran.cls, IEEEtran_HOWTO.pdf, bare_adv.tex,
+%%                    bare_conf.tex, bare_jrnl.tex, bare_jrnl_compsoc.tex
+%%*************************************************************************
+
+% Note that the a4paper option is mainly intended so that authors in
+% countries using A4 can easily print to A4 and see how their papers will
+% look in print - the typesetting of the document will not typically be
+% affected with changes in paper size (but the bottom and side margins will).
+% Use the testflow package mentioned above to verify correct handling of
+% both paper sizes by the user's LaTeX system.
+%
+% Also note that the "draftcls" or "draftclsnofoot", not "draft", option
+% should be used if it is desired that the figures are to be displayed in
+% draft mode.
+%
+\documentclass[journal]{IEEEtran}
+%
+% If IEEEtran.cls has not been installed into the LaTeX system files,
+% manually specify the path to it like:
+% \documentclass[journal]{../sty/IEEEtran}
+
+
+
+
+
+% Some very useful LaTeX packages include:
+% (uncomment the ones you want to load)
+
+
+% *** MISC UTILITY PACKAGES ***
+%
+%\usepackage{ifpdf}
+% Heiko Oberdiek's ifpdf.sty is very useful if you need conditional
+% compilation based on whether the output is pdf or dvi.
+% usage:
+% \ifpdf
+%   % pdf code
+% \else
+%   % dvi code
+% \fi
+% The latest version of ifpdf.sty can be obtained from:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/
+% Also, note that IEEEtran.cls V1.7 and later provides a builtin
+% \ifCLASSINFOpdf conditional that works the same way.
+% When switching from latex to pdflatex and vice-versa, the compiler may
+% have to be run twice to clear warning/error messages.
+
+
+
+
+
+
+% *** CITATION PACKAGES ***
+%
+\usepackage{cite}
+% cite.sty was written by Donald Arseneau
+% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
+% \cite{} output to follow that of IEEE. Loading the cite package will
+% result in citation numbers being automatically sorted and properly
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
+% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% \cite will automatically add leading space, if needed. Use cite.sty's
+% noadjust option (cite.sty V3.8 and later) if you want to turn this off.
+% cite.sty is already installed on most LaTeX systems. Be sure and use
+% version 4.0 (2003-05-27) and later if using hyperref.sty. cite.sty does
+% not currently provide for hyperlinked citations.
+% The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/cite/
+% The documentation is contained in the cite.sty file itself.
+
+
+
+
+
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+\ifCLASSINFOpdf
+   \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../pdf/}{../jpeg/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+   \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+% graphicx was written by David Carlisle and Sebastian Rahtz. It is
+% required if you want graphics, photos, etc. graphicx.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/graphics/
+% Another good source of documentation is "Using Imported Graphics in
+% LaTeX2e" by Keith Reckdahl which can be found as epslatex.ps or
+% epslatex.pdf at: http://www.ctan.org/tex-archive/info/
+%
+% latex, and pdflatex in dvi mode, support graphics in encapsulated
+% postscript (.eps) format. pdflatex in pdf mode supports graphics
+% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
+% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
+% not a bitmapped formats (.jpeg, .png). IEEE frowns on bitmapped formats
+% which can result in "jaggedy"/blurry rendering of lines and letters as
+% well as large increases in file sizes.
+%
+% You can find documentation about the pdfTeX application at:
+% http://www.tug.org/applications/pdftex
+
+
+
+
+
+% *** MATH PACKAGES ***
+%
+\usepackage[cmex10]{amsmath}
+\usepackage{amssymb}
+% A popular package from the American Mathematical Society that provides
+% many useful and powerful commands for dealing with mathematics. If using
+% it, be sure to load this package with the cmex10 option to ensure that
+% only type 1 fonts will utilized at all point sizes. Without this option,
+% it is possible that some math symbols, particularly those within
+% footnotes, will be rendered in bitmap form which will result in a
+% document that can not be IEEE Xplore compliant!
+%
+% Also, note that the amsmath package sets \interdisplaylinepenalty to 10000
+% thus preventing page breaks from occurring within multiline equations. Use:
+%\interdisplaylinepenalty=2500
+% after loading amsmath to restore such page breaks as IEEEtran.cls normally
+% does. amsmath.sty is already installed on most LaTeX systems. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/amslatex/math/
+
+
+
+
+
+% *** SPECIALIZED LIST PACKAGES ***
+%
+%\usepackage{algorithmic}
+% algorithmic.sty was written by Peter Williams and Rogerio Brito.
+% This package provides an algorithmic environment fo describing algorithms.
+% You can use the algorithmic environment in-text or within a figure
+% environment to provide for a floating algorithm. Do NOT use the algorithm
+% floating environment provided by algorithm.sty (by the same authors) or
+% algorithm2e.sty (by Christophe Fiorio) as IEEE does not use dedicated
+% algorithm float types and packages that provide these will not provide
+% correct IEEE style captions. The latest version and documentation of
+% algorithmic.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithms/
+% There is also a support site at:
+% http://algorithms.berlios.de/index.html
+% Also of interest may be the (relatively newer and more customizable)
+% algorithmicx.sty package by Szasz Janos:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithmicx/
+
+
+
+
+% *** ALIGNMENT PACKAGES ***
+%
+%\usepackage{array}
+% Frank Mittelbach's and David Carlisle's array.sty patches and improves
+% the standard LaTeX2e array and tabular environments to provide better
+% appearance and additional user controls. As the default LaTeX2e table
+% generation code is lacking to the point of almost being broken with
+% respect to the quality of the end results, all users are strongly
+% advised to use an enhanced (at the very least that provided by array.sty)
+% set of table tools. array.sty is already installed on most systems. The
+% latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/tools/
+
+
+%\usepackage{mdwmath}
+%\usepackage{mdwtab}
+% Also highly recommended is Mark Wooding's extremely powerful MDW tools,
+% especially mdwmath.sty and mdwtab.sty which are used to format equations
+% and tables, respectively. The MDWtools set is already installed on most
+% LaTeX systems. The lastest version and documentation is available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/mdwtools/
+
+
+% IEEEtran contains the IEEEeqnarray family of commands that can be used to
+% generate multiline equations as well as matrices, tables, etc., of high
+% quality.
+
+
+%\usepackage{eqparbox}
+% Also of notable interest is Scott Pakin's eqparbox package for creating
+% (automatically sized) equal width boxes - aka "natural width parboxes".
+% Available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/eqparbox/
+
+
+
+
+
+% *** SUBFIGURE PACKAGES ***
+%\usepackage[tight,footnotesize]{subfigure}
+% subfigure.sty was written by Steven Douglas Cochran. This package makes it
+% easy to put subfigures in your figures. e.g., "Figure 1a and 1b". For IEEE
+% work, it is a good idea to load it with the tight package option to reduce
+% the amount of white space around the subfigures. subfigure.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at:
+% http://www.ctan.org/tex-archive/obsolete/macros/latex/contrib/subfigure/
+% subfigure.sty has been superceeded by subfig.sty.
+
+
+
+%\usepackage[caption=false]{caption}
+%\usepackage[font=footnotesize]{subfig}
+% subfig.sty, also written by Steven Douglas Cochran, is the modern
+% replacement for subfigure.sty. However, subfig.sty requires and
+% automatically loads Axel Sommerfeldt's caption.sty which will override
+% IEEEtran.cls handling of captions and this will result in nonIEEE style
+% figure/table captions. To prevent this problem, be sure and preload
+% caption.sty with its "caption=false" package option. This is will preserve
+% IEEEtran.cls handing of captions. Version 1.3 (2005/06/28) and later
+% (recommended due to many improvements over 1.2) of subfig.sty supports
+% the caption=false option directly:
+%\usepackage[caption=false,font=footnotesize]{subfig}
+%
+% The latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/
+% The latest version and documentation of caption.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/caption/
+
+
+
+
+% *** FLOAT PACKAGES ***
+%
+%\usepackage{fixltx2e}
+% fixltx2e, the successor to the earlier fix2col.sty, was written by
+% Frank Mittelbach and David Carlisle. This package corrects a few problems
+% in the LaTeX2e kernel, the most notable of which is that in current
+% LaTeX2e releases, the ordering of single and double column floats is not
+% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
+% single column figure to be placed prior to an earlier double column
+% figure. The latest version and documentation can be found at:
+% http://www.ctan.org/tex-archive/macros/latex/base/
+
+
+
+%\usepackage{stfloats}
+% stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
+% the ability to do double column floats at the bottom of the page as well
+% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
+% LaTeX2e). It also provides a command:
+%\fnbelowfloat
+% to enable the placement of footnotes below bottom floats (the standard
+% LaTeX2e kernel puts them above bottom floats). This is an invasive package
+% which rewrites many portions of the LaTeX2e float routines. It may not work
+% with other packages that modify the LaTeX2e float routines. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/sttools/
+% Documentation is contained in the stfloats.sty comments as well as in the
+% presfull.pdf file. Do not use the stfloats baselinefloat ability as IEEE
+% does not allow \baselineskip to stretch. Authors submitting work to the
+% IEEE should note that IEEE rarely uses double column equations and
+% that authors should try to avoid such use. Do not be tempted to use the
+% cuted.sty or midfloat.sty packages (also by Sigitas Tolusis) as IEEE does
+% not format its papers in such ways.
+
+
+%\ifCLASSOPTIONcaptionsoff
+%  \usepackage[nomarkers]{endfloat}
+% \let\MYoriglatexcaption\caption
+% \renewcommand{\caption}[2][\relax]{\MYoriglatexcaption[#2]{#2}}
+%\fi
+% endfloat.sty was written by James Darrell McCauley and Jeff Goldberg.
+% This package may be useful when used in conjunction with IEEEtran.cls'
+% captionsoff option. Some IEEE journals/societies require that submissions
+% have lists of figures/tables at the end of the paper and that
+% figures/tables without any captions are placed on a page by themselves at
+% the end of the document. If needed, the draftcls IEEEtran class option or
+% \CLASSINPUTbaselinestretch interface can be used to increase the line
+% spacing as well. Be sure and use the nomarkers option of endfloat to
+% prevent endfloat from "marking" where the figures would have been placed
+% in the text. The two hack lines of code above are a slight modification of
+% that suggested by in the endfloat docs (section 8.3.1) to ensure that
+% the full captions always appear in the list of figures/tables - even if
+% the user used the short optional argument of \caption[]{}.
+% IEEE papers do not typically make use of \caption[]'s optional argument,
+% so this should not be an issue. A similar trick can be used to disable
+% captions of packages such as subfig.sty that lack options to turn off
+% the subcaptions:
+% For subfig.sty:
+% \let\MYorigsubfloat\subfloat
+% \renewcommand{\subfloat}[2][\relax]{\MYorigsubfloat[]{#2}}
+% For subfigure.sty:
+% \let\MYorigsubfigure\subfigure
+% \renewcommand{\subfigure}[2][\relax]{\MYorigsubfigure[]{#2}}
+% However, the above trick will not work if both optional arguments of
+% the \subfloat/subfig command are used. Furthermore, there needs to be a
+% description of each subfigure *somewhere* and endfloat does not add
+% subfigure captions to its list of figures. Thus, the best approach is to
+% avoid the use of subfigure captions (many IEEE journals avoid them anyway)
+% and instead reference/explain all the subfigures within the main caption.
+% The latest version of endfloat.sty and its documentation can obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/endfloat/
+%
+% The IEEEtran \ifCLASSOPTIONcaptionsoff conditional can also be used
+% later in the document, say, to conditionally put the References on a
+% page by themselves.
+
+
+
+
+
+% *** PDF, URL AND HYPERLINK PACKAGES ***
+%
+\usepackage{url}
+% url.sty was written by Donald Arseneau. It provides better support for
+% handling and breaking URLs. url.sty is already installed on most LaTeX
+% systems. The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/misc/
+% Read the url.sty source comments for usage information. Basically,
+% \url{my_url_here}.
+
+
+\usepackage[all]{xy}
+
+
+% *** Do not adjust lengths that control margins, column widths, etc. ***
+% *** Do not use packages that alter fonts (such as pslatex).         ***
+% There should be no need to do such things with IEEEtran.cls V1.6 and later.
+% (Unless specifically asked to do so by the journal or conference you plan
+% to submit to, of course. )
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+\makeatletter
+\newcommand{\rmnum}[1]{\romannumeral #1}
+\newcommand{\Rmnum}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+\newbox\bwk\edef\tempd#1pt{#1\string p\string t}\tempd\def\nbextr#1pt{#1}
+\def\npts#1{\expandafter\nbextr\the#1\space}
+\def\ttwplink#1#2{\special{ps:1 0 0 setrgbcolor}#2\special{ps:0 0 0 setrgbcolor}\setbox\bwk=\hbox{#2}\special{ps:( linkto #1)\space\npts{\wd\bwk} \npts{\dp\bwk} -\npts{\ht\bwk} true\space Cpos}}
+\begin{document}
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+\title{Synthesizing Complementary Circuits Automatically}
+%
+%
+% author names and IEEE memberships
+% note positions of commas and nonbreaking spaces ( ~ ) LaTeX will not break
+% a structure at a ~ so this keeps an author's name from being broken across
+% two lines.
+% use \thanks{} to gain access to the first footnote area
+% a separate \thanks must be used for each paragraph as LaTeX2e's \thanks
+% was not built to handle multiple paragraphs
+%
+
+%\author{Michael~Shell,~\IEEEmembership{Member,~IEEE,}
+%        John~Doe,~\IEEEmembership{Fellow,~OSA,}
+%        and~Jane~Doe,~\IEEEmembership{Life~Fellow,~IEEE}% <-this % stops a space
+%\thanks{M. Shell is with the Department
+%of Electrical and Computer Engineering, Georgia Institute of Technology, Atlanta,
+%GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this % stops a space
+%\thanks{J. Doe and J. Doe are with Anonymous University.}% <-this % stops a space
+%\thanks{Manuscript received April 19, 2005; revised January 11, 2007.}}
+\author{
+\IEEEauthorblockN{ShengYu Shen, JianMin Zhang, Ying Qin, and SiKun Li}\\
+\IEEEauthorblockA{School of Computer Science, National
+University of Defense Technology\\
+410073,ChangSha,China\\
+Email: \{syshen,jmzhang,qy123,skli\}@nudt.edu.cn}
+}
+% note the % following the last \IEEEmembership and also \thanks -
+% these prevent an unwanted space from occurring between the last author name
+% and the end of the author line. i.e., if you had this:
+%
+% \author{....lastname \thanks{...} \thanks{...} }
+%                     ^------------^------------^----Do not want these spaces!
+%
+% a space would be appended to the last name and could cause every name on that
+% line to be shifted left slightly. This is one of those "LaTeX things". For
+% instance, "\textbf{A} \textbf{B}" will typeset as "A B" not "AB". To get
+% "AB" then you have to do: "\textbf{A}\textbf{B}"
+% \thanks is no different in this regard, so shield the last } of each \thanks
+% that ends a line with a % and do not let a space in before the next \thanks.
+% Spaces after \IEEEmembership other than the last one are OK (and needed) as
+% you are supposed to have spaces between the names. For what it is worth,
+% this is a minor point as most people would not even notice if the said evil
+% space somehow managed to creep in.
+
+
+
+% The paper headers
+%\markboth{Journal of \LaTeX\ Class Files,~Vol.~6, No.~1, January~2007}%
+%{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for Journals}
+% The only time the second header will appear is for the odd numbered pages
+% after the title page when using the twoside option.
+%
+% *** Note that you probably will NOT want to include the author's ***
+% *** name in the headers of peer review papers.                   ***
+% You can use \ifCLASSOPTIONpeerreview for conditional compilation here if
+% you desire.
+
+
+
+
+% If you want to put a publisher's ID mark on the page you can do it like
+% this:
+%\IEEEpubid{0000--0000/00\$00.00~\copyright~2007 IEEE}
+% Remember, if you use this you must call \IEEEpubidadjcol in the second
+% column for its text to clear the IEEEpubid mark.
+
+
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+
+
+% make the title area
+\maketitle
+
+
+\begin{abstract}
+%\boldmath
+One of the most difficult jobs in designing communication and multimedia chips,
+is to design and verify complex complementary circuit pair $(E,E^{-1})$,
+in which circuit $E$ transforms information into a format that is suitable for transmission and storage,
+while $E$'s complementary circuit $E^{-1}$ recovers this information.
+
+In order to ease this job,
+we propose a novel two-step approach to synthesize complementary circuit $E^{-1}$ from $E$ fully automatically.
+First,
+we use a SAT solver to check whether the input sequence of $E$ can be uniquely determined by its output sequence.
+Second,
+we build the complementary circuit $E^{-1}$ by characterizing its boolean function,
+with an efficient all solution SAT solver
+based on discovering XOR gates and extracting unsatisfiable cores.
+
+To illustrate its usefulness and efficiency,
+we run our algorithm on several complex encoders from industrial projects,
+including PCIE and 10G ethernet,
+and successfully generate correct complementary circuits for them.
+\end{abstract}
+% IEEEtran.cls defaults to using nonbold math in the Abstract.
+% This preserves the distinction between vectors and scalars. However,
+% if the journal you are submitting to favors bold math in the abstract,
+% then you can use LaTeX's standard command \boldmath at the very start
+% of the abstract to achieve this. Many IEEE journals frown on math
+% in the abstract anyway.
+
+% Note that keywords are not normally used for peerreview papers.
+\begin{IEEEkeywords}
+Synthesis,Complementary Circuit,All solution SAT, Discovering XOR gates, Extracting unsatisfiable Core.
+\end{IEEEkeywords}
+
+
+
+
+
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+\newtheorem{algo}{Algorithm}
+\newtheorem{definition11}{Definition}
+\newtheorem{theorem}{Theorem}
+
+\section{Introduction}
+Communication and multimedia electronic applications are major driving forces of semiconductor industry.
+Many leading edge communication protocols and media formats,
+even still in non-standardized draft status,
+are implemented in chips and pushed to market,
+to maximize the chances of being accepted by consumers and becoming the de facto standards.
+Two such well known stories are the 802.11n wireless standard competition \cite{IEEE80211N},
+and the disk format war between HD and blue ray \cite{BRHDVD}.
+In such highly competitive markets,
+designing correct chip as fast as possible is the key to success.
+
+One of the most difficult jobs in designing communication and multimedia chips,
+is to design and verify complex complementary circuit pair $(E,E^{-1})$,
+in which circuit $E$ transforms information into a format that is suitable for transmission and storage,
+while $E$'s complementary circuit $E^{-1}$ recovers this information.
+Many factors significantly complicate the job of designing and verifying such circuit pairs.
+For example, deep pipeline to achieve high frequency,
+complex encoding mechanism to achieve reliability and compression ratio, and so on.
+
+In order to ease this job,
+we propose in this paper a novel approach to synthesize $E^{-1}$ from $E$ fully automatically in two steps.
+
+\begin{enumerate}
+  \item In the first step, we use a SAT solver to check that,
+        whether there exists a valuation for some parameters,
+        such that,
+	the input alphabet sequence of $E$ can be uniquely determined by its output alphabet sequence.
+	We call this \textbf{parameterized complementary condition}.
+	%We use a SAT solver to check this assumption and find out proper values for some parameters that make this assumption hold.
+  \item In the second step,
+        with the SAT instance and parameter values obtained in the first step,
+	we build the circuit $E^{-1}$ by characterizing its boolean function,
+with an efficient all solution SAT solver(abbreviated as \textbf{ALLSAT}) based on discovering XOR gates and extracting unsatisfiable cores.
+\end{enumerate}
+
+We implement our algorithm on zchaff \cite{CHAFF},
+and run it on several complex encoder circuits from industrial projects,
+including PCIE and 10G Ethernet.
+We can build complementary circuits for all of them within 1000 seconds.
+All these experimental result and related programs can be downloaded from \url{http://www.ssypub.org}.
+
+\textbf{The contribution of this paper is twofold}:
+1) We propose the first approach to decide if it's possible to recover input sequence of a circuit $E$ from its output sequence.
+2) We propose an efficient ALLSAT algorithm for XOR intensive circuits,
+to build complementary circuit $E^{-1}$ from the SAT instance of circuit $E$.
+
+\textbf{The remainder of this paper is organized as follows}.
+Section \ref{sec_pre} presents background material.
+Section \ref{sec_checkUA} presents how to check parameterized complementary condition,
+and how to find out proper values of its parameters.
+Section \ref{sec_buildF} presents how to characterize the boolean function of complementary circuit.
+Section \ref{sec_build} presents how to build the complementary circuit from its boolean function.
+Section \ref{sec_exp} presents experimental results.
+Section \ref{sec_relwork} presents related works.
+Section \ref{sec_con} concludes with a note on future work.
+
+%\section{Example}
+
+
+\section{Preliminaries}\label{sec_pre}
+
+\subsection{Basic Notation of Propositional Satisfiability Problem}
+For a boolean formula $F$ over variable set $V$,
+the \textbf{Propositional Satisfiability Problem}(abbreviated as \textbf{SAT}) is to find a \textbf{satisfying assignment} $A:V\to \{0,1\}$,
+such that $F$ can be evaluated to 1.
+
+If such a satisfying assignment exists, then $F$ is a \textbf{satisfiable formula},
+%This problem is NP-complete in general,
+%but some efficient SAT solver have been developed,
+%such as zchaff\cite{CHAFF} ,Berkmin\cite{BERKMIN} and MiniSAT\cite{EXTSAT}.
+otherwise it is an \textbf{unsatisfiable formula}.
+
+A computer program that decides the existence of such satisfying assignment is called \textbf{SAT solver}.
+%Some efficient SAT solver have been developed,
+Some famous SAT solvers are zchaff\cite{CHAFF} ,Berkmin\cite{BERKMIN} and MiniSAT\cite{EXTSAT}.
+
+Normally,
+SAT solver requires formula $F$ to be represented in \textbf{Conjunctive Normal Form(CNF)} or \textbf{And-Inverter Graph(AIG)} formats.
+In this paper we only discuss CNF format,
+in which a \textbf{formula} $F=\bigwedge_{cl\in CL}cl$ is a conjunction of its clauses set $CL$,
+and a \textbf{clause} $cl=\bigvee_{l\in Lit}l$ is a disjunction of its literals set $Lit$,
+and a \textbf{literal} is a variable $v$ or its negation $\neg v$.
+A formula in CNF format is also called \textbf{SAT instance}.
+
+For an assignment $A:U\to \{0,1\}$,if $U\subset V$, then $A$ is a \textbf{partial assignment},
+if $U\equiv V$, then $A$ is a \textbf{total assignment}.
+
+For an assignment $A:U\to \{0,1\}$,
+and $W\subset U$, $A|_W:W\to \{0,1\}$ is the \textbf{projection} of $A$ on $W$.
+Its definition is,
+\begin{displaymath}
+A|_W(v)=\left\{ \begin{array}{ll}
+A(v) & v\in W \\
+undefine & otherwise
+\end{array}
+\right.
+\end{displaymath}
+
+Intuitively, $A|_W$ is obtained from $A$ by removing all variables $v\notin W$.
+
+For an assignment $A:U\to \{0,1\}$, and $u\notin U$, and $b\in \{0,1\}$, $A|^{u\to b}$ is the \textbf{extension} of $A$ on $u$,
+its definition is:
+\begin{displaymath}
+A|^{u\to b}(v) = \left\{ \begin{array}{ll}
+A(v) & v\in U \\
+b & v\equiv u
+\end{array}
+\right.
+\end{displaymath}
+
+Intuitively, $A|^{u\to b}$ is obtained by inserting assignment of $u$ into $A$.
+
+%Formula $F$ can also be represented in \textbf{DNF} format,
+%in which formula $F=\bigvee _{cb\in CB}cb$ is a disjunction of its cubes set $CB$,
+%and \textbf{cube} $cb=\bigwedge_{l\in Lit}l$ is a conjunction of its literals set $Lit$.
+%A \textbf{cube} $cb$'s variable set is $V_{cb}=\{v|v\in Lit \textrm{ or }\neg v\in Lit\}$.
+%If $V_{cb}=V$, then cube $cb$ is called a \textbf{minterm}.
+
+%For formula $F$ in DNF format,
+%there is a bijection between the set of cubes and the set of satisfying assignments.
+%\begin{enumerate}
+%  \item For a cube $cb=\bigwedge _{v\in V_1} v \wedge \bigwedge _{v\in V_0}\neg v$,
+%        its corresponding satisfying assignment is
+%        $A_{cb}(v)=\left\{\begin{array}{lll}1 & & v\in V_1 \\ 0 & & v\in V_0\end{array}\right.$
+%  \item For a satisfying assignment $A$,
+%        its corresponding cube is $cb_A=\bigwedge _{A(v)\equiv 1}v\wedge\bigwedge _{A(v)\equiv 0}\neg v$.
+%\end{enumerate}
+
+For a satisfying assignment $A$ of formula $F$,
+its \textbf{blocking clause} is :
+
+\begin{equation}\label{BCLS}
+bcls_A=\bigvee _{A(v)\equiv 1}\neg v\vee \bigvee _{A(v)\equiv 0}v
+\end{equation}
+
+It is obvious that $A$ is not satisfying assignment of $F\wedge bcls_A$.
+So $bcls_A$ can be inserted into the SAT solver to prevent $A$ from becoming satisfying assignment again.
+
+An unsatisfiable formula often has many clause subsets that are also unsatisfiable,
+these subsets are called \textbf{unsatisfiable core}.
+Some unsatisfiable core extraction algorithms are proposed by Goldberg\cite{VERPROOF} and Zhang\cite{VALIDSAT}.
+
+%\subsection{SAT Algorithm}\label{subsec_SAT}
+%Algorithm 1 describe SAT algorithm based on conflict clause learning and non-chronological backtracking %\cite{GRASP,EffConflict}.
+%\begin{algo}
+%\textbf{SAT($F$)}
+%\begin{enumerate}
+%%\item $\boldsymbol{SAT}(F)$ \{
+%\item while(1) \{
+%\item \hspace{0.3cm} if(decide\_next\_branch())
+%\item \hspace{0.6cm} while(deduce() == CONFLICT) \{
+%\item \hspace{0.9cm} $blevel$ = analyze\_conflicts();
+%\item \hspace{0.9cm} if ($blevel < 0$) return UNSAT;
+%\item \hspace{0.9cm} else bactrack($blevel$);
+%\item \hspace{0.6cm} \}
+%\item \hspace{0.3cm} else return SAT;
+%\item \}
+%%\item \}
+%\end{enumerate}
+%\end{algo}
+%
+%This algorithm iteratively choose a value for a variable using the decide\_next\_branch() function.
+%
+%The task of the deduce() function is,
+%for every \textbf{unit clause} $c$,
+%in which only one literal $l$ is undefined and all the rest are false,
+%forces an assignment of true to the undefined literal $l$.
+%This assignment is called an \textbf{implication},
+%and $c$ is the \textbf{antecedent} of $l$.
+%
+%If deduce() result in a \textbf{conflicting clause},
+%in which all literal are false,
+%the analyze\_conflicts() function will analyze the reason for the conflict
+%and generate a \textbf{conflict clause}.
+%The conflict clause summarizes the combination of values that led to the conflict.
+%By inserting this conflict clause into clause database,
+%the SAT solver can prevents this combination from occurring again.
+%
+%A conflict clause is generated by a series of resolution steps:
+%\begin{definition11}\label{resolution}
+%\textbf{Resolution}: For clause $c=l_1\vee\dots\vee l_n$ and $c'=l'_1\vee\dots\vee l'_m$,
+%assume there are two indices $0\le i\le n$ and $0\le j\le m$,
+%such that $l_i\equiv \neg l'_j$,
+%then resolution of $c$ and $c'$ is :
+%\begin{displaymath}
+%resolve(c,c')=\{l_p|p\ne i\}\cup \{l'_p|p\ne j\}
+%\end{displaymath}
+%\end{definition11}
+%
+%Function analyze\_conflicts() described below will iteratively resolve the conflicting clause $c$,
+%with all antecedents of its literal,
+%to get the final conflict clause $c$.
+%\begin{algo}
+%\textbf{analyze\_conflicts()}
+%\begin{enumerate}
+%%\item $\boldsymbol{SAT}(F)$ \{
+%\item assume that $c$ is the conflicting clause
+%\item $resolve\_source=\{\}$
+%\item while (stop criterion has not met) \{
+%\item \hspace{0.6cm} assume that $lit$ is the last assigned literal in $c$,
+%%\item \hspace{0.3cm} $v=var(lit)$
+%\item \hspace{0.6cm} $ant=antecedent(lit)$
+%\item \hspace{0.6cm} $c=resolve(c,ant)$
+%\item \hspace{0.6cm} $resolve\_source=resolve\_source\cup \{ant\}$
+%\item \}
+%\item insert $c$ into SAT solver
+%\item return the backtrack level
+%%\item \}
+%\end{enumerate}
+%\end{algo}
+%
+%Normally $resolve\_source$ will be printed to an file on disk,
+%instead of being kept in memory,
+%because its size is very large.
+
+
+%\subsection{Unsatisfiable Core Extraction}\label{subsec_UNSAT}
+%Unsatisfiable instance often has many clause subsets that are also unsatisfiable,
+%these subsets are called \textbf{unsatisfiable core}.
+%Some unsatisfiable core extraction algorithms are proposed by researchers\cite{VERPROOF,VALIDSAT}.
+%
+%To save space,
+%we only present here the depth-first approach of \cite{VALIDSAT} used by us:
+%
+
+
+\subsection{All Solution SAT Solver}\label{subsec_ALLSAT}
+
+State-of-the-Art SAT solvers normally only find one total satisfying assignment.
+But many applications,
+such as two-level logic minimization\cite{SATLOGICMIN},
+need to enumerate all satisfying assignments.
+
+Such technologies that enumerate all satisfying assignments of a formula are called \textbf{all solution SAT(ALLSAT)}.
+It is obvious that we can enumerate all total satisfying assignments by repeatedly calling a SAT solver,
+and inserting blocking clause $bclk_A$ of satisfying assignment $A$ into SAT solver,
+until no more new satisfying assignments can be found.
+
+But for a formula with $n$ variables,
+there may be $2^n$ satisfying assignments to be enumerated.
+Thus, this approach is impractical for large $n$.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=3in]{minterm}
+\caption{Satisfying assignments for simple gates}
+\label{ORXOR}
+\end{figure}
+
+In order to reduce the number of satisfying assignments to be enumerated,
+we need \textbf{satisfying assignments minimization} technology to remove irrelevant variable's assignments from satisfying assignment $A$,
+such that $A$ can cover more total satisfying assignments.
+For example, for OR gate $z= a\vee b$ in figure \ref{ORXOR}a),
+its total satisfying assignments that can make $z\equiv 1$ are $\{a= 1, b= 0\}$,$\{a= 1, b= 1\}$ and $\{a= 0, b= 1\}$.
+They contain 6 assignments to individual variables.
+It's obvious that $\{a= 1, b= 0\}$ and $\{a= 1, b= 1\}$ can be merged into $\{a= 1\}$, in which $b$ is removed.
+$\{a= 1, b= 1\}$ and $\{a= 0, b= 1\}$ can also be merged into $\{b= 1\}$, in which $a$ is removed.
+These two newly-merged partial assignments contain only two assignments to individual variables,
+and are much more succinct than previous three total assignments.
+
+Formally,
+assume that $\boldsymbol{F}$ is a formula over boolean variable set $V$,
+$\boldsymbol{v}\in V$ is an object variable that should always be 1,
+$A$ is a satisfying assignment of $F\wedge v$,
+and $U\subseteq V$ is a variable set whose assignment we would like to minimize and enumerate.
+We can test whether $u\in U$ is irrelevant to forcing $v$ to be 1,
+by testing unsatisfiability of $F\wedge \neg v\wedge A|_{U-\{u\}}$.
+If $F\wedge \neg v\wedge A|_{U-\{u\}}$ is unsatisfiable,
+then $A|_{U-\{u\}}$ can't make $v$ to be 0,
+so $v$ must still be 1.
+Thus,
+by removing $u$ from $A$,
+we can merge $A$ and $A|_{U-\{u\}}|^{u\to \neg A(u)}$,
+and obtain a succinct satisfying assignment $A|_{U-\{u\}}$.
+
+All existing ALLSAT approaches \cite{PRIMECLAUSE,SATUNBMC,MINASS,EFFCON,MINCEX,MEMEFFALLSAT,REPARAM,EFFSATUSMCCO}
+share this idea of satisfying assignments minimization.
+%To save space,
+We will only present here one of them, BFL(brutal force lifting) algorithm \cite{MINASS}:
+
+\vspace{0.2cm}
+
+\begin{algo}
+\textbf{$\boldsymbol{ALLSAT}$ based on $\boldsymbol{BFL}$ Algorithm}
+\begin{enumerate}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\item $\boldsymbol{ALLSAT}(F,v,U)$ \{
+\item \hspace{0.3cm} $SA_v=\{\}$
+\item \hspace{0.3cm} while($F\wedge v$ has a satisfying assignment $A$) \{
+\item \hspace{0.6cm} $A= \boldsymbol{BFL}(F,v,U,A)$
+\item \hspace{0.6cm} $SA_v= SA_v\cup \{A\}$
+\item \hspace{0.6cm} $F= F\wedge bcls_A$
+\item \hspace{0.3cm} \}
+\item \hspace{0.3cm} return $SA_v$
+\item \}
+\item $\boldsymbol{BFL}(F,v,U,A)$ \{
+\item \hspace{0.3cm} foreach $u\in U$
+\item \hspace{0.6cm}  if($F\wedge \neg v\wedge A|_{U -\{u\}}$ \textbf{is unsatisfiable})
+\item \hspace{0.9cm}     $A= A|_{U -\{u\}}$
+%\item \hspace{0.9cm}     $U= U -\{u\}$
+%\item \hspace{0.6cm} \}
+%\item \hspace{0.3cm} \}
+\item \hspace{0.3cm} return $A$
+\item \}
+\end{enumerate}
+\end{algo}
+
+\vspace{0.2cm}
+
+Line 12 will test that if removing $u$ from $A$ can still make $v$ to always take on value 1.
+If yes, then $u$ will be removed from both $A$ and $V$.
+In this way, $A$ will become a partial assignment that covers more total assignments.
+
+On the other hand,
+for XOR gate $z= a \oplus b$ in figure \ref{ORXOR}b),
+its total satisfying assignments that can make $z\equiv 1$ are $\{a= 1, b= 0\}$ and $\{a= 0, b= 1\}$,
+they can't be merged.
+Unfortunately, XOR gates are widely used in almost all communication circuits,
+including but not limited to scrambler and descrambler,
+CRC generator and checker,
+pseudo random test pattern generator and checker.
+
+An extreme example is a $n$-bits comparator that compares two $n$-bits variables.
+There are $2^n$ total satisfying assignments for this comparator,
+none of them can be merged with each other.
+
+Thus, enumerating satisfying assignments for XOR intensive circuits is a major difficulty of state-of-the-art ALLSAT approaches,
+we will solve this problem in section \ref{sec_buildF}.
+
+%\begin{figure}[tb]
+%  \centering
+%  \leavevmode
+%  \epsfig{file=minterm.eps}
+%\caption{Satisfying assignments for simple gates}
+%  \label{ORXOR}
+%\end{figure}
+
+
+\subsection{Checking Reachability with Bounded Model Checking}
+
+Description of our algorithm will largely follow that of \textbf{bounded model checking (BMC)} \cite{SMCSAT},
+so we present here briefly how to check reachability in BMC.
+
+%\newdef{definition11}{Definition}\label{KripkeStructure}
+\vspace{0.2cm}
+
+\begin{definition11}\label{KripkeStructure}
+\textbf{Kripke structure} is a 5-tuple $M=(S,I,T,A,L)$, with a finite set of states $S$,
+the set of initial states $I\subseteq S$,
+transition relation between states $T_{��}\subseteq S\times S$,
+and the labeling of the states $L:S\rightarrow 2^{A}$ with atomic propositions set $A$.
+\end{definition11}
+
+\vspace{0.2cm}
+
+BMC is a model checking technology that consider only limited length path.
+We call this length as the bound of path.
+We denote the $i$-th and $i+1$-th state as $s_i$ and $s_{i+1}$,
+and transition relation between them as $T(s_i,s_{i+1})$.
+
+To save space,
+we only present here how to check reachability in BMC,
+more details can be found in \cite{SMCSAT}.
+Let the safety property under verification be $ASSERT$,
+the goal of BMC is to find a state that violates $ASSERT$.
+Then BMC problem with bound $b$ can be expressed as:
+
+\begin{equation}\label{bmc}
+I(s_0)\wedge \bigwedge_{i=1}^{b-1} T(s_i,s_{i+1})\wedge \bigvee_{i=1}^{b}\neg ASSERT(s_i)
+\end{equation}
+
+Reduce formula (\ref{bmc}) into CNF format,
+and solve it with a SAT solver,
+then a counterexample of length $b$ can be found if it exist.
+
+\section{Checking Parameterized Complementary Condition}\label{sec_checkUA}
+
+In this section,
+we will introduce how to check whether the input sequence of circuit $E$ can be recovered from its output sequence.
+
+\subsection{Parameterized Complementary Condition}
+
+Our algorithm cares about the input and output sequence of circuit $E$,
+so \textbf{Mealy finite state machine}\cite{MEALY} is a more suitable model for us than the Kripke structure.
+
+\vspace{0.2cm}
+
+\begin{definition11}\label{MealyFSM}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\textbf{Mealy finite state machine} is a 6-tuple $M=(S,s_0,I,O,T,G)$,consisting of the following
+\begin{enumerate}
+\item A finite set of state $S$
+\item An initial state $s_0\in S$
+\item A finite set of input alphabets $I$
+\item A finite set of output alphabets $O$
+\item A state transition function $T: S\times I\to S$
+\item An output function $G:S\times I\to O$
+\end{enumerate}
+%}
+\end{definition11}
+
+\vspace{0.2cm}
+
+%\begin{figure*}[tb]
+%  \centering
+%  \leavevmode
+%  \epsfig{file=mealy.eps}
+%\caption{Unfolding Transition Function of Mealy Finite State Machine}
+%  \label{mealyfsm_unfolding}
+%\end{figure*}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=3.5in]{mealy}
+\caption{Unfolding Transition Function of Mealy Finite State Machine}
+\label{mealyfsm_unfolding}
+\end{figure}
+
+The circuit $E$ can be modeled by such a Mealy finite state machine.
+%as shown in figure \ref{mealyfsm_unfolding}a).
+The relationship between its output sequence $o\in O^{\omega}$ and input sequence $i\in I^{\omega}$ is shown in figure \ref{mealyfsm_unfolding}.
+This relationship can be built by unfolding the transition function $T$ and output function $G$ $d$ times,
+as shown in formula (\ref{unfolding}).
+
+\begin{equation}\label{unfolding}
+F_{E}= \bigwedge_{m=n}^{n+d-1} \Big\{ s_{m+1}\equiv T(s_m,i_m) \wedge  o_m\equiv G(s_m,i_m) \Big\}
+\end{equation}
+
+In order to recover $i\in I^{\omega}$ from $o\in O^{\omega}$,
+we must know how to compute $i_n$ for every $n$,
+that is, to find a function $f^{-1}$ that can compute $i_n$ from $o\in O^{\omega}$.
+
+But due to the limited memory of realistic computers,
+we can't take the infinite length sequence $o\in O^{\omega}$ as input to $f^{-1}$,
+we can only use a finite length sub-sequence of $o$.
+This sub-sequence has two parameters,
+its length $l$ and its delay $d$ compared to $i_n$, as shown in figure \ref{dl}.
+
+Thus,
+$f^{-1}:O^l\to I$ should be a boolean function that takes the finite length sequence $<o_{n+d-l},\dots , o_{n+d-1} >$ as input,
+and computes $i_n$.
+
+For a particular pair of $d$ and $l$,
+$f^{-1}$ exists if the following condition holds:
+
+\vspace{0.2cm}
+
+\begin{definition11}\label{UniquenessAssumption}
+\textbf{Parameterized Complementary Condition}:For any valuation of the sequence $<o_{n+d-l},\dots , o_{n+d-1} >$,
+there exists no more than one valuation of $i_n$,
+that can make formula (\ref{unfolding}) satisfiable.
+\end{definition11}
+
+\vspace{0.2cm}
+%\begin{figure}[htbp]
+%  \centering
+%  \leavevmode
+%  \epsfig{file=dl.eps}
+%\caption{$f^{-1}$ and its Parameters}
+%  \label{dl}
+%\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=3in]{dl}
+\caption{$f^{-1}$ and Parameters of $o$'s Finite Length Subsequence }
+\label{dl}
+\end{figure}
+To test whether there exists another $i_n$ that can make formula (\ref{unfolding}) satisfiable,
+we need to unfold function $T$ and $G$ another time:
+\begin{equation}\label{unfolding_again}
+F'_{E}= \bigwedge_{m=n}^{n+d-1} \Big\{ s'_{m+1}\equiv T(s'_m,i'_m) \wedge  o'_m\equiv G(s'_m,i'_m) \Big\}
+\end{equation}
+
+Obviously,
+equation (\ref{unfolding_again}) is just another copy of (\ref{unfolding}),
+except that its variables are all renamed by appending a prime.
+
+Assume that $I_{var}$ and $O_{var}$ are respectively boolean variable sets that represent $i_n$ and $<o_{n+d-l},\dots , o_{n+d-1} >$,
+then parameterized complementary condition holds if and only if the following formula (\ref{checkUA}) is unsatisfiable.
+%\begin{figure}[htbp]
+%  \centering
+%  \leavevmode
+%  \epsfig{file=dl.eps}
+%\caption{$f^{-1}$ and its Parameters}
+%  \label{dl}
+%\end{figure}
+\begin{equation}\label{checkUA}
+\begin{array}{c}
+%\bigwedge_{m=n}^{n+d-1} \Big\{ s_{m+1}\equiv T(s_m,i_m)\wedge o_m\equiv G(s_m,i_m) \Big\} \wedge \\
+%\bigwedge_{m=n}^{n+d-1} \Big\{ s'_{m+1}\equiv T(s'_m,i'_m)\wedge o'_m\equiv G(s'_m,i'_m) \Big\} \wedge \\
+F_E \wedge F'_E\wedge \\
+\bigwedge_{u\in O_{var}} u\equiv u'\wedge \\
+\bigvee_{v\in I_{var}} v\ne v'
+\end{array}
+\end{equation}
+
+In formula (\ref{checkUA}),
+the first line contains two unfolding of circuit $E$.
+The second line constrains their output sequences $<o_{n+d-l},\dots , o_{n+d-1} >$ and $<o'_{n+d-l},\dots , o'_{n+d-1} >$ to be the same,
+and the third line constrains that their input alphabet $i_n$ and $i'_n$ are different.
+
+For a particular pair of $d$ and $l$ , checking formula (\ref{checkUA}) may return two results:
+\begin{enumerate}
+\item \textbf{Satisfiable}. In this situation,
+      for a $<o_{n+d-l},\dots , o_{n+d-1} >$,
+      there exist two different $i_n$ and $i'_n$ that can both make formula (\ref{unfolding}) satisfiable.
+      %This violates definition \ref{UniquenessAssumption},
+      So no $f^{-1}$ exists for this pair of $d$ and $l$.
+      We should continue searching for larger $d$ and $l$.
+\item \textbf{Unsatisfiable}. In this situation,
+      %parameterized complementary condition is satisfied,
+      a $f^{-1}$ exists for this pair of $d$ and $l$.
+      We will characterize $f^{-1}$ with formula (\ref{unfolding}) in \textbf{algorithm 2} of section \ref{sec_buildF}.
+\end{enumerate}
+
+
+\subsection{Ruling out Invalid Input Alphabets with Assertion}\label{subsec_AST}
+
+Most communication protocols and systems have some restrictions on valid pattern of input alphabet.
+Assume that this restriction is expressed as an assertion predicate $R: I\to \{0,1\}$,
+in which $R(i_{n})\equiv 0$ means that $i_n$ is an invalid input alphabet.
+%More formally, assume the set of input boolean variables is $I_{var}$,
+%then $I\subset 2^{I_{var}}$.
+Invalid input alphabets will be mapped to some predefined error output alphabet,
+that is,
+for $i_n$,$i'_n\in \{i_m|R(i_m)\equiv 0\}$,
+they will both be mapped to the same error output alphabet $e\in O$.
+This will prevent our approach from distinguishing $i_n$ from $i'_n$.
+
+Such restrictions are often documented clearly in specification of communication protocols,
+%and can be found out easily.
+so we choose to employ an assertion based mechanism,
+such that the user can code these restrictions $R$ into their script or source code.
+
+Thus, formula (\ref{unfolding}),(\ref{unfolding_again}) and (\ref{checkUA}) should be rewritten as following formula (\ref{unfolding_ast}), (\ref{unfolding_again_ast}) and (\ref{checkUA_ast}),
+in which bold formulas are used to account for predicate $R$.
+
+\begin{equation}\label{unfolding_ast}
+\begin{split}
+\boldsymbol{F_E} &= \\
+&
+\bigwedge_{m=n}^{n+d-1}
+\Big\{
+s_{m+1}\equiv T(s_m,i_m) \wedge
+o_m\equiv G(s_m,i_m) \wedge
+\boldsymbol{R (i_m)}
+\Big\}
+\end{split}
+\end{equation}
+
+\begin{equation}\label{unfolding_again_ast}
+\begin{split}
+\boldsymbol{F'_E} &= \\
+&
+\bigwedge_{m=n}^{n+d-1}
+\Big\{
+s'_{m+1}\equiv T(s'_m,i'_m) \wedge
+o'_m\equiv G(s'_m,i'_m) \wedge
+\boldsymbol{R (i'_m)}
+\Big\}
+\end{split}
+\end{equation}
+
+\begin{equation}\label{checkUA_ast}
+\begin{array}{c}
+F_E\wedge F'_E \wedge \\
+\bigwedge_{u\in O_{var}} u\equiv u'\wedge \\
+\bigvee_{v\in I_{var}} v\ne v'
+\end{array}
+\end{equation}
+
+\subsection{Approximating Reachable State Set}\label{subsec_Prfx}
+In last subsection, we have constrained the valid pattern of $i_m$.
+But the $s_n$ in figure \ref{mealyfsm_unfolding} still hasn't been constrained yet.
+It may be outside of reachable state set of circuit $E$.
+This may make checking parameterized complementary condition fail unnecessary.
+
+We can solve this problem by computing reachable state set $RS$ as in formula (\ref{rse}),
+and constrain that $s_n\in RS$:
+%Assume that circuit $E$ can be modeled by Mealy state machine $M_E=(S,s_0,I,O,T,G)$.
+%Its reachable state set with assertion predicate $R$ is:
+
+\begin{equation}\label{rse_p_forward}
+\begin{split}
+RS^{s_0\to p} & =  \Big\{s| \\
+& s\equiv s_p\wedge \bigwedge_{m=0}^{p-1}\big\{
+s_{m+1}\equiv T(s_m,i_m)\wedge R(i_m)
+\big\}\Big\}
+\end{split}
+\end{equation}
+
+\vspace{0.2cm}
+
+\begin{equation}\label{rse}
+RS =\bigcup_{p>0} RS^{s_0\to p}
+\end{equation}
+%
+%Thus, to rule out unreachable $s_n$,
+%we need to rewrite formula (\ref{unfolding_ast}) and (\ref{checkUA_ast})
+%into formula (\ref{unfolding_ast_rs}) and (\ref{checkUA_ast_rs}) below:
+%
+%
+%\begin{equation}\label{unfolding_ast_rs}
+%\begin{array}{c}
+%s_n\in RS \wedge \\
+%\bigwedge_{\boldsymbol{m=n}}^{n+d-1}
+%\Big\{
+%s_{m+1}\equiv T(s_m,i_m) \wedge
+%o_m\equiv G(s_m,i_m) \wedge
+%R (i_m)
+%\Big\}
+%\end{array}
+%\end{equation}
+%
+%\begin{equation}\label{checkUA_ast_rs}
+%\begin{array}{c}
+%s_n\in RS \wedge s'_n\in RS \wedge \\
+%\bigwedge_{\boldsymbol{m=n}}^{n+d-1} \Big\{ s_{m+1}\equiv T(s_m,i_m) \wedge o_m\equiv G(s_m,i_m) \wedge R (i_m) \Big\} \wedge \\
+%\bigwedge_{\boldsymbol{m=n}}^{n+d-1} \Big\{ s'_{m+1}\equiv T(s'_m,i'_m) \wedge o'_m\equiv G(s'_m,i'_m) \wedge R (i'_m) \Big\} \wedge \\
+%\bigwedge_{m=n+d-l}^{n+d-1} o_m\equiv o'_m \wedge \\
+%i_n\ne i'_n
+%\end{array}
+%\end{equation}
+%
+%%But computing reachable state set $RS$ for large scale circuit $E$ is a very expensive operation that we can't afford.
+%
+%Now we have two extreme cases:
+%\begin{enumerate}
+%\item One extreme case is formula (\ref{unfolding_ast}) and (\ref{checkUA_ast}) with low computation complexity,
+%      but high risk of unnecessary fail in checking parameterized complementary condition.
+%\item The other extreme case is formula (\ref{unfolding_ast_rs}) and (\ref{checkUA_ast_rs}),
+%      which are not affected by unreachable state set,
+%      but with very high computation complexity in computing reachable state set $RS$.
+%\end{enumerate}
+$RS^{s_0\to p}$ in formula (\ref{rse_p_forward}) is the set of states that can be reached from initial state $s_0$ with exact $p$ steps.
+
+%So we need to find a tradeoff between these two extreme cases.
+%That should be a method with both acceptable computation complexity and
+%low risk of unnecessary fail in checking parameterized complementary condition.
+
+Computing $RS$ is very expensive.
+In order to avoid computing $RS$,
+we want to approximate $RS$ with:
+
+\begin{equation}\label{apprse}
+\begin{split}
+RS^{S\to p} & =  \Big\{s| \\
+& s\equiv s_n\wedge \bigwedge_{m=n-p}^{n-1}\big\{
+s_{m+1}\equiv T(s_m,i_m)\wedge R(i_m)
+\big\}\Big\}
+\end{split}
+\end{equation}
+
+$RS^{S\to p}$ is the set of states that can be reached within $p$ steps from \textbf{any state} in $S$.
+It is obvious that all $RS^{S\to p}$ form a total order relation :
+\begin{displaymath}
+RS^{S\to p}\subseteq\dots \subseteq RS^{S\to q}\subseteq\dots \textrm{  where } p>q
+\end{displaymath}
+%
+%\begin{figure}[t]
+%\centering
+%\begin{displaymath}
+%\xymatrix{ A \ar[r] & B \ar[d] \\
+%D \ar[u] & C \ar[l] }
+%\end{displaymath}
+%\caption{Counter}
+%\label{rmxor}
+%\end{figure}
+
+
+But unfortunately,
+$RS$ is not subset of any $RS^{S\to p}$,
+because there may exist some state $s\in RS$,
+that when starting from initial state $s_0$,
+can only be reached within $p$ steps,
+and can't be reached with more than $p$ steps.
+For example,
+a counter shown below that counts from 0 to 4,
+and then stay at 4 forever.
+\begin{displaymath}
+\begin{array}{cc}
+&\curvearrowleft \\
+0\to 1\to 2\to 3\to & \underbrace{4}_{RS^{S\to 4}}
+\end{array}
+\end{displaymath}
+
+
+In this case,
+number 0 to 3 is not in $RS^{S\to p}$,
+for $p>3$.
+
+Thus,
+we can't approximate $RS$ with $RS^{S\to p}$.
+
+On the other hand,
+because circuit $E$ and $E^{-1}$ run in a never ending way,
+we can safely assume that there are always a prefix state transition sequence with enough length before the current state.
+Thus,
+for any particular $p$,
+we only need to consider $\bigcup_{q>p}RS^{s_0\to q}$ instead of $RS$.
+Obviously,
+$\bigcup_{q>p}RS^{s_0\to q}$ is a subset of $RS^{S\to p}$.
+Thus,
+we can use $RS^{S\to p}$ as an over approximation of $\bigcup_{q>p}RS^{s_0\to q}$.
+
+In order to account for $s_n\in RS^{S\to p}$,
+we prepend $\bigwedge_{m=n-p}^{n-1}\big\{s_{m+1}\equiv T(s_m,i_m)\wedge R(i_m)\big\}$ to formula (\ref{unfolding_ast}),(\ref{unfolding_again_ast}) and (\ref{checkUA_ast}),
+and obtain formula (\ref{unfolding_ast_p}), (\ref{unfolding_again_ast_p}) and (\ref{checkUA_ast_p}).
+So now, in addition to parameters $d$ and $l$,
+we have the third parameter $p$ to be searched.
+
+\begin{equation}\label{unfolding_ast_p}
+\begin{split}
+\boldsymbol{F_E} &= \\
+&
+\bigwedge_{\boldsymbol{m=n-p}}^{n+d-1}
+\Big\{
+s_{m+1}\equiv T(s_m,i_m) \wedge
+o_m\equiv G(s_m,i_m) \wedge
+R (i_m)
+\Big\}
+\end{split}
+\end{equation}
+
+\begin{equation}\label{unfolding_again_ast_p}
+\begin{split}
+\boldsymbol{F'_E} &= \\
+&
+\bigwedge_{\boldsymbol{m=n-p}}^{n+d-1}
+\Big\{
+s'_{m+1}\equiv T(s'_m,i'_m) \wedge
+o'_m\equiv G(s'_m,i'_m) \wedge
+R (i'_m)
+\Big\}
+\end{split}
+\end{equation}
+
+\begin{equation}\label{checkUA_ast_p}
+\begin{array}{c}
+F_E\wedge F'_E \wedge \\
+\bigwedge_{u\in O_{var}} u\equiv u'\wedge \\
+\bigvee_{v\in I_{var}} v\ne v'
+\end{array}
+\end{equation}
+
+\textbf{Now put it altogether},
+with formula (\ref{unfolding_ast_p}), (\ref{unfolding_again_ast_p}) and (\ref{checkUA_ast_p}),
+we iterate through all valuations of $d$, $l$ and $p$,
+from smaller one to larger one,
+until we find one valuation of $d$,$l$ and $p$ that makes formula (\ref{checkUA_ast_p}) unsatisfiable.
+Then $F_E$ in formula (\ref{unfolding_ast_p}) will be used in section \ref{sec_buildF} and \ref{sec_build} to build complementary circuit $E^{-1}$.
+
+\section{Characterizing $f^{-1}$ with ALLSAT Algorithm Designed for XOR Intensive Circuits}\label{sec_buildF}
+
+If we find a proper values for parameters $d$,$l$ and $p$ in section \ref{sec_checkUA},
+we can now characterize the boolean function $f^{-1}:O_{var}\to I$ in this section.
+
+\subsection{Partitioning $f^{-1}$}
+
+According to section \ref{subsec_Prfx},
+The complementary function $f^{-1}:O^l\to I$ is the function that takes $<o_{n+d-l},\dots , o_{n+d-1} >$,
+and computes $i_n$ .
+It can be characterized from SAT instance of formula (\ref{unfolding_ast_p})
+by enumerating satisfying assignments of $<o_{n+d-l},\dots , o_{n+d-1} >$ and $i_n$.
+
+Assume that $i_n$ is represented by boolean variable set $I_{var}$,
+and $<o_{n+d-l},\dots , o_{n+d-1} >$ is represented by boolean variable set $O_{var}$.
+
+Then,
+$f^{-1}$ in boolean domain is $f^{-1}:\{0,1\}^{O_{var}}\to \{0,1\}^{I_{var}}$,
+and can be defined as:
+
+\begin{equation}
+f^{-1}= \prod _{v\in I_{var}} f_v^{-1}
+\end{equation}
+
+Thus,
+characterizing $f^{-1}$ can be partitioned into multiple tasks,
+each task characterizes a boolean function $f^{-1}_v: \{0,1\}^{O_{var}}\to \{0,1\}$ for a $v\in I_{var}$.
+The function $f^{-1}_v$ will compute the value of $v$.
+
+\subsection{Algorithm Framework for Characterizing $f^{-1}_v$}
+%Assume that the set of all total satisfying assignments of formula (\ref{unfolding_ast_p}) is $\{A_1,\dots ,A_t\}$,
+%then $f^{-1}$ can be defined as:
+%
+%\begin{displaymath}
+%\begin{split}
+%f^{-1} & (<o_{n+d-l},\dots , o_{n+d-1} >) = \\
+%&
+%\left\{ \begin{array}{llll}
+%A_1(i_n) & & if & \bigwedge_{m=n+d-l}^{n+d-1}o_m\equiv A_1(o_m) \\
+%& \dots & & \\
+%A_t(i_n) & & if & \bigwedge_{m=n+d-l}^{n+d-1}o_m\equiv A_t(o_m)
+%\end{array}
+%\right.
+%\end{split}
+%\end{displaymath}
+Assume that $SA_v=\{A_1,\dots,A_m\}$ is the set of satisfying assignments of $F_E\wedge v$,
+that is,
+the set of satisfying assignments that forces $v$ to be 1.
+Then $f^{-1}_v$ can be defined as :
+
+\begin{equation}\label{fneg1v}
+f^{-1}_v(x) = \left\{ \begin{array}{lll}
+1 & & x\equiv A_1(x) \\
+  & \dots &  \\
+1 & & x\equiv A_m(x) \\
+0 & & otherwise
+\end{array}
+\right.
+\end{equation}
+
+But this naive approach suffers from the state space explosion problem.
+For $O_{var}$ that contains $m$ boolean variables,
+there may be $2^m$ satisfying assignments,
+which make it impossible to characterize $f^{-1}_v$ for large $m$.
+
+There exists  some much more efficient approaches
+to enumerate satisfying assignments of SAT instance
+\cite{PRIMECLAUSE,SATUNBMC,MINASS,EFFCON,MINCEX,MEMEFFALLSAT,REPARAM,EFFSATUSMCCO}.
+%including one invented by us\cite{MINCEX}.
+According to subsection \ref{subsec_ALLSAT},
+they all try to merge satisfying assignments in $SA_v$ by removing irrelevant variables from each $A\in SA_v$,
+such that the size of $SA_v$ can be reduced.
+
+But they are still not efficient enough for our application.
+The essential reasons that lead to this inefficiency,
+and our improvements are:
+\begin{enumerate}
+\item XOR gates are used intensively in communication and arithmetic circuits.
+As explained in subsection \ref{subsec_ALLSAT},
+satisfying assignments of XOR can't be merged by existing approaches.
+We solve this problem by discovering XOR gates within $F_E\wedge v$ with $\boldsymbol{XORMIN}$ function.
+\item There are lots of redundant clauses in $F_E$.
+The function $\boldsymbol{SIMPLIFY}$ simplify $F_E$ to $F_E^v$ before passing it to main body of $ALLSAT$ and being used repeatedly,
+by removing these redundant clauses with unsatisfiable core extraction.
+\item The function $BFL$ in algorithm 1 can remove at most 1 irrelevant variables within each SAT solving. Its improved version $\boldsymbol{BFL\_UNSAT}$ will remove multiple irrelevant variables with every SAT solving. Thus, the number of unnecessary and expensive SAT solving is significantly reduced.
+\end{enumerate}
+
+Our new algorithm to characterize $f^{-1}_v$ is presented below.
+Its structure is very similar to the function $\boldsymbol{ALLSAT}$ in algorithm 1,
+with our improvements in boldface.
+
+\vspace{0.2cm}
+
+\begin{algo}\label{buildfdec_frm}
+\textbf{Characterizing $f^{-1}$}
+\begin{enumerate}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+%\item assume that $\boldsymbol{I_{var}}$ and $\boldsymbol{O_{var}}$ are respectively boolean variable sets that represent $i_n$ and $<o_{n+d-l},\dots , o_{n+d-1} >$.
+%      and $\boldsymbol{F_E}$ is defined in  formula (\ref{unfolding_ast_p})
+%\item $G_{XOR}= \{\}$
+%\item foreach $v\in I_{var}$ \{
+\item \hspace{0.3cm} $\boldsymbol{F_E^v= SIMPLIFY(F_E,v)}$
+\item \hspace{0.3cm} $SA_v= \{\}$
+\item \hspace{0.3cm} while ( $F_E^v\wedge v\equiv 1$ is satisfiable) \{
+\item \hspace{0.6cm} Assume $A$ is a satisfying assignment
+\item \hspace{0.6cm} $\boldsymbol{A_{BFL}= BFL\_UNSAT(F_E^v,A,v)}$
+%\item \hspace{0.6cm} $\boldsymbol{\{A_{XOR},G\}= XORMIN(F_E^v, A_{BFL},v)}$
+\item \hspace{0.6cm} $\boldsymbol{A_{XOR}= XORMIN(F_E^v, A_{BFL},v)}$
+\item \hspace{0.6cm} $SA_v= SA_v \cup \{ A_{XOR} \}$
+%\item \hspace{0.6cm} $G_{XOR}= G_{XOR}\cup G$
+\item \hspace{0.6cm} $F_E^v= F_E^v\wedge bcls_{A_{XOR}}$
+%\item \hspace{0.6cm} $F_E^v= F_E^v\wedge \bigwedge _{(x_1= v_1\oplus v_2)\in G}\{x_1\equiv v_1\oplus v_2\}$
+\item \hspace{0.3cm} \}
+\item \hspace{0.3cm} Characterizing $f^{-1}_v$ as formula (\ref{fneg1v})
+%\item \}
+%\item $f^{-1}= \prod _{v\in I_{var}} f_v^{-1}$
+%}
+\end{enumerate}
+\end{algo}
+
+\vspace{0.2cm}
+
+%In line 2, $G_{XOR}$ is a set of XOR gates discovered by XORMIN in line 8.
+%They will help to speedup the process of enumerating satisfying assignments of $F_E\wedge v\equiv 1$ in line 5.
+%More detail will be given in subsection \ref{subsec_XOR}.
+%
+%Line 3 will iterate through all input boolean variables $v\in I_{var}$,
+%and characterize a function $f^{-1}_v$ for $v$ in \textbf{line 14},
+%$f^{-1}$ can be built from all such $f^{-1}_v$ in \textbf{line 16}.
+%The detail of characterizing $f^{-1}_v$ and $f^{-1}$ will be given in subsection \ref{build_F}.
+%
+%In line 4,
+%$SA_v$ is a set of satisfying assignments that can make $v\equiv 1$,
+%this set will be used in line 14 to characterize $f^{-1}_v$.
+%
+%In line 5,
+%we will iterate through all satisfying assignments $A$ of $F_E\wedge v\equiv 1$,
+%and minimize them in two steps.
+%\begin{enumerate}
+%\item \textbf{BFL} in line 7
+%is a modified BFL\cite{MINASS} that will be described in subsection \ref{subsec_BFL}.
+%\item \textbf{XORMIN} in line 8 will further minimize the result of BFL by discovering hidden XOR gates,
+%and return the minimized assignment $A_{XOR}$ and discovered XOR gate set $G$.
+%This is one of our major contributions,
+%and will be described in subsection \ref{subsec_XOR}.
+%\end{enumerate}
+%
+%In line 11,
+%we will rule out the enumerated satisfying assignment $A_{XOR}$ by adding its blocking clauses into $F_E$.
+%
+%In line 12,
+%we will add clauses into $F_E$ for newly discovered XOR.
+
+The details of function $SIMPLIFY$, $BFL\_UNSAT$ and $XORMIN$ are described in following subsections.
+
+\subsection{Simplifying Formula by Extracting Unsatisfiable Core}\label{subsec_sim}
+Intuitively,
+$F_E$ contains all clauses that are necessary to uniquely determine the value of all variables in $I_{var}$.
+But when characterizing $f_v^{-1}$ for a particular $v\in I_{var}$,
+we only need the set of clauses $F_E^v$ that are necessary to uniquely determine the value of $v$.
+This clause set $F_E^v$ must be a subset of $F_E$,
+and in most case,
+it is much smaller than $F_E$,
+as shown in experimental result.
+
+So we propose the function $\boldsymbol{SIMPLIFY(F_E,v)}$ to simplify $F_E$ to $F_E^v$ for every particular $v$:
+\begin{enumerate}
+\item In the first step,
+extracting unsatisfiable core $F_E^{UNSAT}$ from following formula (\ref{checkUA_v}) with depth first approach in Lintao Zhang et al.\cite{VALIDSAT}:
+\begin{equation}\label{checkUA_v}
+\begin{array}{c}
+%\bigwedge_{m=n}^{n+d-1} \Big\{ s_{m+1}\equiv T(s_m,i_m)\wedge o_m\equiv G(s_m,i_m) \Big\} \wedge \\
+%\bigwedge_{m=n}^{n+d-1} \Big\{ s'_{m+1}\equiv T(s'_m,i'_m)\wedge o'_m\equiv G(s'_m,i'_m) \Big\} \wedge \\
+F_E\wedge F'_E\wedge \\
+\bigwedge_{u\in O_{var}} u\equiv u'\wedge \\
+v\ne v'
+\end{array}
+\end{equation}
+Unsatisfiability of this formula will be proven in Theorem \ref{thm_checkUA_v} below.
+\item In the second step,
+intersecting the clauses set of $F_E$ and $F_E^{UNSAT}$ to get formula $F_E^v$
+\begin{equation}\label{checkUA_fev}
+F_E^v=F_E\cap F_E^{UNSAT}
+\end{equation}
+\end{enumerate}
+
+We first need to prove that:
+\vspace{0.2cm}
+\begin{theorem}[]\label{thm_checkUA_v}
+\textbf{Formula (\ref{checkUA_v}) is unsatisfiable}
+\end{theorem}
+\begin{IEEEproof}
+%Let's prove by contradiction.
+%If formula (\ref{checkUA_v}) is satisfiable,
+%then following formula (\ref{checkUA_rew}) is also satisfiable:
+%\begin{equation}\label{checkUA_rew}
+%\begin{array}{c}
+%F_E\wedge F'_E\wedge \\
+%\bigwedge_{u\in O_{var}} u\equiv u'\wedge \\
+%\bigvee_{v\in I_{var}}v\ne v'
+%\end{array}
+%\end{equation}
+%\vspace{0.2cm}
+%
+%Because $I_{var}$ is the boolean variables set that represents input alphabet $i_n$,
+%satisfiable formula (\ref{checkUA_rew}) is equivalent to unsatisfiable formula (\ref{checkUA}).
+%It is a contradiction,
+%so formula (\ref{checkUA_v}) must be unsatisfiable.
+We can rewrite unsatisfiable formula (\ref{checkUA_ast_p}) by moving $\bigvee_{v\in I_{var}}$ to outmost layer.
+\begin{displaymath}\label{checkUA_rew}
+\begin{array}{c}
+F_E\wedge F'_E\wedge \\
+\bigwedge_{u\in O_{var}} u\equiv u'\wedge \\
+\bigvee_{v\in I_{var}}v\ne v'
+\end{array}
+%\Rightarrow
+%\begin{array}{c}
+%\bigvee_{v\in I_{var}}\Big\{\\
+%F_E\wedge F'_E\wedge \\
+%\bigwedge_{u\in O_{var}} u\equiv u'\wedge \\
+%v\ne v'\Big\}
+%\end{array}
+\Rightarrow
+\begin{array}{c}
+\bigvee_{v\in I_{var}}\Big\{\\
+formula(\ref{checkUA_v})\\
+\Big\}
+\end{array}
+\end{displaymath}
+
+%Obviously,
+%the formula wrapped in the outmost $\bigvee_{v\in I_{var}}$ is same as formula (\ref{checkUA_v}).
+If for any $v$,
+formula (\ref{checkUA_v}) is satisfiable,
+then unsatisfiable formula (\ref{checkUA_ast_p}) will be satisfiable.
+It is a contradiction,
+so formula (\ref{checkUA_v}) must be unsatisfiable.
+\end{IEEEproof}
+
+Furthermore,
+to replace $F_E$ with $F_E^v$,
+we must make sure that $F_E\wedge v$ and $F_E^v\wedge v$ have the same set of satisfying assignments on the variables set $O_{var}$,
+which will be enumerated by algorithm 2.
+\begin{theorem}[]\label{thm_fe_fev_eq}
+\textbf{$\boldsymbol{F_E\wedge v}$ and $\boldsymbol{F_E^v\wedge v}$ have the same set of satisfying assignments on $\boldsymbol{O_{var}}$}
+\end{theorem}
+\begin{IEEEproof}
+On one hand,
+if $A$ is a satisfying assignment of $F_E\wedge v$,
+then $A$ is also satisfying assignment of $F_E^v\wedge v$,
+because the clause set of $F_E^v\wedge v$ is a subset of $F_E\wedge v$.
+
+On the other hand,
+assume that $A$ is a satisfying assignment of $F_E^v\wedge v$.
+%we need to prove that $A$ is also satisfying assignment of $F_E\wedge v$.
+%Let's prove by contradiction.
+%Assume that $A$ is not satisfying assignment of $F_E\wedge v$,
+According to definition of $F_E$ in formula (\ref{unfolding_ast_p}), (\ref{unfolding_again_ast_p}) and (\ref{checkUA_ast_p}),
+$A|_{O_{var}}$ can force a unique value on $v$:
+\begin{enumerate}
+\item If that value is 1,
+then $F_E\wedge v$ is satisfied.
+This means $A$ is a satisfying assignment of $F_E\wedge v$.
+\item if that value is 0,
+then $A|_{O_{var}}$ can force $v$ to different value on $F_E$ and $F_E^v$.
+This is contradictive to formula (\ref{checkUA_ast_p}),
+so value on $v$ can't be 0.
+\end{enumerate}
+Thus, this theorem is proven.
+\end{IEEEproof}
+
+So now,
+we can be sure that replacing $F_E$ with $F_E^v$ to characterize $f^{-1}_v$ is safe.
+And we will also show in experimental results that such replacing will significantly reduce $F_E$ size and run time overhead.
+
+\subsection{Minimizing Satisfying Assignments by Extracting Unsatisfiable Core}\label{subsec_bfl}
+
+In algorithm 1 line 4,
+$\boldsymbol{BFL}$ \cite{MINASS} is used to remove those variables that are irrelevant to forcing $v$ to be 1.
+The implementation of $\boldsymbol{BFL}$ has been shown in algorithm 1.
+
+According to implementation of $BFL$ in line 11 of algorithm 1,
+every $u\in U$ is tested one by one,
+and if the formula in line 12 is unsatisfiable,
+$u$ will be removed from $A$.
+
+That is to say,
+every unsatisfiability test can remove at most one $u$.
+The more $u$ removed,
+the more difficult it is to test unsatisfiability.
+
+So the key to reduce run time overhead of $BFL$ is to remove more than one $u$ with every unsatisfiability test.
+We will achieve this goal by:
+\begin{enumerate}
+\item In the first step,
+computing unsatisfiable core $F^{US}$ of $F\wedge \neg v\wedge A|_{U -\{u\}}$ with depth first approach in Lintao Zhang et al.\cite{VALIDSAT}:
+\item In the second step,
+computing new $A$ by intersecting clause set of $A|_{U-\{u\}}$ and $F^{US}$
+\end{enumerate}
+
+The implementation of the improved $\boldsymbol{BFL}$ is shown below:
+\vspace{0.2cm}
+\begin{algo}
+\textbf{Improved $\boldsymbol{BFL}$ based on Extracting Unsatisfiable Core}
+\begin{enumerate}
+\item $\boldsymbol{BFL\_UNSAT}(F,v,U,A)$ \{
+\item \hspace{0.3cm} foreach $u\in U$
+\item \hspace{0.6cm}  if($F\wedge \neg v\wedge A|_{U -\{u\}}$ is unsatisfiable) \{
+\item \hspace{0.9cm}     \textbf{Assume that $\boldsymbol{F^{US}}$ is unsatisfiable core of $F\wedge \neg v\wedge A|_{U -\{u\}}$}
+\item \hspace{0.9cm}     $A= A|_{U -\{u\}}\boldsymbol{\cap F^{US}}$
+\item \hspace{0.6cm} \}
+\item \hspace{0.3cm} return $A$
+\item \}
+\end{enumerate}
+\end{algo}
+
+Its correctness is proven below:
+\vspace{0.2cm}
+\begin{theorem}[]\label{thm_BFL_UNSAT}
+\textbf{After $\boldsymbol{BFL\_UNSAT}$ finish, $F\wedge\neg v\wedge A$ is unsatisfiable}
+\end{theorem}
+\begin{IEEEproof}
+We need to prove by induction on the foreach statement in line 2 of algorithm 3.
+
+For the base case,
+according to line 5 of algorithm 2,
+which call $\boldsymbol{BFL\_UNSAT}$,
+we know that $A$ is a satisfying assignment of $F_E^v\wedge v$.
+Again according to theorem \ref{thm_checkUA_v} and \ref{thm_fe_fev_eq},
+$v$ can't be 0 under assignment $A$.
+So $F\wedge\neg v\wedge A$ is unsatisfiable,
+when algorithm 3 reaches the foreach statement in line 2 for the first time.
+
+For the induction step,
+assume that when the algorithm 3 reaches the foreach statement in line 2,
+$F\wedge\neg v\wedge A$ is unsatisfiable.
+Then the if condition in line 3 may be:
+\begin{enumerate}
+\item \textbf{False}: in this situation,
+$A$ will not be changed,
+thus $F\wedge\neg v\wedge A$ is still unsatisfiable.
+
+\item \textbf{True}: in this situation,
+$F^{US}$ is unsatisfiable core of $F\wedge\neg v\wedge A|_{U-\{u\}}$,
+then $F\wedge\neg v\wedge (A|_{U-\{u\}}\cap F^{US})$ is also unsatisfiable,
+because its clause set is a super set of $F^{US}$.
+By assigning $A|_{U-\{u\}}\cap F^{US}$ back to $A$ in line 5 of algorithm 3,
+we again get unsatisfiable formula $F\wedge\neg v\wedge A$.
+\end{enumerate}
+
+Thus, this theorem is proven.
+\end{IEEEproof}
+
+According to theorem 3,
+$A$ returned by $\boldsymbol{BFL\_UNSAT}$ is also a set of necessary variable assignments that force $v$ to be 1.
+Thus $\boldsymbol{BFL}$ can be replaced by $\boldsymbol{BFL\_UNSAT}$ safely.
+
+We will also show in experimental result that,
+the function $\boldsymbol{BFL\_UNSAT}$ will significantly reduce the number of SAT solving.
+
+\subsection{Minimizing Satisfying Assignments by Discovering XOR Gates}\label{subsec_XOR}
+
+%In order to overcome the problem of BFL,
+%we need to discover XOR hidden in result of BFL.
+%by checking \textbf{XOR pairing assumption} below.
+
+%\begin{definition11}\label{XORpairingass}
+%\textbf{XOR pairing assumption}:
+%For a formula $F$ over boolean variable set $V$,
+%a variable $v\in V$ that should always be 1,
+%and one satisfying assignments $A_F$ of $F_E\wedge v$,
+%assume there is another satisfying assignment $A'_F$,
+%such that only two variables $v_1$ and $v_2$ have difference assignment in $A_F$ and $A'_F$ ,
+%that is,
+%$\{v_i|A_F(v_i)\ne A'_F(v_i)\}\equiv \{v_1,v_2\}$,
+%\end{definition11}
+%\begin{figure}[b]
+%\centering
+%\includegraphics[width=3in]{xor}
+%\caption{Discovering Hidden XOR}
+%\label{rmxor}
+%\end{figure}
+
+According to algorithm 3,
+the assignment $A$ return by $\boldsymbol{BFL\_UNSAT}$ is a minimal assignment.
+That means,
+removing any variable from $A$ will make it no longer being able to force $v$ to be 1.
+
+To make $A$ to cover more satisfying assignments,
+we need to find a more efficient approach to merge satisfying assignments.
+
+XOR gates are used intensively in communication and arithmetic circuits.
+According to subsection \ref{subsec_ALLSAT} and figure \ref{ORXOR}b),
+the two satisfying assignments of the XOR gate can't be merged by removing input variables.
+
+But for a larger function such as $f^{-1}_v$ that \textbf{MAY} contains XOR gate $z=v_1 \oplus v_2$,
+we can first check whether this XOR gate actually exists,
+and then merge these two satisfying assignments by replace $v_1$ and $v_2$ with $z$ in $A$.
+
+Intuitively,
+for a satisfying assignment $A$ that can force $v$ to be 1,
+assume its domain is $U\subseteq O_{var}$,
+for certain $v_1,v_2\in U$,
+we can invert the value of $v_1$ and $v_2$ in $A$:
+
+\begin{equation}
+A_{\overline{v}_1,\overline{v}_2}=A|_{V-\{v_1,v_2\}}|^{v_1\to \neg A(v_1)}|^{v_2\to \neg A(v_2)}
+\end{equation}
+
+We then test whether $A_{\overline{v}_1,\overline{v}_2}$ can also force $v$ to be 1,
+by checking unsatisfiability of following formula:
+
+\begin{equation}\label{check_XPA}
+F_E\wedge \neg v\wedge A_{\overline{v}_1,\overline{v}_2}
+\end{equation}
+
+%%assume that circuit in figure \ref{rmxor}a) has an input variable set $V=\{v_1,v_2,v_3,\dots,v_n\}$,
+%%and it \textbf{MAY} contain a XOR $v'= v_1\oplus v_2$.
+%%We can avoid enumerating the assignments of $v_1$ and $v_2$ %by moving this XOR out of the circuit,
+%%%and enumerate assignments of $V\cup\{x_1\}-\{v_1,v_2\}=\{\boldsymbol{x_1},v_3,...,v_n\}$.
+%%by first checking the existence of this XOR,
+%%and then,
+%%as shown in figure \ref{rmxor}b),
+%%if this XOR actually exists,
+%%we add another XOR $x_1= v_1\oplus v_2$ into this circuit,
+%%and enumerate assignments on $V\cup \{x_1\}-\{v_1,v_2\}$ instead of $V$.
+%
+%%\begin{figure}[htbp]
+%%  \centering
+%%  \leavevmode
+%%  \epsfig{file=xor.eps}
+%%\caption{Discovering Hidden XOR}
+%%  \label{rmxor}
+%%\end{figure}
+%
+%
+%%In order to remove this XOR,
+%%we must first make sure that there actually exists a XOR in this circuit.
+%
+%Formally, to check existence of XOR $v'= v_1\oplus v_2$,
+%for a satisfying assignment $A_F$ of formula $F_E\wedge v$,
+%we define a new assignment $A_{x_1}$ in formula (\ref{mergeA}),
+%by first removing assignments of $v_1$ and $v_2$ from $A_F$,
+%and then adding assignment of $x_1$ as result of XORing $v_1$ and $v_2$.
+%
+%\begin{equation}\label{mergeA}
+%A_{x_1}= A_F|_{O_{var}-\{v_1,v_2\}}|^{x_1\to A_F(v_1)\oplus A_F(v_2)}
+%\end{equation}
+%
+%With this $A_{x_1}$,
+%existence of $v'= v_1\oplus v_2$ can be decided by checking unsatisfiability of the following formula :
+%
+%\begin{equation}\label{check_XPA}
+%F_E\wedge \{x_1\equiv v_1\oplus v_2\}\wedge \neg v\wedge A_{x_1}
+%\end{equation}
+
+Unsatisfiable of formula (\ref{check_XPA}) means that $A_{\overline{v}_1,\overline{v}_2}$,
+just like $A$,
+can also force $v$ to be 1.
+
+Thus,
+$A$ and $A_{\overline{v}_1,\overline{v}_2}$,
+that can't be merged by BFL,
+can be merged into:
+\begin{equation}\label{mergeA}
+A_z= A|_{O_{var}-\{v_1,v_2\}}|^{z\to A(v_1)\oplus A(v_2)}
+\end{equation}
+with the help of a newly discovered XOR gate that take $v_1$ and $v_2$ as input,
+and output $z$:
+\begin{equation}
+z=v_1\oplus v_2
+\end{equation}
+
+Now,
+the support set of $f^{-1}_v$ and $f^{-1}$ will change from $O_{var}$ to $O_{var}\cup \{z\}$.
+
+If we repeatedly checking unsatisfiability of formula (\ref{check_XPA}) for other pairs of $v_1$ and $v_2$, 
+we can discover all hidden XOR gates and merge their satisfying assignments.
+All such XOR gates will be used in subsection \ref{subsec_insxor} to build $E^{-1}$.
+
+%If we repeatedly merge assignments by checking unsatisfiability of formula (\ref{check_XPA}),
+%we can get a partial assignment of $F_E\wedge \{x_1\equiv\dots\oplus\dots\}\dots\wedge \{x_n\equiv\dots\oplus\dots\}\wedge v$ in formula (\ref{ax1xn}),
+%which contains $2^n$ total assignments.
+%
+%\begin{equation}\label{ax1xn}
+%A_{x_1\dots x_n}= A_F|_{O_{var}-\{v_1,\dots\}}|^{x_1\to \dots\oplus\dots}\dots|^{x_n\to \dots\oplus\dots}
+%\end{equation}
+
+With above discussion in mind, we describe \textbf{XORMIN} below:
+
+\vspace{0.2cm}
+
+\begin{algo}\label{buildfdec}
+\textbf{ $\boldsymbol{XORMIN(F_E, A,v)}$}
+\begin{enumerate}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\item $G=\{\}$
+\item do \{
+
+\item \hspace{0.3cm} $G_{new}=\{\}$  // the set of newly discovered XOR
+%\item \hspace{0.3cm} assume the set of variables in $A_F$ is $V$
+\item \hspace{0.3cm} foreach $v_1,v_2\in O_{var}$ \{
+
+\item \hspace{0.6cm}   if(\textbf{formula (\ref{check_XPA}) is unsatisfiable})\{
+
+\item \hspace{0.9cm}     $G_{new}= G_{new}\cup \{ z= v_1\oplus v_2\}$
+\item \hspace{0.9cm}     $A= A|_{O_{var}-\{v_1,v_2\}}|^{z\to A(v_1)\oplus A(v_2)}$
+\item \hspace{0.9cm}     $O_{var}= O_{var}\cup \{z\}-\{v_1,v_2\}$
+\item \hspace{0.9cm}     $F_E= F_E\wedge bcls_{A}$
+\item \hspace{0.9cm}     $F_E= F_E\wedge \bigwedge _{\{z= v_1\oplus v_2\}\in G_{new}}\big\{z\equiv v_1\oplus v_2\big\}$
+
+\item \hspace{0.6cm}   \}
+\item \hspace{0.3cm} \}
+\item \hspace{0.3cm} $G=G\cup G_{new}$
+\item \} while($G_{new}\ne \{\}$)
+\item return $A$
+%\item return $\{A,G\}$
+%}
+\end{enumerate}
+\end{algo}
+
+\vspace{0.2cm}
+
+In line 1,
+$G$ is an empty set that will be used to hold all XOR gates discovered by this algorithm.
+
+In line 2, the do-while statement will repeatedly discover new XOR gates,
+until no more XOR gates can be discovered.
+
+In line 4,
+foreach statement will enumerate each pair of $v_1,v_2\in V$,
+and line 5 will test if there is a XOR gate between $v_1$ and $v_2$.
+
+%\vspace{0.2cm}
+%\begin{theorem}[]\label{thm_XORMIN}
+%\textbf{XORMIN is correct}
+%\end{theorem}
+%\begin{IEEEproof}
+%\end{IEEEproof}
+
+\section{Building Circuit $E^{-1}$ from $f^{-1}$}\label{sec_build}
+\subsection{Instancing Register Bank}
+The function $f^{-1}:O^l\to I$ is a boolean function that takes the finite length sequence $<o_{n+d-l},\dots , o_{n+d-1} >$ as input,
+and computes $i_n$.
+
+So while building the circuit $E^{-1}$,
+as shown in right-top side of the figure \ref{reg_bank},
+we need to instance $l-1$ banks of registers to store the subsequence $<o_{n+d-l},\dots , o_{n+d-2} >$,
+and connect the output of $o_i$ to the input of $o_{i-1}$.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=3in]{reg_bank}
+\caption{Circuit structure of $E^{-1}$}
+\label{reg_bank}
+\end{figure}
+
+\subsection{Instancing Discovered XOR Gates}\label{subsec_insxor}
+According to subsection \ref{subsec_XOR},
+assume the set of all XOR gates discovered by the function $\boldsymbol{XORMIN}$ is $G$.
+Then the output variables set of these XOR gates is:
+\begin{equation}
+U_{xor}=\Big\{z|\{z=v_1\oplus v_2\}\in G\Big\}
+\end{equation}
+Then the support set of boolean function $f^{-1}$ will be changed from $O_{var}$ to $O_{var}\cup U_{xor}$.
+As shown in left-top side of the figure \ref{reg_bank}.
+
+So we need to instance all XOR gates discovered by the $XORMIN$ function in the generated netlist.
+
+\subsection{Generating Verilog Source Code for $E^{-1}$}
+Assume $SA_v$ is the set of all satisfying assignments that can force $v\in I_{var}$ to be 1.
+Then the always statement that assigns value to $v$ is shown below:
+\begin{enumerate}
+\item always@(list of all variables in $O_{var}\cup U_{xor}$) begin
+\item \hspace{0.3cm}if($condition_1 || \dots || condition_n$)
+\item \hspace{0.6cm} $v<=1'b1$
+\item \hspace{0.3cm}else
+\item \hspace{0.6cm} $v<=1'b0$
+\item end
+\end{enumerate}
+
+The $condition_1$ to $condition_n$ in line 2 correspond to every satisfying assignments in $SA_v$.
+
+\section{Experimental Result}\label{sec_exp}
+We implement our algorithm in zchaff\cite{CHAFF},
+and run it on a PC with a 2.4GHz AMD Athlon 64 X2 dual core processor, 6GB memory and CentOS 5.2 linux operating system.
+
+All related programs and data files can be downloaded from \url{http://www.ssypub.org}.
+\subsection{Benchmarks}
+\begin{table}[!t]
+\centering
+\caption{Information of Benchmarks}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+&XGXS&XFI&scrambler&PCIE&T2 et-\\
+&&&&&hernet\\\hline
+Line number&&&&&\\
+of verilog&214&466&24&1139&1073\\
+source code&&&&&\\\hline
+\#regs&15&135&58&22&48\\\hline
+Data path&8&64&66&10&10\\
+width&&&&&\\ \hline
+\end{tabular}
+\end{table}
+
+%\begin{table}[tb]
+%\centering
+%\caption{Result of Checking Parameterized Complementary Assumption}
+%\begin{tabular}{|c|c|c|c|c|c|}
+%\hline
+%&XGXS&XFI&scrambler&PCIE&T2 et-\\
+%&&&&&hernet\\ \hline
+%run time&0.51&71.60&2.51&32.74&44.48\\
+%(seconds)&&&&&\\\hline
+%$d$      &1       &0     &0         &2   &4          \\ \hline
+%$p$      &0       &3     &1         &1   &0          \\ \hline
+%$l$      &1       &2     &2         &1   &1          \\ \hline
+%\end{tabular}
+%\end{table}
+
+%Our approach is the first one that can synthesize complementary circuits automatically,
+%so we can't compare it with other research results.
+
+%Temporal logic synthesis is a research topic that is somewhat close to us,
+%but it can't be scaled to large circuits,
+%and no commercial available IP cores are written in temporal logic.
+%Thus, it's impossible to compare our result with temporal logic synthesis.
+
+%\begin{table*}[tb]
+%\centering
+%\caption{Result of Building Complementary Circuits}
+%\begin{tabular}{|c|c|c|c|c|c|c|}
+%\hline
+%       &                 &XGXS&XFI& 66 bit   &PCIE&T2 ethernet	  \\
+%       &                 &       &      & scrambler&    &        	  \\ \hline
+%BFL    &run time(seconds)&32.67  &$>10,000$&8.56   &$>10,000$&$>10,000$	 	     \\ \cline{2-7}
+%only   &line number of   &2927   &N/A   &11882     &N/A &N/A 		     \\
+%       &generated verilog&       &      &          &    &        	  \\ \hline
+%BFL+   &run time         &1.52   &2939.47&11.97     &47.55&36.64        	  \\ \cline{2-7}
+%XORMIN &line number of   &1525   &48829 &4723      &11254& 16616       	  \\
+%       &generated verilog&       &      &          &    &        	  \\ \hline
+%\end{tabular}
+%\end{table*}
+
+Table \Rmnum{1} shows some information of following benchmarks.
+\begin{enumerate}
+  \item The first benchmark is a XGXS encoder that is compliant to clause 48 of IEEE-802.3ae 2002 standard \cite{IEEE80232002}.
+  \item The second benchmark is a XFI encoder that is compliant to clause 49 of the same IEEE standard.
+  \item The third benchmark is a 66 bit scrambler that is used to make a data sequence to have enough transitions between 0 and 1,
+        such that it can run through high speed noisy serial transmission channel.
+  \item The fourth benchmark is a PCIE physical coding module.
+  \item The fifth benchmark is Ethernet module of Sun's OpenSparc T2 processor.
+\end{enumerate}
+%\subsection{Result of Checking Parameterized Complementary Condition}
+
+%Table \Rmnum{2} shows the run time of checking parameterized complementary condition on these circuits,
+%and the discovered proper values of parameters.
+
+\subsection{Writing Assertion}
+To write assertion for ruling out invalid input alphabets,
+we refer to following documentations,
+and find out the valid alphabet pattern easily:
+\begin{enumerate}
+  \item For the XGXS and T2 ethernet encoders,
+  table 48-2, 48-3 and 48-4 of IEEE-802.3ae 2002 standard \cite{IEEE80232002} give the pattern of valid alphabets.
+  \item For the XFI encoder and scrambler,
+  figure 49-7 and table 49-1 of IEEE-802.3ae 2002 standard \cite{IEEE80232002} give the pattern of valid alphabets.
+  \item For the PCIE physical coding module,
+  table 4-1 of PCI Express Base Specification \cite{PCIESPEC} give the pattern of valid alphabets.
+\end{enumerate}
+
+
+
+\subsection{Result of Checking Parameterized Complementary Condition}
+\begin{table}[!t]
+\centering
+\caption{Results of Checking Parameterized Complementary Condition}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+&XGXS&XFI&scra-&PCIE&T2 et-\\
+&&&mbler&&hernet\\ \hline
+run time&0.51&71.60&2.51&32.74&44.48\\
+(seconds)&&&&&\\\hline
+$d$      &1       &0     &0         &2   &4          \\ \hline
+$p$      &0       &3     &1         &1   &0          \\ \hline
+$l$      &1       &2     &2         &1   &1          \\ \hline
+\end{tabular}
+\end{table}
+
+Table \Rmnum{2} shows the run time of checking parameterized complementary condition on these circuits,
+and the discovered proper values of parameters.
+
+\subsection{Improvement on Run Time Overhead}
+\begin{table}[!t]
+\centering
+\caption{Run Time of Building Complementary Circuits}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+            &&XGXS&XFI& scra-   &PCIE&T2 et-	  \\
+            &&       &      & mbler&    &  hernet      	  \\ \hline
+BFL    &time(s)&32.67   &time&8.56&time&time 		     \\
+only&&&out&&out&out 		     \\ \hline
+BFL    &time(s)&1.52   &2939.47&11.97     &47.55&36.64 		     \\ \cline{2-7}
++   &$|F_E|$&25470&5084496&499200&52209&459204\\ \cline{2-7}
+XORMIN      &\#SAT&984&137216&8320&528&1032        	  \\ \hline
+BFL+     &time(s)&1.08   &752.83 &1.84      &0.82& 27.08       	  \\ \cline{2-7}
+XORMIN     &$|F_E^v|$&6694&188717&4807&6635&51204\\ \cline{2-7}
++UNSAT       &\#SAT&480&16828&256&243&538        	  \\ \hline
+\end{tabular}
+\end{table}
+Table \Rmnum{3} compares the following three statistics between the BFL algorithm \cite{MINASS}, 
+BFL+XORMIN proposed in our previous work \cite{ShegnYuShen:iccad09},
+and BFL+XORMIN+UNSAT proposed by this paper.
+\begin{enumerate}
+\item The three \textbf{time} rows compare the run time overhead of building complementary circuit.
+Obviously,
+our approach can be more than one order of magnitude faster than BFL only approach,
+and three times faster than our previous work \cite{ShegnYuShen:iccad09}.
+\item $\boldsymbol{|F_E|}$ and $\boldsymbol{|F_E^v|}$ compare the total size of $F_E$ and $F_E^v$ passed to ALLSAT algorithm,
+in which $F_E^v$ is the result of simplify $F_E$ with $\boldsymbol{SIMPLIFY}$.
+Obviously,
+$\boldsymbol{|F_E^v|}$ is significantly smaller than $\boldsymbol{|F_E|}$.
+\item The two \textbf{\#SAT} rows compare the total number of SAT solving invoked by $\boldsymbol{BFL}$ and $\boldsymbol{BFL\_UNSAT}$.
+Obviously,
+the number of SAT solving is reduced significantly.
+\end{enumerate}
+
+\subsection{Comparing Decoder Area}
+
+Table \Rmnum{4} compares the circuit area of hand written decoders,
+decoders built by our previous work\cite{ShegnYuShen:iccad09},
+and our algorithm.
+We synthesize these decoders with LSI10K technology library coming from Synopsys DesignCompiler.
+
+\begin{table}[!t]
+\centering
+\caption{Comparing Decoder Area}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+&XGXS&XFI&scrambler&PCIE&T2 et-\\
+&&&&&hernet\\ \hline
+hand written      &913       &4886     &1514         &952   &2225          \\
+decoder          &&&&&\\ \hline
+decoder built     &667       &15269     &1302         &344   &661          \\
+by Shen\cite{ShegnYuShen:iccad09}   &&&&&\\ \hline
+decoder built     &652       &16659     &1302         &345   &569          \\
+by our algorithm   &&&&&\\ \hline
+\end{tabular}
+\end{table}
+
+From table \Rmnum{4},
+we observe that:
+\begin{enumerate}
+\item Except the most complex XFI,
+our synthesis result is better than that of hand written decoder.
+However,
+this dose not mean that our algorithm is better than human designer.
+Actually,
+hand written decoder often include some other logic that is irrelevant to decoder functionality.
+\item For the XFI case,
+our circuit area is about 3 time large than hand written decoder.
+This means we need to improve area in future work.
+\item There are no significant area difference between our algorithm and our previous work.\cite{ShegnYuShen:iccad09}.
+\end{enumerate}
+
+
+\section{Related Works}\label{sec_relwork}
+%\subsection{Temporal Logic Synthesis}
+%Automatic synthesis of program from logic specification was first identified as Church's problem in 1962\cite{LOGARTHAUTO}.
+%Some early researches \cite{SLVSQFSS,AUTOINF} solve this problem by reducing it to checking emptiness of tree automata.
+%
+%With the invention of temporal logic in the early 1980s,
+%this problem had been considered again \cite{DSGSYNTMPLG,SYNTMPLGSPC}.
+%But in 1989,
+%A. Pnueli and R. Rosner\cite{SYNRCTVMD} pointed out that the complexity of LTL synthesis is double exponent in the size of the formula.
+%
+%This high complexity drives researchers turning their focus to find smaller but still useful subset of temporal logic,
+%such that synthesis problem can be solved with lower complexity.
+%
+%One line of research \cite{CNTLSYNTMDAUTO,DTMGENGMELTL,SYNRCTVDES} focus on the so-called generalized reactive formulas of the form:
+%$(\square \lozenge p_1 \wedge \cdots \square \lozenge p_m) \to (\square \lozenge q_1 \wedge \cdots \square \lozenge q_n)$.
+%Complexity of solving synthesis problem for such formula is $O(N^3)$.
+%
+%The other line of research focus on finding efficient symbolic algorithm \cite{SYNCNTLBNDRPN}
+%for expensive safra determination algorithm \cite{CMPLXAUTO} on an useful formula subset,
+%or just avoiding it\cite{NEWALGSTRGSYN}.
+%
+%Based on these research works,
+%some tools\cite{ANZU,OPTLTLSYN} that can handle small temporal formulas have been developed.
+
+\subsection{Satisfying Assignments Enumeration}
+
+Existing ALLSAT algorithms all tried to enlarge total satisfying assignments by removing irrelevant variables,
+so that a large cube that contains more total satisfying assignment can be obtained.
+
+The first such approach was proposed by K. L. McMillan \cite{SATUNBMC}.
+He constructed an alternative implication graph in SAT solver,
+which recorded the reasoning relation that leaded to the assignment of a particular object variable $obj$.
+All variables outside this graph can be ruled out from the total assignment.
+Kavita Ravi et al.\cite{MINASS} and P. P. Chauhan et al.\cite{REPARAM} removed those variables whose absence can't make $obj\equiv 0$ satisfiable one by one.
+Shen et al.\cite{MINCEX} and HoonSang Jin et al.\cite{PRIMECLAUSE,EFFCON} used a conflict analysis based approach,
+to remove multiple irrelevant variables in one SAT run.
+Orna Grumberg et al.\cite{MEMEFFALLSAT} separated the variable set into important subset and non-important subset.
+Variables in important subset have higher decision priority than non-important ones.
+Thus,
+the important subset formed a search tree,
+with each leaf being another search tree for non-important set.
+%Tobias Nopper et al.\cite{CMPMINCEX} propose an counterexample minimization algorithm for incomplete designs that contain black box.
+Cofactoring \cite{EFFSATUSMCCO} qualified out non-important variables by setting them to constant value returned by SAT solver.
+
+\subsection{AND-XOR Logic Synthesis}
+
+Classical logic synthesis worked on AND-OR network.
+It's kernel was two-level logic minimization,
+which tried to find a smaller sum-of-products expression for boolean function $f$.
+%It was obvious that such two-level logic minimization algorithms are very similar to satisfying assignments enumeration described in previous subsection,
+%except that they don't work on SAT solvers.
+
+Three most well known two-level logic minimization algorithms were Quine-McCluskey\cite{McCluskey},
+Scherzo\cite{Scherzo},
+and Espresso-II\cite{Espresso}.
+
+Just like state-of-the-art ALLSAT that could not deal with XOR-intensive circuits efficiently,
+classical logic synthesis also had the same problem.
+Thus,
+many researchers proposed synthesis algorithms that target XOR-intensive circuits.
+
+One research direction focused on extending classical two-level AND-OR minimization to two-level AND-XOR network \cite{Mod2sum,ANDEXOR}.
+These works normally described circuits with the most general ESOP (exclusive sum of product) expressions.
+But very high computation complexity of these approaches prevented them from handling large circuits.
+
+Another line of research relied on Reed-Muller expansion\cite{Reed},
+one of its most used variant was Fixed Polarity Reed-Muller Form (FPRM) given by Davio and Deschamps\cite{FPRM},
+in which a variable can have either positive or negative polarity.
+Some related works that relied on FPRM are \cite{fastexactFPRM,fastOFDD,lowpowerXOR}.
+
+\section{Conclusions and Future Works}\label{sec_con}
+
+In this paper,
+we propose a fully automatic approach that synthesizes complementary circuits for communication applications.
+According to experimental results,
+our approach can synthesize correct complementary circuits for many very complex circuits, including but not limited to PCIE and Ethernet.
+
+One possible future work is to improve the circuit area of generated $E^{-1}$.
+
+%Another possible future work is to automatically generate assertions that rule out invalid input data patterns,
+%such that the users can be freed from the burden of inspecting documentation and writing assertions.
+Another possible future work is to deal with circuits with memory array and multiple clocks,
+such that more complex communication mechanism,
+such as data link layer and transaction layer,
+can be dealt with by our approach.
+
+%\section{todo}
+%do experimental result on t2 xpcs and pcie
+%
+%%prove xormin correct
+%
+%%modify xormin to factoring XOR
+%
+%%how to describe parameter p
+%
+%Example
+%
+%%implementation detail
+%
+%draw some figures
+%
+%say something about size of $F_E$ and $F_E^v$, how they compared
+%
+%%fix pcie assertion writing
+%
+%%regenerate $f^{-1}$ figure
+%
+%%change building $f^{-1}$ to characterization
+%
+%%compare 3 case: BFL only , BFL+XORMIN , and BFL+XORMIN+UNSAT
+
+
+% An example of a floating figure using the graphicx package.
+% Note that \label must occur AFTER (or within) \caption.
+% For figures, \caption should occur after the \includegraphics.
+% Note that IEEEtran v1.7 and later has special internal code that
+% is designed to preserve the operation of \label within \caption
+% even when the captionsoff option is in effect. However, because
+% of issues like this, it may be the safest practice to put all your
+% \label just after \caption rather than within \caption{}.
+%
+% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
+% option should be used if it is desired that the figures are to be
+% displayed while in draft mode.
+%
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=2.5in]{myfigure}
+% where an .eps filename suffix will be assumed under latex,
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+%\caption{Simulation Results}
+%\label{fig_sim}
+%\end{figure}
+
+% Note that IEEE typically puts floats only at the top, even when this
+% results in a large percentage of a column being occupied by floats.
+
+
+% An example of a double column floating figure using two subfigures.
+% (The subfig.sty package must be loaded for this to work.)
+% The subfigure \label commands are set within each subfloat command, the
+% \label for the overall figure must come after \caption.
+% \hfil must be used as a separator to get equal spacing.
+% The subfigure.sty package works much the same way, except \subfigure is
+% used instead of \subfloat.
+%
+%\begin{figure*}[!t]
+%\centerline{\subfloat[Case I]\includegraphics[width=2.5in]{subfigcase1}%
+%\label{fig_first_case}}
+%\hfil
+%\subfloat[Case II]{\includegraphics[width=2.5in]{subfigcase2}%
+%\label{fig_second_case}}}
+%\caption{Simulation results}
+%\label{fig_sim}
+%\end{figure*}
+%
+% Note that often IEEE papers with subfigures do not employ subfigure
+% captions (using the optional argument to \subfloat), but instead will
+% reference/describe all of them (a), (b), etc., within the main caption.
+
+
+% An example of a floating table. Note that, for IEEE style tables, the
+% \caption command should come BEFORE the table. Table text will default to
+% \footnotesize as IEEE normally uses this smaller font for tables.
+% The \label must come after \caption as always.
+%
+%\begin{table}[!t]
+%% increase table row spacing, adjust to taste
+%\renewcommand{\arraystretch}{1.3}
+% if using array.sty, it might be a good idea to tweak the value of
+% \extrarowheight as needed to properly center the text within the cells
+%\caption{An Example of a Table}
+%\label{table_example}
+%\centering
+%% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+%\begin{tabular}{|c||c|}
+%\hline
+%One & Two\\
+%\hline
+%Three & Four\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+
+% Note that IEEE does not put floats in the very first column - or typically
+% anywhere on the first page for that matter. Also, in-text middle ("here")
+% positioning is not used. Most IEEE journals use top floats exclusively.
+% Note that, LaTeX2e, unlike IEEE journals, places footnotes above bottom
+% floats. This can be corrected via the \fnbelowfloat command of the
+% stfloats package.
+
+
+
+%\section{Conclusion}
+%The conclusion goes here.
+
+
+
+
+
+% if have a single appendix:
+%\appendix[Proof of the Zonklar Equations]
+% or
+%\appendix  % for no appendix heading
+% do not use \section anymore after \appendix, only \section*
+% is possibly needed
+
+% use appendices with more than one appendix
+% then use \section to start each appendix
+% you must declare a \section before using any
+% \subsection or using \label (\appendices by itself
+% starts a section numbered zero.)
+%
+
+
+%\appendices
+%\section{Proof of the First Zonklar Equation}
+%Appendix one text goes here.
+
+% you can choose not to have a title for an appendix
+% if you want by leaving the argument blank
+%\section{}
+%Appendix two text goes here.
+
+
+% use section* for acknowledgement
+%\section*{Acknowledgment}
+
+%The authors would like to thank the anonymous reviewer's time and effort.
+
+%This work is fund by Chinese National Science Foundation No.60603088.
+
+
+% Can use something like this to put references on a page
+% by themselves when using endfloat and the captionsoff option.
+\ifCLASSOPTIONcaptionsoff
+  \newpage
+\fi
+
+
+
+% trigger a \newpage just before the given reference
+% number - used to balance the columns on the last page
+% adjust value as needed - may need to be readjusted if
+% the document is modified later
+%\IEEEtriggeratref{8}
+% The "triggered" command can be changed if desired:
+%\IEEEtriggercmd{\enlargethispage{-5in}}
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+%\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+\begin{thebibliography}{1}
+
+\bibitem{IEEE80211N}
+Chris Kozup.
+Is 802.11n Right for You?
+Mobility blog.
+Retrieved April 27, 2009, from \url{http://blogs.cisco.com/wireless/comments/is_80211n_right_for_you/},
+2008.
+
+\bibitem{BRHDVD}
+Stephen J. Dubner.
+What Are the Lessons of the Blu-Ray/HD-DVD Battle? A Freakonomics Quorum.
+The New York Times.
+Retrieved April 27, 2009, from  \url{http://freakonomics.blogs.nytimes.com/2008/03/04/what-are-the-lessons-of-the-blu-rayhd-dvd-battle-a-freakonomics-quorum/},
+2008.
+
+\bibitem{CHAFF}
+M. Moskewicz, C. F. Madigan, Y. Zhao, L. Zhang, and S. Malik.
+Chaff: Engineering an efficient SAT solver.
+In DAC'01,
+pp 530-535,
+2001.
+
+\bibitem{BERKMIN}
+Evgueni Goldberg, Yakov Novikov.
+BerkMin: a fast and robust sat-solver.
+in DATE'02,
+pp 142-149,
+2002.
+
+\bibitem{EXTSAT}
+Niklas E�n, Niklas S�rensson.
+An Extensible SAT-solver.
+in SAT'03
+pp 502-518,
+2003.
+
+\bibitem{VERPROOF}
+Evguenii I. Goldberg, Yakov Novikov.
+Verification of Proofs of Unsatisfiability for CNF Formulas.
+in proceeding of DATE 2003, 10886-10891.
+
+\bibitem{VALIDSAT}
+Lintao Zhang, Sharad Malik.
+Validating SAT Solvers Using an Independent Resolution-Based Checker: Practical Implementations and Other Applications.
+in proceeding of DATE 2003, 10880-10885.
+
+\bibitem{SATLOGICMIN}
+Samir Sapra, Michael Theobald, Edmund M. Clarke.
+SAT-Based Algorithms for Logic Minimization.
+in ICCD'03,
+pp 510-519,
+2003.
+
+\bibitem{PRIMECLAUSE}
+HoonSang Jin , Fabio Somenzi.
+Prime clauses for fast enumeration of satisfying assignments to boolean circuits.
+In DAC'05,
+pp 750-753,
+2005.
+
+%\bibitem{CMPMINCEX}
+%Tobias Nopper, Christoph Scholl, Bernd Becker.
+%Computation of minimal counterexamples by using black box techniques and symbolic methods.
+%In ICCAD'07,
+%pp 273-280,
+%2007.
+
+\bibitem{SATUNBMC}
+K. L. McMillan.
+Applying SAT methods in unbounded symbolic model checking.
+In CAV'02,
+pp 250-264,
+2002.
+
+\bibitem{MINASS}
+Kavita Ravi, Fabio Somenzi.
+Minimal Assignments for Bounded Model Checking.
+In TACAS'04,
+pp 31-45,
+2004.
+
+\bibitem{EFFCON}
+H. Jin, H. Han, and F. Somenzi.
+Efficient conflict analysis for finding all satisfying assignments of a Boolean circuit.
+In TACAS'05,
+pp 287-300,
+2005.
+
+\bibitem{MINCEX}
+ShengYu Shen, Ying Qin, Sikun Li.
+Minimizing Counterexample with Unit Core Extraction and Incremental SAT.
+In VMCAI'05,
+pp 298-312,
+2005.
+
+\bibitem{MEMEFFALLSAT}
+Orna Grumberg, Assaf Schuster, Avi Yadgar.
+Memory Efficient All-Solutions SAT Solver and Its Application for Reachability Analysis.
+In FMCAD'04,
+pp 275-289,
+2004.
+
+\bibitem{REPARAM}
+P. P. Chauhan, E. M. Clarke, and D. Kroening.
+A SAT-based algorithm for reparameterization in symbolic simulation.
+In DAC'04,
+pp 524-529,
+2004.
+
+\bibitem{EFFSATUSMCCO}
+M. K. Ganai, A. Gupta, and P. Ashar.
+Efficient SAT-based unbounded symbolic model checking using circuit cofactoring.
+In ICCAD'04,
+pp 510-517,
+2004.
+
+\bibitem{SMCSAT}
+A. Biere, A. Cimatti, E.M. Clarke, M. Fujita, Y. Zhu .
+Symbolic Model Checking using SAT procedures instead of BDDs.
+In DAC'99),
+pp 317-320,
+1999.
+
+\bibitem{IEEE80232002}
+%IEEE Std. 802.3ae-2002. Amendment to IEEE Std 802.3-2002
+%Download from  \url{},
+IEEE Standard for Information technology��
+Telecommunications and information exchange between systems��
+Local and metropolitan area networks��
+Specific requirements��
+Part 3: Carrier Sense Multiple Access with
+Collision Detection (CSMA/CD) Access Method
+and Physical Layer Specifications
+Amendment: Media Access Control (MAC)
+Parameters, Physical Layers, and Management
+Parameters for 10 Gb/s Operation
+Download from \url{http://people.freebsd.org/~wpaul/802_3ae_2002.pdf}
+
+\bibitem{PCIESPEC}
+PCI Express Base Specification Revision 1.0.
+Download from \url{http://www.pcisig.com}
+
+
+%\bibitem{LOGARTHAUTO}
+%Alonzo Church.
+%Logic,Arithmetic and Automata.
+%International Congress of Mathematicians,
+%pp 23-35,
+%1962
+%
+%\bibitem{SLVSQFSS}
+%J.R. Buchi and L.H. Landweber.
+%Solving sequential conditions by finite-state strategies.
+%Transaction American Mathematic Society, Vol 138:295-311,
+%1969.
+%
+%\bibitem{AUTOINF}
+%M.O. Rabin.
+%Automata on Infinite Objects and Church's Problem,
+%volume 13 of Regional Conference Series in Mathematics.
+%American Mathematic Society, 1972.
+%
+%\bibitem{DSGSYNTMPLG}
+%E.M. Clarke and E.A. Emerson.
+%Design and synthesis of synchronization skeletons using branching time temporal logic.
+%In IBM Workshop on Logics of Programs,LNCS 131,
+%pp 52-71,
+%1981.
+%
+%\bibitem{SYNTMPLGSPC}
+%Z. Manna and P. Wolper.
+%Synthesis of communicating processes from temporal logic specifications.
+%ACM Trans. Prog. Lang. Sys., 6:68-93, 1984.
+%
+%\bibitem{SYNRCTVMD}
+%A. Pnueli and R. Rosner.
+%On the synthesis of a reactive module.
+%In Proc. 16th ACM Symp. Princ. of Prog. Lang.,pages 179-190, 1989.
+%
+%\bibitem{CNTLSYNTMDAUTO}
+%E. Asarin, O. Maler, A. Pnueli, and J. Sifakis.
+%Controller synthesis for timed automata.
+%In IFAC Symposium on System Structure and Control, pages 469-474. Elsevier, 1998.
+%
+%\bibitem{DTMGENGMELTL}
+%R. Alur and S. La Torre.
+%Deterministic generators and games for LTL fragments.
+%ACM Trans. Comput. Log., 5(1):1-25,2004.
+%%\balancecolumns
+%
+%\bibitem{SYNRCTVDES}
+%N. Piterman, A. Pnueli and Y. Saar,
+%Synthesis of Reactive(1) Designs,
+%in VMCAI'06,
+%pp 364-380,
+%2006.
+%
+%\bibitem{CMPLXAUTO}
+%S. Safra.
+%Complexity of Automata on Infinite Objects.
+%PhD thesis, The Weizmann Institute of Science, Rehovot, Israel, March 1989.
+%
+%\bibitem{NEWALGSTRGSYN}
+%Aidan Harding, Mark Ryan, and Pierre-Yves Schobbens.
+%A New Algorithm for Strategy Synthesis in LTL Games.
+%in TACAS'05,
+%pp 477-492,
+%2005.
+%
+%\bibitem{SYNCNTLBNDRPN}
+%Oded Maler, Dejan Nickovic and Amir Pnueli.
+%On Synthesizing Controllers from Bounded-Response Properties.
+%In CAV'07,
+%pp 95-107,
+%2007.
+%
+%\bibitem{ANZU}
+%Barbara Jobstmann, Stefan Galler, Martin Weiglhofer, Roderick Paul Bloem.
+%Anzu: A Tool for Property Synthesis.
+%in CAV'07,
+%pp 258-262,
+%2007.
+%
+%\bibitem{OPTLTLSYN}
+%Barbara Jobstmann, Roderick Bloem.
+%Optimizations for LTL Synthesis.
+%in FMCAD'06,
+%pp 117-124,
+%2006.
+
+\bibitem{MEALY}
+Mealy, George H.
+A Method for Synthesizing Sequential Circuits.
+Bell Systems Technical Journal v 34, pp1045-1079, 1955.
+
+\bibitem{McCluskey}
+E.J. McCluskey.
+Logic Design Principles.
+Prentice-Hall,
+1986.
+
+\bibitem{Scherzo}
+O. Coudert.
+On solving covering problems.
+In DAC'96,
+1996.
+
+\bibitem{Espresso}
+R. Rudell and A. Sangiovanni Vincentelli.
+Multiple valued minimization for PLA optimization.
+IEEE Transactions on CAD,6(5),
+pp 727-750,
+1987.
+
+\bibitem{Mod2sum}
+P.W. Besslich and M. Riege.
+An efficient program for logic synthesis of Mod-2 Sum Expressions.
+In Euro ASIC'91,
+pp 136-141,
+1991.
+
+\bibitem{ANDEXOR}
+T. Sasao.
+AND-EXOR expressions and their optimization.
+Kluwer Academic Publishers,
+Editor,
+Logic Synthesis and Optimization,
+Boston,
+1993.
+
+\bibitem{Reed}
+I. Reed.
+A class of multiple-error-correcting codes and their decoding scheme.
+IRE Trans. on Inf. Theory, PGIT-4:48-49,
+1954.
+
+\bibitem{FPRM}
+M. Davio, Y. Deschamps, and A. Thayse.
+Discrete and switching Functions.
+George and McGraw-Hill, NY,
+1978.
+
+\bibitem{fastexactFPRM}
+A. Sarabi and M. Perkowski.
+Fast exact and quasi-minimal minimization of highly testable Fixed-Polarity AND/XOR canonical networks.
+In DAC'92,
+pp 30-35,
+1992.
+
+\bibitem{fastOFDD}
+Rolf Drechsler, Bernd Becker, Michael Theobald.
+Fast OFDD based minimization of fixed polarity Reed-Muller expressions.
+in EURO-DAC,
+1994.
+
+\bibitem{lowpowerXOR}
+Unni Narayanan and C. L. Liu.
+Low power logic synthesis for XOR based circuits.
+in ICCAD'97,
+pp 570-574,
+1997.
+
+\bibitem{ShegnYuShen:iccad09}
+ShengYu Shen, JianMin Zhang, Ying Qin and SiKun Li.
+\emph{Synthesizing Complementary Circuits Automatically}.
+accepted by ICCAD'09,\url{http://www.ssypub.org/pub/iccad09_ssy.pdf}
+
+\end{thebibliography}
+
+% biography section
+%
+% If you have an EPS/PDF photo (graphicx package needed) extra braces are
+% needed around the contents of the optional argument to biography to prevent
+% the LaTeX parser from getting confused when it sees the complicated
+% \includegraphics command within an optional argument. (You could create
+% your own custom macro containing the \includegraphics command to make things
+% simpler here.)
+%\begin{biography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
+% or if you just want to reserve a space for a photo:
+
+%\begin{IEEEbiography}{Michael Shell}
+%Biography text here.
+%\end{IEEEbiography}
+
+% if you will not have a photo at all:
+%\begin{IEEEbiographynophoto}{John Doe}
+%Biography text here.
+%\end{IEEEbiographynophoto}
+
+% insert where needed to balance the two columns on the last page with
+% biographies
+%\newpage
+
+%\begin{IEEEbiographynophoto}{Jane Doe}
+%Biography text here.
+%\end{IEEEbiographynophoto}
+
+% You can push biographies down or up by placing
+% a \vfill before or after them. The appropriate
+% use of \vfill depends on what kind of text is
+% on the last page and whether or not the columns
+% are being equalized.
+
+%\vfill
+
+% Can be used to pull up biographies so that the bottom of the last one
+% is flush with the other column.
+%\enlargethispage{-5in}
+
+
+
+% that's all folks
+\end{document}
+
+

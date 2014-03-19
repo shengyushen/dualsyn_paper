@@ -1,0 +1,5 @@
+Complementary synthesis can automatically synthesize the decoder circuit of an encoder. However, its user needs to manually specify an assertion on some configuration pins to prevent the encoder from reaching the non-working states. 
+To avoid this tedious task, this paper propose an automatic approach to infer this assertion, by iteratively discovering and removing cases without decoders. 
+To discover all decoders that may exist simultaneously under this assertion, a second algorithm based on functional dependency is proposed to decompose $\mathbb{R}$, the Boolean relation that uniquely determines the encoder's input, into all possible decoders.
+To help the user select the correct decoder, a third algorithm is proposed to infer each decoder's precondition formula, which represents those cases that lead to this decoder's existence.
+Experimental results on several complex encoders indicate that our algorithm can always infer assertions and generate decoders for them. Moreover, when multiple decoders exist simultaneously, the user can easily select the correct one by inspecting their precondition formulas.

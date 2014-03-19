@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: v2-acmsmall-sample.aux
+The style file: ACM-Reference-Format-Journals.bst
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: acmsmall-sample-bibfile.bib
+I was expecting a `,' or a `}'---line 1337 of file acmsmall-sample-bibfile.bib
+ :   
+ :   month =   "",
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You've used 27 entries,
+            5290 wiz_defined-function locations,
+            1650 strings with 23418 characters,
+and the built_in function-call counts, 31978 in all, are:
+= -- 4112
+> -- 1012
+< -- 4
++ -- 305
+- -- 757
+* -- 2101
+:= -- 3458
+add.period$ -- 142
+call.type$ -- 27
+change.case$ -- 176
+chr.to.int$ -- 23
+cite$ -- 27
+duplicate$ -- 2281
+empty$ -- 1608
+format.name$ -- 411
+if$ -- 7084
+int.to.chr$ -- 5
+int.to.str$ -- 0
+missing$ -- 77
+newline$ -- 289
+num.names$ -- 218
+pop$ -- 742
+preamble$ -- 1
+purify$ -- 307
+quote$ -- 0
+skip$ -- 677
+stack$ -- 0
+substring$ -- 3874
+swap$ -- 255
+text.length$ -- 823
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 378
+warning$ -- 0
+while$ -- 235
+width$ -- 0
+write$ -- 569
+(There was 1 error message)

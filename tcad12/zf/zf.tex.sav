@@ -1,0 +1,1546 @@
+% 中国科学 A 辑: 数学 中文模板, 请直接用 LaTeX 编译.
+\documentclass{SCACF}
+\usepackage{amssymb}
+\usepackage{color,soul}
+% 楷体
+% 请作者注意: 在整篇文章中, 不要使用任何改变文章版式的命令, 谢谢.
+% 常见的数学类宏包如 amsmath,amsthm,amsfonts,amssymb,bm 和插图宏包会自动加载.
+% 请在此添加文章要用到的特殊宏包以及自定义命令等.
+\def\dl{\displaystyle}
+\def\tlj{\end{document}}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\makeatletter
+\newcommand{\rmnum}[1]{\romannumeral #1}
+\newcommand{\Rmnum}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+\newtheorem{algo}{\textbf{Algorithm}}
+\newtheorem{definition11}{\textbf{Definition}}
+\newtheorem{lemma}{\textbf{Lemma}}
+\newtheorem{theorem}{\textbf{Theorem}}
+\newtheorem{proposition}{\textbf{Proposition}}
+
+\begin{document}
+
+%文章的基本参数
+\Year{2010} % 出版年
+\Vol{40} % 卷
+\No{1} % 期
+\BeginPage{1} % 起始页码
+\EndPage{?} % 终止页码
+%\ReceivedDate{2009--xx--xx} % 收稿日期
+%\AcceptedDate{2009--xx--xx} % 接受日期
+%引用信息%%%%%%%%%%%%%%%%%%%%%%%%%作者不需填写此部分%%%%%%%%%%%%%%%%%%
+%\thispagestyle{empty}
+%\begin{picture}(0,0)
+%\put(-25,-635){ \fcolorbox[rgb]{0,0,0}{0.75,0.75,0.75}
+%{\parbox[t]{144truemm{\bf\scriptsize 引用格式:\ }}{\scriptsize
+%李国杰. 信息科学技术的长期发展趋势和我国的战略取向. 2010, 53;
+%1--8}}}\end{picture}
+%引用信息%%%%%%%%%%%%%%%%%%%%%%%%%作者不需填写此部分%%%%%%%%%%%%%%%%%%
+
+% 标题: 此命令的完整格式为:
+%       \title[短标题]{标题}{题注}
+% 说明: 1. 短标题为可选项, 出现于页眉中, 若省略, 则与标题相同.
+%       2. 题注是对标题的附加说明, 将出现于首页脚注区, 若没有, 花括号不可省略.
+\noindent\hspace{-2mm}{\vspace{-2mm}\zihao{4}
+ \fcolorbox[rgb]{1,1,1}{0.75,0.75,0.75}{\parbox[t]{20truemm}{\heiti
+ {\zihao{-4}\quad 论~~~文}}}}
+
+
+\title[]{解码器存在性的停机算法}{}
+
+
+% 作者: 此命令的使用格式为:
+%       \author[单位编号]{作者姓名}{}
+% 说明: 1. 每一个作者用一条 \author 命令.
+%       2. 单位编号应该与下面 \address 中的单位相对应, 如果只有一个作者或只有一个单位, 则可省略此编号.
+\author[]{沈胜宇}{~~}
+\author[]{秦莹}{}%通信作者请在相应作者后加*号
+\author[]{肖立权}{}
+\author[]{王克非}{}
+\author[]{张建民}{}
+\author[]{李思昆}{}
+\Email{syshen@nudt.edu.cn, qy123@nudt.edu.cn, lqxiao@nudt.edu.cn, kfwang@nudt.edu.cn, jmzhang@nudt.edu.cn, skli@nudt.edu.cn}%此处请填写所有作者的email地址
+\Correspondingauthor{*沈胜宇}%如果仅有一位作者请删去括号中的内容
+\Foundation{国家自然科学基金(批准号: 61070132)资助项目}% 项目资助信息
+\Authormark{沈胜宇等}%如果仅有一位作者请删去“等”
+
+% 单位及地址: 此命令的使用格式为:
+%       \address[单位编号]{单位名称与地址}
+% 说明: 1. 每一个单位用一个 \address 命令.
+%       2. 单位编号中请按顺序填入数字 1,2,..., 如果只有一个单位, 可以省略此编号.
+
+%\address[\ding{172}\!\!]{海军工程大学电子工程学院, 武汉 430033}
+\address[]{国防科技大学计算机学院, 长沙 410073}
+\maketitle
+
+\begin{abstract}
+{\xiaowuhao
+\begin{tabular}{p{0.80\textwidth}!{\color[gray]{0.4}\vline}p{0.16\textwidth}}
+{\zaiyao{\heiti 摘要\quad\,\,}
+对偶综合算法能够自动综合特定编码器的解码器.
+该算法通过检查该编码器的输入能否被其输出唯一决定，来确认其解码器是否存在.
+然而，
+如果解码器不存在则该算法不停机.
+
+\hspace{8mm}本文提出了一个新颖的算法以解决该问题.
+对于该编码器的每一条路径,
+该算法首先确认其输入能否被其输出唯一决定.
+若是,
+则解码器存在;
+否则,
+该算法检查该路径中是否存在环,
+通过展开这些环，解码器的不存在性可以被确认.
+
+\hspace{8mm}我们在多个benchmark上运行了该算法，
+以展示其有效性和有用性,
+包括 PCI-E and Ethernet.
+实验结果表明
+该算法总能够区分争取的错误的编码器并停机,
+且该算法比目前算法快三倍以上.
+
+}&{\heiti\zihao{5}
+关键词}\par
+停机
+
+对偶综合
+\end{tabular}}
+\end{abstract}
+\vspace*{-1.25mm}\textcolor[rgb]{0.4,0.4,0.4}{\rule{16cm}{0.4pt}}
+%
+
+
+%引用信息%%%%%%%%%%%%%%%%%%%%%%%%%作者不需填写此部分%%%%%%%%%%%%%%%%%%
+%\renewcommand{\headrulewidth}{0pt}
+%\thispagestyle{fancy} \fancyfoot[L]{\footnotesize
+%\fcolorbox[rgb]{0,0,0}{0.75,0.75,0.75}{\parbox[t]{143truemm{\bf\scriptsize\raisebox{-4pt}{}\raisebox{9pt}{}
+%引用格式:\ }}{\scriptsize 刘涛, 黄高明, 王雪松等.
+%基于H/A目标极化分解理论的统计分析. 2010, 53; 1--13}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 正文
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\sec{1\quad 引言}
+\section{引言}\label{sec_intro}
+在设计通讯和多媒体芯片过程中，最复杂和容易出错的工作是设计对偶电路对 $(E, E^{-1})$,
+其中编码器$E$将特定的信息流编码为易于传输和储存的格式,
+而其对偶电路(或解码器) $E^{-1}$则致力于回复该信息.
+为了提高该工作的设计质量和效率,
+对偶综合算法\cite{ShengYuShen:iccad09,ShengYuShen:tcad}被提出以自动综合对偶电路。
+其基本思想是检验参数对偶条件(parameterized complementary condition，缩写PC),
+即编码器的输入能否被其输出唯一决定。
+
+然而,
+如果$E^{-1}$不存在则该算法不停机.
+另一个停机算法\cite{ShengYuShen:fmcad10}被提出以解决该问题。
+该算法首先构造形如洋葱圈的一系列PC的上估计,
+并检验$E$是否在其中.
+该算法非常慢且复杂.
+为此本位提出另一个简单高效的算法.
+对于编码器的每一条路径,
+该新算法检查两种情况:
+
+\begin{enumerate}
+ \item 正如原始的非停机算法\cite{ShengYuShen:iccad09,ShengYuShen:tcad},
+       检查输入能否被输出唯一决定.
+      若是则解码器存在;
+ \item 否则,
+       检查在上述路径中是否存在环.
+       如图\ref{doubleloop_unfold_cmp_simple},
+       图\ref{doubleloop_unfold_cmp_simple}a)包含三个子路径$a$, $b$ and $c$.
+       其中$b$是一个环。
+       通过将该环展开为图\ref{doubleloop_unfold_cmp_simple}b)中的长路径，
+       则在更长路径上解码器的不存在性可以被确认.
+\end{enumerate}
+
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=0.3\textwidth]{doubleloop_unfold_cmp_simple}
+\end{center}
+\caption{展开环以证明在更长的路径上不存在解码器}
+  \label{doubleloop_unfold_cmp_simple}
+\end{figure}
+
+该算法已经在OCaml语言中实现.
+所有产生的SAT实例均由Zchaff\cite{CHAFF}求解.
+实验对象包括多个来自于工业项目的复杂编码器，
+如PCI-E\cite{PCIESPEC}和以太网\cite{IEEE80232002}),
+以及他们经过简单修改的，没有对应解码器的的错误版本.
+实验结果表明
+本文算法始终能够停机并区分正确和不正确的版本,
+并且比现有算法\cite{ShengYuShen:fmcad10}快3倍以上.
+所有实验结果和程序可以从\url{http://www.ssypub.org}下载.
+
+在此我们区分两种情形：
+\begin{enumerate}
+  \item 标准数据路径电路:
+  这些电路通常作为数字信号处理元件, 如
+      快速傅立叶变换(FFT) 和
+      离散余弦变换(DCT).
+      这些电路通常具有标准而且高度优化的实现,
+      如Xilinx core generator\cite{CoreGen} and Synopsys DesignWare 库\cite{DesignWare}.
+      因此这些解码器不需要我们的算法.
+  \item 非标准控制电路:
+  此类电路,
+  如PCI-E\cite{PCIESPEC}和以太网\cite{IEEE80232002},
+  通常用于处理通讯协议,
+  通常不具有标准实现.
+      本文算法是为他们设计的。
+\end{enumerate}
+
+
+本文按如下方式组织.
+背景信息在\ref{sec_prem}节给出.
+算法在\ref{sec_exist}节中介绍,
+而\ref{sec_rmred}节描述了如何移除冗余字符以减小面积.
+实验结果在\ref{sec_exp}节给出，
+相关工作在\ref{sec_relwork}节.
+最后,
+\ref{sec_conclude}总结全文。
+
+
+
+
+%\sec{2\quad 背景知识}
+\section{背景知识}\label{sec_prem}
+%\sec{2.1\quad 命题逻辑可满足性问题}
+\subsection{命题逻辑可满足性问题}\label{subsec_SAT}
+
+布尔集合记为$B=\{0,1\}$.
+对于在变量集合$V$上的布尔公式$F$,
+其命题逻辑可满足性问题(SAT)是寻找满足赋值$A:V\to B$,
+以便$F$取值为1.
+如果$A$存在，
+则$F$是可满足的;
+否则,
+其实不可满足的.
+
+一个确认$A$是否存在的计算机程序称为SAT求解器,
+如Zchaff\cite{CHAFF}, Grasp\cite{grasp}, Berkmin\cite{BERKMIN},
+和 MiniSAT\cite{EXTSAT}.
+一个有待SAT求解器求解的公式称为SAT实例.
+%\sec{2.2\quad 递归直径}
+
+\subsection{递归直径}\label{subsec_recdia}
+编码器$E$可以用Mealy有限状态机\cite{MEALY}建模.
+
+\begin{definition11}\label{MealyFSM}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\textbf{Mealy有限状态机}是一个5元组$M=(S,s_0,I,O,T)$,
+其中$S$是有限状态集合,
+$s_0\in S$为初始状态,
+$I$为输入字符集合,
+$O$为输出字符集合,
+迁移函数$T: S\times I\to S\times O$用于从当前状态和输入字符计算次态和输出字符.
+%}
+\end{definition11}
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.20\textwidth]{mealy}
+\end{center}
+\caption{Mealy有限状态机}
+  \label{mealy}
+\end{figure}
+
+如图\ref{mealy}所示,
+在本文中,
+状态由灰色圆角框表示,
+而迁移函数$T$由白色方框表示.
+在第$n$个周期的状态，输入字符和输出字符表示为$s_n$, $i_n$和$o_n$.
+而从第$n$个到第$m$个周期的状态，输入字符和输出字符序列表示为$s_n^m$, $i_n^m$和$o_n^m$.
+一条路径是一个状态序列$s_n^{m}$，
+其中对所有$n\le j< m$有$\exists i_jo_j (s_{j+1},o_j)\equiv T(s_j,i_j)$.
+一个环是一个路径$s_n^{m}$，
+其中$s_n\equiv s_m$.
+%A loop-like path is a path $s_n^{m}$ with $s_i\equiv s_j$,
+%where $n\le i< j\le m$.
+
+
+Kroening et al. \cite{RecDiam}定义Mealy有限状态机$M$的状态变量递归半径$rrd(M)$为,
+从初始状态开始，不包含环的最长路径.
+
+\begin{equation}\label{equ_svrd}
+\begin{split}
+&rrd(M)\overset{def}{=}\max\{i|\exists s_0 \dots s_i i_0 \dots i_i o_0 \dots o_i:\\
+& I(s_0)\wedge \bigwedge^{i-1}_{j=0}(s_{j+1},o_j)\equiv T(s_j,i_j)\wedge\bigwedge^{i-1}_{j=0}\bigwedge^{i}_{k=j+1}s_{j}\ne s_{k}\}
+\end{split}
+\end{equation}
+
+本文中,
+我们定义非初始化的状态变量递归半径$uirrd(M)$,
+为最长无环路径.
+%}
+
+\begin{equation}\label{equ_uisvrd}
+\begin{split}
+&uirrd(M)\overset{def}{=}\max\{i|\exists s_0 \dots s_i i_0 \dots i_i o_0 \dots o_i:\\
+&\bigwedge^{i-1}_{j=0}(s_{j+1},o_j)\equiv T(s_j,i_j)\wedge\bigwedge^{i-1}_{j=0}\bigwedge^{i}_{k=j+1}s_{j}\ne s_{k}\}
+\end{split}
+\end{equation}
+
+两者的唯一区别是$uirrd$不考虑初始状态.
+这些定义仅用于证明下文的定理.
+本文不需要计算这些半径.
+
+
+%\sec{2.3\quad 检验$E^{-1}$存在性的原始非完备算法}
+\subsection{检验$E^{-1}$存在性的原始非停机算法}\label{subsec_chkextdec}
+原始的对偶综合算法\cite{ShengYuShen:iccad09}包含两步：
+检验$E^{-1}$的存在性和特征化其布尔函数。
+我们将仅介绍第一步。
+
+根据我们以往的研究经历\cite{ShengYuShen:iccad09,ShengYuShen:tcad,ShengYuShen:fmcad10},
+许多通讯协议是loseless的,
+即每个输入字符均能够由其输出字符序列唯一决定.
+
+形式化的,
+如图\ref{t1}所示,
+$E^{-1}$的充分条件是,
+存在三个参数$p$, $d$ 和 $l$,
+使的编码器$E$的输入字符$i_n$能够被$E$的输出序列$o_{n+d-l}^{n+d-1}$唯一决定.
+其中$d$是$o_{n+d-l}^{n+d-1}$和$i_n$之间的相对延迟,
+$l$是$o_{n+d-l}^{n+d-1}$的长度,
+而$p$是用于剔除部分非可达状态集合的前置路径长度.
+因此,
+$PC$)\cite{ShengYuShen:iccad09}可以形式化的定义为:
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.4\textwidth]{t1}
+\end{center}
+\caption{The parameterized complementary condition}
+  \label{t1}
+\end{figure}
+
+\begin{definition11}\label{def_pcc}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\textbf{参数对偶条件($\boldsymbol{PC}$) :}
+对于编码器$E$,
+$E\vDash PC(p,d,l)$成立当
+$i_n$可以被$o_{n+d-l}^{n+d-1}$唯一决定.
+这等价于公式(\ref{uniqt1})中的$F_{PC}(p,d,l)$的不可满足性.
+我们另外定义$E\vDash PC$为$\exists p,d,l:E\vDash PC(p,d,l)$.
+\end{definition11}
+
+\begin{equation}\label{uniqt1}
+\begin{split}
+&F_{PC}(p,d,l)\overset{def}{=}\\
+&\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s_{m+1},o_m)\equiv T(s_m,i_m)
+\}
+\\
+\wedge&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s'_{m+1},o'_m)\equiv T(s'_m,i'_m)
+\}
+\\
+\wedge&\bigwedge_{m=n+d-l}^{n+d-1}o_m\equiv o'_m \\
+\wedge&i_n\ne i'_n
+\end{array}
+\right\}
+\end{split}
+\end{equation}
+
+%This definition is the same as that of Subsection \ref{subsec_chkextdec} and paper \cite{ShengYuShen:iccad09}.
+
+公式(\ref{uniqt1})的第2和第3行分别对应于编码器的两条路径.
+他们之间的唯一差别在于一个prime被附加到第三行的每一个变量上.
+第4行强制上述两行的输出相等,
+而最后一行强制他们的输入不相等.
+
+该不停机算饭\cite{ShengYuShen:iccad09}简单的遍历所有$p$,$d$ 和 $l$的组合,
+从小到大,
+直到找到$p$,$d$和$l$使的公式(\ref{uniqt1})不可满足.
+如此即可证明解码器存在.
+然而,
+如果解码器不存在,
+该算法将永不停机.
+该问题将在下一节中解决.
+
+% \textbf{We now explain one additional challenge}.
+
+如图\ref{t1}所示,
+如果$l > d$, 则,
+为了计算$i_n$,
+我们需要知道$o_m$其中$m < n$.
+这看起来似乎违反了因果关系.
+非形式化的,
+在不同的状态中,
+编码器会为相同的输入$i_n$产生不同的输出.
+旖旎次对于$m < n$的$o_m$的知识有助于标定处理$i_n$的状态.
+该问题能够用图\ref{mealy_add}的电路解释.
+假设其迁移函数$T$为:
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.3\textwidth]{mealy_add}
+\end{center}
+\caption{违法因果关系的电路}
+  \label{mealy_add}
+\end{figure}
+
+\begin{equation}
+\begin{array}{c}
+s_{n+1}=i_n+s_n\\
+o_{n}=i_n+s_n
+\end{array}
+\end{equation}
+
+直观的,
+该电路将输入和当前状态求和,
+并将结果送到次态和输出.
+因此,
+为了恢复$i_{n+1}$,
+输出字符$o_n$需要被从$o_{n+1}$中减去.
+在这种情况下,
+$l$是1,
+而$d$是0.
+这就解释了为什么$l$可以比$d$打.
+
+%\sec{2\quad 使用$LP$对$PC$进行上估计和通过搜索环形路径证伪$LP$}
+\section{确认解码器存在性的停机算法}\label{sec_exist}
+%\sec{2.1\quad 上估计$LP$的定义}
+\subsection{确认解码器不存在}\label{subsec_deterNo}
+定义\ref{def_pcc}中的$PC$只定义了如何确认$E^{-1}$存在.
+而如何确认$E^{-1}$不存在则没有定义.
+因此，
+得到停机算法的关键在于如何确认$E^{-1}$不存在.
+
+根据定义\ref{def_pcc}和图\ref{t1},
+$E^{-1}$存在当存在$<p,d,l>$,
+使的$E\vDash PC(p,d,l)$成立.
+因此,
+直观的,
+$E^{-1}$不存在如果对于任意$<p,d,l>$,
+总能找到$<p',d',l'>$满足$p'>p$,$l'>l$和$d'>d$,
+使的$E\vDash PC(p',d',l')$不成立.
+
+这种情况可以被图\ref{fig_double_loop}中的SAT实例检测,
+该图类似于图\ref{t1},
+出了三个约束被插入以检测状态序列$s_{n-p}^{n+d-l}$,$s_{n+d-l+1}^n$和$s_{n+1}^{n+d}$上的环.
+如果对于$<p,d,l>$该SAT实例是可满足的,
+则这三个环可以如下展开:
+假设$s_{n-p}^{n+d-l}$,$s_{n+d-l+1}^n$和$s_{n+1}^{n+d}$上的环的长度分别为$l_1$, $l_2$和$l_3$,
+且这些环被展开$q$次.
+则,
+从这次展开中得到的SAT实例如图\ref{fig_double_loop_unfold}所示.
+该SAT实例对应于$F_{LN}(p",d",l")$,
+其中:
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.45\textwidth]{doubleloop}
+\end{center}
+\caption{The loop-like non-complementary condition}
+  \label{fig_double_loop}
+\end{figure}
+
+
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=0.45\textwidth]{doubleloop_unfold}
+\end{center}
+\caption{The loop-like non-complementary condition unfolded $q$ times}
+  \label{fig_double_loop_unfold}
+\end{figure}
+
+\begin{equation}
+\begin{array}{ccc}
+p"&=&l_1*q+(d-l+p-l_1)+l_2*q+(l-d-l_2) \\
+d"&=&l_3*q+(d-l_3) \\
+l"&=&l_2*q+(l-d-l_2)+l_3*q+(d-l_3)
+\end{array}
+\end{equation}
+
+很显然对于任意$<p,d,l>$和$<p',d',l'>$,
+总存在$q$,
+使的展开得到的$s_{n-p"}^{n+d"-l"}$,$s_{n+d"-l"+1}^n$和$s_{n+1}^{n+d"}$
+不短于$s_{n-p'}^{n+d'-l'}$,$s_{n+d'-l'+1}^n$和$s_{n+1}^{n+d'}$.
+该SAT实例的可满足性将在引理\ref{lemma_unfold_longer}中证明.
+这意味着对任意$<p',d',l'>$,
+我们总能找到$<p",d",l">$,
+使的$E\vDash PC(p",d",l")$不成立.
+因此解码器存在.
+
+
+
+从公式(\ref{uniqt1})的第二和第三行可知,
+实际上存在两条路径,
+因此这些环需要在这两条路径上同时检测,
+也就是说,
+需要在如下定义的乘积状态机$M^2$上检测环:
+
+\begin{definition11}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\textbf{乘积状态机:}
+对于Mealy状态机$M=(S,s_0,I,O,T)$,
+其乘积状态机定义为$M^2=(S^2,s_0^2,I^2,O^2,T^2)$,
+其中
+\begin{enumerate}
+  \item $S^2=S\times S$
+  \item $s_0^2=s_0\times s_0$
+  \item $I^2=I\times I$
+  \item $O^2=O\times O$
+  \item $T^2$定义为$(<s_{m+1},s'_{m+1}>,<o_m,o'_m>)=T^2(<s_m,s'_m>,<i_m,i'_m>)$，其中$(s_{m+1},o_m)=T(s_m,i_m)$且 $(s'_{m+1},o'_m)=T(s'_m,i'_m)$.
+\end{enumerate}
+\end{definition11}
+
+因此,
+环形非对偶条件可以定义如下以确认解码器$E^{-1}$不存在:
+
+\begin{definition11}\label{def_lnc}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\textbf{环形非对偶条件($\boldsymbol{LN}$) :}
+对于编码器$E$及其Mealy状态机$M=(S,s_0,I,O,T)$,
+假设其乘积状态机为$M^2=(S^2,s_0^2,I^2,O^2,T^2)$,
+则$E\vDash LN(p,d,l)$成立当且仅当
+$i_n$不能被$o_{n+d-l}^{n+d-1}$唯一决定,
+而且在状态序列$(s^2)_{n-p}^{n+d-l}$,$(s^2)_{n+d-l+1}^n$和$(s^2)_{n+1}^{n+d}$上存在环.
+这等价于公式(\ref{uniqln})中的$F_{LN}(p,d,l)$的不可满足性.
+$E\vDash LN$被进一步的定义为$\exists p,d,l:E\vDash LN(p,d,l)$.
+\end{definition11}
+
+
+\begin{equation}\label{uniqln}
+\begin{split}
+&F_{LN}(p,d,l)\overset{def}{=}\\
+&\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s_{m+1},o_m)\equiv T(s_m,i_m)
+\}
+\\
+\wedge&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s'_{m+1},o'_m)\equiv T(s'_m,i'_m)
+\}
+\\
+\wedge&\bigwedge_{m=n+d-l}^{n+d-1}o_m\equiv o'_m \\
+\wedge& i_n\ne i'_n \\
+\wedge&\bigvee_{x=n-p}^{n+d-l-1}\bigvee_{y=x+1}^{n+d-l} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge&\bigvee_{x=n+d-l+1}^{n-1}\bigvee_{y=x+1}^{n} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge&\bigvee_{x=n+1}^{n+d-1}\bigvee_{y=x+1}^{n+d} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\}
+\end{array}
+\right\}
+\end{split}
+\end{equation}
+
+通过比较公式(\ref{uniqt1}) 和 (\ref{uniqln}),
+很明显他们之间的唯一差别在于公式(\ref{uniqln})中最后三行新插入的约束,
+他们将被用于检测下面三个路径上的环:
+\begin{equation}
+\begin{array}{ccc}
+Prefix_{p,d,l}&=&(s^2)_{n-p}^{n+d-l} \\
+Left_{p,d,l}&=&(s^2)_{n+d-l+1}^n \\
+Right_{p,d,l}&=&(s^2)_{n+1}^{n+d}
+\end{array}
+\end{equation}
+
+
+该方法的正确性将在下一小节证明.
+
+
+
+
+
+
+
+
+
+
+%\sec{2.2\quad $PC$，$LP$和$LL$之间的关系}
+\subsection{正确性证明}
+
+
+
+在证明该方法的正确性之前,
+我们需要一些引理.
+\begin{figure}[b]
+\centering
+\includegraphics[width=0.45\textwidth]{doubleloop_unfold_cmp}
+\caption{$F_{LN}(p,d,l)$和$F_{LN}(p",d",l")$之间的对应关系}
+\label{doubleloop_unfold_cmp}
+\end{figure}
+
+
+\begin{lemma}[]\label{lemma_unfold_longer}
+对于图\ref{fig_double_loop_unfold}中的$F_{LN}(p",d",l")$,
+$E\vDash LN(p,d,l)$导致 $E\vDash LN(p",d",l")$.
+\end{lemma}
+\begin{proof}
+公式$F_{LN}(p",d",l")$为:
+
+\begin{equation}\label{equ_correspondance}
+\begin{split}
+&F_{LN}(p",d",l")\stackrel{def}{=}\\
+&\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n-p"}^{n+d"-1}
+\{
+(s_{m+1},o_m)\equiv T(s_m,i_m)
+\}
+\\
+\wedge&\bigwedge_{m=n-p"}^{n+d"-1}
+\{
+(s'_{m+1},o'_m)\equiv T(s'_m,i'_m)
+\}
+\\
+\wedge&\bigwedge_{m=n+d"-l"}^{n+d"-1}o_m\equiv o'_m \\
+\wedge& i_n\ne i'_n \\
+\wedge& \bigvee_{x=n-p"}^{n+d"-l"-1}\bigvee_{y=x+1}^{n+d"-l"} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+d"-l"+1}^{n-1}\bigvee_{y=x+1}^{n} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+1}^{n+d"-1}\bigvee_{y=x+1}^{n+d"} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\}
+\end{array}
+\right\}
+\end{split}
+\end{equation}
+
+$E\vDash LN(p,d,l)$意味着$F_{LN}(p,d,l)$可满足.
+假设其满足赋值为$A$.
+%We need to prove that $F_{LN}(p",d",l")$ is also satisfied with $A$.
+图\ref{doubleloop_unfold_cmp}中的编号为1至12的有向边
+给出了$F_{LN}(p,d,l)$和$F_{LN}(p",d",l")$的对应关系.
+
+有向边2和3意味着将$Right_{p,d,l}$中的满足赋值应用于
+$Right_{p",d",l"}$中的展开环.
+而有限变1和4意味着将非环部分的赋值应用于$Right_{p",d",l"}$.
+基于有向边1至4,
+路径$Right_{p",d",l"}$是可满足的.
+
+类似的,
+路径$Prefix_{p",d",l"}$和$Left_{p",d",l"}$也能够被$A$满足.
+因此公式(\ref{equ_correspondance})的第二行可以被$A$满足.
+
+类似的,
+公式(\ref{equ_correspondance})的第三至第五行也能够被$A$满足.
+
+同时,
+在$Prefix_{p",d",l"}$, $Left_{p",d",l"}$和$Right_{p",d",l"}$中有$q$个环,
+这将使得公式(\ref{equ_correspondance})的最后三行被满足.
+
+因此,$F_{LN}(p,d,l)$的满足赋值$A$可以使的$F_{LN}(p",d",l")$被满足.
+得证.
+\end{proof}
+
+\begin{lemma}[]\label{lemma_pc_long}
+对于$<p,d,l>$和$<p',d',l'>$,
+ 如果$Prefix_{p',d',l'}$,$Left_{p',d',l'}$和$Right_{p',d',l'}$不短于$Prefix_{p,d,l}$,$Left_{p,d,l}$ 和 $Right_{p,d,l}$,
+则 $E\vDash PC(p,d,l)\to E\vDash PC(p',d',l')$.
+\end{lemma}
+\begin{proof}
+很明显$F_{PC}(p,d,l)$是$F_{PC}(p',d',l')$的子公式,
+因此前者的不可满足导致了后者的不可满足。
+因此,
+$E\vDash PC(p,d,l)\to E\vDash PC(p',d',l')$成立.
+\end{proof}
+
+下列的两个定理证明了$E\vDash LN\leftrightarrow \neg \{E\vDash PC\}$.
+
+
+
+\begin{theorem}[]\label{thm_pc_nln}
+$E\vDash LN\to \neg \{E\vDash PC\}$
+\end{theorem}
+\begin{proof}
+基于反证法.
+假设$E\vDash LN$和$E\vDash PC$都成立.
+这意味着存在$<p,d,l>$和$<p',d',l'>$,
+使的$E\vDash PC(p,d,l)$和$E\vDash LN(p',d',l')$成立.
+
+一方面,
+$E\vDash LN(p',d',l')$成立意味着在$Prefix_{p',d',l'}$,$Left_{p',d',l'}$和$Right_{p',d',l'}$上存在环.
+通过展开这些环,
+可以得到另一个$<p",d",l">$,
+使的 :
+\begin{enumerate}
+\item $Prefix_{p",d",l"}$,$Left_{p",d",l"}$ 和 $Right_{p",d",l"}$不短于$Prefix_{p,d,l}$,$Left_{p,d,l}$ 和 $Right_{p,d,l}$;
+\item 有引理\ref{lemma_unfold_longer}可知,
+$F_{LN}(p",d",l")$是可满足的.
+\end{enumerate}
+
+$F_{PC}(p",d",l")$是$F_{LN}(p",d",l")$的子公式,
+因此$F_{PC}(p",d",l")$也是可满足的,
+这意味着$E\vDash PC(p",d",l")$不成立.
+
+另一方面,
+由引理\ref{lemma_pc_long}可知,
+$E\vDash PC(p",d",l")$成立.
+
+该矛盾导致定理得到证明.
+\end{proof}
+
+\begin{theorem}[]\label{thm_nln_pc}
+$E\vDash LN\gets \neg \{E\vDash PC\}$
+\end{theorem}
+\begin{proof}
+基于反证法.
+假设$E\vDash LN$和$E\vDash PC$都不成立.
+则对于任意$<p,d,l>$和$<p',d',l'>$,
+$F_{PC}(p,d,l)$是可满足的,
+而$F_{LN}(p',d',l')$是不可满足的.
+
+因此,
+假设$uirrd(M^2)$是$E$的乘积状态机的非初始化状态递归半径.
+定义$<p,d,l>$为:
+\begin{equation}
+\begin{array}{c}
+p=uirrd(M^2)*2+2 \\
+d=uirrd(M^2)+1 \\
+l=uirrd(M^2)*2+2
+\end{array}
+\end{equation}
+
+基于该定理,
+很明显$Prefix_{p,d,l}$,$Left_{p,d,l}$ 和 $Right_{p,d,l}$都长于$uirrd(M^2)$.
+这意味着在这三个路径上存在环,
+这意味着$F_{LN}(p,d,l)$可满足.
+这与$F_{LN}(p',d',l')$对任意$<p',d',l'>$不可满足的事实矛盾.
+
+该矛盾导致本定理得到证明.
+\end{proof}
+
+定理 \ref{thm_pc_nln} 和 \ref{thm_nln_pc}表明,
+一个停机算法可以按照下述方法实现
+从小到大便利所有$<p,d,l>$的组合,
+在每个循环中检验$E\vDash PC(p,d,l)$和$E\vDash LN(p,d,l)$.
+该过程最终总会给出$E\vDash PC$和$E\vDash LN$之间的一个且仅有一个答案.
+下一小节将给出该算法的实现.
+
+\subsection{算法实现}\label{subsec_algoimp}
+
+\begin{algorithm}
+\caption{$check\_PCLN$}
+\label{algo_pcln}
+\begin{algorithmic}[1]
+\FOR{$x=1 \to \infty$}
+    \STATE{$p=2x$}
+    \STATE{$d=x$}
+    \STATE{$l=2x$}
+      \IF{$F_{PC}(p,d,l)$ is unsatisfiable}
+        \PRINT \texttt{"$E^{-1}$ exists with $<p,d,l>$"}\label{lab_pc}
+        \STATE \textbf{halt};
+      \ELSIF{$F_{LN}(p,d,l)$ is satisfiable}
+        \PRINT \texttt{"$E^{-1}$ does not exist"}\label{lab_ln}
+        \STATE \textbf{halt};
+      \ENDIF
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=0.45\textwidth]{rmred}
+\end{center}
+\caption{冗余字符}
+  \label{fig_rmred}
+\end{figure}
+
+不想原始算法便利$p$, $d$和$l$的所有组合\cite{ShengYuShen:iccad09,ShengYuShen:tcad},
+算法\ref{algo_pcln}的行2,3 和 4确保$Prefix_{p,d,l}$,$Left_{p,d,l}$和$Right_{p,d,l}$的长度不短于第一行中的$x$.
+因此,
+通过不便利这些冗余组合，
+算法速度得以大大提高.
+
+
+
+有定理\ref{thm_pc_nln}和\ref{thm_nln_pc},
+算法\ref{algo_pcln}最终总能够在行\ref{lab_pc}或 \ref{lab_ln}结束.
+
+
+\section{剔除冗余输出字符}\label{sec_rmred}
+\begin{algorithm}
+\caption{$RemoveRedundancy(p,d,l)$}
+\label{algo_remove}
+\begin{algorithmic}[1]
+\FOR{$p'=p \to 0$}
+  \IF{$F_{PC}(p'-1,d,l)$可满足}
+    \STATE break
+  \ENDIF
+\ENDFOR
+\FOR{$d'=d \to 0$}
+  \IF{$F_{PC}(p',d'-1,l)$可满足}
+    \STATE break
+  \ENDIF
+\ENDFOR
+\FOR{$l'=1 \to l-(d-d')$}
+  \IF{$F_{PC}(p',d',l')$不可满足}
+    \STATE break
+  \ENDIF
+\ENDFOR
+\PRINT \texttt{"最终结果为$<p',d',l'>$"}
+\end{algorithmic}
+\end{algorithm}
+
+虽然算法\ref{algo_pcln}足以确认$E^{-1}$是否存在,
+但是由算法\ref{algo_pcln}第\ref{lab_pc}行找到的参数存在冗余,
+这将造成电路面积和特征化上较大的开销.
+
+例如,
+如图\ref{fig_rmred}所示,
+假设$l$是导致$E\vDash PC(p,d,l)$成立的最小值,
+而且$l<d$,
+这意味着$i_n$能够被$o_k$唯一确定，其中$k>n$.
+进一步假设算法\ref{algo_pcln}的第\ref{lab_pc}行证明了$E\vDash PC(p,d,l')$.
+很明显$l'>d$,
+这将导致$i_n$依赖于某些$o_k$，其中$k\le n$.
+因此$o_{n+d-l'}^{n+d-l-1}$是冗余输出字符,
+他们应当被移除以免在$E^{-1}$中被当作寄存器实例化.
+同时,
+从图\ref{fig_rmred}中可知,
+较大的$p$和$d$将导致在特征化中较大的时间开销.
+
+因此,
+算法 \ref{algo_remove}将被用于在将$<p,d,l>$传送给特征化算法之前缩减他们.
+
+
+\section{实验结果}\label{sec_exp}
+本算法在OCaml语言中实现.
+产生的SAT实例由Zchaff求解器\cite{CHAFF}求解.
+所有实验结果可以从\url{http://www.ssypub.org}下载.
+%All related programs and data files can be downloaded from \url{http://www.ssypub.org}.
+\subsection{实验对象}
+\begin{table}[t]
+\centering
+\caption{实验对象信息}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+&XGXS&XFI&scrambler&PCI-E&T2 et-\\
+&&&&&hernet\\\hline
+Lines number&&&&&\\
+of Verilog&214&466&24&1139&1073\\
+source code&&&&&\\\hline
+\#regs&15&135&58&22&48\\\hline
+Data path&8&64&66&10&10\\
+width&&&&&\\ \hline
+\end{tabular}\label{tab_info}
+\end{table}
+
+
+表\ref{tab_info}给出了实验对象的信息.
+\begin{enumerate}
+
+\item XGXS是符合IEEE-802.3ae 2002标准\cite{IEEE80232002}短句48的以太网编码器.
+
+\item XFI 是符合同一个IEEE标准的短句49的以太网编码器.
+
+\item 66位scrambler用于确保特定数据流中包含足够多的0-1翻转，以确保其能够穿过高噪声通讯信道.
+
+\item 一个PCI-E\cite{PCIESPEC}物理层编码模块.
+
+\item Sun's OpenSparc T2 处理器的以太网编码器.
+\end{enumerate}
+
+\subsection{对正确设计的编码器确认其解码器的存在}\label{subsec_prop}
+\begin{table}[b]
+\centering
+\caption{对正确设计的编码器的实验}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+&                                        &XGXS     &XFI       &scra-     &PCI-E    &T2 et-\\
+&                                        &         &          &mbler     &        &hernet\\ \hline
+&Time to ch-                           &&&&&\\
+\cite{ShengYuShen:fmcad10}&eck $PC$(sec) &1.06     &70.52     &5.74      &2.40    &66.37\\\cline{2-7}
+&$d,p,l$                                 &1,1,1    &0,3,2     &0,2,2     &2,1,1   &4,1,1         \\ \hline\hline
+This&Time to ch-                         &&&&&\\
+paper&eck $PC$(sec)                      &0.29     &17.86     &2.67      &0.47    &29.64\\\cline{2-7}
+     &improve \%                         &72.64    &74.67     &53.48     &80.42   &55.34 \\\cline{2-7}
+&$d,p,l$                                 &1,2,1    &0,3,2     &0,2,2     &2,2,1   &4,4,1          \\ \hline
+\end{tabular}\label{tab_prodes}
+\end{table}
+
+表\ref{tab_prodes}的第1和3行在\cite{ShengYuShen:fmcad10}和本文算法之间比较了检查$E\vDash PC$的运行时间.
+第4行给出了本文算法在\cite{ShengYuShen:fmcad10}}基础上的改进百分比.
+很明显本文算法比\cite{ShengYuShen:fmcad10}.
+
+The \textbf{second and fifth} rows compare the discovered parameter values,
+and some minor differences are found on parameter value $p$.
+This is caused by the \textbf{different order of checking various parameter value combinations}.
+
+\subsection{Comparing decoder area}\label{subsec_area}
+
+Table \ref{tab_cmparea} compares the circuit area of the decoders built manually,
+and the decoders built by this paper's algorithm.
+These decoders are synthesized with LSI10K technology library from Synopsys DesignCompiler.
+
+\begin{table}[t]
+\centering
+\caption{Comparing decoder area}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+                   &XGXS      &XFI       &scrambler    &PCI-E  &T2 et-\\
+&&&&&hernet\\ \hline
+The decoders       &921       &6002      &1629         &852   &1446          \\
+built manually           &&&&&\\ \hline
+The decoders built by      &700       &12754     &1455         &455   &552          \\
+this paper's algorithm   &&&&&\\ \hline
+\end{tabular}\label{tab_cmparea}
+\end{table}
+
+\textbf{Table \ref{tab_cmparea} suggests that},
+except for the most complex XFI, synthesis results of this paper's algorithm
+are more compact than those decoders built manually. However,
+this comparison is unfair because those decoders \textbf{built manually also include} additional functionality,
+such as testing logic.
+
+On the other hand,
+for XFI,
+the circuit area of this paper's algorithm is about 2 times larger.
+This means the circuit area must be \textbf{improved in future work}.
+
+
+\subsection{Comparing decoder timing}\label{subsec_timing}
+
+\begin{table}[b]
+\centering
+\caption{Comparing critical-path latencies in nanosecond}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+                   &XGXS        &XFI       &scrambler    &PCI-E   &T2 et-\\
+&&&&&hernet\\ \hline
+The decoders       &12.33       &46.65     &6.54         &19.03  &23.36          \\
+built manually           &&&&&\\ \hline
+The decoders built by      &11.96       &28.13     &6.54         &9.09   &12.69          \\
+this paper's algorithm   &&&&&\\ \hline
+\end{tabular}\label{tab_cmptiming}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Comparing run time of improperly designed encoders}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+                                        &XGXS     &XFI       &scra-     &PCI-E    &T2 et-\\
+                                        &         &          &mbler     &        &hernet\\ \hline
+The algorithm      &&&&&\\
+of \cite{ShengYuShen:fmcad10}(sec)    &0.98     &35.08     &2.54      &1.36    &17.39\\\hline
+This paper's                          &&&&&\\
+algorithm(sec)                        &0.16     &7.59     &1.17      &0.33    &2.19\\\hline
+improve \%                            &83.67    &78.36    &53.94     &75.74   &87.41\\\hline
+\end{tabular}\label{tab_impdes}
+\end{table}
+
+
+Table \ref{tab_cmptiming} compares the \textbf{critical-path latencies} of the decoders built manually
+and the decoders built by this paper's algorithm.
+Their synthesis settings are the same as Subsection \ref{subsec_area}.
+For all those circuits,
+the \textbf{critical-path latencies} of the decoders built by this paper's algorithm are all better.
+
+%The only exception is XFI,
+%the latency of the decoder built by our algorithm is significantly larger than that of hand-written decoder.
+%
+%One interesting issue that is not shown in Table \ref{tab_cmptiming} is,
+%all these critical paths start from registers, and end at output ports.
+
+
+
+\subsection{Determining the non-existence of the decoder for improperly designed encoders}\label{subsec_improp}
+To further show the usefulness of this paper's algorithm,
+some improperly designed encoders without corresponding decoders are needed.
+These improperly designed encoders are obtained by modifying each benchmark's output statements,
+so that they can explicitly output the same letter for two different input letters.
+In this way,
+input letter $i_n$ can never be uniquely determined by $E$'s output sequence.
+
+The \textbf{first} row of Table \ref{tab_impdes} shows the run time of \cite{ShengYuShen:fmcad10} on checking these improperly designed encoders,
+while the \textbf{second} row shows the run time of this paper's algorithm.
+\textbf{The third row shows our approach's percentage of improvements over \cite{ShengYuShen:fmcad10}}.
+These results indicate that this paper's algorithm always terminate correctly,
+and is \textbf{much faster than previously reported methods} \cite{ShengYuShen:fmcad10}.
+
+
+\section{RELATED PUBLICATIONS}\label{sec_relwork}
+%\subsection{Complementary Synthesis}
+%%Complementary synthesis is an emerging new research topic,
+%%there are only two papers that discuss this problem.
+%
+%The concept of complementary synthesis was first proposed by us\cite{ShengYuShen:iccad09} in ICCAD 2009.
+%Its major shortcomings are that it is incomplete,
+%and its run-time overhead of building decoder is too large.
+%
+%The incomplete problem has been addressed by \cite{ShengYuShen:fmcad10}, while \cite{ShengYuShen:tcad} addresses the second shortcoming by simplifying the SAT instance with unsatisfiable core extraction before building decoders.
+
+\subsection{Complementary synthesis}\label{subsec_compsyn_relat}
+The concept of complementary synthesis was first \textbf{proposed in 2009}\cite{ShengYuShen:iccad09}.
+Its major shortcomings \textbf{are that it may not halt},
+and its \textbf{runtime} overheads \textbf{while building complementary circuit is large}.
+
+The halting problem was handled by building a set of over-approximations that are similar to onion rings \cite{ShengYuShen:fmcad10},
+while the \textbf{runtime} overhead problem was addressed by simplifying the SAT instance with unsatisfiable core extraction\cite{ShengYuShen:tcad}.
+
+\subsection{Program inversion}\label{subsec_proinv}
+According to Gulwani\cite{dim_syn},
+\textbf{Program Inversion} is the problem that derives a program $P^{-1}$
+that negates the computation of a given program $P$.
+So the definition of \textbf{Program Inversion} is very similar to complementary synthesis.
+
+The initial work on deriving program inversion used proof-based approaches\cite{prog_inv},
+but it could only handle very small programs and very simple syntax structures.
+
+Gl\"{u}ck et.al \cite{mtd_autoProginv} \textbf{inverted} the first-order functional programs
+by eliminating nondeterminism with LR-based parsing methods.
+\textbf{But the use of functional languages in that work is incompatible with our complementary synthesis}.
+
+{Srivastava et.al \cite{prog_inv_rev} assumed that an inverse program was typically related to the original program,
+so the space of possible inversions can be inferred by automatically
+mining the original program for expressions, predicates, and control flow.
+This algorithm inductively rules out invalid paths that \textbf{cannot} fulfill the requirement of inversion,
+to narrow down the space of candidate programs until only the valid ones remain.
+So it can only guarantee the existence of a solution,
+but not the correctness of this solution if its assumptions do not hold.
+
+\subsection{The completeness of bounded model checking}\label{subsec_bmc_relate}
+Bounded model checking(BMC) \cite{bmc_tacas99} is a model checking technology \textbf{that considers only paths of} limited length.
+So it is an incomplete algorithm.
+\textbf{Many researchers have tried to find} complete approaches for BMC.
+
+One line of research\cite{bmc_tacas99,RecDiam} tried to find out a bound $b$,
+which can guarantee the correctness of a specification,
+if the specification is correct on all paths that are shorter than $b$.
+Line 8 of Algorithm \ref{algo_pcln} finds out the value of $p$,$d$ and $l$ that can prove the non-existence of the decoder,
+\textbf{which is similar to \cite{bmc_tacas99,RecDiam}}.
+
+The other line of research\cite{kind_tacas99} tried \textbf{to find a bound} for induction,
+such that the correctness of a specification within any bound $b$ implies the correctness on bound $b+1$.
+Our algorithm proves the non-existence of the decoder by unfolding loops.
+This is similar to finding induction \textbf{patterns} in \textbf{\cite{kind_tacas99}}.
+
+% \textbf{This paper achieves completeness without following these two approaches.
+% Instead,
+% it defines two complement uniqueness conditions,
+% $LP$ and $LL$,
+% and find out proper algorithms to check them.}
+
+%\subsection{Temporal Logic Synthesis}
+%%Automatically synthesis of program from logic specification is first identified as Church's problem in 1962\cite{LOGARTHAUTO}.
+%%Some early researches \cite{SLVSQFSS,AUTOINF} solve this problem by reducing it to checking emptiness of tree automata.
+%
+%The temporal logic synthesis was first addressed by Clarke et.al\cite{DSGSYNTMPLG} and Manna et.al \cite{SYNTMPLGSPC}.
+%But Pnueli et.al \cite{SYNRCTVMD} pointed out that the complexity of LTL synthesis is double exponent.
+%%This high complexity drives researchers turning their focus to find smaller but still useful subset of temporal logic,
+%%such that synthesis problem can be solved with lower complexity.
+%
+%One line of research \cite{CNTLSYNTMDAUTO,DTMGENGMELTL,SYNRCTVDES} focuses on the so-called generalized reactive formulas of the form:
+%$(\square \lozenge p_1 \wedge \cdots \square \lozenge p_m) \to (\square \lozenge q_1 \wedge \cdots \square \lozenge q_n)$.
+%Complexity of solving synthesis problem for such formula is $O(N^3)$.
+%
+%The other line of research focuses on finding efficient algorithm \cite{SYNCNTLBNDRPN}
+%for expensive safra determination algorithm \cite{CMPLXAUTO} on an useful formula subset,
+%or just avoiding it\cite{NEWALGSTRGSYN}.
+%
+%%Yet another approach is antichain\cite{ANTICHAIN},
+%%which reduces the expensive state set computation to computation on maximal and minimal elements of lattice.
+%
+%Based on these research works,
+%some tools\cite{ANZU} that can handle small temporal formulas have been developed.
+%
+%All these works assume a hostile environment,
+%which seems too restrictive for many applications.
+%So Fisman et.al \cite{rationalsyn_tacas10}, Chatterjee et.al \cite{assguasyn_tacas07} and Ummels et.al \cite{ralgame_istta06} proposed rational synthesis algorithm,
+%which assumes that each agents act to achieve their own goals instead of failing each other.
+
+
+\subsection{Protocol converter synthesis}
+The protocol converter synthesis is the problem that automatically generates a translator between two different communication protocols.
+This is \textbf{related to our work because both focus} on synthesizing communication circuits.
+
+Avnit et.al \cite{converter_date08,converter_todeas09} first defined a general model for describing the different protocols.
+\textbf{Then they provided} an algorithm to decide
+whether there are some functionality of a protocol that \textbf{cannot} be translated into another.
+Finally,
+\textbf{they synthesized a translator} by computing a greatest fixed point for the update function of the buffer's control states.
+Avnit et.al\cite{converter_date09} improved the algorithm mentioned above with a more efficient design space exploration algorithm.
+
+%This paper address the first shortcoming.
+
+\section{Conclusions}\label{sec_conclude}
+
+This paper proposes a \textbf{faster and simpler halting} algorithm that checks whether a particular encoder has \textbf{a corresponding} decoder.
+The theoretical analysis shows that this paper's approach always distinguishes correct encoders from their incorrect variants and halts properly.
+Experimental results show that this paper's approach is \textbf{much faster than previous methods} \cite{ShengYuShen:fmcad10}.
+
+
+
+\section*{Acknowledgment}
+The authors would like to thank the editors and anonymous reviewers for their hard work.
+
+This work was funded by projects 60603088 and 61070132 supported by National Natural Science Foundation of China.
+
+
+%One future work is to develop a debugging method to find out why the $E^{-1}$ does not exist.
+%For the failure caused by loop-like path,
+%we plan to develop a debugging mechanism based on loop-like counterexample minimization \cite{ShengYuShen:charme05}.
+%
+
+
+
+
+
+%
+%\vspace{6mm} \noindent\begin{tabular}{cc}
+%\hspace{-1mm}\parbox[b]{1cm}{\heiti\raisebox{3ex}[0cm][0cm]{致谢}}\vspace{-5.7mm}\\&
+%\parbox{14.3cm}{\fangsong{感谢Syoyo Fujita提供Lucille系统原型以及在全局光照技术方面的讨论,感谢University of Stuttgart的
+%Carsten Dachsbacher教授提供部分实验模型.感谢王文成研究员和Fawad Zaid
+%Mustafa的有益讨论, 以及何丹媛在Demo制作上的帮助.}}
+%\end{tabular}
+%\vskip0.25in
+%
+%
+%
+%\noindent \begin{tabular}{ll}\parbox{15mm}{\hspace{-3.1mm}\zihao{5}
+%\heiti 参考文献}\hspace*{-3.5 mm}&\rule{13.8cm}{0cm}
+
+\begin{thebibliography}{1}
+
+\bibitem{ShengYuShen:iccad09}
+ShengYu Shen, JianMin Zhang, Ying Qin, SiKun Li.
+Synthesizing Complementary Circuits Automatically.
+in ICCAD'09,
+pp 381-388,
+2009.
+
+\bibitem{CHAFF}
+M. Moskewicz, C. Madigan, Y. Zhao, L. Zhang, S. Malik.
+Chaff: Engineering an Efficient SAT Solver.
+In DAC'01,
+pp 530-535,
+2001.
+
+\bibitem{grasp}
+Jo\~ao P. Marques Silva, Karem A. Sakallah.
+GRASP - a new search algorithm for satisfiability.
+in ICCAD,
+pp 220-227,
+1996.
+
+\bibitem{BERKMIN}
+E. Goldberg, Y Novikov.
+BerkMin: A Fast and Robust Sat-Solver.
+in DATE'02,
+pp 142-149,
+2002.
+
+\bibitem{EXTSAT}
+N. E\'en, N. S\"orensson.
+Extensible SAT-solver.
+in SAT'03,
+pp 502-518,
+2003.
+
+\bibitem{RecDiam}
+D. Kroening and Ofer Strichman.
+Efficient Computation of Recurrence Diameters.
+in VMCAI'03,
+pp 298-309,
+2003.
+
+\bibitem{MEALY}
+Mealy, George H.
+A Method for Synthesizing Sequential Circuits.
+Bell Systems Technical Journal v 34, pp 1045-1079, 1955.
+
+\bibitem{IEEE80232002}
+\emph{IEEE Standard for Information technology Telecommunications and
+  information exchange between systems Local and metropolitan area networks
+  Specific requirements Part 3: Carrier Sense Multiple Access with Collision
+  Detection (CSMA/CD) Access Method and Physical Layer Specifications
+  Amendment: Media Access Control (MAC) Parameters, Physical Layers, and
+  Management Parameters for 10 Gb/s Operation}, IEEE Std. 802.3, 2002.
+
+\bibitem{ShengYuShen:tcad}
+ShengYu Shen, Ying Qin, KeFei Wang, LiQuan Xiao, JianMin Zhang, SiKun Li.
+Synthesizing Complementary Circuits Automatically.
+Accepted by IEEE transaction on CAD of Integrated Circuits and Systems,
+2010.
+
+\bibitem{DSGSYNTMPLG}
+E.M. Clarke and E.A. Emerson.
+Design and synthesis of synchronization skeletons using branching time temporal logic.
+In IBM Workshop on Logics of Programs,LNCS 131,
+pp 52-71,
+1981.
+
+\bibitem{SYNTMPLGSPC}
+Z. Manna and P. Wolper.
+Synthesis of communicating processes from temporal logic specifications.
+ACM Trans. Prog. Lang. Sys., 6:68-93, 1984.
+
+\bibitem{SYNRCTVMD}
+A. Pnueli and R. Rosner.
+On the synthesis of a reactive module.
+In Proc. 16th ACM Symp. Princ. of Prog. Lang.,pages 179-190, 1989.
+
+\bibitem{CNTLSYNTMDAUTO}
+E. Asarin, O. Maler, A. Pnueli, and J. Sifakis.
+Controller synthesis for timed automata.
+In IFAC Symposium on System Structure and Control, pages 469-474. Elsevier, 1998.
+
+\bibitem{DTMGENGMELTL}
+R. Alur and S. La Torre.
+Deterministic generators and games for LTL fragments.
+ACM Trans. Comput. Log., 5(1):1-25,2004.
+%\balancecolumns
+
+\bibitem{SYNRCTVDES}
+N. Piterman, A. Pnueli and Y. Saar,
+Synthesis of Reactive(1) Designs,
+in VMCAI'06,
+pp 364-380,
+2006.
+
+\bibitem{SYNCNTLBNDRPN}
+O. Maler, D. Nickovic and A. Pnueli.
+On Synthesizing Controllers from Bounded-Response Properties.
+In CAV'07,
+pp 95-107,
+2007.
+
+\bibitem{CMPLXAUTO}
+S. Safra.
+Complexity of Automata on Infinite Objects.
+PhD thesis, The Weizmann Institute of Science, Rehovot, Israel, March 1989.
+
+\bibitem{NEWALGSTRGSYN}
+A. Harding, M. Ryan and P. Schobbens.
+A New Algorithm for Strategy Synthesis in LTL Games.
+in TACAS'05,
+pp 477-492,
+2005.
+
+\bibitem{ANZU}
+B. Jobstmann, S. Galler, M. Weiglhofer and R. Bloem.
+Anzu: A Tool for Property Synthesis.
+in CAV'07,
+pp 258-262,
+2007.
+
+%\bibitem{OPTLTLSYN}
+%B. Jobstmann and R. Bloem.
+%Optimizations for LTL Synthesis.
+%in FMCAD'06,
+%pp 117-124,
+%2006.
+
+%\bibitem{ANTICHAIN}
+%W. Kuijper, J. Pol.
+%Computing Weakest Strategies for Safety Games of Imperfect Information.
+%In TACAS'09,
+%pp 92-106,
+%2009.
+
+\bibitem{rationalsyn_tacas10}
+D Fisman, O Kupferman, Yoad Lustig. Rational Synthesis.in TACAS'10, pp 190-204, 2010.
+
+\bibitem{assguasyn_tacas07}
+Chatterjee, K., Henzinger, T.A. Assume-guarantee synthesis. In TACAS'07, pp 261-275, 2007.
+
+\bibitem{ralgame_istta06}
+Ummels, M. Rational behaviour and strategy construction in in?nite multiplayer games. In FSTTCS'06,pp 212-223, 2006.
+
+\bibitem{converter_date08}
+K. Avnit, V. D'Silva, A. Sowmya, S. Ramesh, S. Parameswaran.
+A Formal Approach To The Protocol Converter Problem.
+in DATE'08,
+pp 294-299,
+2008.
+
+
+%\bibitem{converter_todeas09}
+%K. Avnit, V. D'Silva, A. Sowmya, S. Ramesh, S. Parameswaran.
+%Provably correct on-chip communication: A formal approach to automatic protocol converter synthesis.
+%ACM Trans. Design Autom. Electr. Syst. 14(2),
+%pp 1-41,
+%2009.
+
+\bibitem{converter_date09}
+K. Avnit, A. Sowmya.
+A formal approach to design space exploration of protocol converters.
+in DATE'09,
+pp 129-134,
+2009.
+
+\bibitem{converter_tacas10}
+K. Avnit, A. Sowmya, J. Peddersen.
+ACS: Automatic Converter Synthesis for SoC Bus Protocols.
+in TACAS'10
+pp 343-348,
+2010.
+
+\bibitem{ShengYuShen:charme05}
+ShengYu Shen, Ying Qin, Sikun Li.
+Minimizing Counterexample of ACTL Property.
+in CHARME'05,
+pp 393-397,
+2005.
+
+\end{thebibliography}
+
+%\vspace{-2mm}\\
+%\cline{2-2}\end{tabular} \vskip0.2in \footnotesize{\songti \REF{1\
+%}庄钊文, 徐振海, 肖顺平. 极化敏感阵列信号处理. 北京: 国防工业出版社,
+%2005. 1--10
+%
+%\REF{2\ }庄钊文, 肖顺平, 王雪松. 雷达极化信息处理与应用. 北京:
+%国防工业出版社, 1999. 1--10
+%
+%\REF{3\ }Johnson R. Antenna Engineering Handbook. 3rd ed. New York:
+%McGraw-Hill, 1993. 79--157
+%
+%\REF{4\ }Lo Y T, Lee S W. Antenna Handbook Theory, Applications, and
+%Design. Newyork: Van Nostrand Reinhold Company, 1988. 102--143
+%
+%\REF{5\ }Balanis C A. Antenna Theory: Analysis and Design. Newyork:
+%Harper {\&} Row, 1982. 1--56
+%
+%\REF{6\ }张贤达. 现代信号处理. 北京: 清华大学出版社, 1997. 43--95
+%
+%\REF{7\ }Li J, Compton R T. Angle and polarization estimation using
+%ESPRIT with a polarization sensitive array. IEEE Trans Antenn
+%Propag, 1991, 39(9): 1376--1383
+%
+%\REF{8\ }Li J, Compton R T. Two-dimensional angle and polarization
+%estimation using the ESPRIT algorithm. IEEE Trans Antenn Propag,
+%1992, 40(5): 550--555
+%
+%\REF{9\ }Hua Y. A pencil-MUSIC algorithm for finding two-dimensional
+%angles and polarizations using crossed-dipoles. IEEE Trans Antenn
+%Propag, 1993, 41(3): 370--375
+%
+%\REF{10\ }Cheng Q, Hua Y. Further study of the pencil-MUSIC
+%algorithm. IEEE Trans Aero Elec Sys, 1996, 32(1): 284--301
+%
+%\REF{11\ }王建英, 陈天麒. 频率、二维到达角和极化的联合估计.
+%电子学报, 1999, 27(11): 74--76
+%
+%\REF{12\ }Wang J Y, Chen T L. Joint frequency 2D AoA and plarization
+%estimation using fourth-order cumulants. Ser china Ser E, 2000,
+%43(3): 297--303
+%
+%\REF{13\ }Wang J Y, Wang J Y, Chen T Q. Joint frequency, 2-D AOA and
+%polarization estimation in broad-band. Sci China Ser F-Inf Sci,
+%2001, 44(3): 161--167
+%
+%\REF{14\ }周云钟, 陈天麒.多信号极化与到达角估计算法. 电波科学学报,
+%1997, 12(2): 220--224
+%
+%\REF{15\ }Roy R, Kailath T. ESPRIT-estimation of signal parameters
+%via rotational invariance techniques. IEEE Trans Acous Speech Signal
+%Proces, 1989, 37(7): 984--995
+%
+%\REF{16\ }Schmidt R. Multiple emitter location and signal parameter
+%estimation. IEEE Trans Antenn Propag, 1986, 34(3): 276--280
+%
+%\REF{17\ }Liu T H, Mendel J M. Azimuth and elevation direction
+%finding using arbitrary array geometries. IEEE Trans Signal Proces,
+%1998, 46(2): 2061--2065
+%
+%\REF{18\ }Dogan M C, Mendel J M. Applications of cumulants to array
+%processing-Part I: aperture extension and array calibration. IEEE
+%Trans Signal Proces, 1995, 43(5): 1200--1216
+%
+%\REF{19\ }Liang J L. Joint azimuth and elevation direction finding
+%using cumulant. IEEE Sensor J, 2009, 9(4): 390--398
+%
+%\REF{20\ }Chevalier P, Ferreol A, Albera L. High-resolution
+%direction finding from higher order statistics: the 2q-MUSIC
+%algorithm. IEEE Trans Signal Proces, 2006, 54(8): 2986--2997
+%
+%\REF{21\ }张贤达. 时间序列分析: 高阶统计量方法. 北京:
+%清华大学出版社, 1996. 1--85
+%
+%\REF{22\ }Chevalier P, Albera L, Comon P. On the virtual array
+%concept for higher order array processing. IEEE Trans Signal Proces,
+%2005, 53(4): 1254--1271
+%
+%\REF{23\ }Mendel J M. Tutorial on higher-order statistics (spectra)
+%in signal processing and system theory: theoretical results and some
+%applications. P IEEE, 1991, 79(3): 278--305
+%
+%\REF{24\ }王永良, 陈辉, 彭应宁, 等. 空间谱估计理论与算法. 北京:
+%清华大学出版社, 2004. 29--108
+%
+%\REF{25\ }Bro R. PARAFAC: tutorial and applications. Chemometr
+%Intell Lab, 1997, 38(2): 149--171
+%
+%\REF{26\ }Cattell R B. Parallel proportional profiles and other
+%principles for determining the choice of factors by rotation.
+%Psychometrika, 1944, (9): 267--283
+%
+%\REF{27\ }Carroll J D, Chang J. Analysis of individual differences
+%in multidimensional scaling via an N-way generalization of
+%`Eckart-Young' decomposition. Psychometrika, 1970, 35(3): 283--319
+%
+%\REF{28\ }Harshman R A. Foundation of the PARAFAC procedure: model
+%and conditions for an `explanatory' multi-mode factor analysis. UCLA
+%Work Paper Phonetics, 1970,16: 1--84
+%
+%\REF{29\ }Sidiropoulos N D, Giannakis G B, Bro R. Blind PARAFAC
+%receivers for DS-CDMA systems. IEEE Trans Signal Proces, 2000,
+%48(3): 810--823
+%
+%\REF{30\ }Sidropoulos N D, Bro R, Giannakis G B. Parallel factor
+%analysis in sensor array processing. IEEE Trans Signal Proces, 2000,
+%48(8): 2377--2388
+%
+%\REF{31\ }Rong Y, Vorobyov S A, Gershman A B, et al. Blind spatial
+%signature estimation via time-varying user power loading and
+%parallel factor analysis. IEEE Trans Signal Proces, 2005, 53(5):
+%1697--1710
+%
+%\REF{32\ }Kruskal J B. Three-way arrays: rank and uniqueness of
+%trilinear decompositions, with application to arithmetic complexity
+%and statistics. Linear Algebra Appl, 1977, 18: 95--138
+%
+%\REF{33\ }Kruskal J B. Rank decomposition, and uniqueness for 3-way
+%and N-way arrays. In: Coppi R, Bolasco S, eds. Multiway Data
+%Analysis. Amsterdam: North-Holland, 1988. 7--18
+%
+%\REF{34\ }Jiang T, Sidiropouls N D. Kruskal's permutation lemma and
+%the identification of CANDECOMP/PARAFAC and bilinear models with
+%constant modulus constraints. IEEE Trans Signal Proces, 2004, 52(9):
+%2625--2636
+%
+%\REF{35\ }Smilde A, Bro R, Geladi P. Multi-way Analysis with
+%Applications in the Chemical Sciences. Chichester: John Wiley {\&}
+%Sons Ltd, 2004. 49--75
+%
+%\REF{36\ }Tomasi G. Practical and computational aspects in
+%chemometric data analysis. PhD Thesis. Demark: Frederiksberg, 2006.
+%20--25
+%
+%\REF{37\ }Liang J L, Yang S Y, zhang J T, et al. 4-D near-field
+%source localization using cumulant. Eurasip J Adv Signal Proces,
+%2007, 2007: 1--10
+%
+%\REF{38\ }梁军利, 杨树元.
+%一种无须参数配对的近场源定位新算法.电子学报, 2007, 35(6): 1122--1127
+%
+%\REF{39\ }Liang J L, Yang S Y, Zhang J Y. A cumulant-based parameter
+%estimation algorithm for near-field sources. Prog Nat Sci, 2007,
+%17(8): 900--905
+%
+%\REF{40\ }蔡英俊,
+%倪永年.平行因子法用于同步荧光法同时测定食品中的维生素BI,B2和B6.
+%广西师范大学学报(自然科学版), 2003, 21(2): 312--313
+%
+%\REF{41\ }Bro R, Sidiropwlos N D, Giannakis G B. A fast least
+%squares algorithm for separating trilinewr mixtures. In: Proceedings
+%of the 1st International Workshop on Independent Component Analysis
+%and Blind Signal Separation. Aussois, 1999. 289--294
+%
+%\REF{42\ }廖桂生, 保铮.
+%一种新的旋转不变方法实现起伏目标的高分辨方向\!--\!多普勒频率盲估计.
+%电子学报, 1996, 24(12): 6--11
+%
+%\REF{43\ }Chen J F, Zhu X L, Zhang X D. A new algorithm for joint
+%range-DOA-frequency estimation of near-field sources. Eurasip J Appl
+%Signal Proces, 2004, 2004(3): 386--392
+
+
+
+\end{document}
+
+
+\vspace{5mm}\noindent\textbf{附录A}{\xiaowuhao                 }
+
+
+\begin{center}\vspace{4mm}
+\centerline{\includegraphics{122008-700-100001t1.eps}}
+\centerline{\bahao\bf 图1\quad 虽然有了这些约束} \centerline{\liuhao
+虽然有了这些约束, 可是我们容量分析结果既可以适用于移动蜂窝系统}
+\end{center}\vspace{-2mm}
+
+\begin{figure}
+\begin{center}
+\includegraphics{122008-700-100001t1.eps}
+\centerline{\bahao {\bf Figure 1}\quad Separate coding model of the
+communication system.}
+\end{center}\vspace{-4mm}
+\end{figure}
+
+
+\newpage
+*******************************************打表格*********************
+
+\noindent {\zihao{-5}\bf \small 表1\quad LoI扩展后的路径空间表}\vspace{-6mm}\\
+{\zihao{6}\footnotesize
+\begin{center} \doublerulesep 0.4pt \tabcolsep 23pt
+\begin{tabular*}{\textwidth}{cccccc}
+\hline \hline \multicolumn{6}{c}{Routing Space Table}\\
+\hline Routing Space &Dimension &Dimension
+type&$\cdots$&EXTEND&PACE\\
+\raisebox{-2mm}[0mm][0mm]{PositionSpace}&pos\_x&Float&$\cdots$&4&50.0\\
+&pos\_y&Float&$\cdots$&4&50.0\\ \hline \hline
+\end{tabular*}
+\end{center}}\vspace{2mm}
+
+半栏表
+
+\noindent {\zihao{-5}\bf \small 表1\quad LoI扩展后的路径空间表}\vspace{-6mm}\\
+{\zihao{6}\footnotesize
+\begin{center} \doublerulesep 0.4pt \tabcolsep 23pt
+\begin{tabular}{cccccc}
+\hline \hline \multicolumn{6}{c}{Routing Space Table}\\
+\hline Routing Space &Dimension &Dimension
+type&$\cdots$&EXTEND&PACE\\
+\raisebox{-2mm}[0mm][0mm]{PositionSpace}&pos\_x&Float&$\cdots$&4&50.0\\
+&pos\_y&Float&$\cdots$&4&50.0\\ \hline \hline
+\end{tabular}
+\end{center}}\vspace{2mm}
+
+*******************************************做图*********************
+\begin{center}
+\centerline{\psfig{figure=012006-183-062018t1.eps}}
+\centerline{\small \zihao{-5}图1\quad  }
+\end{center}
+
+
+*******************************************做图*********************
+\begin{center}
+\centerline{\psfig{figure=zkxf33.eps}} \centerline{\footnotesize
+Fig. 1.\quad }
+\end{center}
+
+\parbox[c]{60mm}{\centerline{\psfig{figure=zkxf33.eps}}
+\centerline{\footnotesize Fig. 1.\quad }}
+\parbox[c]{60mm}
+{ }
+
+
+\linebreak \vspace{1mm}\\ \noindent{\small\sf www.scichina.com\quad
+www.springerlink.com}\newpage\noindent
+
+
+%双页码
+ \textwidth=132truemm \textheight=213truemm
+\thispagestyle{empty} \noindent \vbox{\vspace{-10mm}\hbox to
+\textwidth{\xiaoliuhao \ \hbox to 1cm{\thepage\hspace {2mm}}
+\hfill\hfill{\ } \hfill $Science~in~China$\!$:~Series~A~
+Mathematics~$ 2006~Vol.~49~No.~2~212--224 }\vspace{1.6truemm}
+\hspace{2mm}}
+
+
+%黑斜
+\bf {\boldmath
+
+
+
+\noindent \begin{center}
+\begin{tabular}{c}
+\psfig{figure=122008-934-100002t9a.eps}
+\end{tabular}
+\end{center}\vspace{-4mm}
+
+\noindent \parbox[c]{75mm}{\footnotesize {\bf Figure 9}\quad
+ Bifurcation curves in the parameter plane $(a,b)$.}\hspace{10mm}
+\parbox[c]{75mm}
+{\centerline{} {\footnotesize {\bf Figure 10}\quad Sign of the
+Lyapunov exponent in the parameter plane $(a,b)$.}}\vspace{5mm}

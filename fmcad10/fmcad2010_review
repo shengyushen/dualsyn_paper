@@ -1,0 +1,123 @@
+Dear ShengYu,
+
+On behalf of the FMCAD PC, we are very happy to inform you that your paper has been accepted for publication. (Paper number 8, "A Halting Algorithm to Determine the Existence of Decoder".)
+
+The final version of the paper is due on 29 July 2010. This deadline is strict.
+
+Please make sure to adhere to the page limit and to the formatting guidelines, which can be found on the web site. Papers in other formats cannot be published.
+
+Thank you for your submitting this excellent work to FMCAD. We are looking forward to seeing you in beautiful Lugano in October!
+
+Best,
+
+Natasha and Roderick
+
+=========================== REVIEWS ==========================
+
+---------------------------- REVIEW 1 --------------------------
+PAPER: 8
+TITLE: A Halting Algorithm to Determine the Existence of Decoder
+
+OVERALL RATING: 3 (strong accept)
+REVIEWER'S CONFIDENCE: 2 (medium)
+
+Complementary synthesis is an approach to automatically synthesize decoder from an encoder. The method consists of two steps: determination of existence of the decoder, and its construction. The algorithm previously proposed by the authors has one big drawback \u2013 it is incomplete. The algorithm would not halt if decoder did not exist. The main contribution of the presented paper is in solving the incompleteness of the previous method.
+
+Decoder exists if an input to encoder can be determined by its output, if the Parameterized Complementary condition (PC) holds. First PC is over-approximated by a linear path condition (LP) \u2013 every linear path of encoder that is \u201clong enough\u201d reaches a state in which input can be determined from the output. A loop-like non-unique condition (LL), which is a complementary condition to LP, is defined. Proving LL will falsify LP, i.e. if LL is proved LP does not hold, i.e., PC does not hold and decoder does not exists. Otherwise a parameter p is found that helps to prove LP. An onion-ring is build between PC and its over-approximation LP. If encoder is found in one ting but not in the next closer ring, PC is falsified, otherwise PC is finally proved.
+
+The algorithm looks sound. It is implemented in OCaml and uses ZCHAFF to solve the instances of SAT solver. The experimental results show that the new algorithm always correctly distinguishes between correct and incorrect encoder.
+
+
+The paper is very well written and brings substantial improvement over the previous algorithm.
+
+
+
+---------------------------- REVIEW 2 --------------------------
+PAPER: 8
+TITLE: A Halting Algorithm to Determine the Existence of Decoder
+
+OVERALL RATING: 1 (weak accept)
+REVIEWER'S CONFIDENCE: 2 (medium)
+
+In this paper, the authors propose a technique for the synthesis of a decoder from an encoder, that is a circuit that computes the inverse function of the original one, if such inverse function exists. The paper extends the authors' previous work, where a similar method was proposed but without the guarantee to terminate if the decoder does not exist. So the main contribution of this work is a technique to determine the existence of an encoder's decoder which is always guaranteed to terminate. In order to achieve this, the authors propose a condition that over-approximates the original condition for the existence of the decoder and its complement condition. In the case that the encoder circuit satisfies the over-approximated condition, a list of approximations between the original and over-approximated condition is constructed, and the authors show that with finite number of iterations one can check the existence of the encoder's decoder. The approach is illustrated with seve
+ral examples.
+
+I found the idea of synthesizing encoder's decoder original and promising. The technical results are quite straightforward and an important part of the proposed technique was done in the original paper.
+
+I find that the paper has quite poor presentation that often obscures the ideas behind the technical results. The reader can often get confused with excessive use of non-standard names of definitions without proper intuition about their meaning (even in the abstract) and has to carefully read a large part of the paper in order to understand concepts and ideas behind them. Hence, I would strongly suggest to the authors to provide a clearer motivation for the method and a much higher-level overview of the intuitions behind the results (maybe at the expense of pushing proofs into an appendix).
+
+For the experimental results, it would be nice to have more information about the complexity of the benchmarks considered that are a bit more informative that the number of lines of code. This would help the reader to understand better what classes of circuits could be effectively handled with this method.
+
+Although I appreciate the concepts introduced by the authors, I think the presentation and the readability of the paper should be much improved, especially given that the technical results extend previous results in a quite straight-forward manner. I would suggest insisting more on the motivation of this framework and making the concepts clearer to the reader.
+
+
+
+---------------------------- REVIEW 3 --------------------------
+PAPER: 8
+TITLE: A Halting Algorithm to Determine the Existence of Decoder
+
+OVERALL RATING: 2 (accept)
+REVIEWER'S CONFIDENCE: 3 (high)
+
+This paper presents a decision procedure for checking if a given encoder
+has a corresponding decoder.
+
+Pros:
+
+An interesting problem is solved that had no previously known solution. The solution
+uses a technique that can perhaps be of more general use.
+
+Cons:
+
+The presentation can be improved (see below).
+
+Comments:
+
+The paper should state at the beginning what encoders and decoders are. That these
+are state-based hardware systems only becomes obvious to the reader later on in the
+paper.
+
+Both the statement of the problem and the discussion of the solution makes a lot
+of references to your previous paper where you compute a decoder if it exists. But
+this is not necessary at all! You are solving a different problem here, and most people
+will not have seen your previous solution anyway, so you do not have to explain
+what you do in this paper in relationship to the previous paper. (Of course you should
+do this in related work, but not throughout the paper.)
+
+In Section II.B you make a remark about unreachable states (you have to check reachability before
+checking the unique condition). How often does this happen? How often did it happen in the examples you tried?
+
+This equals to -> remove "to"
+
+There are two obvious pieces of related work that use similar techniques. The first one is the original BMC paper, the second one is the work by Sheeran et al on k-induction. Both of these papers establish a condition under which we can be certain that a BMC run does not have to go beyond a certain k. The least you should do in this paper is to show that the problem you are solving cannot be solved by any of those techniques (this is because the original problem you are solving is more complicated than plain BMC). Even more interesting would be if you could compare your solution techniques to the specific techniques presented in those papers.
+
+Another question that I wondered about was: Would the use of a QBF solver help you solve some of the problems?
+
+In section VI.C, you explain how you constructed faulty encoders. This sounds very unconvincing to me. You must have a more convincing source of faulty decoders. For example, you could make mutations somewhere in the hardware and keep the encoders that are now faulty (so not only influencing the output directly). Or you could take an encoding scheme with a flaw (i.e. removing separators or removing some information in the header) and implement it.
+
+
+
+---------------------------- REVIEW 4 --------------------------
+PAPER: 8
+TITLE: A Halting Algorithm to Determine the Existence of Decoder
+
+OVERALL RATING: 1 (weak accept)
+REVIEWER'S CONFIDENCE: 2 (medium)
+
+The authors extend their earlier work on automatic decoder synthesis [1,9] and address the automatic termination condition. This is, in a way, similar to extending bounded model checking to unbounded model checking. Given a state transition system, a decoder exists if the input of a state transition system (i.e., the encoder) can be uniquely determined from the output sequence of a certain fixed length. The synthesis problem is interesting and has practical application.
+
+The main contribution of this paper is the proposal of two approximated termination conditions LP (linear path unique condition) and LL (loop-like non-unique condition) and an exact termination condition. If under some path length the formula of LP is satisfiable, then the existence of decoder has to be further determined by constructing "onion ring". On the other hand, if the formula of LL is satisfiable, then no decoder can exist.
+
+Experiments showed that the proposed method works for cases where decoders exist and don't exist.
+
+While the presentation is reasonably clear, there is room for improvement.
+
+Specific suggestions:
+
+Using transition function T: SxI -> SxO results in not so well-formed formula. It may be nicer to rewrite formulas involving transition functions by using transition relations and output functions instead.
+
+Even though the termination guarantees of Algorithm 1 and Algorithm 2 are stated in the text, it would be better to formally state them in two theorems.
+
+In the experiments, the circuits considered are easily decodable and essentially there is no need to invoke the sophisticated termination check. It would be more meaningful to have circuits whose termination is not so trivial in order to test the benefit of the proposed method.
+
+

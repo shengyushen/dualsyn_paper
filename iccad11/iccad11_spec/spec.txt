@@ -1,0 +1,40 @@
+Paper Submission
+SUBMISSION DETAILS
+If you have any questions about submitting your paper, please contact Alan J. Hu or Helmut Graeb
+
+Paper submissions must be done through the online submission system at:
+ http://www.easychair.org/conferences/?conf=iccad2011
+
+Regular papers will be reviewed as finished papers; preliminary submissions will be at a disadvantage.
+
+REGULAR PAPER SUBMISSIONS
+
+All papers must be in PDF format only, with saveable text.
+Each paper must be no more than 8 pages (including the abstract, figures, tables, and references), double-columned, 9pt or 10pt font.
+Your submission must not include information that serves to identify the authors of the manuscript, such as  name(s) or affiliation(s) of the author(s), anywhere in the manuscript, abstract, or in the embedded PDF data.  References and bibliographic citations to the author(s) own published works or affiliations should be made in the third person.
+Submissions not adhering to these rules, or determined to be previously published (this includes pre-prints publicly available on personal or other websites, such as arXiv, or publicly available internal memoranda with author names divulged) or simultaneously submitted to another conference, or journal,  will be summarily rejected.  Internal memoranda with full content not publicly available, and with author names not divulged, may be submitted.
+TEMPLATES
+
+Templates are available on the IEEE website here
+Templates are available on the ACM website here
+
+Note to LaTeX Users: Use Type 1 fonts ONLY – do NOT use Type 3 fonts.
+
+PROCEEDINGS
+
+The deadline for final papers is Friday, August 12.
+Accepted papers are allowed 4 pages in the conference proceedings free of charge.
+Each additional page beyond 4 pages is charged $125.00 per page.
+IEEE will hold the copyright for ICCAD 2011 proceedings.
+Authors of accepted papers must sign an IEEE copyright release form for their paper.
+CONFERENCE REGISTRATION
+
+At least one author per accepted paper must register by Monday, August 8 at the discounted speaker’s registration rate.  Failure to register will result in your paper being removed from the conference proceedings. IEEE reserves the right to exclude a paper from distribution after the conference (e.g., removal from IEEE Xplore) if the paper is not presented at the conference. 
+
+ACM/IEEE WILLIAM J. MCCALLA ICCAD BEST PAPER AWARD
+
+One or more outstanding submissions will be recognized with this prestigious award.
+
+NOTIFICATION OF ACCEPTANCE
+
+Authors will be notified of acceptance on or before Friday, July 1, 2011. Final paper guidelines will be sent at that time.

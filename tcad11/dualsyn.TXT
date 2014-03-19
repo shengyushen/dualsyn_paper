@@ -1,0 +1,13 @@
+correct
+						pcie							scrambler					t2ether						xfi								xgxs
+complete		2.405272 					5.749734  				66.373649  				70.520890  				1.066089 
+						d 2 l 1 p 1 f 1  	d 0 l 1 p 2 f 2 	d 4 l 1 p 1 f 1 	d 0 l 1 p 3 f 2 	d 1 l 1 p 1 f 1 
+c4interp		0.616672 					3.277688  				65.341685 				21.318543  				0.395188 
+						d 2 l 1 p 2 f 1 	d 0 l 1 p 2 f 2 	d 4 l 1 p 2 f 1		d 0 l 1 p 3 f 2		d 1 l 1 p 2 f 1 
+						
+						
+incorrect
+						pcie							scrambler					t2ether						xfi								xgxs
+complete		1.365887 				2.542347 					17.395107  				35.082637  				0.989745 
+						exp							loop2unq					exp								loop2unq					exp
+c4interp		0.561668 				2.434904   				10.141491  				14.447552 				0.335551 

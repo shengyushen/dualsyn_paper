@@ -1,0 +1,118 @@
+27-May-2011
+
+Dear Dr. Shen:
+
+It is a pleasure to accept your manuscript entitled "A Halting Algorithm to Determine the Existence of the Decoder (Revision of TCAD 6249)" for publication in the Transactions on Computer-Aided Design of Integrated Circuits and Systems.  The comments of the reviewer(s) who reviewed your manuscript are included at the foot of this letter.
+
+Instructions for preparing the final manuscript and supporting documents are available at URL:
+http://www.umn.edu/~tcad/authors/accept.html
+
+The following wording must appear on the first page of all PDF's when a final paper is submitted:
+
+Copyright (c) 2011 IEEE. Personal use of this material is
+permitted. However, permission to use this material
+for any other purposes must be obtained from the IEEE by
+sending an email to pubs-permissions@ieee.org.
+
+Please upload all necessary items within the next three weeks. Postponement will cause your paper to be removed from the list awaiting publication.
+
+
+Thank you for your contribution.
+
+Sincerely,
+Prof. Sachin Sapatnekar
+Editor-in-Chief, Transactions on Computer-Aided Design of Integrated Circuits and Systems
+tcad@umn.edu
+
+
+Reviewer(s)' Comments to Author:
+
+Reviewer: 1
+Comments to the Author
+The paper is close to publishable, but some of the changes were implemented in such a way that they left stylistic problems and remain unclear. There are also inconsistencies in word usage and capitalization that can be easily fixed.
+
+Sometimes "runtime" is spelled as one word, and sometimes as two "run time".
+Please use "runtime" consistently.
+
+I also see inconsistent capitalization, e,g, in Definitions 3 and 4
+(please check other definitions as well)
+
+> The concept of complementary synthesis was ﬁrst proposed
+> in 2009 [1]. Its major shortcomings are that it may not halt
+It does not make sense to say that "the concept ... may not halt".
+Try "First algorithms proposed for complementary synthesis had
+major shortcomings in that they may not halt and have large overhead
+when ..."
+
+> Gluck et.al [19] inverted the ﬁrst-order functional programs
+ no "the" here
+
+> much faster than previous methods
+// it is better to avoid superlatives "much" and "very"
+// in scholarly writing; for "much", consider "significantly"
+
+> However, this comparison is unfair because those decoders
+> built manually also include additional functionality, such as testing logic
+ are built manually and include additional functionality, such as logic for circuit test
+
+
+Reviewer: 2
+Comments to the Author
+Minor corrections:
+Abstract, line-1: faster than previous ones.
+Introduction, para 1, line 7: algorithm was proposed
+                             line 10: encoder's input sequence can be ...
+                  para 2, line 5: slow and complex.
+page 1, col 2, line 2: 1b). The non-existence ...
+                   para 1, line 6-7: that the new algorithm ...
+                              line 10: downloaded (ref or footnote to website).
+section II, subsection A, line 3: problem (abbreviated ....
+               subsection B, Definition 1, line 1: A Mealy ...
+                                                    para 2, line 2: paper, a state .....round cornered box, and a transition...
+                                                    para 3, line 3: starts from the initial state ...
+page 2, col 1, last line: I is the set of input letters, what is I(s_0)?
+page 2, col 2, subsection C, para 2, line 1: According to previous research..., and engineering ....
+
+page 3, col 1, para 4, line 2: puts out the result as its output ...
+           col 2, para 3, line 3: resulting from..
+                               line 6: lemma 1 in the next ...means that for ...
+
+page 4, col 1, line 1: ie in the product ...
+           Definition 4, line 3-4: (S,....T) and product machine M^2, E |=....
+           subsection B, line 1-2: proving the correctness ....are necessary.
+page 4, col 2, para 6: Thus, the satisfying ...
+
+page 5, col 1, Theorem 2, para 2: diameter of E^2. Define ....
+          col 2, line 2: Lines 2, 3 and 4...
+
+page 6, section V, para 1, last line: downloaded (provide ref to or footline for the website).
+           subsection A, line 1: the information .....benchmarks are shown in Table 1.
+           subsection B, para 1, line 3-4: improvement over earlier work [3]......faster.
+           col 2, subsection C, para 1, line 1-2: The circuit area ....algorithm are compared in Table III.
+                                        para 2, line 1: Except for the ....
+                                                   line 3: than the decoders....
+                                        para 3, line 2-3: circuit area may be ...
+                    subsection D, para 1, line 1: The critical-path....
+                                                   line 3: algorithm are in Table IV. ....same as in subsection...
+                                                   line 5: are better.
+                    subsection E, para 1, line 3: encoders were..
+                                        para 2, line 1: runtime of the earlier algorithm [3] on ....
+                                                   line 4: shows the percentage of improvement. These ...
+
+section VI, subsection A, line 4: circuits is large.
+               subsection B, para 3: inverted first-order ..
+page 7, col 2, para 1, line 5-6: patterns [16].
+          subsection D, para 1, line 1: Protocol converter synthesis ...
+                              para 2, line 3: there is some ...
+
+
+
+
+Reviewer: 3
+Comments to the Author
+No significant comments
+
+
+Associate Editor: Kunz, Wolfgang
+Comments to the Author:
+The paper is now almost publishable. However, for the final version a number of minor changes still need to be made. They are listed in the reviews.

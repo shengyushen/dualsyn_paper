@@ -1,0 +1,41 @@
+Overall rating:	2 (accept)
+Review:	The paper covers an interesting topic and is well organized.  It builds on previous complentary synthesis work and one of the primary contributions appears to be the work outlined in Section 4 of the paper. The results look encouraging.
+Review 2
+Overall rating:	0 (borderline paper)
+Review:	In this paper the authors proposed a method to infer assertions of an encoder
+based on checking the existence of the decoder. They proposed a halting
+algorithm and also proved its correctness. They then use the values found in
+the halting algorithm that will lead to the non-existence of the decoder to
+generate assertions.
+
+In general, this is a well-written paper. Being able to find the assertions
+for the working mode is also interesting. However, I wonder how useful it is
+in practice. Typically, the designer knows how to configure the design into
+working mode very well. This information is usually documented in the
+specification in detail. Otherwise, how could the design be used if one has
+to rely on sophisticated formal methods to figure out what the working mode
+is? What's more interesting should be the synthesis of decoder. If the
+authors can address this problem, this paper will become much stronger.
+
+Here are some detailed comments:
+
+1. There is a parameter l which is the length of output sequence of the
+encoder in halting algorithm. So the final assertion is inferred is based
+the length l.
+
+So my question is that the inferred assertion is bounded or unbounded?
+
+2. The experimental results show that cost to infer assertion is high by
+comparing [14] and this work in Table 2. The run time is almost more than 10x.
+This presents considerable overhead if the purpose of the assertions is only
+to ensure the encoder is in working mode.
+
+3. For item 2, can you briefly compare this work to other existing automatic
+assertion generation techniques in Section 7?
+
+4. The title does not provide enough information on what the paper is about.
+   Your main contribution is the halting algorithm that infers assertions
+   for working mode. This is not clear in the title.
+Review 3
+Overall rating:	0 (borderline paper)
+Review:	A set of papers by SY Shen et al. describe a method of automating the creation of a decoder from an encoder. This prior work seems to have a problem with encoder modes of operation that shouldn't/don't translate to decoder states. Has a few downsides. Doesn't cite similar work from FMCAD10 "A Halting Algorithm to Determine the Existence of Decoder" by SY Shen, Y Qin, JM Zhang. This paper extends its claim to cover a slightly more complex problem (the FMCAD paper requires a hint as to the unused parts of the encoder, this paper doesn't use such an input) but the difference between the two problems is not firmly described.

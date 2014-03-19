@@ -1,0 +1,206 @@
+\relax 
+\citation{ShengYuShen:iccad09}
+\citation{ShengYuShen:iccad11}
+\citation{PCIESPEC}
+\citation{IEEE80232002}
+\citation{ShengYuShen:iccad09}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}}
+\newlabel{sec_intro}{{I}{1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The original and new flows of complementary synthesis}}{1}}
+\newlabel{flow}{{1}{1}}
+\citation{funcdep}
+\citation{funcdep}
+\citation{ShengYuShen:iccad09}
+\citation{CHAFF}
+\citation{grasp}
+\citation{BERKMIN}
+\citation{EXTSAT}
+\citation{Cofact}
+\citation{Craig}
+\citation{interp_McMillan}
+\citation{EXTSAT}
+\citation{funcdep}
+\citation{funcdep}
+\citation{interp_McMillan}
+\citation{MEALY}
+\@writefile{toc}{\contentsline {section}{\numberline {II}Case Study}{2}}
+\newlabel{sec_casestudy}{{II}{2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The encoder used to explain our ideas}}{2}}
+\newlabel{multidec}{{2}{2}}
+\@writefile{toc}{\contentsline {section}{\numberline {III}Preliminaries}{2}}
+\newlabel{sec_prem}{{III}{2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {III-A}}Propositional satisfiability and related topics}{2}}
+\newlabel{subsec_SAT}{{\unhbox \voidb@x \hbox {III-A}}{2}}
+\newlabel{thm_craig}{{1}{2}}
+\citation{RecDiam}
+\citation{ShengYuShen:iccad09,ShengYuShen:tcad}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Mealy finite state machine with configuration}}{3}}
+\newlabel{mealy}{{3}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {III-B}}Determining the existence of the decoder for complementary synthesis}{3}}
+\newlabel{subsec_chkextdec}{{\unhbox \voidb@x \hbox {III-B}}{3}}
+\newlabel{MealyFSM}{{1}{3}}
+\newlabel{equ_uisvrd}{{1}{3}}
+\newlabel{def_pcc}{{2}{3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The parameterized complementary condition}}{3}}
+\newlabel{t1}{{4}{3}}
+\newlabel{uniqt1}{{2}{3}}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}A Halting Algorithm to Infer Assertion}{3}}
+\newlabel{sec_algo}{{IV}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-A}}Determining the nonexistence of the decoder}{3}}
+\newlabel{subsec_chknonext}{{\unhbox \voidb@x \hbox {IV-A}}{3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces The loop-like non-complementary condition}}{4}}
+\newlabel{fig_double_loop}{{5}{4}}
+\newlabel{def_lnc}{{4}{4}}
+\newlabel{uniqln}{{3}{4}}
+\newlabel{thm_pcln_exclusive}{{2}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-B}}Algorithm implementation}{4}}
+\newlabel{subsec_algo}{{\unhbox \voidb@x \hbox {IV-B}}{4}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces InferAssertion}}{4}}
+\newlabel{algo_pcln}{{1}{4}}
+\newlabel{algo_pcln_pdl}{{3}{4}}
+\newlabel{algo_pcln_pc}{{4}{4}}
+\newlabel{algo_pcln_halt}{{10}{4}}
+\newlabel{algo_pcln_lnc}{{12}{4}}
+\newlabel{algo_pcln_Ac}{{13}{4}}
+\newlabel{algo_pcln_nainfer}{{14}{4}}
+\newlabel{algo_pcln_ruleout}{{15}{4}}
+\newlabel{thm_pcln_halt}{{3}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-C}}Inferring Formula That Covers Invalid Configuration Letter}{4}}
+\newlabel{subsec_infer}{{\unhbox \voidb@x \hbox {IV-C}}{4}}
+\citation{Cofact}
+\citation{interp_McMillan}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {IV-C}1}\textbf  {Transforming $F_{LN}$ into an equivalent form with an object variable, such that it can be used to defined a Boolean function $f$.}}{5}}
+\newlabel{uniqln_subg}{{5}{5}}
+\newlabel{uniqln_new}{{6}{5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {IV-C}2}\textbf  {Eliminating some variables from the support set of $f'$ with cofactoring\cite  {Cofact}, until only $A(c)$ remains.}}{5}}
+\newlabel{equ_char}{{7}{5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {IV-C}3}\textbf  {Characterizing $f$ with Craig Interpolation. This $f$ is also the formula $na$ in Line 14\hbox {} of Algorithm 1\hbox {}.}}{5}}
+\newlabel{equ_interpA}{{8}{5}}
+\newlabel{equ_interpB}{{9}{5}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Discovering Multiple Decoders' Boolean Relations}{5}}
+\newlabel{sec_fdtest}{{V}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-A}}Constructing SAT instance to discover decoders}{5}}
+\newlabel{subsec_fd_detail}{{\unhbox \voidb@x \hbox {V-A}}{5}}
+\newlabel{equ_fdia}{{10}{5}}
+\newlabel{equ_fdin}{{11}{5}}
+\newlabel{equ_fdo}{{12}{5}}
+\newlabel{equ_fdR}{{13}{5}}
+\newlabel{equ_fdf}{{14}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces The SAT instance that discovers decoders}}{6}}
+\newlabel{fig_fdtest}{{6}{6}}
+\newlabel{equ_fdRci}{{15}{6}}
+\newlabel{equ_fdfrewagain}{{16}{6}}
+\newlabel{equ_fdtest}{{17}{6}}
+\newlabel{thm_fdok}{{4}{6}}
+\newlabel{thm_fdok1}{{5}{6}}
+\newlabel{equ_fdfrewagain1}{{18}{6}}
+\newlabel{equ_fdfrewagain2}{{19}{6}}
+\newlabel{equ_newR}{{20}{6}}
+\newlabel{thm_new1}{{6}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-B}}The implementation of algorithm}{6}}
+\newlabel{subsec_fd_top}{{\unhbox \voidb@x \hbox {V-B}}{6}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces $DiscoveringDecoders$}}{6}}
+\newlabel{algo_fd_top}{{2}{6}}
+\newlabel{algo_fd_top_fdtest}{{1}{6}}
+\newlabel{algo_fd_top_newrel}{{3}{6}}
+\citation{ShengYuShen:tcad}
+\citation{ShengYuShen:tcad11}
+\citation{funcdep}
+\citation{EXTSAT}
+\citation{IEEE80232002}
+\citation{PCIESPEC}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-C}}Characterizing Boolean functions of the discovered decoders}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-D}}Characterizing $\{IA_1,\dots  ,IA_{m}\}$}{7}}
+\newlabel{subsec_charia}{{\unhbox \voidb@x \hbox {V-D}}{7}}
+\newlabel{equ_fd_nonvectors}{{21}{7}}
+\newlabel{equ_fd_vectors}{{22}{7}}
+\newlabel{equ_fd_bit}{{23}{7}}
+\newlabel{equ_fdtestbitA}{{24}{7}}
+\newlabel{equ_fdtestbitB}{{25}{7}}
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Information on Benchmarks}}{7}}
+\newlabel{tab_benchmark}{{I}{7}}
+\newlabel{equ_fdtestbitIA}{{26}{7}}
+\newlabel{equ_fd_iabit}{{27}{7}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Experimental Results}{7}}
+\newlabel{sec_exp}{{VI}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-A}}Benchmarks}{7}}
+\newlabel{subsec_expbench}{{\unhbox \voidb@x \hbox {VI-A}}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-B}}Inferred assertions}{7}}
+\citation{ShengYuShen:tcad11}
+\citation{ShengYuShen:tcad11}
+\citation{ShengYuShen:tcad11}
+\citation{ShengYuShen:tcad11}
+\citation{ShengYuShen:tcad11}
+\citation{ShengYuShen:iccad09}
+\citation{ShengYuShen:tcad}
+\citation{ShengYuShen:fmcad10}
+\citation{ShengYuShen:tcad11}
+\citation{YexinZheng_aspdac09,RobertWille_dac10,VivekVShende_tcad03,WilliamHung_dac04,Kerntopf_dac04,Maslov_tcad05,Gupta_tcad06,Maslov_tcad11}
+\citation{dim_syn}
+\citation{prog_inv}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Experimental Results}}{8}}
+\newlabel{tab_res}{{II}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-C}}Comparing the results with previous work}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-D}}Dealing with multiple decoders}{8}}
+\newlabel{subsec_exp_muldec}{{\unhbox \voidb@x \hbox {VI-D}}{8}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Related Works}{8}}
+\newlabel{sec_relwork}{{VII}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-A}}Complementary synthesis}{8}}
+\newlabel{subsec_compsyn_relat}{{\unhbox \voidb@x \hbox {VII-A}}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-B}}Reversible logic synthesis}{8}}
+\newlabel{subsec_revsyn}{{\unhbox \voidb@x \hbox {VII-B}}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-C}}Program inversion}{8}}
+\newlabel{subsec_proinv}{{\unhbox \voidb@x \hbox {VII-C}}{8}}
+\citation{mtd_autoProginv}
+\citation{prog_inv_rev}
+\citation{converter_date08}
+\citation{converter_date09}
+\citation{PCIESPEC}
+\citation{IEEE80232002}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces The loop-like non-complementary condition}}{9}}
+\newlabel{fig_double_loop_again}{{7}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-D}}Protocol converter synthesis}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusions}{9}}
+\newlabel{sec_conclude}{{VIII}{9}}
+\@writefile{toc}{\contentsline {section}{Appendix: Proof of Theorem 2\hbox {}}{9}}
+\newlabel{lemma_unfold_longer}{{1}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces The loop-like non-complementary condition unfolded for $q$ times}}{9}}
+\newlabel{fig_double_loop_unfold}{{8}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Correspondance between $F_{LN}(p,d,l,R)$ and $F_{LN}(p",d",l",R)$}}{9}}
+\newlabel{doubleloop_unfold_cmp}{{9}{9}}
+\bibcite{ShengYuShen:iccad09}{1}
+\bibcite{ShengYuShen:iccad11}{2}
+\bibcite{PCIESPEC}{3}
+\bibcite{IEEE80232002}{4}
+\bibcite{funcdep}{5}
+\bibcite{CHAFF}{6}
+\bibcite{grasp}{7}
+\bibcite{BERKMIN}{8}
+\bibcite{EXTSAT}{9}
+\bibcite{Cofact}{10}
+\bibcite{Craig}{11}
+\bibcite{interp_McMillan}{12}
+\newlabel{equ_correspondance}{{29}{10}}
+\newlabel{lemma_pc_long}{{2}{10}}
+\newlabel{thm_pc_nln}{{7}{10}}
+\newlabel{thm_nln_pc}{{8}{10}}
+\@writefile{toc}{\contentsline {section}{References}{10}}
+\bibcite{MEALY}{13}
+\bibcite{RecDiam}{14}
+\bibcite{ShengYuShen:tcad}{15}
+\bibcite{ShengYuShen:tcad11}{16}
+\bibcite{ShengYuShen:fmcad10}{17}
+\bibcite{dim_syn}{18}
+\bibcite{prog_inv}{19}
+\bibcite{mtd_autoProginv}{20}
+\bibcite{prog_inv_rev}{21}
+\bibcite{YexinZheng_aspdac09}{22}
+\bibcite{RobertWille_dac10}{23}
+\bibcite{VivekVShende_tcad03}{24}
+\bibcite{WilliamHung_dac04}{25}
+\bibcite{Kerntopf_dac04}{26}
+\bibcite{Maslov_tcad05}{27}
+\bibcite{Gupta_tcad06}{28}
+\bibcite{Maslov_tcad11}{29}
+\bibcite{converter_date08}{30}
+\bibcite{converter_date09}{31}

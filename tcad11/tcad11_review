@@ -1,0 +1,175 @@
+I am writing to let you know that the review process for your
+paper has been completed.  Based on the recommendation of the
+Associate Editor Wolfgang Kunz, your paper cannot be accepted for
+publication in its present form.  I suggest that you revise the
+manuscript to incorporate the reviewers' comments and/or suggestions
+and resubmit the revised version within the next five weeks
+for further processing. Failure to do so will result in the
+elimination of your manuscript from the review list.
+Feel free to contact us if there is an emergency that prevents you
+from meeting the deadline. In case of an emergency, an extension
+may be granted.
+
+When you submit the revised paper,  please include a page or two
+describing your responses to the reviewers' comments and detailing
+the changes that you have made.  This  information should  be
+included at the end of your manuscript.
+
+Thank you for considering the Transactions on CAD.
+We look forward to hearing from you.
+
+Sachin Sapatnekar
+Editor-in-Chief
+IEEE Transactions on CAD
+
+-----------------------------------------------------------------
+
+
+
+
+Title:   A Halting Algorithm to Determine the Existence of Decoder
+Authors: ShengYu Shen, Ying Qin, LiQuan Xiao, KeFei Wang, JianMin Zhang, SiKun Li
+
+
+Reviewers' and Associate Editor's Comments
+==========================================
+
+
+Recommendation
+--------------
+
+Resubmit after Major Revision for Review
+
+
+Comments to the Author
+----------------------
+
+The paper has some merit but it requires a major revision. The reviewers give you detailed suggestions how you can improve your paper. Please address them carefully.
+
+
+
+Key references that must be included:
+-------------------------------------
+
+
+
+
+
+Review Number 1.
+*****************
+
+Comments to the Author
+----------------------
+
+
+Comments/Remarks:
+
+In this paper, the authors describe an algorithm for checking if an encoder of a media protocol is lossless.
+They previously formulated a sufficient condition for an encoder to be lossless. Now they introduce a new algorithm that is also
+able to show that the encoder in question is lossy. (The authors already formulated such an algorith, but the new one is simpler and more efficient.)
+
+
+Here are my comments/remarks.
+
+
+
+1) This is a journal paper.  I think providing some background information would help understand the motivation better.
+Could you elaborate a bit on why the protocols  you consider have to be lossless? (An informal explanation will do.)
+I am not a specialist in the area of data transmission but as far as I understand loss of information is quite common in data transmission.
+
+2) In a previous paper, you mentioned that your approach does not work for data-intensive protocols.
+It makes sense to repeat this statement here (unless you have reconsidered it).
+
+3) Why can't one build a decoder manually? If it is possible, could you say a few words about how the    quality of decoders built manually compares with that of decoders generated automatically?
+
+
+4) What is a loop-like path? Is it a reconvergent path?
+  A more general remark is that the paper lacks informal explanations.
+  Intuitively, a Mealy machine M is lossless if for every pair of inputs i and i'
+  M either
+    a) produces different outputs o and o'  or it
+    b) switches into  different states s and s' such that any two sequences starting in s and s' and converging
+  to a state s* have to produce different outputs in state s*.
+
+ I would like to see more informal explanations like that. (Maybe my statement above is incorrect but I am sure that you can give a light and informal
+ description of what you are doing as opposed to burying the reader in formulas).
+
+5) Here an example of unnecessary complicating things. In expression (1) describing the recurrent diameter, instead of just saying that the state are different pairwise
+i.e. that (sj != sk) for all j,k=1,..,i, j!=k  you give a more complex expression. In this expression, the indexes are chosen in such a way that the check (sj != sk) is performed only once.
+It would make sense if you were describing an algorithm for finding the recurrence diameter. But you are giving a definition.
+
+6) In Figure 2, if  l > d, then, to compute the value of  input i_n, one may need to know the output o_m where m < n. It looks like breaking the causal relation.
+  Could you give an informal explanation of why it may be necessary?
+
+7)  The miter of your definition 3 is not what people usually call a miter. In your miter, the number of input variables is doubled, while in a regular miter the input
+variables of two circuits are identified. It is worth mentioning this fact. An alternative is  to use a different name, like "pseudo-miter" or "generalized miter".
+
+8) The experimental results are not terribly impressive. Your best result is reducing the runtime from 70 sec. to 21 sec. on XFI.
+  If you found an example where you reduced time from 10 hours to 3 hours it would make more sense. Waiting for 70 sec. instead of 21 sec. is tolerable,
+  unless you can argue that in some scenarios your algorithm may be applied many times.
+
+
+
+
+
+
+
+Review Number 2.
+*****************
+
+Comments to the Author
+----------------------
+
+The paper presents incremental work on earlier conference papers, and in fact is written in conference style.
+
+There are major lacunae in the presentation:
+
+1. The introduction to the problem is inadequate. Why is synthesis of a decoder an important problem? What are the existing techniques to tackle this problem? How is your proposed solution an improvement? All comparisons, including in the experiments, are to your own previous work, is there no other work in this area?
+
+2. The approach should be better motivated, and the algorithms more intuitively explained. Spewing a lot of formulae does not make for clarity.
+
+3. Related work section contains short descriptions of just two sets of work: one on a related technique (bounded model checking), and another to a piece of work on protocol converter synthesis. What is the relevance of these works to your own work? Did any of them inspire your methods? What is similar and what is different, compared to your work? As it stands, this section is utterly useless to the reader.
+
+Comments on Style:
+Similar to a conference presentation, the paper is full of `we', `us' etc, which should be removed.
+
+Sentences start with `Section', which should be rectified.
+
+
+Review Number 3.
+*****************
+
+Comments to the Author
+----------------------
+
+This work continues a line of research that was previously published in TCAD and proposes a better algorithm for synthesizing complementary circuits. A key advance is a reversibility check that can produce negative answers, rather than run forever as the previous algorithm would.
+
+The paper is structured well, and the figures are very nicely done.
+However, the use of "Halting" in the title seems unacceptable, as it mostly refers to the authors earlier work, where an algorithm could run forever in some cases. This can be confusing to readers not familiar with previous work. I suggest using "effective" instead ("efficient" seems inappropriate, since this algorithm is not polynomial-time). "Effective" usually means "does the job".
+
+Experiments are thorough, and results are convincing.
+The writing is generally clear, but there are several glitches.
+
+One reoccurring problem with writing is that the authors do not distinguish between >parameters< and >parameter values<. Consider this sentence appearing after Definition 1 "A sufficient condition for the existence of E^{&#8722;1} is, there exist three parameters p, d and l,..."  I think it refers to >parameter values< because the three parameters already exist.
+
+There are mismatches between singular and plural forms, e.g., in
+"there are actually two unfolding of transition function T", "two unfoldings" would sound more natural, and "two ways to unfold"  would sound better yet.
+"The 2nd and 4th rows of Table II compares" should use the plural form "compare" (as is done in the next paragraph).
+
+The authors start a new paragraph after 2-3 sentences. This is, of course, convenient when writing and proofreading a paper, but typical journal papers have only several paragraphs per text column. Please merge some paragraphs.
+
+References need some clear-up, as they use inconsistent styles, sometimes in the same reference. For example, in Ref. [8], the first name of the first author is abbreviated as "D.", but the first name of the second author "Ofer" is not.
+Please abbreviate first names of all authors everywhere. In Ref. [9], the last name of the author "Mealy" is given _before the first name "George".
+Refs [13] and [14] are inconsistent in how "in" is spelled.
+It would be helpful to doublequote publication titles.
+Why is Ref. [10] italicized ?
+
+When a journal version of a conference paper is available,
+reference the journal version.
+-------------------------------------------------------------------------------
+Finally, I would like to comment on the practice of submitting a fundamentally deficient algorithm to TCAD and then submitting another paper with a simpler, better algorithm to TCAD soon after. This is borderline unethical. The first paper did look unnecessarily complicated, and TCAD normally does not accept algorithms that can run forever. An exception was made, given the novelty of the problem. However, if the authors can quickly develop a simpler, more elegant, faster algorithm that actually stops in all cases, then why should TCAD reviewers and readers waste their time struggling through the first paper ?
+TCAD publishes results of completed research projects, not preliminary results.
+Please keep this in mind when submitting papers to TCAD in the future.
+
+
+

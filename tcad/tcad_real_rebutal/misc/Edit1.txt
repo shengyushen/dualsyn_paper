@@ -1,0 +1,305 @@
+OK	1	修改于法
+OK	2	修正引用格式
+
+3	Instructions for preparing the final manuscript and supporting
+documents are available at URL:
+http://tcad.polito.it/accept.html
+
+OK	4	The following wording must appear on the first page of all PDF's
+when a final paper is submitted:
+
+Copyright (c) 2010 IEEE. Personal use of this material is
+permitted. However, permission to use this material
+for any other purposes must be obtained from the IEEE by
+sending an email to pubs-permissions@ieee.org.
+-----------------------------------------------------------------
+
+OK	5	  14 pages in two-column IEEE format (including Photos and Bios)
+OK	6	过去式只用于描述过去发生的事情，而过去提出的算法，今天仍然满足的行为，应该使用现在是
+Ok	7	检查log
+OK	8	检查专有名词的拼写
+NO	9	致谢编辑，前后带名字
+OK	10	加入主任和所长
+OK	11	syntax检查
+OK	12	最后一页平衡
+OK	13	自我介绍和照片，问他们要照片
+OK	14	修改引用中的拉丁字符
+OK	15	表上使用双线
+Based on the recommendation of the Associate Editor Steven Nowick,
+I am very pleased to inform you that your manuscript has been
+accepted  for publication in the IEEE Transactions on CAD,
+provided that you address all reviewers' comments (if any)
+in the final manuscript.
+Instructions for preparing the final manuscript and supporting
+documents are available at URL:
+http://tcad.polito.it/accept.html
+Please upload all necessary items within the next three
+weeks. Postponement will cause your paper to be removed from the
+list awaiting publication.
+I would like to remind you that references are very important in
+journal articles. I therefore invite you to update your references
+with the most recently available citations.
+
+----------------------------------------------------------------
+The following wording must appear on the first page of all PDF's
+when a final paper is submitted:
+
+
+Copyright (c) 2010 IEEE. Personal use of this material is
+permitted. However, permission to use this material
+for any other purposes must be obtained from the IEEE by
+sending an email to pubs-permissions@ieee.org.
+-----------------------------------------------------------------
+Please remember that the final version of the paper should
+comply to the rule that establishes a maximum length of
+the published manuscript, namely:
+
+- Regular papers:
+  14 pages in two-column IEEE format (including Photos and Bios)
+- Transactions Brief papers:
+  5 pages in two-column IEEE format (no Photos and Bios)
+-----------------------------------------------------------------
+
+Thank you for contributing to the Transactions on CAD.
+
+-----------------------------------------------------------------
+
+Sachin Sapatnekar
+Editor-in-Chief
+IEEE Transactions on CAD
+
+-----------------------------------------------------------------
+
+
+
+
+Title:   Synthesizing Complementary Circuits Automatically
+Authors: ShengYu Shen,Ying Qin, JianMin Zhang,  and SiKun Li
+
+
+Reviewers' and Associate Editor's Comments
+==========================================
+
+
+Recommendation
+--------------
+
+Accept as is
+
+
+Comments to the Author
+----------------------
+The reviewer indicates that many of the issues have been addressed, 
+and the revised version is significantly improved.  
+The authors should carefully address the remaining comments, 
+and go through the English writing and presentation meticulously,
+ before resubmitting a final version.
+
+
+
+Key references that must be included:
+-------------------------------------
+
+
+
+
+
+Review Number 1.
+*****************
+
+Does the revision adequately address the concerns
+expressed in the original review?
+
+Yes.
+
+
+Comments to the Author
+----------------------
+
+
+ I am listing below some specific corrections,
+ mostly dealing with spelling, grammar and style.
+ In some cases, clarity is also an issue.
+
+ While the paper should be publishable upon addressing
+ those issues, the list is not exhaustive. An entire
+ category of problems not addressed in it is dealing
+ with tenses. When describing concepts, such as
+ two-level logic synthesis, it's better to use
+ the Present Tense rather than the Past Tense,
+ because these concepts are still valid. But
+ if you say that some concept 'was proposed earlier'
+ that should be in the Past Tense.
+
+ Finally, please do not take these corrections personally.
+ In fact, I am not a native speaker of English myself :)
+
+============================================================
+Spell proper names with capital letters:
+  "blue ray" -> "Blue Ray", "designware" -> "DesignWare", and so on.
+
+  On p. 1, in
+1) Standard datapath-intensive circuits
+  replace "venders" with "vendors"
+
+2) Non-standard and control-intensive circuits it
+  would be good to mention some of the benchmarks
+  used in Section VI, since the item 1) above mentions
+  specific datapath-intensive circuits.
+
+ Also on p. 1, in
+ "More importantly, we integrate the unsatisfiable
+  core extraction algorithm", replace "the" with "an"
+  since no such algorithm was mentioned previously.
+
+  On p. 2
+  "Although our algorithm is based on the unsatisfiable core
+   extraction algorithms, the readers do not need to dive deeply
+   into the details of it."
+  -->
+  "Although our algorithm is based on unsatisfiable core
+   extraction algorithms, the readers do not need understand
+   the details."
+
+  "The only thing that needs to be understood
+   about these well-known algorithms is that"
+   -> "The reader only needs to know that ..."
+
+ "State-of-the-Art SAT solvers normally find
+  only one total satisfying assignment."
+ Replace "total" with "complete"
+ (here an in several other places)
+
+  On page 3.
+  "An extreme example is a n-bits comparator"
+  replace "n-bits" with "n-bit" (because "n-bit"
+  is an adjective, not a numeral with a plural noun).
+
+> BMC is a model checking technique
+> that considers only limited length paths.
+ BMC is a model-checking technique that
+ considers only limited-length paths.
+
+ "In this section, we will introduce how to check"
+  replace "introduce" with "explain"
+
+ repalce "can't" with "cannot" everywhere
+ missing space: "Instead,we can only use"
+
+ On p. 4
+ "Definition 3: Parameterized Complementary
+Condition:For"   -- missing space
+
+ when referring to numbered equations, use
+ the "Equation 4" style instead of "equation (4)"
+  "algorithm 2" -> "Algorithm 2"
+ "table IV" -> "Table IV"
+ "section IV" -> "Section IV"
+ (this applies to all equations, algorithms, tables, sections, etc)
+
+ "the first line contains two unfoldings of circuit E"
+ -->
+ "the first line contains two unfolded instances of circuit E."
+
+ On p. 5
+ "There exist some more efficient approaches
+  to enumerate satisfying assignments of SAT instance"
+ --> "Other techniques to enumerate satisfying assignments
+         of a SAT instance can be more efficient"
+
+ On p.6
+ "Since it is self-contradictory, formula (17) must be unsatisfiable."
+ --> "This contradiction concludes the proof."
+
+ On p. 7
+ "To make A covering more satisfying assignments,"
+ --> "For A to cover more satisfying assignments,"
+
+ "XOR gates are used intensively"
+ use "extensively" instead
+
+ On p.8
+-------------- replace
+The third benchmark is a 66 bit scrambler used to make
+a data sequence to have enough transitions between 0
+and 1, so that it can run through high speed noisy serial
+transmission channel.
+-------------- with
+The third benchmark is a 66-bit scrambler used to ensure
+that a data sequence has sufficiently many transitions
+between 0 and 1, so that it can run through high-speed
+noisy serial transmission channel.
+--------------
+ I still do not understand what this means.
+ Possibly replace "transitions between 0 and 1"
+ with "0-1 transitions".
+
+ "To write assertions for ruling out invalid input letters"
+ should "letters" be "symbols" ? (also below)
+
+
+ On p. 9
+ "D. Improvement on Run Time Overhead"
+  "on" -> "in"
+----------- replace
+Except the most complex XFI, our synthesis result
+is better than that of hand written decoders. However,
+this does not mean that our algorithm is better than
+human designer. Actually, hand written decoders often
+include some irrelevant logic, such as error detecting
+and reporting function
+----------- with
+Except for the most complex XFI, our synthesis results
+are more compact than hand-written decoders. However,
+this comparison is unfair when hand-written decoders
+include error-detection and reporting functions, or other
+additions not required by the main functionality.
+-----------
+
+ "If it was ok, then these clauses could be removed"
+ --> "When a proof is completed, those clauses can be removed."
+
+The first class of algorithms
+The second class of algorithm
+The third class of algorithm
+The fourth class of algorithm
+ *** use "algorithms" in all cases
+
+----------- replace
+Liffiton and Sakallah [45] proposed a preprocessing step to search
+autarky, which was a partial assignment to the variables of a Boolean
+CNF formula that satisfied every clause containing an assigned variable.
+------------ with
+Liffiton and Sakallah [45] proposed a preprocessing step to search for
+autarkies, which are partial assignments to the variables of a Boolean
+CNF formula that satisfy every clause containing an assigned variable.
+------------
+
+ On p. 10
+
+"non-important variables" -> "unimportant variables"
+
+"The classical logic synthesis worked on AND-OR network.
+Its kernel was the two-level logic minimization algorithm"
+ replace "kernel" with "core"
+
+"Three most well-known"
+-->  "Three best-known"
+
+"A recent paper [35] amied to decompose"
+--> "A recent paper [35] aimed to decompose"
+
+"It is possible that, the circuit area of our generated
+complementary circuits can be improved"
+ remove the comma
+
+"One possible future work is to improve"
+--> "One direction for future work is to improve"
+
+ "to reduce the run time overhead"
+ -> "to reduce the run-time overhead"
+
+"find the reason for not terminating in a reasonable time bound."
+-> "find the reason for not terminating within a reasonable time bound.
+
+

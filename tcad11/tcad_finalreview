@@ -1,0 +1,252 @@
+06-Apr-2011
+
+Dear Dr. Shen:
+
+Manuscript ID TCAD-2011-0081 entitled "A Halting Algorithm to Determine the Existence of the Decoder (Revision of TCAD 6249)" which you submitted to the Transactions on Computer-Aided Design of Integrated Circuits and Systems, has been reviewed.  The comments of the reviewer(s) are included at the bottom of this letter.
+
+The reviewer(s) suggest some minor revisions to your manuscript.  Therefore, I invite you to respond to their comments and revise your manuscript.
+
+To upload your revised manuscript, log into http://mc.manuscriptcentral.com/tcad  and enter your Author Center, where you will find your manuscript title listed under "Manuscripts with Decisions."  Under "Actions," click on "Create a Revision."  Your manuscript number has been appended to denote a revision.
+
+You may also click the link below to start the revision process (or continue the process if you have already started your revision) for your manuscript. If you use this link you will not be required to login to ScholarOne Manuscripts.
+
+http://mc.manuscriptcentral.com/tcad?URL_MASK=RxNSSB4G3Yy7K25RNRcY
+
+
+You will be unable to make your revisions on the originally submitted version of the manuscript.  Instead, revise your manuscript using a word processing program and save it on your computer.  Please also highlight the changes to your manuscript within the document by using the track changes mode in MS Word or by using bold or colored text.
+
+Once the revised manuscript is prepared, you can upload it and submit it through your Author Center.
+
+When submitting your revised manuscript, you will be able to respond to the comments made by the reviewer(s) in the space provided.  You can use this space to document any changes you make to the original manuscript.  In order to expedite the processing of the revised manuscript, please be as specific as possible in your response to the reviewer(s).
+
+IMPORTANT:  Your original files are available to you when you upload your revised manuscript.  Please delete any redundant files before completing the submission.
+
+Because we are trying to facilitate timely publication of manuscripts submitted to the Transactions on Computer-Aided Design of Integrated Circuits and Systems, your revised manuscript should be submitted by 11-May-2011.  If it is not possible for you to submit your revision by this date, we may have to consider your paper as a new submission.
+
+Once again, thank you for submitting your manuscript to the Transactions on Computer-Aided Design of Integrated Circuits and Systems and I look forward to receiving your revision.
+
+Sincerely,
+Prof. Sachin Sapatnekar
+Editor-in-Chief, Transactions on Computer-Aided Design of Integrated Circuits and Systems
+tcad@umn.edu
+
+
+Reviewer(s)' Comments to Author:
+
+Reviewer: 1
+Comments to the Author
+The manuscript has improved quite a bit.
+
+Please fix the following minor issues.
+
+> One of the most difﬁcult jobs in designing communication and multimedia chips
+> is to design and verify the complex complementary circuit pair
+  Among the most difficult tasks in designing communication and multimedia chips
+  are the design and verification of complementary circuit pairs
+
+> In order to facilitate this job
+  To accomplish this task
+
+> There is one more issue that needs to be clarified
+> There are two classes of complementary circuit pairs
+> with different characters and design methodologies.
+// replace the above lines with
+  We distinguish two classes of complementary circuit pairs,
+  which require different design methodologies.
+
+> There is one more problem to be explained
+  We now explain one additional challenge.
+
+> It looks like breaking the causal relation.
+> This problem will be explained with the circuit in Figure 4
+  As illustrated in Figure 4, this looks like circular reasoning.
+// is this what you meant ?
+
+> In this way, the run time overhead
+  Hence, the runtime overhead
+
+> run-time overhead
+  runtime overhead
+
+> From Table III, it is obvious that
+  Table III suggests that
+
+> improved in the future work
+  improved in future work
+
+> critical path latencies
+  critical-path latencies
+
+> VI. RELATED WORKS
+  VI. RELATED PUBLICATIONS
+// OR
+  VI. RELATED RESULTS
+
+> program inverse is the problem
+  Program Inversion is the problem
+
+> Gluck et.al [19] inversed the ﬁrst-order functional programs
+  Gluck et.al [19] inverted ﬁrst-order functional programs
+// two changes
+
+> The requirement that the program to be inversed should be expressed
+> in a functional language make it impossible to be applied
+> to complementary synthesis
+  The use of functional languages in that work is incompatible
+  with our complementary synthesis
+// is this what you meant ?
+
+> . This is similar to these related researches.
+  , which is similar to [13], [15]
+
+> in this related research.
+  in [16]
+
+ > This is related to our works because both of us focus on
+   This is related to our work due to focus on
+
+
+
+
+Reviewer: 2
+Comments to the Author
+The paper is much improved.
+The following corrections should however be done.
+1. The phrase `state sequence' is strange. It appears to stand for what is usually called a `run' of a machine. I suggest that `run' be adopted. Also, instead of a `loop-like path', call it `loop inclusive path'- this is more accurate and descriptive.
+2. Expanding of a state sequence when it has loops is usually called an `unfolding'. Again, I suggest adoption of standard terminology.
+3. In Definition 3, it should be Product Machine (and NOT Productive machine)- again, standard terminology.
+4. In reporting results in Tables II to V, comparing the time/latency/area directly is not very instructive. I suggest reporting at least percentage improvement, in addition to the raw numbers.
+5. In referring to row numbers in the tables, please do not count the header/title line. Start counting from the first entry WITHIN the table.
+
+Specific corrections
+Abstract para 2, line 4: exists; otherwise,...
+                               line 5: checks if this ...
+                 para 3, line 4: correct encoders from incorrect ones, and it is more than...
+
+section I
+para 1, line 1-2: Rewrite as:
+In designing communication and multimedia chips, the complementary circuit pair poses special challenges.  For the pair (E, E^-), encoder E transforms ....
+para 1, line 8: algorithm is proposed [1, 2] to....
+             line 11: encoder's input sequence of letters can be ...
+para 2, line 2: algorithm was proposed recently [3]...
+page 1, column 2, para 2, line 1: implemented in the OCaml... solved with the Zchaff..
+                                                line 9:  [3] proposed by us. All...
+                                 para 3: REMOVE FIRST LINE
+                                              point 1, last line: REWORD
+page 2, line 3: Background material is presented in section II. The algorithm is introduced in section III, while section IV  ....area. The experimental results are in section V and related work is discussed in section VI. Finally, section VII ....
+
+section II
+column 1, para 1, line 4: so that F evaluates to...
+para 5, line 6: of states,... from the nth to the mth state are denoted ....
+BEFORE DEFINING A LOOP AS A STATE SEQUENCE, YOU SHOULD DEFINE A STATE SEQUENCE s^m_n FIRST.
+para 6- WHAT IS M- not clear
+
+page 3, column 1, para 3: [1] just iterates through...
+                                 para 4: REMOVE FIRST SENTENCE
+                                 para 4, line 4: This looks like ...
+             column 2, para 1, line 9: expanded q times
+                                               line 10: from this expansion is shown ...
+                                 para 2, line 3: resulting from this expansion are not ...
+                                 para 3, line 3: on the product machine M^2
+
+page 4, line 1: Product Machine:...
+              line 2: Product machine is...
+Definition 4, line 3: its product machine...
+                        line 4: cannot be ...
+                        para 2, line 1: it is obvious that the only ...
+column 2, para 2, line 1: Arcs 2 and 3...
+                                 line 4: sequences that are not ...
+                   para 3, line 2: Thus the second line ...
+Proof of Lemma 2, line 2: former implies the unsatisfiability of the latter. Thus...
+Theorem 1, Proof, line 2: This means that there exist ...
+
+Page 5, Theorem 2, Proof, line 1: Proof is by contradiction....
+                                                para 2, line 2: product machine. Define ...
+                                                para 3, line 4: This contradicts the fact that ...
+column 2, para 1, line 1: all combinations of values for p, d and l as in earlier work [1, 2], Lines 2, 3 and 4...
+                                 line 4: all set to x (Line 1).
+
+section IV
+para 1, line 2: the values found ...
+para 2, line 2: smallest value that ..
+             line 5: Algorithm 1 proves that ..
+             line 6:  makes i_n dependent on ...
+
+page 6, Table I, line 2: lines of Verilog source code
+below Table 1, line 4: algorithm in the second step of ...
+                           line 7: algorithm.
+
+section V
+line 1: implemented in the ...
+subsection A, point 3, line 2: 0-1 transitions, so that ...
+subsection B, line 1: The second and fourth rows of ...
+column 2, below Table III, line 1: different order of checking various parameter value combinations.
+subsection C, para 2, line 5: built manually also include ...
+subsection E, para 2, line 1: The second row of ...
+                                       line 2: while the third ..
+                                       line 5: much faster than previously reported methods [3].
+
+page 7, section VI
+subsection A, line 2: proposed in 2009 [1]. .... are that it may not halt, and ....overheads while building ...circuits is large.
+subsection B, para 3, line 1: [19] inverted first-order ...
+                                       line 4: be inverted ...
+                                       line 5: impossible to apply to ...
+                         para 4, line 6: that cannot fulfill ..
+subsection V, para 1, line 2: that considers only paths of ...
+                                       line 3: Many researchers have tried to find complete ...
+                         para 2, line 1: to find a bound ...
+column 2, para 1, last line: patterns in this ...
+subsection D, para 1, line 3: related to this work because both focus ...
+                         para 2, line 2: Then they provided ...
+                                        line 4: that cannot be ...Finally, they synthesized a translator
+WHERE is reference 24 referenced in the text?
+
+section VII, line 1: faster and simpler halting ...
+                     line 3: a corresponding ...
+                     line 6: much faster than previous methods [3].
+
+
+Reviewer: 3
+Comments to the Author
+You have improved your writing but I still have a few remarks.
+
+
+1) The fact that your approach is meant to design computer chips for a supercomputer
+  completely clarifies your problem formulation.
+
+  a) You build a chip for communication between two LOCAL components so one
+     can avoid loss of information that occurs in long distance data transmission
+
+  b) You do not know the "nature" of information (the supercomputer can run an arbitrary program) and so the latter cannot be compressed as for example when transmitting images.
+
+  I think you could emphasize this fact in the very beginning of your paper.
+
+
+2)  Using  contractions in a scientific paper is not appropriate.
+
+  (Use <do not> instead of <don't> , <cannot> instead of <can't> and so on).
+
+
+
+3) Still there are  typos.  For example, on the first page, in the right column, second paragraph above Figure 1:
+
+ "Therefore this ... isn't design for them"
+
+ 'design' -> 'designed'
+
+
+4) I am not particularly impressed with your explanation of why to compute input I_n
+one may need to know
+  outputs O_m where m < n (which may look as breaking the causal relation.
+
+
+ Having an example helps but it would be nice to have a simple informal explanation (like the one below).
+
+
+ In different states, the encoder may produce different outputs for the same input I_n.
+ The knowledge of outputs O_m, m < n may be necessary to identify the STATE of the encoder  in which the input I_n has been processed.
+
+
+Associate Editor: Kunz, Wolfgang
+Comments to the Author:
+The paper has improved substantially and is almost ready to get published. A minor revision is still required. Please follow the suggestions as stated by the reviewers.

@@ -1,0 +1,1816 @@
+% 中国科学 A 辑: 数学 中文模板, 请直接用 LaTeX 编译.
+\documentclass{SCACF}
+\usepackage{amssymb}
+\usepackage{color,soul}
+% 楷体
+% 请作者注意: 在整篇文章中, 不要使用任何改变文章版式的命令, 谢谢.
+% 常见的数学类宏包如 amsmath,amsthm,amsfonts,amssymb,bm 和插图宏包会自动加载.
+% 请在此添加文章要用到的特殊宏包以及自定义命令等.
+\def\dl{\displaystyle}
+\def\tlj{\end{document}}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\makeatletter
+\newcommand{\rmnum}[1]{\romannumeral #1}
+\newcommand{\Rmnum}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+\newtheorem{algo}{\textbf{Algorithm}}
+\newtheorem{definition11}{\textbf{Definition}}
+\newtheorem{lemma}{\textbf{Lemma}}
+\newtheorem{theorem}{\textbf{Theorem}}
+\newtheorem{proposition}{\textbf{Proposition}}
+
+\begin{document}
+
+%文章的基本参数
+\Year{2010} % 出版年
+\Vol{40} % 卷
+\No{1} % 期
+\BeginPage{1} % 起始页码
+\EndPage{?} % 终止页码
+%\ReceivedDate{2009--xx--xx} % 收稿日期
+%\AcceptedDate{2009--xx--xx} % 接受日期
+%引用信息%%%%%%%%%%%%%%%%%%%%%%%%%作者不需填写此部分%%%%%%%%%%%%%%%%%%
+%\thispagestyle{empty}
+%\begin{picture}(0,0)
+%\put(-25,-635){ \fcolorbox[rgb]{0,0,0}{0.75,0.75,0.75}
+%{\parbox[t]{144truemm{\bf\scriptsize 引用格式:\ }}{\scriptsize
+%李国杰. 信息科学技术的长期发展趋势和我国的战略取向. 2010, 53;
+%1--8}}}\end{picture}
+%引用信息%%%%%%%%%%%%%%%%%%%%%%%%%作者不需填写此部分%%%%%%%%%%%%%%%%%%
+
+% 标题: 此命令的完整格式为:
+%       \title[短标题]{标题}{题注}
+% 说明: 1. 短标题为可选项, 出现于页眉中, 若省略, 则与标题相同.
+%       2. 题注是对标题的附加说明, 将出现于首页脚注区, 若没有, 花括号不可省略.
+\noindent\hspace{-2mm}{\vspace{-2mm}\zihao{4}
+ \fcolorbox[rgb]{1,1,1}{0.75,0.75,0.75}{\parbox[t]{20truemm}{\heiti
+ {\zihao{-4}\quad 论~~~文}}}}
+
+
+\title[]{无需手工给出断言的对偶综合}{}
+
+
+% 作者: 此命令的使用格式为:
+%       \author[单位编号]{作者姓名}{}
+% 说明: 1. 每一个作者用一条 \author 命令.
+%       2. 单位编号应该与下面 \address 中的单位相对应, 如果只有一个作者或只有一个单位, 则可省略此编号.
+\author[]{沈胜宇}{~~}
+\author[]{秦莹}{}%通信作者请在相应作者后加*号
+\author[]{张建民}{}
+\author[]{李思昆}{}
+\Email{syshen@nudt.edu.cn, qy123@nudt.edu.cn, jmzhang@nudt.edu.cn, skli@nudt.edu.cn}%此处请填写所有作者的email地址
+\Correspondingauthor{*沈胜宇}%如果仅有一位作者请删去括号中的内容
+\Foundation{国家自然科学基金(批准号: 61070132)资助项目}% 项目资助信息
+\Authormark{沈胜宇等}%如果仅有一位作者请删去“等”
+
+% 单位及地址: 此命令的使用格式为:
+%       \address[单位编号]{单位名称与地址}
+% 说明: 1. 每一个单位用一个 \address 命令.
+%       2. 单位编号中请按顺序填入数字 1,2,..., 如果只有一个单位, 可以省略此编号.
+
+%\address[\ding{172}\!\!]{海军工程大学电子工程学院, 武汉 430033}
+\address[]{国防科技大学计算机学院, 长沙 410073}
+\maketitle
+
+\begin{abstract}
+{\xiaowuhao
+\begin{tabular}{p{0.80\textwidth}!{\color[gray]{0.4}\vline}p{0.16\textwidth}}
+{\zaiyao{\heiti 摘要\quad\,\,}
+对偶综合能够自动生成特定编码器的解码器.
+然而其用户需要手工给出配置信号上的断言以防止编码器到达非工作状态.
+
+为了防止该繁琐工作,
+我们提出了能够自动推导断言的算法.
+对于能够导致解码器不存在的每一个非法配置信号值,
+我们使用Craig插值推导出一个包含大量非法配置信号值的公式.
+该步骤将重复直至所有非法信号值均被剔除为止.
+最终的断言可以通过将所有推导的公式取反再与到一起得到.
+
+然而,
+在该推导断言结果下可能存在多个解码器.
+为此我们提出了另一个算法以产生所有这些解码器,
+通过迭代的测试$R$,
+能够唯一决定输入字符的布尔关系,
+是否能够表达为所有已发掘的解码器的组合.
+对于所有导致该测试失败的配置信号值,
+一个新的解码器的布尔关系可以通过向$R$中强制该值得到.
+该步骤将重复直至所有解码器均被发掘为止.
+为了帮助用户从所有发掘的解码器中选择正确的解码器,
+第三个算法被提出以计算每个解码器的前提条件.
+
+为了展示该算法的有效性,
+我们在多个复杂编码器上运行了本文的算法,
+包括PCI-E和以太网.
+实验解雇表明
+本文算法始终能够推导正确的断言并产生解码器.
+进一步的,
+基于特征化的每个解码器的前提条件,
+用户可以非常容易的选择正确的解码器。
+}&{\heiti\zihao{5}
+关键词}\par
+对偶综合
+
+推导断言
+
+Cofactoring
+
+Craig插值
+\end{tabular}}
+\end{abstract}
+\vspace*{-1.25mm}\textcolor[rgb]{0.4,0.4,0.4}{\rule{16cm}{0.4pt}}
+%
+
+
+%引用信息%%%%%%%%%%%%%%%%%%%%%%%%%作者不需填写此部分%%%%%%%%%%%%%%%%%%
+%\renewcommand{\headrulewidth}{0pt}
+%\thispagestyle{fancy} \fancyfoot[L]{\footnotesize
+%\fcolorbox[rgb]{0,0,0}{0.75,0.75,0.75}{\parbox[t]{143truemm{\bf\scriptsize\raisebox{-4pt}{}\raisebox{9pt}{}
+%引用格式:\ }}{\scriptsize 刘涛, 黄高明, 王雪松等.
+%基于H/A目标极化分解理论的统计分析. 2010, 53; 1--13}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 正文
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\sec{1\quad 引言}
+\section{Introduction}\label{sec_intro}
+
+在设计通讯和多媒体芯片中
+最为复杂的工作是设计和验证对偶电路对$(E,E^{-1})$,
+其中编码器$E$将输入数据流编码为易于传输和存储的格式,
+而其对偶电路(或解码器)$E^{-1}$则恢复该信息.
+
+为了提高该工作的效率,
+对偶综合算法被提出\cite{ShengYuShen:iccad09,ShengYuShen:tcad}以自动综合特定编码器的解码器,
+通过检查特定编码器的输入能够被输出唯一决定.
+% Shen et al.\cite{ShengYuShen:fmcad10} improves above works by proposing a halting algorithm to check the existence of the decoder.
+
+然而,
+对偶综合的用户需要手工给出配置信号上的断言,
+以阻止编码器到达非工作状态.
+例如在测试和休眠模式下，编码器将致力于处理测试命令或者什么也不干.
+在这些模式下,
+该编码器的输入不能够被其输出唯一决定,
+这将导致解码器不存在.
+
+为了避免手工给出断言的繁琐工作,
+我们给出如下的自动算法:
+\textbf{首先},
+我们使用由Shen et al. \cite{ShengYuShen:tcad11}提出的停机算法以找到能够导致解码器不存在的一个配置字符.
+\textbf{其次},
+我们使用cofactoring\cite{Cofact}和Craig插值\cite{Craig}以推导一个公式,
+该公式覆盖了大量非法的配置字符.
+这两步被重复直至所有非法配置字符均被覆盖为止.
+\textbf{最后},
+我们通过将所有推导公式取反后与在一起而得到最后断言.
+% The decoder exists if and only if this final assertion is still satisfiable.
+
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=0.35\textwidth]{multidec}
+\end{center}
+\caption{同时存在的多个解码器}
+  \label{multidec}
+\end{figure}
+
+
+然而,
+在这个断言之下有可能同时存在多个解码器.
+对于图\ref{multidec}中的编码器,
+不管$c$取什么值,
+$in$总能够被$out$唯一决定.
+然而该编码器存在两个解码器,
+其中一个是$in\stackrel{def}{=}out-1$,
+另一个是$in\stackrel{def}{=}out-2$.
+% Which is the desired decoder depends on the actual value of $c$.
+%Such inconvenience is the price that must be paid to avoid the trouble of specifying assertions manually.
+%This problem is not as serious as it appears:
+%according to experimental results,
+%only two of our five benchmarks have two decoders with the other three having only one.
+
+为此我们提出了另一个算法以得到所有这些解码器,
+通过迭代的测试$R$,
+能够唯一决定输入字符的布尔关系,
+能否表达为所有已经发掘的解码器的组合.
+对于每一个导致该测试失败的配置字符,
+通过将该值设置到$R$中，
+一个新的解码器的布尔关系可以被得到.
+该步骤重复直至所有解码器均被发掘.
+
+为了帮助用户在多个潜在解码器之间选择正确的解码器,
+第三个算法被提出以为每一个发掘的解码器计算器前提条件.
+通过检验这些前提条件用户可以非常容易的选择正确的解码器.
+
+我们在多个来自于工业界的复杂编码器
+(如PCI-E\cite{PCIESPEC}和以太网\cite{IEEE80232002})上运行了我们的算法.
+试验结果表明
+我们的算法始终能够为他们推导断言并生成解码器.
+进一步的,
+通过检验每个解码器的前提条件,
+用户可以非常容易的选择正确的解码器.
+% Only two out of our five benchmarks have no more than two decoders,
+% the other three only have one decoder.
+所有的程序和试验结果可在下列网址下载\url{http://www.ssypub.org/exp/compsyn_fmcad11.tgz}.
+
+\textbf{本文的剩余部分如下组织}.
+节\ref{sec_prem}介绍背景资料.
+节\ref{sec_algo}给出了推导断言的算法及其正确性证明.
+节\ref{sec_rmred}削减节\ref{sec_algo}找到的参数值,
+而节\ref{sec_fdtest}则讨论了如何找到所有的解码器的布尔关系以及他们的前提条件.
+节\ref{sec_exp}和\ref{sec_relwork}分别给出了试验结果和相关工作.
+最后,
+节\ref{sec_conclude}总结全文.
+
+\section{背景}\label{sec_prem}
+
+\subsection{命题逻辑和相关主题}\label{subsec_SAT}
+布尔集合记为$\mathbb{B}=\{0,1\}$.
+对于布尔变量集合$V$上的公式$F$,
+其布尔命题逻辑可满足问题就是寻找满足赋值$A:V\to \mathbb{B}$,
+使得$F$为1.
+如$A$存在则$F$是可满足的;
+否则是不可满足的.
+寻找$A$的一个计算机程序称为SAT求解器.
+% such as Zchaff\cite{CHAFF},
+% % Grasp\cite{grasp},
+% Berkmin\cite{BERKMIN},
+% and MiniSAT\cite{EXTSAT}.
+一般的,
+公式$F$表达为CNF格式,
+其中公式是多个短句的与,
+而一个短句是多个文字的或,
+而一个文字是一个变量或其反.
+一个CNF公式也称为SAT实例.
+
+
+%\subsection{Cofactoring}\label{subsec_pre_cofact}
+
+对于一个布尔函数$f:\mathbb{B}^n\to \mathbb{B}$,
+我们用$supp(f)$表示其支撑集$\{v_1\dots v_n\}$.
+由Ganai et al. \cite{Cofact},
+面向$v$的$f(v_1\dots v\dots v_n)$的正负cofactors
+分别是$f_v=f(v_1\dots 1\dots v_n)$和$f_{\overline{v}}=f(v_1\dots 0\dots v_n)$.
+% Existential quantification of $f(v_1\dots v\dots v_n)$ with respect to a
+% variable $v$ is $\exists v f=f_v+f_v芒聙聶$.
+\textbf{Cofactoring}是将0或者1赋予$v$以得到$f_v$或$f_{\overline{v}}$的动作.
+
+
+%\subsection{Craig Interpolation}\label{subsec_pre_interp}
+Craig\cite{Craig}证明了以下定理:
+
+\begin{theorem}[Craig插值定理]\label{thm_craig}
+对于两个公式$\phi_A$和$\phi_B$,
+若$\phi_A\wedge \phi_B$不可满足,
+则存在一个仅引用了$\phi_A$和$\phi_B$共同变量的公式$\phi_I$
+使得$\phi_A\to \phi_I$成立
+且$\phi_I\wedge \phi_B$不可满足.
+$\phi_I$称为$\phi_A$面向$\phi_B$的插值.
+\end{theorem}
+
+在本文剩余部分,
+我们将使用McMillan\cite{interp_McMillan}提出的算法从MiniSAT求解器\cite{EXTSAT}产生的不可满足证明中产生插值.
+
+对于布尔函数$f:\mathbb{B}^l\to \mathbb{B}$和布尔函数集合
+$G=(g_1, ..., g_n)$ with $g_i: \mathbb{B}^l\to \mathbb{B}$其中$i =1,\dots ,n$,
+\textbf{函数依赖性} \cite{funcdep}致力于寻找第三个函数$h:\mathbb{B}^n\to \mathbb{B}$,
+以使得$f(X) = h(g_1(X),\dots , g_n(X))$.
+Lee et al. \cite{funcdep}构造了一个SAT实例以测试$h$是否存在,
+并用Craig插值\cite{interp_McMillan}特征化他.
+
+%we will focus on the Boolean propositional logic only,
+%% There are many approaches to generate interpolants for propositional logic,
+%% so please refer to Krajicek\cite{interp_Krajicek},
+%% Pudlak\cite{interp_Pudlak} and McMillan\cite{interp_McMillan} for more details.
+
+%\subsection{Functional Dependency}\label{subsec_prefd}
+% \textbf{Functional dependency}\cite{funcdep} is defined as:
+%
+% \begin{definition11}\label{def_fd}
+% Given a Boolean function $f:B^m\to B$ and a vector of
+% Boolean functions $G=(g_1(X), ..., g_n(X))$ with $g_i: B^m\to B$ for $i =1,\dots ,n$,
+% over the same set of variable vector $X = (x_1,\dots , x_m)$, we
+% say that $f$ \textbf{functionally depends} on $G$ if there exists a Boolean
+% function $h: B_n\to B$, called the dependency function, such that
+% $f(X) = h(g_1(X),\dots , g_n(X))$.
+% %We call functions $f$, $G$, and $h$ the \textbf{target
+% %function}, \textbf{base functions}, and \textbf{dependency function}, respectively.
+% \end{definition11}
+
+% Lee et al. \cite{funcdep} proposes to test functional dependency by constructing a SAT instance and proving its unsatisfiability.
+
+% \subsection{Recurrence Diameter}
+%
+% A circuit can be modeled by a Mealy machine \cite{MEALY}.
+%
+% \begin{definition11}\label{MealyFSM_old}%\addtolength{\itemsep}{-0.5\baselineskip}
+% %{\setlength{\baselineskip}{0.5\baselineskip}
+% \textbf{Mealy finite state machine} is a 5-tuple $M=(S,s_0,I,O,T)$,
+% consisting of a finite state set $S$,
+% an initial state $s_0\in S$,
+% a finite set of input letters $I$,
+% a finite set of output letters $O$,
+% a transition function $T: S\times I\to S\times O$ that computes the next state and output letter from the current state and input letter.
+% %}
+% \end{definition11}
+%
+
+
+
+% Obviously,
+% a state sequence longer than $uirrd(M)$ must be a loop-like path.
+
+
+\subsection{检验解码器的存在}\label{subsec_chkextdec}
+对偶综合\cite{ShengYuShen:iccad09}包括两步:
+检验解码器是否存在和特征化其布尔函数.
+我们在这里将仅介绍第一步.
+为了建模带配置信号的编码器,
+我们扩展了传统的Mealy有限状态机的定义\cite{MEALY}:
+
+\begin{definition11}\label{MealyFSM}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\textbf{带配置信息的Mealy有限状态机}是一个6元祖$M=(S,s_0,I,C,O,T)$,
+包括状态集合$S$,
+初始状态$s_0\in S$,
+有限输入字符集合$I$,
+有限配置字符集合$C$,
+有限输出字符集合$O$,
+迁移函数$T: S\times I\times C\to S\times O$从当前状态，输入字符和配置字符计算下一状态和输出字符.
+%}
+\end{definition11}
+
+\begin{figure}[t]
+\centering
+\includegraphics{mealy}
+\caption{带配置信息的Mealy有限状态机}
+\label{mealy}
+\end{figure}
+
+如图\ref{mealy}所示,
+% as well as in the remainder of this paper,
+状态使用圆角灰色方框表示,
+而迁移函数$T$使用白色方框表示.
+我们将第$n$个周期的状态，输入字符，输出字符和配置字符表示为$s_n$, $i_n$, $o_n$和$c_n$.
+我们将第$n$到$m$个周期的状态，输入字符，输出字符和配置字符序列表示为$s_n^m$, $i_n^m$, $o_n^m$和$c_n^m$.
+一个路径是一个状态序列$s_n^{m}$其中$\exists i_jo_jc:(s_{j+1},o_j)\equiv T(s_j,i_j,c)$对于所有$n\le j< m$.
+一个环是一个路径$s_n^{m}$其中$s_n\equiv s_m$.
+% A \textbf{loop-like path} is a state sequence $s_n^{m}$ with $s_i\equiv s_j$,
+% where $n\le i< j\le m$.
+
+%The state variables recurrence diameter\cite{RecDiam} of the Mealy machine $M$,
+%% denoted by $rrd(M)$,
+%is the longest path without loop in $M$ starting from an initial state.
+% \begin{equation}\label{equ_svrd}
+% rrd(M)\stackrel{def}{=}\max\{i|\exists s_0 \dots s_i:
+% I(s_0)\wedge \bigwedge^{i-1}_{j=0}T(s_j,s_{j+1})\wedge\bigwedge^{i-1}_{j=0}\bigwedge^{i}_{k=j+1}s_{j}\ne s_{k}\}
+% \end{equation}
+一个Mealy有限状态机$M$的递归半径是其最长无环路径:
+%}
+
+\begin{equation}\label{equ_uisvrd}
+\begin{split}
+uirrd(M)\stackrel{def}{=}\max\{i|\exists s_0 \dots s_i  i_0 \dots i_i o_0 \dots o_ic:\\
+\bigwedge^{i-1}_{j=0}(s_{j+1},o_j)\equiv T(s_j,i_j,c)\wedge\bigwedge^{i-1}_{j=0}\bigwedge^{i}_{k=j+1}s_{j}\ne s_{k}\}
+\end{split}
+\end{equation}
+
+该定义和状态变量递归半径\cite{RecDiam}的区别在于
+我们的$uirrd$不考虑初始状态.
+我们将仅使用该半径来证明我们的定理.
+我们的算法并不需要计算他们.
+
+% \begin{definition11}\label{def_ass}
+\textbf{配置信号桑的断言(或者公式)}是一个配置字符集合$R$.
+对于配置字符$c$,
+$R(c)$意味着$c\in R$.
+如果$R(c)$橙路,
+我们也说$R$覆盖$c$.
+% \end{definition11}
+
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=0.35\textwidth]{t1}
+\end{center}
+\caption{参数对偶条件}
+  \label{t1}
+\end{figure}
+
+如图\ref{t1}所示,
+解码器存在当存在三个参数$p$, $d$和$l$,
+使得$i_n$可以被编码器的输出序列$o_{n+d-l}^{n+d-1}$唯一决定.
+$d$是$o_{n+d-l}^{n+d-1}$和$i_n$之间的相对延时,
+而$l$是$o_{n+d-l}^{n+d-1}$的长度,
+而$p$是用于剔除某些不可达状态的前置状态序列.
+这可以形式化的定义为:
+
+\begin{definition11}\label{def_pcc}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\textbf{参数对偶条件(PC)}:
+对于编码器$E$,
+断言$R$,
+三个参数$p$, $d$和$l$,
+$E\vDash PC(p,d,l,R)$成立当
+$i_n$可以被$o_{n+d-l}^{n+d-1}$唯一决定,
+且$R$覆盖所有的配置字符$c$.
+这等价于公式(\ref{uniqt1})中$F_{PC}(p,d,l,R)$的不可满足.
+我们进一步定义$E\vDash PC(R)$为$\exists p,d,l:E\vDash PC(p,d,l,R)$.
+\end{definition11}
+
+
+\begin{equation}\label{uniqt1}
+\begin{split}
+&F_{PC}(p,d,l,R)\stackrel{def}{=}\\
+&\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s_{m+1},o_m)\equiv T(s_m,i_m,c)
+\}
+\\
+\wedge&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s'_{m+1},o'_m)\equiv T(s'_m,i'_m,c)
+\}
+\\
+\wedge&\bigwedge_{m=n+d-l}^{n+d-1}o_m\equiv o'_m \\
+\wedge& i_n\ne i'_n \\
+% \wedge&\bigwedge_{x=n-p}^{n+d-1}c_x\equiv c \\
+% \wedge&\bigwedge_{x=n-p}^{n+d-1}c_x'\equiv c \\
+\wedge& R(c)
+\end{array}
+\right\}
+\end{split}
+\end{equation}
+
+%This definition is the same as that of Subsection \ref{subsec_chkextdec} and paper \cite{ShengYuShen:iccad09}.
+
+% The 2nd to 5th lines of Equation (\ref{uniqt1}) correspond to Condition 1 of Definition \ref{def_pcc}.
+公式(\ref{uniqt1})的行2和3对应于$E$中的两条路径.
+% The only difference between them is that a prime is appended to every variable in Line 3 .
+行4强制这两条路径的输出字符序列相等,
+行5强制他们的输入字符不等.
+% At the same time,
+% the last three lines of Equation (\ref{uniqt1}) correspond to Condition 2 of Definition \ref{def_pcc}.
+% The 6th and the 7th lines constrain that all configuration letters are equal to $c$,
+最后一行强制$c$被$R$覆盖.
+
+基于检查$E\vDash PC(R)$\cite{ShengYuShen:iccad09,ShengYuShen:tcad}的直接遍历$p$, $d$的所有组合$l$,
+从小到大,
+直到$F_{PC}(p,d,l,R)$成为不可满足,
+这意味着解码器存在.
+
+然而,
+如果解码器不存在,
+该算法将不会停机.
+为了发现一个停机算法,
+Shen et al.\cite{ShengYuShen:tcad11}定义了如何检验算法的不存在.
+
+
+根据定义\ref{def_pcc}和图\ref{t1},
+解码器存在当存在三个参数$p$, $d$和$l$使得
+$E\vDash PC(p,d,l,R)$成立.
+% such that every path longer than $p$ always reaches a particular state $s_n$,
+% in which the input letter $i_n$ can be uniquely determined by the output sequence $o_{n+d-l}^{n+d-1}$.
+因此,
+直观的,
+解码器不存在当对任意$p$, $d$和$l$,
+我们总能找到另一个$p'$, $d'$和$l'$其中$p'>p$,$l'>l$ and $d'>d$,
+使得$E\vDash PC(p',d',l',R)$不成立.
+
+% \begin{figure}[t]
+% \begin{center}
+% \includegraphics[width=0.45\textwidth]{doubleloop_unfold}
+% \end{center}
+% \caption{The loop-like non-complementary condition unfolded for $q$ times}
+%   \label{fig_double_loop_unfold}
+% \end{figure}
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.45\textwidth]{doubleloop}
+\end{center}
+\caption{环形非对偶条件}
+  \label{fig_double_loop}
+\end{figure}
+
+这一情形可以被图\ref{fig_double_loop}中的SAT实例检测,
+这与图\ref{t1}非常类似,
+除了三个用于检测$s_{n-p}^{n+d-l}$, $s_{n+d-l+1}^n$和$s_{n+1}^{n+d}$上的环的约束.
+如果该SAT实例可满足,
+对于任意$p$, $d$和$l$,
+我们可以展开这三个环直到找打$p'$ ,$d'$和$l'$大于$p$, $d$和$l$.
+很明显这个展开的SAT实例仍然是可满足的,
+这意味着$E\vDash PC(p',d',l',R)$不成立.
+因此解码器不存在.
+% According to Line 1 and 2 of Equation (\ref{uniqt1}),
+% there are actually two state sequences of transition function $T$,
+% so we need to detect these loops on both of them,
+% i.e.,
+% on the productive machine $M^2$ defined below:
+%
+% \begin{definition11}%\addtolength{\itemsep}{-0.5\baselineskip}
+% %{\setlength{\baselineskip}{0.5\baselineskip}
+% \textbf{Productive machine:}For Mealy machine $M=(S,s_0,I,C,O,T)$,
+% its productive machine is $M^2=(S^2,s_0^2,I^2,C^2,O^2,T^2)$,
+% where
+% $T^2$ is defined as $(<s_{m+1},s'_{m+1}>,<o_m,o'_m>)=T^2(<s_m,s'_m>,<i_m,i'_m>,<c_m,c'_m>)$ with $(s_{m+1},o_m)=T(s_m,i_m,c_m)$ and $(s'_{m+1},o'_m)=T(s'_m,i'_m,c'_m)$.
+% \end{definition11}
+所以,
+解码器不存在可以通过以下定义检验:
+
+\begin{definition11}\label{def_lnc}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\textbf{环形非对偶条件(LN):}对于编码器$E$及其Mealy有限状态机$M=(S,s_0,I,C,O,T)$,
+% assume its productive machine is $M^2=(S^2,s_0^2,I^2,C^2,O^2,T^2)$,
+$E\vDash LN(p,d,l,R)$成立当
+$i_n$在$s_{n-p}^{n+d-1}$上不能被$o_{n+d-l}^{n+d-1}$唯一决定,
+而且在$s_{n-p}^{n+d-l}$, $s_{n+d-l+1}^n$和$s_{n+1}^{n+d}$上存在环.
+这等价于公式(\ref{uniqln})上的$F_{LN}(p,d,l,R)$的可满足.
+我们进一步定义$E\vDash LN(R)$为$\exists p,d,l:E\vDash LN(p,d,l,R)$.
+\end{definition11}
+
+
+\begin{equation}\label{uniqln}
+\begin{split}
+&F_{LN}(p,d,l,R)\stackrel{def}{=}\\
+&\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s_{m+1},o_m)\equiv T(s_m,i_m,c)
+\}
+\\
+\wedge&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s'_{m+1},o'_m)\equiv T(s'_m,i'_m,c)
+\}
+\\
+\wedge&\bigwedge_{m=n+d-l}^{n+d-1}o_m\equiv o'_m \\
+\wedge& i_n\ne i'_n \\
+% \wedge&\bigwedge_{x=n-p}^{n+d-1}c_x\equiv c \\
+% \wedge&\bigwedge_{x=n-p}^{n+d-1}c_x'\equiv c \\
+\wedge& R(c) \\
+\wedge& \bigvee_{x=n-p}^{n+d-l-1}\bigvee_{y=x+1}^{n+d-l} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+d-l+1}^{n-1}\bigvee_{y=x+1}^{n} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+1}^{n+d-1}\bigvee_{y=x+1}^{n+d} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\}
+\end{array}
+\right\}
+\end{split}
+\end{equation}
+
+公式(\ref{uniqt1})和(\ref{uniqln})的区别在于公式(\ref{uniqln})的最后三行,
+他们将被用于检测环.
+
+由Shen et al. \cite{ShengYuShen:tcad11}可知,
+我们有以下定理:
+
+
+\begin{theorem}[]\label{thm_equ}
+$E\vDash LN\leftrightarrow \neg \{E\vDash PC\}$
+\end{theorem}
+
+因此,
+该停机算法\cite{ShengYuShen:tcad11}简单的遍历$p$, $d$ and $l$,
+并在每一个循环中检验$E\vDash PC(p,d,l,R)$和$E\vDash LN(p,d,l,R)$.
+由定理\ref{thm_equ}可知,
+该算法最终总能停机并给出$E\vDash PC(R)$和$E\vDash LN(R)$之间唯一的答案.
+
+% \begin{algorithm}
+% \caption{$check\_PCLN$}
+% \label{algo_pclnold}
+% \begin{algorithmic}[1]
+% \FOR{$x=1 \to \infty$}
+%     \STATE{$<p,d,l>=<2x,x,2x>$}
+%       \IF{$F_{PC}(p,d,l,R)$ is unsatisfiable}
+%         \PRINT \texttt{"$E^{-1}$ exists with $<p,d,l>$"}\label{lab_pc}
+%         \STATE \textbf{halt};
+%       \ELSIF{$F_{LN}(p,d,l,R)$ is satisfiable}
+%         \PRINT \texttt{"$E^{-1}$ does not exist"}\label{lab_ln}
+%         \STATE \textbf{halt};
+%       \ENDIF
+% \ENDFOR
+% \end{algorithmic}
+% \end{algorithm}
+
+
+\section{推导断言}\label{sec_algo}
+\subsection{总体的算法框架}\label{subsec_algo}
+
+该算法的整体框架如下所示:
+
+\begin{algorithm}
+\caption{$InferAssertion$}
+\label{algo_pcln}
+\begin{algorithmic}[1]
+\STATE $NA=\{\}$
+\label{algo_pcln_na1}
+\FOR{$x=0\to \infty$}
+\label{algo_pcln_x}
+\STATE $<p,d,l>=<2x,x,2x>$
+\label{algo_pcln_pdl}
+\IF{$F_{PC}(p,d,l,\bigwedge_{na\in NA}\neg na)$不可满足}
+\label{algo_pcln_pc}
+\IF{$\bigwedge_{na\in NA}\neg na$可满足}
+\label{algo_pcln_havedec}
+\STATE 解码器存在且最终断言是$\bigwedge_{na\in NA}\neg na$
+\ELSE
+\label{algo_pcln_nodec}
+\STATE 解码器不存在
+\ENDIF
+\STATE 停机
+\label{algo_pcln_halt}
+\ELSE
+\WHILE{$F_{LN}(p,d,l,\bigwedge_{na\in NA}\neg na)$可满足}
+\label{algo_pcln_ln}
+\STATE 令$A$为满足赋值, 且$A(c)$为导致解码器不存在的
+\label{algo_pcln_lnc}
+\STATE $na\leftarrow InferCoveringFormula(A(c))$
+\label{algo_pcln_nainfer}
+\STATE $NA\leftarrow NA\cup \{na\}$
+\label{algo_pcln_ruleout}
+\ENDWHILE
+\ENDIF
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+% Algorithm \ref{algo_pcln} is used to infer the assertions that can lead to the existence of the decoder.
+在该算法的行\ref{algo_pcln_na1},
+$NA$被用于记录所有导致解码器不存在的配置字符公式.
+他们是由行\ref{algo_pcln_nainfer}的函数$InferCoveringFormula$推导的,
+该函数的功能是推导一个不仅能够覆盖$A(c)$,
+而且能够覆盖大量其他非法配置字符的公式.
+关于该函数的更多细节见下一小节.
+
+行\ref{algo_pcln_pdl}确保$s_{n-p}^{n+d-l}$, $s_{n+d-l+1}^n$和$s_{n+1}^{n+d}$的长度全部设置为$x$,
+而其值在行\ref{algo_pcln_x}中被遍历.
+如此,
+许多$p$,$d$和$l$的冗余组合不必再次被测试.
+% Thus, the performance of this algorithm can be significantly boosted.
+
+行\ref{algo_pcln_pc}意味着在断言$\bigwedge_{na\in NA}\neg na$下，输入字符能够被输出字符序列唯一圈定.
+行\ref{algo_pcln_havedec}意味着至少存在一个配置字符能够导致解码器存在,
+而最终断言是$\bigwedge_{na\in NA}\neg na$.
+
+行\ref{algo_pcln_nodec}意味着最终断言$\bigwedge_{na\in NA}\neg na$已经剔除了所有配置字符,
+即不存在能够导致解码器存在的配置字符.
+编码器中必然存在某些错误.
+
+行\ref{algo_pcln_ln}意味着行\ref{algo_pcln_lnc}中的$A(c)$是一个能够导致解码器不存在配置字符.
+% We need to rule out $c$ such that Algorithm \ref{algo_pcln} can continue searching for other configuration letters that may lead to the existence of the decoder.
+行\ref{algo_pcln_nainfer}中的函数$InferCoveringFormula$将被用于推导一个公式$na$不仅覆盖$A(c)$,
+而且覆盖大量其他的非法配置字符.
+这些配置字符将在行\ref{algo_pcln_ruleout}中被剔除.
+
+我们能够证明算法\ref{algo_pcln}是停机的.
+\begin{theorem}[]\label{thm_pcln_halt}
+算法\ref{algo_pcln}是停机算法.
+\end{theorem}
+\begin{proof}
+由定理\ref{thm_equ}可知,
+算法\ref{algo_pcln}最终将到达行\ref{algo_pcln_pc}或\ref{algo_pcln_ln}.
+
+对于前一种情形,
+该算法将在行\ref{algo_pcln_halt}停机.
+
+对于后一种情形,
+一个新的公式$na$将被推导出来,
+他将覆盖$A(c)$.
+因为此类$A(c)$是有限的,
+他们最终总能够被$\bigwedge_{na\in NA}\neg na$剔除.
+因此算法\ref{algo_pcln}最终必将到达行\ref{algo_pcln_pc},
+并在行\ref{algo_pcln_halt}停机.
+\end{proof}
+
+\subsection{推导覆盖非法配置字符的公式}\label{subsec_infer}
+本小节将介绍算法\ref{algo_pcln}行\ref{algo_pcln_nainfer}中的函数$InferCoveringFormula$的实现.
+他将被用于推导一个公式$na$
+不仅覆盖$A(c)$,
+而且覆盖其他非法配置字符.
+该工作将在以下三步中完成:
+
+\textbf{首先},
+将$F_{LN}$转换为带有目标变量的等价形式,
+以便他可以用来定义一个函数$f$.
+\textbf{其次},
+使用cofactoring \cite{Cofact}将$f$的支撑集进行削减,
+直至只有$c$剩下.
+\textbf{最后}, 使用Craig插值特征话$f$.
+该$f$同时也是算法\ref{algo_pcln}行\ref{algo_pcln_nainfer}中的$na$.
+
+这三步将在下面一一描述:
+
+\subsubsection{\textbf{将$F_{LN}$转换为带有目标变量的等价形式}}
+
+如上所述,
+我们需要将$F_{LN}$转换为带有目标变量的等价形式.
+
+首先,
+我们需要将公式(\ref{uniqln})的第4行和最后三行移到一个新的公式中:
+
+\begin{equation}\label{uniqln_subg}
+\begin{split}
+&G(p,d,l)\stackrel{def}{=}\\
+&\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n+d-l}^{n+d-1}o_m\equiv o'_m \\
+\wedge& \bigvee_{x=n-p}^{n+d-l-1}\bigvee_{y=x+1}^{n+d-l} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+d-l+1}^{n-1}\bigvee_{y=x+1}^{n} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+1}^{n+d-1}\bigvee_{y=x+1}^{n+d} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\}
+\end{array}
+\right\}
+\end{split}
+\end{equation}
+
+于是,
+$F_{LN}$可以被转换为:
+\begin{equation}\label{uniqln_new}
+\begin{split}
+&F'_{LN}(p,d,l,R)\stackrel{def}{=}\\
+&\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s_{m+1},o_m)\equiv T(s_m,i_m,c)
+\}
+\\
+\wedge&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s'_{m+1},o'_m)\equiv T(s'_m,i'_m,c)
+\}
+\\
+\wedge& i_n\ne i'_n \\
+% \wedge&\bigwedge_{x=n-p}^{n+d-1}c_x\equiv c \\
+% \wedge&\bigwedge_{x=n-p}^{n+d-1}c_x'\equiv c \\
+\wedge& R(c) \\
+\wedge& t\equiv G(p,d,l)
+\end{array}
+\right\}
+\end{split}
+\end{equation}
+
+很明显$F_{LN}$和$F'_{LN}\wedge t\equiv 1$是等价的.
+
+同时,
+由图\ref{fig_double_loop}可知,
+$F'_{LN}$实际上定义了一个函数$f':S^{2}\times I^{(d+p)*2}\times C\to \mathbb{B}$,
+其支撑集为$supp(f')$ is $\{s_{n-p},s'_{n-p},i_{n-p}^{n+d-1},(i')_{n-p}^{n+d-1},c\}$,
+其输出即为公式(\ref{uniqln_new})最后一行的$t$.
+
+\subsubsection{\textbf{使用Cofactoring削减$f$的支撑集}}
+由算法\ref{algo_pcln}的行\ref{algo_pcln_ln},
+$F_{LN}$是可满足的,
+而且$A$是其满足赋值.
+我们可以将$i_{n-p}^{n+d-1}$, $(i')_{n-p}^{n+d-1}$, $s_{n-p}$的$(s')_{n-p}$的值赋予$F'_{LN}$,
+而得到:
+
+\begin{equation}\label{equ_char}
+\begin{split}
+&F"_{LN}(c,t)\stackrel{def}{=}\\
+&\left\{
+\begin{array}{cc}
+& F'_{LN}\\
+\wedge& i_{n-p}^{n+d-1}\equiv A(i_{n-p}^{n+d-1})\\
+\wedge& (i')_{n-p}^{n+d-1}\equiv A((i')_{n-p}^{n+d-1})\\
+\wedge& s_{n-p}\equiv A(s_{n-p})\\
+\wedge& (s')_{n-p}\equiv A((s')_{n-p})
+\end{array}
+\right\}
+\end{split}
+\end{equation}
+
+现在,
+$F"_{LN}$定义了另一个函数$f"$,
+其支撑集被削减为$c$.
+很明显$F"_{LN}(c,t)\wedge t\equiv 1$就已经是一个覆盖非法配置字符的公式,
+但是他仍然是一个复杂的CNF公式.
+为了削减其尺寸,
+我们需要下一小节的基于Craig插值的特征化算法.
+
+\subsubsection{\textbf{使用Craig插值特征化$f$}}
+
+我们首先将$F"_{LN}(c,t)$编码为CNF格式,
+并记为$CNF(F"_{LN}(c,t))$.
+假设$CNF'(F"_{LN}(c,t'))$是$CNF(F"_{LN}(c,t))$的一个拷贝.
+他们之间仅仅共享$c$的编码,
+而其他所有变量均独立编码.
+因此,
+我们可以构造如下所示的$\phi_A$和$\phi_B$:
+
+\begin{equation}\label{equ_interpA}
+\phi_A\stackrel{def}{=}CNF(F"_{LN}(c,t))\wedge t\equiv 1
+\end{equation}
+
+\begin{equation}\label{equ_interpB}
+\phi_B\stackrel{def}{=}CNF'(F"_{LN}(c,t'))\wedge t'\equiv 0
+\end{equation}
+
+很明显,
+$\phi_A\wedge \phi_B$是不可满足的.
+基于McMillan的插值算法\cite{interp_McMillan},
+我们可以生成一个插值函数$ITP:C\to \mathbb{B}$.
+
+由定理\ref{thm_craig},
+$ITP$与公式(\ref{equ_interpB})中的$\phi_B$是不兼容的.
+因此他特征化了一个能使公式(\ref{equ_interpA})中的$\phi_A$可满足的配置字符集合$C'\subseteq C$.
+由公式(\ref{uniqln_new})和(\ref{equ_char}),
+很明显:
+\begin{enumerate}
+ \item 算法\ref{algo_pcln}行\ref{algo_pcln_lnc}中的$A(c)$被包含于$C'$.
+由定理\ref{thm_pcln_halt},
+这确保了算法\ref{algo_pcln}是停机的.
+ \item 所有$c'\in C'$也能导致解码器不存在.
+这将极大的提升算法\ref{algo_pcln}的速度.
+\end{enumerate}
+
+\section{剔除冗余}\label{sec_rmred}
+
+被算法\ref{algo_pcln}发掘的$p$, $d$和$l$包含一些冗余,
+这将导致在电路面积和特征化时间上存在不必要的开销.
+因此,
+算法\ref{algo_remove}被用于在将$p$, $d$和$l$传给下一个算法之前削减他们.
+
+\begin{algorithm}
+\caption{$RemoveRedundancy(p,d,l,R)$}
+\label{algo_remove}
+\begin{algorithmic}[1]
+\FOR{$p'=p \to 0$}
+  \IF{$F_{PC}(p'-1,d,l,R)$可满足}
+    \STATE break
+  \ENDIF
+\ENDFOR
+\FOR{$d'=d \to 0$}
+  \IF{$F_{PC}(p',d'-1,l,R)$可满足}
+    \STATE break
+  \ENDIF
+\ENDFOR
+\FOR{$l'=1 \to l-(d-d')$}
+  \IF{$F_{PC}(p',d',l',R)$不可满足}
+    \STATE break
+  \ENDIF
+\ENDFOR
+\PRINT \texttt{"最终结果是$<p',d',l'>$"}
+\end{algorithmic}
+\end{algorithm}
+
+
+该算法迭代的削减$p$, $d$和$l$,
+并测试他们是否仍然能够使得$E\vDash PC(R)$成立.
+我们在这里将不再进一步给出细节.
+
+
+
+\section{发掘多个解码器的布尔关系}\label{sec_fdtest}
+小节\ref{subsec_fd_detail}介绍了如何发掘多个解码器的布尔关系,
+% and Subsection \ref{subsec_fd_proof} proves its correctness,
+而小节\ref{subsec_fd_top}介绍了算法实现.
+小节\ref{subsec_charia}如何得到每个解码器的前提条件,
+以便用户选择正确的解码器.
+
+\subsection{构造SAT实例以发掘解码器}\label{subsec_fd_detail}
+% To discover the Boolean relations of all decoders,
+% we need to use functional dependency test proposed by Lee et al. \cite{funcdep},
+% % For a particular Boolean function $f:B^m\to B$ and a vector of
+% % Boolean functions $G=(g_1(X), ..., g_n(X))$ with $g_i: B^m\to B$ for $i =1,\dots ,n$,
+% whose standard definition is given in Definition \ref{def_fd}.
+%
+% But in this paper,
+% our approach are different from that of Lee et al. \cite{funcdep} in two ways:
+% \begin{enumerate}
+%  \item We do not have these functions,
+% only have their Boolean relations.
+%  \item The functions defined by our Boolean relations have multiple output bits,
+% while those functions of  Lee et al. \cite{funcdep} only have one output bit.
+% \end{enumerate}
+
+% Due to these differences,
+% we need to define the functional dependency in s new way:
+
+% We must first define the meaning of combination of Boolean relations.
+%
+% \begin{definition11}\label{def_combination}
+% Given a Boolean relation set $\{R_{f_i}(X,Y)|0\le i\le n\}$ in which $X$ uniquely determines $Y$,
+% assume the set of their corresponding function is $\{Y=f_i(X)|0\le i\le n\}$,
+% we say that $R_{f_0}$ \textbf{functionally depends} on $R_{f_1},\dots,R_{f_n}$ if and only if
+% $f_0$ \textbf{functionally depends} on $f_1,\dots,f_n$.
+% \end{definition11}
+
+假设被算法\ref{algo_pcln}发掘的断言为:
+
+\begin{equation}\label{equ_fdia}
+IA\stackrel{def}{=}\bigwedge_{na\in NA}\neg na
+\end{equation}
+
+同时,
+我们也使用$IA$表示被起覆盖的配置字符集合.
+因此$IA$的具体含义依赖于上下文语境.
+我们进一步假设被算法\ref{algo_remove}发掘的参数组为$<p, d, l>$,
+而从$o_{n+d-l}^{n+d-1}$和$c$唯一决定$i_n$的布尔关系为$F_{PC}(p,d,l,IA)$.
+为了简化表达我们重新记$i_n$和$o_{n+d-l}^{n+d-1}$为:
+
+\begin{equation}\label{equ_fdin}
+X\stackrel{def}{=} o_{n+d-l}^{n+d-1}
+\end{equation}
+\begin{equation}\label{equ_fdo}
+Y\stackrel{def}{=} i_n
+\end{equation}
+
+因此,
+从$o_{n+d-l}^{n+d-1}$和$c$唯一决定$i_n$的布尔关系可以重写为:
+
+\begin{equation}\label{equ_fdR}
+R(c,X,Y)\stackrel{def}{=} F_{PC}(p,d,l,IA)
+\end{equation}
+
+
+% According to Equation (\ref{equ_fdR}),
+% $R(c,o_{n+d-l}^{n+d-1},i_n)$ is the Boolean relation that uniquely determines $i_n$ from $o_{n+d-l}^{n+d-1}$.
+假设$f$是被$R$定义的函数,
+而该函数从$X$和$c$计算$Y$:
+
+\begin{equation}\label{equ_fdf}
+Y=f(c,X)
+\end{equation}
+
+同时,
+对于每个配置字符$c_i\in IA$,
+由一个对应的$R_{c_i}$:
+
+\begin{equation}\label{equ_fdRci}
+R_{c_i}(X,Y)\stackrel{def}{=}c\equiv c_i\wedge R(c,X,Y)
+\end{equation}
+
+% Obviously,
+% $R_{c_i}$ can also uniquely determined $Y$ from  $X$.
+% Assume the function defined by  $R_{c_i}$ is  $f_{c_i}$:
+%
+% \begin{equation}\label{equ_fdfci}
+% Y=f_{c_i}(X)
+% \end{equation}
+%
+% Thus,
+% $f$ can be rewritten into:
+%
+% \begin{equation}\label{equ_fdfrew}
+% f(c,X)=\bigvee _{c_i\in IA} \{(c\equiv c_i)\wedge f_{c_i}(X)\}
+% \end{equation}
+%
+%
+% However,
+% according to Table \ref{tab_res} in experimental results,
+% the number of configuration pins can be as large as 120.
+% This may lead to more than billions of $c_i$,
+% which makes it impossible to discover $R_{c_i}$ and $f_{c_i}$ for all of them.
+%
+% Fortunately,
+而两个不同的$c_i$和$c_j$可能分享同一个$R_{c_i}$,
+即,
+$R_{c_i}\equiv R_{c_j}$.
+% That is,
+% $IA$ can be partitioned into a small superset $SS\subseteq 2^{IA}$,
+% such that:
+%
+% \begin{enumerate}
+%  \item For every $ss_1,ss_2\in SS$,
+% $ss_1\cap ss_2\equiv \phi $.
+%  \item $\bigcup_{ss\in SS}\equiv IA$.
+%  \item Each element $ss\in SS$ is a large set of $c_i$ that share the same $R_{c_i}$.
+% \end{enumerate}
+因此$IA$可以被划分为$\{IA_1,\dots,IA_n\}$,
+使得:
+\begin{enumerate}
+ \item 同一个$IA_i$中的所有$c$分享同一个$R_i$.
+ \item 在两个不同的$IA_i$和$IA_{i'}$中的$c$和$c'$不共享同一个$R_i$.
+\end{enumerate}
+
+对于集合$\{IA_1,\dots,IA_n\}$,
+假设被所有$c\in IA_i$共享的布尔关系为$R_i$,
+而$R_i$定义的函数是$f_i$,
+则$f$可以被重写为:
+
+\begin{equation}\label{equ_fdfrewagain}
+f(c,X)=\bigvee _{i=1}^{n} \{IA_i(c)\wedge f_i(X)\}
+\end{equation}
+
+%
+% For function $f$,
+% we denote its Boolean relation,
+% its input variable set and its output variable set as $R_f$, $X$ and  $Y$,
+% respectively.
+% For function $g_i$,
+% we denote its Boolean relation as $R_{g_i}$,
+% and its output variable set as $Y_i$.
+% Obviously its input variable set is still $X$.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.45\textwidth]{fdtest}
+\caption{The SAT instance that discovers decoders}
+\label{fig_fdtest}
+\end{figure}
+
+因此,
+在这里我们的工作是一步步的发掘$\{R_1,\dots,R_n\}$.
+假设我们已经发掘了一部分解码器的布尔关系$\{R_1,\dots,R_{m}\}$.
+为了测试他是否包含$\{R_1,\dots,R_n\}$,
+即,
+是否所有的解码器均已经被发掘,
+我们构造如下SAT实例,
+如图\ref{fig_fdtest}所示:
+
+
+% \begin{equation}\label{equ_fdtest}
+% \begin{split}
+% &FD(R,IA'')\stackrel{def}{=}\\
+% &\left\{
+% \begin{array}{cc}
+%       & R(c,X,Y)\wedge \bigwedge_{i=1}^{m}R_i(X,Y_i)  \\
+% \wedge& R'(c,X',Y') \wedge \bigwedge_{i=1}^{m}R'_i(X',Y'_i)  \\
+% \wedge&\bigwedge_{i=1}^{m}Y_i\equiv Y'_i\\
+% \wedge& Y\ne Y'
+% \end{array}
+% \right\}
+% \end{split}
+% \end{equation}
+
+\begin{equation}\label{equ_fdtest}
+\left\{
+\begin{array}{cc}
+      & R(c,X,Y)\wedge \bigwedge_{i=1}^{m}R_i(X,Y_i)  \\
+\wedge& R'(c,X',Y') \wedge \bigwedge_{i=1}^{m}R'_i(X',Y'_i)  \\
+\wedge&\bigwedge_{i=1}^{m}Y_i\equiv Y'_i\\
+\wedge& Y\ne Y'
+\end{array}
+\right\}
+\end{equation}
+
+公式(\ref{equ_fdtest})行1表示$\{R_1,\dots,R_{m}\}$和$R$中的布尔关系.
+行2是行1的拷贝.
+他们之间共享的唯一变量是$c$.
+% Line 4 forces them to share the same configuration letter $c$.
+行3强制所有的$Y_i$和$Y'_i$相等,
+而最后一行强制$Y$和$Y'$不相等.
+
+% \subsection{Proof of Correctness}\label{subsec_fd_proof}
+下面的定理表明,
+如果公式(\ref{equ_fdtest})不可满足,
+则所有解码器已经被发掘.
+
+\begin{theorem}[]\label{thm_fdok}
+如果公式(\ref{equ_fdtest})是不可满足的,
+则$\{R_1,\dots,R_{m}\}$包含$\{R_1,\dots,R_{n}\}$.
+\end{theorem}
+\begin{proof}
+使用反证法.
+假设$R_n\notin \{R_1,\dots,R_m\}$,
+而$IA_n$是其对应的配置字符集合,
+而且$c_n\in IA_n$.
+
+我们可以构造一个满足赋值$A$使得$A(c)\equiv c_n$.
+因此我们有$\{R(c,X,Y)\wedge A(c)\equiv c_n\} \equiv R_n(X,Y)$,
+即我们用$A$将图\ref{fig_fdtest}中的$R$和$R'$转变为$R_n$.
+
+因为$R_n\notin \{R_1,\dots,R_m\}$,
+必然存在$A'$,
+使得当我们将$A'(X)$赋予$X$而$A'(X')$赋予$X'$,
+我们能够使$\bigwedge_{i=1}^{m}Y_i\equiv Y'_i$和$Y\ne Y'$都成立.
+
+通过组合$A$和$A'$,
+公式(\ref{equ_fdtest})变成可满足的.
+该矛盾导致定理得证.
+\end{proof}
+
+
+
+另一方面,
+如果公式(\ref{equ_fdtest})可满足,
+我们需要证明:
+
+\begin{theorem}[]\label{thm_fdok1}
+如果(\ref{equ_fdtest})可满足,
+则必然存在一个尚未被发掘的解码器.
+\end{theorem}
+\begin{proof}
+使用反证法.
+假设所有解码器均已经被发掘,
+即,
+$\{R_1,\dots,R_{m}\}$包含$\{R_1,\dots,R_{n}\}$.
+
+这意味着$f$可以被重写为:
+\begin{equation}\label{equ_fdfrewagain1}
+f(c,X)=\bigvee _{i=1}^{m} \{IA_i(c)\wedge f_i(X)\}
+\end{equation}
+
+因此,
+对于任意能使的公式(\ref{equ_fdtest})前三行满足的$A$,
+函数$f$可以被重写为:
+
+\begin{equation}\label{equ_fdfrewagain2}
+\begin{split}
+Y&=f(c,X)=\bigvee _{i=1}^{m} \{IA_i(c)\wedge Y_i\}\\
+ &=\bigvee _{i=1}^{m} \{IA_i(c)\wedge Y'_i\}\\
+ &=Y'
+\end{split}
+\end{equation}
+
+因此,
+公式(\ref{equ_fdtest})的最后一行将不能满足.
+因此公式(\ref{equ_fdtest})是不可满足的.
+这个矛盾导致定理得证.
+\end{proof}
+
+由$A$,
+%$c_{m+1}=A(c)$ is a newly discovered configuration letter,
+下面的$R_{m+1}$是一个新发掘的解码器.
+
+\begin{equation}\label{equ_newR}
+R_{m+1}\stackrel{def}{=}\{c\equiv A(c)\wedge R(c,X,Y)\}
+\end{equation}
+
+为了证明我们的算法没有重复冗余的工作,
+我们需要证明$R_{m+1}$以前没有被发掘过:
+
+\begin{theorem}[]\label{thm_new1}
+$R_{m+1}\notin \{R_1,\dots,R_m\}$
+\end{theorem}
+\begin{proof}
+使用反证法.
+假设存在$0\le i\le m$使得$R_i\equiv R_{m+1}$,
+且存在$c'\in IA_i$.
+
+因为$R_i$可以从$X$唯一决定$Y$,
+而$R$可以从$X$和$c$唯一决定$Y$,
+而$R_{m+1}\equiv R_i$,
+很明显成立通过强制$c$等于$c'\in IA_i$我们可以使得$Y\equiv Y_i$.
+
+同样的,
+我们有$Y'_i\equiv Y'$.
+
+从公式(\ref{equ_fdtest})的行5,
+我们有$Y\equiv Y_i\equiv Y'_i\equiv Y'$.
+这与公式(\ref{equ_fdtest})最后一行的$Y\ne Y'$矛盾.
+该矛盾导致定理得证.
+\end{proof}
+
+
+% On the other hand,
+% we also need to prove that there is no redundancy in the set of all discovered decoders.
+% That is,
+% removing $R_{A(c)}$ from $R_{IA'}$ will fail the functional dependency test:
+%
+% \begin{theorem}[]\label{thm_new2}
+% $R$ does not functionally depends on $R_{IA'}/R_{A(c)}$.
+% \end{theorem}
+% \begin{proof}
+% haha
+% \end{proof}
+
+\subsection{算法实现}\label{subsec_fd_top}
+
+基于上述讨论,
+算法\ref{algo_fd_top}描述了如何发掘多个解码器的布尔关系.
+
+\begin{algorithm}
+\caption{$DiscoveringDecoders$}
+\label{algo_fd_top}
+\begin{algorithmic}[1]
+% \STATE $R\leftarrow F_{PC}(p,d,l,\bigwedge_{na\in NA}\neg na)$
+% \label{algo_fd_top_relation}
+%\STATE $IA''=\{\}$
+%\label{algo_fd_top_empty}
+\WHILE{公式(\ref{equ_fdtest})可满足}
+\label{algo_fd_top_fdtest}
+\STATE 假设$A$是满足赋值
+\STATE 将公式(\ref{equ_newR})的$R_{m+1}$插入$\{R_1,\dots,R_m\}$
+\label{algo_fd_top_newrel}
+\ENDWHILE
+\STATE 发掘的布尔关系集合为$\{R_1,\dots,R_m\}$
+\end{algorithmic}
+\end{algorithm}
+
+% $R$ in Line \ref{algo_fd_top_relation} represents the Boolean relation that determines the encoder's input letter from its output sequence,
+%$IA''$ in Line \ref{algo_fd_top_empty} represents the set of discovered configuration letters,
+%while $R_{IA''}$ defined in Equation (\ref{equ_fdRIA2}) is the set of their corresponding Boolean relation of decoders.
+
+行\ref{algo_fd_top_fdtest}意味着$\{R_1,\dots,R_m\}$并不包含所有的解码器,
+还有某些解码器没有被发掘.
+% The detail of this test will be presented in Subsection \ref{subsec_fd_detail}.
+
+从表达式(\ref{equ_fdtest})中返回的$A$,
+行\ref{algo_fd_top_newrel}的$R_{m+1}$是公式(\ref{equ_newR})中发掘的新解码器.
+他将被插入$\{R_1,\dots,R_m\}$以在行\ref{algo_fd_top_fdtest}中再次进行测试.
+
+算法\ref{algo_fd_top}的循环单调的增加$\{R_1,\dots,R_m\}$的尺寸.
+因为这样的解码器的个数是有限的,
+这个循环,
+和算法\ref{algo_fd_top}最终总能够停机.
+
+\subsection{特征化发掘的解码器的布尔函数}
+从算法\ref{algo_fd_top}发掘的$\{R_1,\dots,R_m\}$,
+Shen et al. \cite{ShengYuShen:tcad}提出的ALLSAT算法将被用来特征化他们的布尔函数.
+其细节将不在这里给出.
+
+对于那些对解码器面积和时许感兴趣的读者,
+请阅读Shen et al. \cite{ShengYuShen:tcad11}的小节V.B和V.C.
+
+\subsection{特征化$\{IA_1,\dots,IA_{m}\}$}\label{subsec_charia}
+假设$\{R_1,\dots,R_{m}\}$是被算法\ref{algo_fd_top}发掘的解码器全集,
+而$\{IA_1,\dots,IA_{m}\}$是他们对应的配置字符集合.
+为了帮助用户从$\{R_1,\dots,R_{m}\}$选择正确的解码器,
+我们需要特征化$\{IA_1,\dots,IA_{m}\}$里的每一个$IA_i$.
+
+由图\ref{fig_fdtest},
+$Y$和所有的$Y_i$之间的关系可以表述为:
+
+\begin{equation}\label{equ_fd_nonvectors}
+Y=\bigvee _{i=1}^{m} \{IA_i(c)\wedge Y_i\}
+\end{equation}
+
+假设$Y$和所有$Y_i$是等长的，长度均为$v$:
+
+\begin{equation}\label{equ_fd_vectors}
+\begin{split}
+Y&=<y^{0},\dots,y^{v-1}>\\
+Y'&=<y'^{0},\dots,y'^{v-1}>\\
+Y_i&=<y^{0}_i,\dots,y^{v-1}_i>\\
+Y'_i&=<y'^{0}_i,\dots,y'^{v-1}_i>
+\end{split}
+\end{equation}
+
+我们可以将公式(\ref{equ_fd_nonvectors})按照bit重写,
+而$Y$和$Y_i$的第$j$bit可以被重写为:
+
+\begin{equation}\label{equ_fd_bit}
+y^{j}=\bigvee _{i=1}^{m} \{IA^j_i(c)\wedge y^j_i\}
+\end{equation}
+
+由小节\ref{subsec_SAT},
+很明显公式(\ref{equ_fd_bit})是一个经典的函数依赖问题.
+我们可以使用Lee et al. \cite{funcdep}提出的函数依赖求解算法特征化$IA^j_i(c)$，
+首先构造如下两个公式:
+
+\begin{equation}\label{equ_fdtestbitA}
+\phi_A \stackrel{def}{=}\left\{
+\begin{array}{cc}
+      & R(c,X,Y)\wedge \bigwedge_{i=1}^{m}R_i(X,Y_i)  \\
+\wedge& y^j\equiv 1
+\end{array}
+\right\}
+\end{equation}
+
+\begin{equation}\label{equ_fdtestbitB}
+\phi_B \stackrel{def}{=}\left\{
+\begin{array}{cc}
+& R'(c,X',Y') \wedge \bigwedge_{i=1}^{m}R'_i(X',Y'_i)  \\
+\wedge&\bigwedge_{i=1}^{m}y^j_i\equiv y'^j_i\\
+\wedge& y'^j\equiv 0
+\end{array}
+\right\}
+\end{equation}
+
+很明显$\phi_A\wedge \phi_B$非常类似于公式(\ref{equ_fdtest}),
+除了第$j$位被约束为相同,
+而$y^j$和$y'^j$被约束为不同的常数.
+
+因此$\phi_A\wedge \phi_B$是不可满足的,
+我们可以从其不可满足证明产生一个Craig插值$ITP:C\times\mathbb{B}^m\to \mathbb{B}$,
+其支撑集为$\{c,y^j_1,\dots,y^j_m\}$.
+由公式(\ref{equ_fd_bit}),
+$ITP$是$\bigvee _{i=1}^{m} \{IA^j_i(c)\wedge y^j_i\}$的上估计.
+因此,
+通过设置$y^j_i$为1而其他$y^j_k$为0，
+即可得到$IA^j_i(c)$的上估计:
+
+\begin{equation}\label{equ_fdtestbitIA}
+\left\{
+\begin{array}{cc}
+      & ITP  \\
+\wedge&\bigwedge_{k\ne i} y^j_k\equiv 0 \\
+\wedge& y^j_i\equiv 1
+\end{array}
+\right\}
+\end{equation}
+
+因为$\phi_A\wedge \phi_B$不可满足,
+这个$IA^j_i(c)$的上估计也可以使得$y^j\equiv 1$.
+我们可以直接将其视为$IA^j_i(c)$.
+因此,
+$IA_i(c)$可以定义为:
+
+\begin{equation}\label{equ_fd_iabit}
+IA_i(c)=\bigwedge _{j=0}^{v-1} IA^j_i(c)
+\end{equation}
+
+在小节中\ref{subsec_exp_muldec},
+我们可以看到,
+通过检查这些$IA_i$,
+用户可以非常容易的选择正确的解码器.
+
+\section{实验结果}\label{sec_exp}
+我们实现了该算法并使用Minisat求解其\cite{EXTSAT}求解.
+所有实验在一台具有一个2.4GHz Intel Core 2 Q6600处理器, 8GB内存和Ubuntu 10.04 linux操作系统的PC上进行.
+所有的程序和试验结果均能从\url{http://www.ssypub.org/exp/compsyn_fmcad11.tgz}下载.
+%All related programs and data files can be downloaded from \url{http://www.ssypub.org}.
+\subsection{Benchmarks}
+
+\begin{table}[t]
+\centering
+\caption{Benchmarks的相关信息}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+&XGXS&XFI&scrambler&PCIE&T2 et-\\
+&&&&&hernet\\\hline
+Verilog&&&&&\\
+代码&214&466&24&1139&1073\\
+行数&&&&&\\\hline
+寄存器个数&15&135&58&22&48\\\hline
+数据路径&8&64&66&10&10\\
+宽度&&&&&\\ \hline
+\end{tabular}\label{tab_benchmark}
+\end{table}
+
+
+
+
+图\ref{tab_benchmark}给出了以下Benchmark的信息.
+
+1. 一个满足IEEE-802.3ae 2002标准\cite{IEEE80232002}短句48的XGXS编码器.
+
+2. 一个满足同一个标准的短句49的XFI编码器.
+
+3. 一个66位的加扰器，用于使输入数据具有足够多的0-1翻转，以便能够可靠的在高噪声通讯系统中传输.
+
+4. 一个PCI-E\cite{PCIESPEC}的编码模块.
+
+5. Sun公司的OpenSparc T2处理器的以太网模块.
+
+\subsection{推导得到的断言}
+我们在这里将给出算法\ref{algo_pcln}推导的断言.
+
+\textbf{对于XGXS}:
+\texttt{!( ( bad\_code ) )}
+
+\textbf{对于XFI}:
+\texttt{!( ( RESET \& TEST\_MODE ) | ( !RESET \& TEST\_MODE ) | ( !RESET \& !TEST\_MODE \& !DATA\_VALID ) )}
+
+\textbf{对于scrambler}:
+\texttt{True}
+
+\textbf{对于PCI-E}:
+\texttt{!( ( CNTL\_RESETN\_P0 \& TXELECIDLE ) | ( CNTL\_RESETN\_P0 \& !TXELECIDLE \& CNTL\_TXEnable\_P0 \& CNTL\_Loopback\_P0 ) | ( CNTL\_RESETN\_P0 \& !TXELECIDLE \& !CNTL\_TXEnable\_P0 ) | ( !CNTL\_RESETN\_P0 ) )}
+
+\textbf{对于T2 ethernet}:
+\texttt{!( ( reset\_tx \& !txd\_sel[0] \& !txd\_sel[1] \& link\_up\_loc ) | ( !reset\_tx \& !txd\_sel[0] \& !txd\_sel[1] \& link\_up\_loc \& jitter\_study\_pci[0] ) | ( !reset\_tx \& !txd\_sel[0] \& !txd\_sel[1] \& link\_up\_loc \& !jitter\_study\_pci[0] \& jitter\_study\_pci[1] ) )}
+
+\subsection{与现有工作的比较}
+
+\begin{table}[t]
+\centering
+\caption{实验结果}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+&                                        &XG-     &XFI       &scra-     &PCI-    &T2 e-\\
+&                                        &XS      &          &mbler     &E         &ther\\\hline
+&检查                           &&&&&\\
+&$PC$的                    &0.07     &17.84     &2.70      &0.47    &30.59       \\
+\cite{ShengYuShen:tcad11}&时间(sec)     &&&&&\\\cline{2-7}
+&$d,p,l$                                 &1,2,1    &0,3,2     &0,2,2     &2,2,1   &4,2,1         \\ \hline\hline
+&配置信号                 &&&&&\\
+&个数                              &3        &120       &1         &16      &26\\\cline{2-7}
+本文&运行时间                            &2.33     &364.36    &14.20      &4.49   &125.69      \\\cline{2-7}
+&$d,p,l$                                 &1,3,1    &0,3,2     &0,2,2     &2,3,1   &4,4,1          \\ \cline{2-7}
+&解码器                                &&&&&          \\
+&个数                                 &1       &2         &2        &1      &1          \\ \hline
+\end{tabular}\label{tab_res}
+\end{table}
+
+表\ref{tab_res}的行2给出了Shen et al. \cite{ShengYuShen:tcad11}的算法的运行时间.
+而行3给出了他发现的$d$, $p$和$l$.
+所有这些benchmark均具有正确的断言.
+
+
+相反,
+我们移除了所有断言并运行我们的算法.
+行4给出了benchmark中配置信号的个数,
+行5给出了本文算法的运行时间,
+而行6给出了发掘的$d$, $p$和$l$,
+而最后一行给出了解码器的个数
+
+通过比较行2和5,
+很明显本文算法大大慢于\cite{ShengYuShen:tcad11},
+这是由更为复杂的$InferCoveringFormula$和$DiscoveringDecoders$造成的.
+
+然而,
+通过比较行4和5,
+虽然XFI和T2 Ethernet分别有120和26个配置信号,
+他们的运行时间并不是特别长.
+这是由节\ref{sec_algo}中的高效特征化算法导致的.
+
+通过比较行3和6,
+很明显在发掘的参数值上有一些细微的差别.
+这是由内嵌的断言和推导的断言之间的差异造成的.
+本文算法推导的断言比内嵌断言包含多得多的情形.
+
+
+
+\subsection{处理多个解码器}\label{subsec_exp_muldec}
+由表\ref{tab_res}的最后一行,
+在五个benchmark中只有两个具有两个解码器,
+而其他三个均只有一个解码器.
+这意味着,
+在大多数情况下,
+我们的算法只产生一个解码器.
+对于其他具有多个解码器的情形,
+用户需要自己查看节\ref{subsec_charia}推导的$\{IA_1,\dots,IA_{m}\}$.
+
+对于加扰器的两个解码器,
+他们对应的$IA_1$是$False$,
+而$IA_2$是$!reset$.
+因此第二个解码器是唯一可能的解码器.
+动态模拟也确认了我们的选择.
+
+对于XFI的两个解码器,
+他们对应的$IA_1$是$RESET~\&~!TEST\_MODE$,
+而$IA_2$是$!RESET~\&~!TEST\_MODE~\&~DATA\_VALID$.
+他们之间的根本差别在于$RESET$.
+通过检查XFI的Verilog源代码,
+我们注意到在$RESET$为$True$是将复位整个编码器.
+因此XFI编码器只有在$RESET$为$False$时才正常工作.
+因此第二个解码器是正确的解码器.
+动态模拟确认了我们的选择.
+
+
+
+% \subsection{Scalability of Our Algorithm}\label{subsec_scale}
+% According to the 3th and 6th row,
+% the values of $d$, $p$ and $l$ are all small.
+% To show that our algorithm can scale to larger parameter values,
+% we insert a test logic module into the most complex XFI circuit.
+% This module include an eight bit counter,
+% which means that its diameter will not be shorter than 256.
+% So,
+% to infer an assertion that rules out the test mode,
+% we need to construct an SAT instance as long as $p+d+1$,
+% that is,
+% 513.
+
+% We run our algorithm on XFI again.
+
+% \subsection{Comparing decoder area}\label{subsec_area}
+%
+% Table \ref{tab_cmparea} compares the circuit area of the decoders built manually,
+% and the decoders built by this paper's algorithm.
+% For those encoders with two decoders,
+% we just select the decoder that can pass the simulation verification.
+% These decoders are synthesized with LSI10K technology library from Synopsys DesignCompiler.
+%
+% \begin{table}[t]
+% \centering
+% \caption{Comparing decoder area}
+% \begin{tabular}{|c|c|c|c|c|c|}
+% \hline
+%                    &XGXS      &XFI       &scrambler    &PCI-E  &T2 et-\\
+% &&&&&hernet\\ \hline
+% The decoders       &921       &6002      &1629         &852   &1446          \\
+% built manually           &&&&&\\ \hline
+% The decoders built by      &700       &12754     &1455         &455   &552          \\
+% this paper's algorithm   &&&&&\\ \hline
+% \end{tabular}\label{tab_cmparea}
+% \end{table}
+%
+% Table \ref{tab_cmparea} suggests that,
+% except for the most complex XFI, synthesis results of this paper's algorithm
+% are more compact than those decoders built manually. However,
+% this comparison is unfair because those decoders built manually also include additional functionality,
+% such as testing logic.
+%
+% On the other hand,
+% for XFI,
+% the circuit area of this paper's algorithm is about 2 times larger.
+% This means the circuit area must be improved in future work.
+%
+%
+% \subsection{Comparing decoder timing}\label{subsec_timing}
+%
+% \begin{table}[b]
+% \centering
+% \caption{Comparing critical-path latencies in nanosecond}
+% \begin{tabular}{|c|c|c|c|c|c|}
+% \hline
+%                    &XGXS        &XFI       &scrambler    &PCI-E   &T2 et-\\
+% &&&&&hernet\\ \hline
+% The decoders       &12.33       &46.65     &6.54         &19.03  &23.36          \\
+% built manually           &&&&&\\ \hline
+% The decoders built by      &11.96       &28.13     &6.54         &9.09   &12.69          \\
+% this paper's algorithm   &&&&&\\ \hline
+% \end{tabular}\label{tab_cmptiming}
+% \end{table}
+%
+% Table \ref{tab_cmptiming} compares the critical-path latencies of the decoders built manually
+% and the decoders built by this paper's algorithm.
+% Their synthesis settings are the same as Subsection \ref{subsec_area}.
+% For all those circuits,
+% the critical-path latencies of the decoders built by this paper's algorithm are all better.
+
+\section{相关工作}\label{sec_relwork}
+
+% \subsection{Complementary synthesis}\label{subsec_compsyn_relat}
+% The concept of complementary synthesis was first proposed by Shen et al. \cite{ShengYuShen:iccad09}.
+% Its major shortcomings are that it may not halt,
+% and its runtime overheads while building complementary circuit is large.
+%
+% The runtime overhead problem was addressed by simplifying the SAT instance with unsatisfiable core extraction\cite{ShengYuShen:tcad},
+% while the halting problem was handled by building a set of over-approximations that are similar to onion rings \cite{ShengYuShen:fmcad10}.
+% But this algorithm is too complicated.
+% So another simpler and faster halting algorithm is proposed in \cite{ShengYuShen:tcad11},
+% whose details have been presented in Subsection \ref{subsec_chkextdec}.
+
+\subsection{程序取反}\label{subsec_proinv}
+由Gulwani\cite{dim_syn},
+程序取反是针对特定程序$P$自动生成具有相反功能的程序$P^{-1}$.
+因此程序取反和对偶综合非常相似.
+
+最早的程序取反算法使用基于证明的方法\cite{prog_inv},
+但是该方法只能处理非常简单的语法和非常小的程序.
+
+Gl\"{u}ck et al. \cite{mtd_autoProginv}使用基于LR的方法去除一阶程序中的不确定性.
+然而使用函数语言导致该方法与我们的应用背景不兼容.
+
+Srivastava et al. \cite{prog_inv_rev}
+% assumed that an inverse program was typically related to the original program,
+% so the space of possible inversions can be inferred by automatically
+% mining the original program for expressions, predicates, and control flow.
+% This algorithm
+迭代的剔除程序中不能满足取反要求的路径,
+% to narrow down the space of candidate programs
+直到只剩下一个可能的程序为止.
+因此该方法只能保证存在一个解,
+但是并不保证其正确性
+% of this solution if its assumptions do not hold
+.
+
+%\subsection{Functional dependency}
+%Given a Boolean function $f:\mathbb{B}^l\to \mathbb{B}$ and a vector of
+%Boolean functions $G=(g_1, ..., g_n)$ with $g_i: \mathbb{B}^l\to \mathbb{B}$ for $i =1,\dots ,n$,
+%functional dependency \cite{funcdep} is the problem that
+%finds a third Boolean function $h:\mathbb{B}^n\to \mathbb{B}$,
+%such that $f(X) = h(g_1(X),\dots , g_n(X))$.
+%
+%Similar to Fig. \ref{fig_fdtest},
+%Lee et al. \cite{funcdep} constructed a SAT instance to test whether $h$ existed,
+%and used  Craig interpolation to characterize it.
+%But such an approach does not try to discover new $g_i$ if the functional dependency test fails,
+%while our approach does.
+%At the same time,
+%our approach supports  multiple bits output,
+%while that of Lee et al. \cite{funcdep} does not.
+
+
+
+
+
+\subsection{协议转换综合}
+协议转换综合问题是针对两个不兼容的通讯协议，自动生成转换逻辑.
+这与本文工作相关因为他们都专注于通讯电路的综合.
+
+Avnit et al. \cite{converter_date08}首先提出描述通讯协议的通用模型.
+而后他们提出一个算法以检验是否存在某些功能
+在一个协议中能够实现而在另一个协议中不能实现.
+最后,
+通过为缓冲区的控制函数计算一个最大不动点从而生成转换电路.
+Avnit et al.\cite{converter_date09}通过提出更为有效的空间探索算法以提高整体算法效率.
+
+
+
+\section{Conclusions}\label{sec_conclude}
+
+本文提出一个完全自动化的算法以为特定编码器推导断言并生成所有合法的解码器.
+试验结果表明本文算法能够处理许多来自于工业界的复杂编码器,
+包括PCI-E\cite{PCIESPEC}和以太网\cite{IEEE80232002}.
+进一步,
+基于每个解码器的前提条件,
+用户可以非常容易的选择正确的解码器.
+
+
+% An example of a floating figure using the graphicx package.
+% Note that \label must occur AFTER (or within) \caption.
+% For figures, \caption should occur after the \includegraphics.
+% Note that IEEEtran v1.7 and later has special internal code that
+% is designed to preserve the operation of \label within \caption
+% even when the captionsoff option is in effect. However, because
+% of issues like this, it may be the safest practice to put all your
+% \label just after \caption rather than within \caption{}.
+%
+% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
+% option should be used if it is desired that the figures are to be
+% displayed while in draft mode.
+%
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=2.5in]{myfigure}
+% where an .eps filename suffix will be assumed under latex,
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+%\caption{Simulation Results}
+%\label{fig_sim}
+%\end{figure}
+
+% Note that IEEE typically puts floats only at the top, even when this
+% results in a large percentage of a column being occupied by floats.
+
+
+% An example of a double column floating figure using two subfigures.
+% (The subfig.sty package must be loaded for this to work.)
+% The subfigure \label commands are set within each subfloat command, the
+% \label for the overall figure must come after \caption.
+% \hfil must be used as a separator to get equal spacing.
+% The subfigure.sty package works much the same way, except \subfigure is
+% used instead of \subfloat.
+%
+%\begin{figure*}[!t]
+%\centerline{\subfloat[Case I]\includegraphics[width=2.5in]{subfigcase1}%
+%\label{fig_first_case}}
+%\hfil
+%\subfloat[Case II]{\includegraphics[width=2.5in]{subfigcase2}%
+%\label{fig_second_case}}}
+%\caption{Simulation results}
+%\label{fig_sim}
+%\end{figure*}
+%
+% Note that often IEEE papers with subfigures do not employ subfigure
+% captions (using the optional argument to \subfloat), but instead will
+% reference/describe all of them (a), (b), etc., within the main caption.
+
+
+% An example of a floating table. Note that, for IEEE style tables, the
+% \caption command should come BEFORE the table. Table text will default to
+% \footnotesize as IEEE normally uses this smaller font for tables.
+% The \label must come after \caption as always.
+%
+%\begin{table}[!t]
+%% increase table row spacing, adjust to taste
+%\renewcommand{\arraystretch}{1.3}
+% if using array.sty, it might be a good idea to tweak the value of
+% \extrarowheight as needed to properly center the text within the cells
+%\caption{An Example of a Table}
+%\label{table_example}
+%\centering
+%% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+%\begin{tabular}{|c||c|}
+%\hline
+%One & Two\\
+%\hline
+%Three & Four\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+
+% Note that IEEE does not put floats in the very first column - or typically
+% anywhere on the first page for that matter. Also, in-text middle ("here")
+% positioning is not used. Most IEEE journals use top floats exclusively.
+% Note that, LaTeX2e, unlike IEEE journals, places footnotes above bottom
+% floats. This can be corrected via the \fnbelowfloat command of the
+% stfloats package.
+
+
+
+%\section{Conclusion}
+%The conclusion goes here.
+
+
+
+
+
+% if have a single appendix:
+%\appendix[Proof of the Zonklar Equations]
+% or
+%\appendix  % for no appendix heading
+% do not use \section anymore after \appendix, only \section*
+% is possibly needed
+
+% use appendices with more than one appendix
+% then use \section to start each appendix
+% you must declare a \section before using any
+% \subsection or using \label (\appendices by itself
+% starts a section numbered zero.)
+%
+
+
+%\appendices
+%\section{Proof of the First Zonklar Equation}
+%Appendix one text goes here.
+
+% you can choose not to have a title for an appendix
+% if you want by leaving the argument blank
+%\section{}
+%Appendix two text goes here.
+
+
+% use section* for acknowledgement
+\section*{Acknowledgment}
+% The authors would like to thank the editors and anonymous reviewers for their hard work.
+
+This work was funded by projects 60603088 and 61070132 supported by National Natural Science Foundation of China.
+
+
+ \begin{thebibliography}{19}
+\bibitem{ShengYuShen:iccad09}
+S.~Shen, J.~Zhang, Y.~Qin, and S.~Li, ``Synthesizing complementary circuits
+  automatically,'' in \emph{ICCAD09}.\hskip 1em plus 0.5em minus 0.4em\relax
+  IEEE, Nov. 2009, pp. 381--388.
+
+\bibitem{ShengYuShen:tcad}
+S.~Shen, Y.~Qin, K.~Wang, L.~Xiao, J.~Zhang, and S.~Li, ``Synthesizing
+  complementary circuits automatically,'' \emph{IEEE transaction on CAD of
+  Integrated Circuits and Systems}, vol.~29, no.~8, pp. 1191--1202, Aug.
+  2010.
+
+\bibitem{ShengYuShen:tcad11}
+S.~Shen, Y.~Qin, L.~Xiao, K.~Wang, J.~Zhang, and S.~Li, ``A halting algorithm
+  to determine the existence of the decoder,'' \emph{accepted by IEEE
+  transaction on CAD of Integrated Circuits and Systems.
+  \url{http://www.ssypub.org/tcad11.pdf}}.
+
+\bibitem{Cofact}
+M.~K. Ganai, A.~Gupta, and P.~Ashar, ``Efficient SAT-based unbounded symbolic
+  model checking using circuit cofactoring,'' in \emph{ICCAD04}.\hskip 1em plus
+  0.5em minus 0.4em\relax IEEE, Nov. 2004, pp. 510--517.
+
+\bibitem{Craig}
+W.~Craig, ``Linear reasoning: A new form of the Herbrand-Gentzen theorem,''
+  \emph{J. Symbolic Logic}, vol.~22, no.~3, pp. 250--268, 1957.
+
+\bibitem{PCIESPEC}
+\emph{\url{en.wikipedia.org/wiki/PCI_Express}}.
+
+\bibitem{IEEE80232002}
+\emph{\url{en.wikipedia.org/wiki/Ethernet}}.
+
+\bibitem{MEALY}
+G.~H. Mealy, ``A method for synthesizing sequential circuits,'' \emph{Bell
+  Systems Technical Journal}, vol.~34, no.~5, pp. 1045--1079, 1955.
+
+\bibitem{RecDiam}
+D.~Kroening and O.~Strichman, ``Efficient computation of recurrence
+  diameters,'' in \emph{VMCAI03}.\hskip 1em plus 0.5em minus 0.4em\relax
+  Springer, January 2003, pp. 298--309.
+
+\bibitem{interp_McMillan}
+K.~L. McMillan, ``Interpolation and SAT-based model checking,'' in
+  \emph{CAV03}.\hskip 1em plus 0.5em minus 0.4em\relax Springer, July 2003, pp.
+  1--13.
+
+\bibitem{EXTSAT}
+N.~Een and N.~Sorensson, ``An extensible SAT-solver,'' in \emph{SAT03}.\hskip
+  1em plus 0.5em minus 0.4em\relax Springer, May 2003, pp. 502--518.
+
+\bibitem{ShengYuShen:fmcad10}
+S.~Shen, Y.~Qin, J.~Zhang, and S.~Li, ``A halting algorithm to determine the
+  existence of decoder,'' in \emph{FMCAD10}.\hskip 1em plus 0.5em minus
+  0.4em\relax IEEE,  Oct. 2010, pp. 91--100.
+
+\bibitem{dim_syn}
+S.~Gulwani, ``Dimensions in program synthesis,'' in \emph{PPDP10}.\hskip 1em
+  plus 0.5em minus 0.4em\relax ACM, July 2010, pp. 13--24.
+
+\bibitem{prog_inv}
+E.~W. Dijkstra, ``Program inversion,'' in \emph{Program Construction 1978},
+  1978, pp. 54--57.
+
+\bibitem{mtd_autoProginv}
+R.~Gl\"uck and M.~Kawabe, ``A method for automatic program inversion based on
+  lr(0) parsing,'' \emph{Fundam. Inf.}, vol.~66, no.~4, pp. 367--395, Nov.
+  2005.
+
+\bibitem{prog_inv_rev}
+S.~Srivastava, S.~Gulwani, S.~Chaudhuri, and J.~Foster, ``Program inversion
+  revisited,'' \emph{MSR-TR-2010-34, Microsoft Research},
+  2010.
+
+\bibitem{funcdep}
+C.-C. Lee, J.-H.~R. Jiang, C.-Y. Huang, and A.~Mishchenko, ``Scalable
+  exploration of functional dependency by interpolation and incremental SAT
+  solving,'' in \emph{ICCAD07}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE,
+  Nov. 2007, pp. 227--233.
+
+\bibitem{converter_date08}
+K.~Avnit, V.~D'Silva, A.~Sowmya, S.~Ramesh, and S.~Parameswaran, ``A formal
+  approach to the protocol converter problem,'' in \emph{DATE08}.\hskip 1em
+  plus 0.5em minus 0.4em\relax IEEE, Mar. 2008, pp. 294--299.
+
+\bibitem{converter_date09}
+K.~Avnit and A.~Sowmya, ``A formal approach to design space exploration of
+  protocol converters,'' in \emph{DATE09}.\hskip 1em plus 0.5em minus
+  0.4em\relax IEEE, Mar. 2009, pp. 129--134.
+ \end{thebibliography}
+
+
+
+\end{document}
+
+

@@ -1,0 +1,157 @@
+05-Oct-2011
+
+Dear Dr. Shen:
+
+Manuscript ID TCAD-2011-0407 entitled "Inferring Assertion for Complementary Synthesis" which you submitted to the Transactions on Computer-Aided Design of Integrated Circuits and Systems, has been reviewed.  The comments of the reviewer(s) are included at the bottom of this letter.
+
+The reviewer(s) have requested that your paper be shortened to a transactions brief.  I invite you to respond to their comments and revise your manuscript.
+
+To upload your revised manuscript, log into http://mc.manuscriptcentral.com/tcad  and enter your Author Center, where you will find your manuscript title listed under "Manuscripts with Decisions."  Under "Actions," click on "Create a Revision."  Your manuscript number has been appended to denote a revision.
+
+You may also click the link below to start the revision process (or continue the process if you have already started your revision) for your manuscript. If you use this link you will not be required to login to ScholarOne Manuscripts.
+
+http://mc.manuscriptcentral.com/tcad?URL_MASK=jGm4kt98NCSyhfsGhD3x
+
+
+You will be unable to make your revisions on the originally submitted version of the manuscript.  Instead, revise your manuscript using a word processing program and save it on your computer.  Please also highlight the changes to your manuscript within the document  by using bold, underlined, or colored text.
+
+Once the revised manuscript is prepared, you can upload it and submit it through your Author Center.
+
+When submitting your revised manuscript, you will be able to respond to the comments made by the reviewer(s) in the space provided.  You can use this space to document any changes you make to the original manuscript.  In order to expedite the processing of the revised manuscript, please be as specific as possible in your response to the reviewer(s).
+
+IMPORTANT:  Your original files are available to you when you upload your revised manuscript.  Please delete any redundant files before completing the submission.
+
+Because we are trying to facilitate timely publication of manuscripts submitted to the Transactions on Computer-Aided Design of Integrated Circuits and Systems, your revised manuscript should be submitted by 09-Nov-2011.  If it is not possible for you to submit your revision by this date, we may have to consider your paper as a new submission.
+
+Once again, thank you for submitting your manuscript to the Transactions on Computer-Aided Design of Integrated Circuits and Systems and I look forward to receiving your revision.
+
+Sincerely,
+Prof. Sachin Sapatnekar
+Editor-in-Chief, Transactions on Computer-Aided Design of Integrated Circuits and Systems
+tcad@umn.edu
+
+
+Reviewer(s)' Comments to Author:
+
+Reviewer: 1
+Comments to the Author
+The contribution makes sense, and the paper is structured well.
+The authors should check the work in
+Ed Clarke, Reconsidering Cegar: learning good abstractions without refinement
+(and related publications) and discuss any connections that exist - conceptual
+or technical -- to their work.
+
+The material added to the ICCAD paper seems significant.
+
+The writing includes occasional glitches in terms of grammar and style.
+
+! So, we propose
+ Therefore, we propose
+% Do not use "So" as "Therefore" in scholarly publications. It is too colloquial.
+
+! that reversely computes
+ that inverts
+% OR
+ that computes an inverse of
+% OR "the inverse", if it is unique
+
+> To help the user selects
+  To help the user select
+On page 1 line 11, line 18, line 47 (left column) and page 5, line 3, there are missing ligatures "fi"
+in "configuration", "final" and "defined" -- this may be an issue with PDF processing or
+cut-and-paste, but needs to be resolved one way or another. Also, I am not giving
+a full list of these problems -- the authors must carefully check the paper.
+There's also a spurious spare character in "assertio n" in the abstract.
+If the authors can't write a clean abstract, this paper can definitely NOT be published.
+
+! One of the most difﬁcult jobs in designing
+  One of the most difﬁcult tasks in designing
+
+! Manually specifying an assertion needs the user
+! to read lots of documentations and try many combinations
+ To manually specify an assertion, the user must read extensive documentation
+ and often perform laborious trial-and-error process.
+% note that "documentation" is uncountable in English, so there's no plural form
+
+% I am not going to proofread the entire paper - it's the authors' job.
+
+Reviewer: 2
+Comments to the Author
+My main objections are o the problem you are solving and to methods you have chosen.
+
+
+1) First of all, reading a manual is not such a bad idea.  Of course if you had   an undocumented chip and
+wanted to find its working configuration the methods you describe make a perfect sense.
+
+However, even if replacing a lost manual is a  tough problem  it hardly merits a scientific publication. (Safe-cracking is not easy, but
+nobody writes papers about it.)
+
+
+2) But let us assume that indeed the problem at hand is to save the user's time
+
+ I still have some doubts about the methods you employ.   The largest assertion  among the four examples
+ you give in the experimental section has 6 variables.   I assume that any reasonably good user should be able
+ to find the correct configuration by making  a sensible assignment to 6 variables that satisfies this assertion.
+ If necessary this user may take a look at the manual to find out what these 6 variables specify.
+
+
+
+ Instead,  you generate all possible encoders (that have decoders) for the configurations satisfying this simple assertion and then
+ let the user pick the right encoder based on the assertion specifying the configurations corresponding to this encoder.
+ Note that the user still has to be able to distinguish between wrong  assignments to those 6 variables.
+ It beats me, why it cannot be done without generating all possible encoders.
+
+
+
+3) Of course, hypothetically, one can have a very complex assertion eliminating wrong configurations that involves many variables.
+ But then, it will be hard for the user to manually identify the correct configuration due to shear complexity of this communication chip.
+ Besides, in this case the number of encoders may be very large.
+
+
+4) One more technical comment. You build an assertion excluding wrong configurations iteratively repeating two steps:
+
+a) Find an C counter-example proving that under particular assignment of configuration variables no decoder exists.
+
+b) The you build an interpolant to increase the set of excluded configurations.
+
+
+What you do at step b) is frequently used in  algorithms of quantifier elimination based on enumerating satisfying assignments.
+There are more than a few papers on this topic, for example "M.Ganai, A.Gupta, and P. Ashar, "Efficient SAT-based unbounded
+symbolic model checking using circuit cofactoring", in Proc. ICCAD-2004, pp.510-517.
+
+This paper describes a trick (circuit cofactoring) with the same objective you have. Namely,
+one satisfying assignment is used to remove many more.
+
+
+Reviewer: 3
+Comments to the Author
+This paper addresses the problem of computing assertions in complementary circuit synthesis. The computation consists of three phases: 1) computing assertion configurations, 2) computing the set of Boolean relations, and 3) computing the assertion configuration of each Boolean relation. The problem formulation and its corresponding computation have practical applications.
+
+The presentation in several ways is not clear and should be improved.
+
+1. Boolean relation and its defined function(s) are never explicitly defined. Please provide the definitions in Section III with proper references.
+
+2. As Theorem 2 is just a slight extension of [16], the appended proof can be completely removed by simply referring the reader to [16].
+
+3. In the discussion of Section IV.C, the o variables seem to be incorrectly omitted. For example, f’ depends on o, o should be asserted in Equation (7), etc. Please correct related formulations. Otherwise the interpolation may be incorrect.
+
+4. In Section IV.C, computing f using Craig interpolation may seem unnecessary as cofactoring f’ already yields a desired solution. Having Craig interpolation in the computation may seem just the matter of speedup as stated in the last sentence of Section IV. If this is the case, please provide experimental evaluation comparing the computation with and without Craig interpolation.
+
+5. The presentation of Section V.A seems to hint that the function defined by R is unique. Please comment on this.
+
+6. For Section VI, there are no additional experiments compared to [2]. Essentially only Phase 1 is experimented. Please experiments on Phase 2 and Phase 3 computations as well. Showing statistics of the computed Boolean relations and their assertions (in terms of formula size, CPU time, etc.) provides the reader a better idea how the proposed algorithms work in practice.
+
+7. Please compare the computed assertions of [2] and this work. It seems to the reviewer that the assertions of XGXS, PCI-E, scrambler, and T2 ethernet in [2] and this work are functionally the same, whereas those of XFI are functionally different. Please explain why the computed assertions can differ.
+
+8. XFI and scrambler have 2 decoders each. Please list their respective two assertions, rather than just one each.
+
+9. How can scrambler have 2 decoders with its assertion equals “True”? It seems that the assertions of different decoders must be disjoint.
+
+10. In introduction, it was said that “For other benchmarks with multiple decoders, the user can easily select the correct one, by inspecting the precondition formulas and finding out the meaning of no more than one pin, instead of up to 120 pins like the original approach [1].” Which benchmark circuit and which pin do the authors refer to in the experiment?
+
+11. It was said that “The user can easily select the correct decoder by inspecting these preconditions.” Please elaborate how the selection can be done. It may seem to the reviewer that the selection cannot be done unless the user already know the right configuration, but in this case there is no need to compute inferred assertions.
+
+
+Associate Editor: Kunz, Wolfgang
+Comments to the Author:
+The paper is considered to make a worthwhile contribution although there are doubts about its practical importance. In the revision as Transaction Brief please give a better motivation for the practical relevance of your work.

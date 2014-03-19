@@ -1,0 +1,210 @@
+.homepage4_rollover H1 {
+	FONT-WEIGHT: normal! important; FONT-SIZE: 22px! important; MARGIN: 0px 10px; COLOR: #093a6b; FONT-FAMILY: Georgia, serif; TEXT-DECORATION: none
+}
+.homepage4_rollover H2 {
+	FONT-SIZE: 13px; MARGIN: 0px 10px; COLOR: #000000; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.homepage4_rollover P {
+	FONT-SIZE: 11px; MARGIN: 0px 10px; COLOR: #282828; LINE-HEIGHT: 1.6em; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.homepage_shortcuts H1 {
+	FONT-SIZE: 16px; COLOR: #ffffff; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif
+}
+.homepage_shortcuts A:link {
+	FONT-SIZE: 11px; COLOR: #ffffff; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.homepage_shortcuts A:visited {
+	FONT-SIZE: 11px; COLOR: #ffffff; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.homepage_shortcuts A:active {
+	FONT-SIZE: 11px; COLOR: #ffffff; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif; TEXT-DECORATION: underline
+}
+.homepage_shortcuts A:hover {
+	FONT-SIZE: 11px; COLOR: #ffffff; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif; TEXT-DECORATION: underline
+}
+.homepage4_get_involved {
+	BORDER-RIGHT: #eee 1px solid; BORDER-TOP: #eee 1px solid; BACKGROUND: url(http://www2.computer.org/cms/Computer.org/Prototype/images/header-ty.jpg) repeat-x 50% top; MARGIN: 8px; BORDER-LEFT: #eee 1px solid; WIDTH: 292px; BORDER-BOTTOM: #eee 1px solid
+}
+.homepage4_get_involved P {
+	MARGIN: 4px 8px 0px
+}
+.homepage4_get_involved H1 {
+	MARGIN-TOP: 5px; FONT-WEIGHT: bold; FONT-SIZE: 14px; MARGIN-LEFT: 8px; COLOR: #5f5f5f; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif
+}
+.homepage4_get_involved H2 {
+	FONT-SIZE: 13px; MARGIN: 16px 0px 0px 8px; COLOR: #004d86; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif
+}
+.homepage4_get_involved_more {
+	FONT-SIZE: 10px; MARGIN-LEFT: 8px; COLOR: #004c85; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.homepage4_get_involved TABLE {
+	MARGIN: 8px
+}
+.homepage_tabs_contentX {
+	OVERFLOW: auto; HEIGHT: 325px
+}
+.homepage_tabs_content H2 {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; COLOR: #004986; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif
+}
+.homepage_tabs_content H3 {
+	FONT-WEIGHT: bold; FONT-SIZE: 10px; COLOR: #6e6e6e; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif
+}
+.homepage_tabs_content P {
+	FONT-SIZE: 11px; COLOR: #292929; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif
+}
+.homepage4_access_ieeecs {
+	BORDER-RIGHT: #eee 1px solid; BORDER-TOP: #eee 1px solid; BACKGROUND: url(http://www2.computer.org/cms/Computer.org/Prototype/images/header-ty.jpg) repeat-x 50% top; MARGIN: 8px; BORDER-LEFT: #eee 1px solid; WIDTH: 250px; BORDER-BOTTOM: #eee 1px solid
+}
+.homepage4_access_ieeecs P {
+	MARGIN-LEFT: 8px; MARGIN-RIGHT: 8px
+}
+.homepage4_access_ieeecs H1 {
+	MARGIN-TOP: 5px; FONT-WEIGHT: bold; FONT-SIZE: 14px; MARGIN-LEFT: 8px; COLOR: #5f5f5f; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif
+}
+.homepage4_access_ieeecs H2 {
+	MARGIN-TOP: 8px; FONT-SIZE: 13px; MARGIN-LEFT: 8px; COLOR: #004d86; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif
+}
+.homepage4_access_ieeecs_more {
+	FONT-SIZE: 10px; MARGIN-LEFT: 8px; COLOR: #004c85; FONT-FAMILY: Arial, Verdana, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.homepage4_access_ieeecs TABLE {
+	MARGIN: 8px
+}
+#navigation A {
+	COLOR: #ffffff
+}
+.issue-box-padding {
+	PADDING-RIGHT: 15px; PADDING-LEFT: 15px; PADDING-BOTTOM: 15px; PADDING-TOP: 15px
+}
+.issue-box-padding P {
+	FONT-WEIGHT: normal; FONT-SIZE: 12px; COLOR: #000000; LINE-HEIGHT: 18px; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.issue-box-padding H1 {
+	FONT-WEIGHT: bold; FONT-SIZE: 20px; MARGIN: 0px 0px 12px; COLOR: #285091; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.issue-box-padding H2 {
+	FONT-WEIGHT: bold; FONT-SIZE: 18px; MARGIN: 0px 0px 8px; COLOR: #000000; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.issue-box-padding H3 {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; MARGIN: 0px 0px 16px; COLOR: #8b8b8b; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.issue-box-padding H5 {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; MARGIN: 0px 0px 8px; COLOR: #000000; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.issue-box-padding A:link {
+	FONT-WEIGHT: bold; COLOR: #153c7d; TEXT-DECORATION: none
+}
+.issue-box-padding A:visited {
+	FONT-WEIGHT: bold; COLOR: #153c7d; TEXT-DECORATION: none
+}
+.issue-box-padding A:hover {
+	FONT-WEIGHT: bold; COLOR: #153c7d; TEXT-DECORATION: underline
+}
+.mission-statement {
+	PADDING-RIGHT: 20px; PADDING-LEFT: 18px; PADDING-BOTTOM: 0px; PADDING-TOP: 21px
+}
+.mission-statement P {
+	FONT-WEIGHT: normal; FONT-SIZE: 12px; COLOR: #000000; LINE-HEIGHT: 18px; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.mission-statement H1 {
+	FONT-WEIGHT: normal; FONT-SIZE: 18px; COLOR: #4d4e4e; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.subscribe P {
+	FONT-WEIGHT: normal; FONT-SIZE: 12px; MARGIN: 0px; COLOR: #000000; LINE-HEIGHT: 18px; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.subscribe A:link {
+	FONT-WEIGHT: bold; COLOR: #153c7d; TEXT-DECORATION: none
+}
+.subscribe A:visited {
+	FONT-WEIGHT: bold; COLOR: #153c7d; TEXT-DECORATION: none
+}
+.subscribe A:hover {
+	FONT-WEIGHT: bold; COLOR: #153c7d; TEXT-DECORATION: underline
+}
+.special-issue {
+	PADDING-RIGHT: 7px; PADDING-LEFT: 7px; PADDING-BOTTOM: 7px; PADDING-TOP: 7px
+}
+.special-issue H1 {
+	FONT-WEIGHT: normal; FONT-SIZE: 18px; MARGIN: 0px 0px 7px; COLOR: #152d65; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.special-issue UL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 12px; LIST-STYLE-IMAGE: none; PADDING-BOTTOM: 0px; MARGIN: 0px 0px 0px 5px; COLOR: #000000; LINE-HEIGHT: 24px; PADDING-TOP: 0px; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.special-issue LI {
+	PADDING-LEFT: 17px; BACKGROUND: url(/portal/image/image_gallery?uuid=09f03b06-717a-4dc5-970e-3532c5df1adc&groupId=889131&t=1237488243473) no-repeat 0px 0.7em; LIST-STYLE-TYPE: none
+}
+.special-issue A:link {
+	FONT-WEIGHT: bold; COLOR: #153c7d; TEXT-DECORATION: none
+}
+.special-issue A:visited {
+	FONT-WEIGHT: bold; COLOR: #153c7d; TEXT-DECORATION: none
+}
+.special-issue A:hover {
+	FONT-WEIGHT: bold; COLOR: #153c7d; TEXT-DECORATION: underline
+}
+.editorial {
+	PADDING-RIGHT: 7px; PADDING-LEFT: 7px; PADDING-BOTTOM: 7px; PADDING-TOP: 7px
+}
+.editorial HR {
+	MARGIN: 5px 0px
+}
+.editorial H1 {
+	FONT-WEIGHT: normal; FONT-SIZE: 18px; MARGIN: 0px; COLOR: #152d65; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.editorial H2 {
+	FONT-WEIGHT: normal; FONT-SIZE: 18px; MARGIN: 0px; COLOR: #000000; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.editorial A:link {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #153c7d; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.editorial A:visited {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #153c7d; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.editorial A:hover {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #153c7d; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: underline
+}
+.editorial-box-ul {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-WEIGHT: bold; FONT-SIZE: 14px; LIST-STYLE-IMAGE: none; PADDING-BOTTOM: 0px; MARGIN: 0px 0px 0px 5px; COLOR: #000000; LINE-HEIGHT: 24px; PADDING-TOP: 0px; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.editorial-box-li {
+	PADDING-LEFT: 17px; BACKGROUND: url(/portal/image/image_gallery?uuid=09f03b06-717a-4dc5-970e-3532c5df1adc&groupId=889131&t=1237488243473) no-repeat 0px 0.6em; LIST-STYLE-TYPE: none
+}
+.editorial-arrow-ul {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-WEIGHT: bold; FONT-SIZE: 12px; LIST-STYLE-IMAGE: none; PADDING-BOTTOM: 0px; MARGIN: 0px; COLOR: #000000; LINE-HEIGHT: 24px; PADDING-TOP: 0px; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.editorial-arrow-li {
+	PADDING-LEFT: 13px; BACKGROUND: url(/portal/image/image_gallery?uuid=a4d7ac85-b5ce-4984-aff1-e401fef8eded&groupId=889131&t=1237488240547) no-repeat 0px 0.6em; LIST-STYLE-TYPE: none
+}
+.editorial-arrow-li A:link {
+	FONT-WEIGHT: bold; COLOR: #153c7d; TEXT-DECORATION: none
+}
+.editorial-arrow-li A:visited {
+	FONT-WEIGHT: bold; COLOR: #153c7d; TEXT-DECORATION: none
+}
+.editorial-arrow-li A:hover {
+	FONT-WEIGHT: bold; COLOR: #153c7d; TEXT-DECORATION: underline
+}
+.testimonials {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 5px; PADDING-TOP: 6px
+}
+.testimonials P {
+	FONT-SIZE: 12px; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.testimonials H5 {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; MARGIN: 0px; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.testimonials H6 {
+	FONT-WEIGHT: normal; FONT-SIZE: 14px; MARGIN: 0px; COLOR: #656664; FONT-STYLE: italic; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+#s7 {
+	WIDTH: 300px; HEIGHT: 183px
+}
+#s7 DIV {
+	OVERFLOW: hidden; WIDTH: 300px; HEIGHT: 210px
+}
+#s7 DIV {
+	LEFT: 0px; TOP: 0px
+}
+.button-text {
+	PADDING-LEFT: 5px; FONT-SIZE: 16px; COLOR: #ffffff; FONT-FAMILY: Arial, Helvetica, sans-serif
+}

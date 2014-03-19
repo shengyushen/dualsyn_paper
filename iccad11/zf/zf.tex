@@ -1,0 +1,1550 @@
+% ÖĞ¹ú¿ÆÑ§ A ¼­: ÊıÑ§ ÖĞÎÄÄ£°å, ÇëÖ±½ÓÓÃ LaTeX ±àÒë.
+\documentclass{SCACF}
+\usepackage{amssymb}
+\usepackage{color,soul}
+% ¿¬Ìå
+% Çë×÷Õß×¢Òâ: ÔÚÕûÆªÎÄÕÂÖĞ, ²»ÒªÊ¹ÓÃÈÎºÎ¸Ä±äÎÄÕÂ°æÊ½µÄÃüÁî, Ğ»Ğ».
+% ³£¼ûµÄÊıÑ§Ààºê°üÈç amsmath,amsthm,amsfonts,amssymb,bm ºÍ²åÍ¼ºê°ü»á×Ô¶¯¼ÓÔØ.
+% ÇëÔÚ´ËÌí¼ÓÎÄÕÂÒªÓÃµ½µÄÌØÊâºê°üÒÔ¼°×Ô¶¨ÒåÃüÁîµÈ.
+\def\dl{\displaystyle}
+\def\tlj{\end{document}}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\makeatletter
+\newcommand{\rmnum}[1]{\romannumeral #1}
+\newcommand{\Rmnum}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+\newtheorem{algo}{\textbf{Algorithm}}
+\newtheorem{definition11}{\textbf{Definition}}
+\newtheorem{lemma}{\textbf{Lemma}}
+\newtheorem{theorem}{\textbf{Theorem}}
+\newtheorem{proposition}{\textbf{Proposition}}
+
+\begin{document}
+
+%ÎÄÕÂµÄ»ù±¾²ÎÊı
+\Year{2010} % ³ö°æÄê
+\Vol{40} % ¾í
+\No{1} % ÆÚ
+\BeginPage{1} % ÆğÊ¼Ò³Âë
+\EndPage{?} % ÖÕÖ¹Ò³Âë
+%\ReceivedDate{2009--xx--xx} % ÊÕ¸åÈÕÆÚ
+%\AcceptedDate{2009--xx--xx} % ½ÓÊÜÈÕÆÚ
+%ÒıÓÃĞÅÏ¢%%%%%%%%%%%%%%%%%%%%%%%%%×÷Õß²»ĞèÌîĞ´´Ë²¿·Ö%%%%%%%%%%%%%%%%%%
+%\thispagestyle{empty}
+%\begin{picture}(0,0)
+%\put(-25,-635){ \fcolorbox[rgb]{0,0,0}{0.75,0.75,0.75}
+%{\parbox[t]{144truemm{\bf\scriptsize ÒıÓÃ¸ñÊ½:\ }}{\scriptsize
+%Àî¹ú½Ü. ĞÅÏ¢¿ÆÑ§¼¼ÊõµÄ³¤ÆÚ·¢Õ¹Ç÷ÊÆºÍÎÒ¹úµÄÕ½ÂÔÈ¡Ïò. 2010, 53;
+%1--8}}}\end{picture}
+%ÒıÓÃĞÅÏ¢%%%%%%%%%%%%%%%%%%%%%%%%%×÷Õß²»ĞèÌîĞ´´Ë²¿·Ö%%%%%%%%%%%%%%%%%%
+
+% ±êÌâ: ´ËÃüÁîµÄÍêÕû¸ñÊ½Îª:
+%       \title[¶Ì±êÌâ]{±êÌâ}{Ìâ×¢}
+% ËµÃ÷: 1. ¶Ì±êÌâÎª¿ÉÑ¡Ïî, ³öÏÖÓÚÒ³Ã¼ÖĞ, ÈôÊ¡ÂÔ, ÔòÓë±êÌâÏàÍ¬.
+%       2. Ìâ×¢ÊÇ¶Ô±êÌâµÄ¸½¼ÓËµÃ÷, ½«³öÏÖÓÚÊ×Ò³½Å×¢Çø, ÈôÃ»ÓĞ, »¨À¨ºÅ²»¿ÉÊ¡ÂÔ.
+\noindent\hspace{-2mm}{\vspace{-2mm}\zihao{4}
+ \fcolorbox[rgb]{1,1,1}{0.75,0.75,0.75}{\parbox[t]{20truemm}{\heiti
+ {\zihao{-4}\quad ÂÛ~~~ÎÄ}}}}
+
+
+\title[]{¶ÔÅ¼×ÛºÏµÄ¶ÏÑÔÍÆµ¼}{}
+
+
+% ×÷Õß: ´ËÃüÁîµÄÊ¹ÓÃ¸ñÊ½Îª:
+%       \author[µ¥Î»±àºÅ]{×÷ÕßĞÕÃû}{}
+% ËµÃ÷: 1. Ã¿Ò»¸ö×÷ÕßÓÃÒ»Ìõ \author ÃüÁî.
+%       2. µ¥Î»±àºÅÓ¦¸ÃÓëÏÂÃæ \address ÖĞµÄµ¥Î»Ïà¶ÔÓ¦, Èç¹ûÖ»ÓĞÒ»¸ö×÷Õß»òÖ»ÓĞÒ»¸öµ¥Î», Ôò¿ÉÊ¡ÂÔ´Ë±àºÅ.
+\author[]{ÉòÊ¤Óî}{~~}
+\author[]{ÇØÓ¨}{}%Í¨ĞÅ×÷ÕßÇëÔÚÏàÓ¦×÷Õßºó¼Ó*ºÅ
+\author[]{ÕÅ½¨Ãñ}{}
+\author[]{ÀîË¼À¥}{}
+\Email{syshen@nudt.edu.cn, qy123@nudt.edu.cn, jmzhang@nudt.edu.cn, skli@nudt.edu.cn}%´Ë´¦ÇëÌîĞ´ËùÓĞ×÷ÕßµÄemailµØÖ·
+\Correspondingauthor{*ÉòÊ¤Óî}%Èç¹û½öÓĞÒ»Î»×÷ÕßÇëÉ¾È¥À¨ºÅÖĞµÄÄÚÈİ
+\Foundation{¹ú¼Ò×ÔÈ»¿ÆÑ§»ù½ğ(Åú×¼ºÅ: 61070132)×ÊÖúÏîÄ¿}% ÏîÄ¿×ÊÖúĞÅÏ¢
+\Authormark{ÉòÊ¤ÓîµÈ}%Èç¹û½öÓĞÒ»Î»×÷ÕßÇëÉ¾È¥¡°µÈ¡±
+
+% µ¥Î»¼°µØÖ·: ´ËÃüÁîµÄÊ¹ÓÃ¸ñÊ½Îª:
+%       \address[µ¥Î»±àºÅ]{µ¥Î»Ãû³ÆÓëµØÖ·}
+% ËµÃ÷: 1. Ã¿Ò»¸öµ¥Î»ÓÃÒ»¸ö \address ÃüÁî.
+%       2. µ¥Î»±àºÅÖĞÇë°´Ë³ĞòÌîÈëÊı×Ö 1,2,..., Èç¹ûÖ»ÓĞÒ»¸öµ¥Î», ¿ÉÒÔÊ¡ÂÔ´Ë±àºÅ.
+
+%\address[\ding{172}\!\!]{º£¾ü¹¤³Ì´óÑ§µç×Ó¹¤³ÌÑ§Ôº, Îäºº 430033}
+\address[]{¹ú·À¿Æ¼¼´óÑ§¼ÆËã»úÑ§Ôº, ³¤É³ 410073}
+\maketitle
+
+\begin{abstract}
+{\xiaowuhao
+\begin{tabular}{p{0.80\textwidth}!{\color[gray]{0.4}\vline}p{0.16\textwidth}}
+{\zaiyao{\heiti ÕªÒª\quad\,\,}
+¶ÔÅ¼×ÛºÏÄÜ¹»×Ô¶¯Éú³ÉÌØ¶¨±àÂëÆ÷µÄ½âÂëÆ÷.
+È»¶ø,
+ÆäÓÃ»§ĞèÒªÔÚÌØ¶¨µÄÅäÖÃĞÅºÅÉÏ¸ø³ö¶ÏÑÔ
+ÒÔ·ÀÖ¹±àÂëÆ÷µ½´ï·Ç¹¤×÷×´Ì¬.
+ÎªÁË±ÜÃâÕâÒ»·³Ëö¹¤×÷,
+±¾ÎÄÌá³öÁË×Ô¶¯ÍÆµ¼¶ÏÑÔµÄËã·¨.
+
+\textbf{Ê×ÏÈ},
+ÎÒÃÇÌá³öÁËÄÜ¹»Õë¶ÔÈÎÒâÅäÖÃĞÅºÅÖµ£¬È·¶¨½âÂëÆ÷ÊÇ·ñ´æÔÚµÄÍ£»úËã·¨.
+\textbf{Æä´Î},
+¶ÔÒÔÃ¿Ò»¸öµ¼ÖÂ½âÂëÆ÷²»´æÔÚµÄ·Ç·¨ÅäÖÃĞÅºÅÖµ,
+ÎÒÃÇÊ¹ÓÃcofactoringºÍCraig²åÖµÒÔÍÆµ¼Ò»¸ö¸²¸ÇÁíÒ»¸ö½Ï´óµÄ·Ç·¨ÅäÖÃĞÅºÅÖµµÄ¼¯ºÏ.
+¸Ã²½Öè½«±»ÖØ¸´Ö±ÖÁËùÓĞ·Ç·¨ÅäÖÃĞÅºÅÖµ¾ù±»ÌŞ³ı.
+\textbf{×îºó},
+×îÖÕµÄ¶ÏÑÔ¼´ÎªËùÓĞÉÏÊöÍÆµ¼¹«Ê½µÄ·ÇÓë.
+½âÂëÆ÷´æÔÚµ±ÇÒ½öµ±¸Ã¹«Ê½ÈÔÈ»¿ÉÂú×ã.
+
+ÎªÁËÕ¹Ê¾ÆäÓĞĞ§ĞÔ,
+ÎÒÃÇÔÚ¶à¸ö¸´ÔÓ±àÂëÆ÷ÉÏÔËĞĞÁË¸ÃËã·¨,
+°üÀ¨PCI-EºÍÒÔÌ«Íø.
+ÊµÑé½á¹û±íÃ÷
+ÎÒÃÇµÄËã·¨Ê¼ÖÕÄÜ¹»ÍÆµ¼³öÕıÈ·µÄ¶ÏÑÔ.
+}&{\heiti\zihao{5}
+¹Ø¼ü´Ê}\par
+¶ÔÅ¼×ÛºÏ
+
+ÍÆµ¼¶ÏÑÔ
+
+Cofactoring
+
+Craig²åÖµ
+\end{tabular}}
+\end{abstract}
+\vspace*{-1.25mm}\textcolor[rgb]{0.4,0.4,0.4}{\rule{16cm}{0.4pt}}
+%
+
+
+%ÒıÓÃĞÅÏ¢%%%%%%%%%%%%%%%%%%%%%%%%%×÷Õß²»ĞèÌîĞ´´Ë²¿·Ö%%%%%%%%%%%%%%%%%%
+%\renewcommand{\headrulewidth}{0pt}
+%\thispagestyle{fancy} \fancyfoot[L]{\footnotesize
+%\fcolorbox[rgb]{0,0,0}{0.75,0.75,0.75}{\parbox[t]{143truemm{\bf\scriptsize\raisebox{-4pt}{}\raisebox{9pt}{}
+%ÒıÓÃ¸ñÊ½:\ }}{\scriptsize ÁõÌÎ, »Æ¸ßÃ÷, ÍõÑ©ËÉµÈ.
+%»ùÓÚH/AÄ¿±ê¼«»¯·Ö½âÀíÂÛµÄÍ³¼Æ·ÖÎö. 2010, 53; 1--13}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ÕıÎÄ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\sec{1\quad ÒıÑÔ}
+\section{ÒıÑÔ}\label{sec_intro}
+ÔÚÍ¨ĞÅºÍ¶àÃ½ÌåĞ¾Æ¬Éè¼ÆÖĞ£¬
+×îÀ§ÄÑµÄ¹¤×÷ÊÇÉè¼ÆºÍÑéÖ¤¸´ÔÓµÄ¶ÔÅ¼µçÂ·¶Ô$(E,E^{-1})$,
+ÆäÖĞ±àÂëÆ÷$E$½«ÊäÈëÊı¾İÁ÷±àÂëÎªÊÊºÏ´«ÊäºÍ´æ´¢µÄ¸ñÊ½,
+¶ø¶ÔÓ¦µÄ¶ÔÅ¼µçÂ·(»ò½âÂëÆ÷)$E^{-1}$Ôò»Ö¸´¸ÃÊı¾İ.
+
+ÎªÁËÌá¸ß¸Ã¹¤×÷µÄĞ§ÂÊ,
+¶ÔÅ¼×ÛºÏËã·¨\cite{ShengYuShen:iccad09,ShengYuShen:tcad}±»Ìá³ö
+ÒÔ×Ô¶¯×ÛºÏÌØ¶¨±àÂëÆ÷µÄ½âÂëÆ÷,
+Í¨¹ı¼ìÑéÌØ¶¨±àÂëÆ÷µÄÊäÈëÄÜ·ñ±»Êä³öĞòÁĞÎ¨Ò»¾ö¶¨.
+±àÂëÆ÷µçÂ·Í¨³£¾ßÓĞ¶àÖÖ¹¤×÷Ä£Ê½,
+Ã¿ÖÖÄ£Ê½¶ÔÓ¦ÓÚÒ»¸ö·ÇÏà½»µÄ×´Ì¬¼¯ºÏ:
+
+\begin{enumerate}
+\item ×îÎªÖØÒªµÄÄ£Ê½ÊÇ¹¤×÷Ä£Ê½,
+ÔÚ¸ÃÄ£Ê½ÖĞ±àÂëÆ÷ÖÂÁ¦ÓÚ±àÂëÊäÈëÊı¾İ.
+Òò´Ë±àÂëÆ÷µÄÊäÈëÄÜ¹»±»ÆäÊä³öÎ¨Ò»¾ö¶¨,
+¶øÕâÒâÎ¶×Å±àÂëÆ÷´æÔÚ.
+\item ¶øÁíÒ»·½Ãæ,
+±àÂëÆ÷ÈÔÈ»°ü¹şºÜ¶àÆäËû×´Ì¬,
+±ÈÈç²âÊÔºÍĞİÃßÄ£Ê½,
+ÔÚÕâĞ©Ä£Ê½ÖĞ
+±àÂëÆ÷½«ÖÂÁ¦ÓÚ´¦Àí²âÊÔÃüÁî£¬»òÕß²»×öÈÎºÎÊÂÇé¡£
+Òò´ËËûÃÇµÄÊä³ö½«²»ÄÜÎ¨Ò»¾ö¶¨ÊäÈë£¬
+Õâ½«µ¼ÖÂ½âÂëÆ÷²»´æÔÚ
+\end{enumerate}
+
+Òò´Ë¶ÔÅ¼×ÛºÏµÄÓÃ»§ĞèÒªÊÖ¹¤¸ø³öÅäÖÃĞÅºÅÉÏµÄ¶ÏÑÔÒÔ·ÀÖ¹±àÂëÆ÷½øÈë·Ç¹¤×÷×´Ì¬.
+
+ÎªÁË·ÀÖ¹ÕâÒ»·³ËöµÄ¹¤×÷£¬
+±¾ÎÄ¸ø³öÁËÍÆµ¼¶ÏÑÔµÄ×Ô¶¯Ëã·¨:
+\begin{enumerate}
+ \item \textbf{Ê×ÏÈ},
+ÎÒÃÇ¸ø³öÒ»¸öËã·¨ÒÔ¶ÔÈÎÒâÌØ¶¨µÄÅäÖÃĞÅºÅÖµÈ·¶¨Æä½âÂëÆ÷ÊÇ·ñ´æÔÚ.
+ \item \textbf{Æä´Î},
+¶ÔÈÎÒâµ¼ÖÂ½âÂëÆ÷²»´æÔÚµÄÅäÖÃĞÅºÅÖµ,
+ÎÒÃÇÊ¹ÓÃcofactoring\cite{Cofact}ºÍCraig²åÖµ\cite{Craig}ÒÔÍÆµ¼Ò»¸öĞÂ¹«Ê½,
+¶ø¸Ã¹«Ê½½«¸²¸ÇÒ»¸ö½Ï´óµÄµ¼ÖÂ½âÂëÆ÷²»´æÔÚµÄ·Ç·¨ÅäÖÃĞÅºÅÖµ¼¯ºÏ.
+¸Ã²½Öè½«±»ÖØ¸´Ö±ÖÁËùÓĞ·Ç·¨ÅäÖÃĞÅºÅÖµ¾ù±»ÌŞ³ıÎªÖ¹.
+ \item \textbf{×îºó},
+×îÖÕ¶ÏÑÔÊÇÉÏÊöËùÓĞÍÆµ¼¹«Ê½µÄ·ÇÓë.
+½âÂëÆ÷´æÔÚµ±ÇÒ½öµ±¸Ã¹«Ê½ÈÔÈ»¿ÉÂú×ã.
+\end{enumerate}
+
+ÎÒÃÇÔÚOCamlÓïÑÔÖĞÊµÏÖÁË¸ÃËã·¨,
+²¢Ê¹ÓÃMinisatÇó½âÆ÷\cite{EXTSAT}Çó½âËùÓĞµÄSATÊµÀı.
+²âÊÔ¼¯°üº¬ÁË¶à¸öÀ´×ÔÓÚ¹¤Òµ½çÏîÄ¿µÄ¸´ÔÓ±àÂëÆ÷
+(Èç
+PCI-E\cite{PCIESPEC}ÒÔÌ«Íø\cite{IEEE80232002}).
+ÊµÑé½á¹û±íÃ÷ÎÒÃÇµÄËã·¨Ê¼ÖÕÄÜ¹»ÍÆµ¼ÕıÈ·µÄ¶ÏÑÔ.
+%All experimental results and programs can be downloaded from \url{http://www.ssypub.org}.
+
+\textbf{±¾ÎÄµÄ¹±Ï×ÔÚÓÚ}:
+ÎÒÃÇÌá³öÁËÊ×¸öÄÜ¹»×Ô¶¯ÍÆµ¼¶ÏÑÔµÄ¶ÔÅ¼×ÛºÏËã·¨.
+
+\textbf{±¾ÎÄÊ£Óà²¿·ÖÈçÏÂ×éÖ¯}.
+½Ú\ref{sec_prem}½éÉÜÁË±³¾°×ÊÁÏ.
+½Ú\ref{sec_exist}¸ø³öÁË±¾ÎÄËã·¨µÄÕûÌå½á¹¹¼°ÆäÕıÈ·ĞÔÖ¤Ã÷,
+½Ú\ref{sec_infer}ºÍ\ref{sec_rmred}Ôò·Ö±ğ½éÉÜÁËÈçºÎ´ÓÒ»¸ö·Ç·¨ÅäÖÃÖµÖĞÍÆµ¼¸ü´óµÄÅäÖÃĞÅºÅÖµ¼¯ºÏ,
+ºÍÈçºÎÌŞ³ıÈßÓàµÄÊä³ö×Ö·û.
+½Ú\ref{sec_exp}ºÍ\ref{sec_relwork}Ôò·Ö±ğ¸ø³öÁËÊµÑé½á¹ûºÍÏà¹Ø¹¤×÷.
+×îºó,
+½Ú\ref{sec_conclude}×Ü½áÈ«ÎÄ.
+
+\section{±³¾°}\label{sec_prem}
+
+\subsection{ÃüÌâÂß¼­¿ÉÂú×ã}\label{subsec_SAT}
+²¼¶û¼¯ºÏ¼ÇÎª$B=\{0,1\}$.
+¶ÔÓÚ±äÁ¿¼¯ºÏ$V$ÉÏµÄ²¼¶û¹«Ê½$F$,
+Æä²¼¶ûÃüÌâÂß¼­¿ÉÂú×ãÎÊÌâ(ËõĞ´ÎªSAT)ÊÇÑ°ÕÒÒ»¸öÂú×ã¸³Öµ$A:V\to B$,
+Ê¹µÃ$F$Îª1.
+Èç¸è$A$´æÔÚÔò$F$¿ÉÂú×ã;
+·ñÔò²»¿ÉÂú×ã.
+Ò»¸öÇó½âSATÎÊÌâµÄ¼ÆËã»ú³ÌĞò³ÆÎªSATÇó½âÆä,
+ÈçZchaff\cite{CHAFF},
+ Grasp\cite{grasp},
+ Berkmin\cite{BERKMIN},
+ ºÍMiniSAT\cite{EXTSAT}.
+
+Ò»°ãµÄ,
+SATÇó½âÆ÷ÒªÇó¹«Ê½±íÊ¾ÎªCNF¸ñÊ½,
+ÆäÖĞ¹«Ê½ÊÇÒ»ÏµÁĞ¶Ì¾äµÄÓë,
+¶ø¶Ì¾äÊÇÒ»ÏµÁĞÎÄ×ÖµÄ»ò,
+¶øÎÄ×ÖÊÇ±äÁ¿»òÕßÆä·Ç.
+¶øÓÃCNF¸ñÊ½±íÊ¾µÄ¹«Ê½Ò²³ÆÎªSATÊµÀı,
+
+
+\subsection{Cofactoring}\label{subsec_pre_cofact}
+
+¶ÔÓÚÒ»¸ö²¼¶ûº¯Êı$f:B^n\to B$,
+ÎÒÃÇÓÃ$supp(f)$±íÊ¾ÆäÖ§³Å¼¯$\{v_1\dots v_n\}$.
+ÓÉ\cite{Cofact}¿ÉÖª,
+$f(v_1\dots v\dots v_n)$ÃæÏò±äÁ¿$v$µÄÕıºÍ¸ºµÄcofactorsÊÇ$f_v=f(v_1\dots 1\dots v_n)$ºÍ$f_{\overline{v}}=f(v_1\dots 0\dots v_n)$.
+% Existential quantification of $f(v_1\dots v\dots v_n)$ with respect to a
+% variable $v$ is $\exists v f=f_v+f_vâ€™$.
+\textbf{Cofactoring}ÊÇ½«0»ò1¸³¸ø$v$ÒÔµÃµ½$f_v$ or $f_{\overline{v}}$µÄ¶¯×÷.
+
+
+\subsection{Craig²åÖµ}\label{subsec_pre_interp}
+Craig\cite{Craig}Ö¤Ã÷ÁËÏÂÁĞ¶¨Àí:
+
+\begin{theorem}[Craig²åÖµ¶¨Àí]\label{thm_craig}
+¶ÔÓÚÁ½¸öÒ»½×Âß¼­¹«Ê½$\phi_A$ºÍ$\phi_B$,
+Èç¹û$\phi_A\wedge \phi_B$²»¿ÉÂú×ã,
+Ôò´æÔÚ¹«Ê½$\phi_I$½ö°üº¬$\phi_A$ºÍ$\phi_B$µÄ¹²Í¬±äÁ¿Ê¹µÃ$\phi_A\to \phi_I$³ÉÁ¢£¬
+¶ø$\phi_I\wedge \phi_B$²»¿ÉÂú×ã.
+¹«Ê½$\phi_I$³ÆÎª$\phi_A$ÃæÏò$\phi_B$µÄ²åÖµ.
+\end{theorem}
+
+ÔÚ±¾ÎÄµÄÊ£Óà²¿·Ö,
+ÎÒÃÇ½«½öÌÖÂÛÃüÌâÂß¼­,
+% There are many approaches to generate interpolants for propositional logic,
+% so please refer to Krajicek\cite{interp_Krajicek},
+% Pudlak\cite{interp_Pudlak} and McMillan\cite{interp_McMillan} for more details.
+²¢Ê¹ÓÃMcMillan\cite{interp_McMillan}Ìá³öµÄËã·¨ÒÔ´Ó²»¿ÉÂú×ãÖ¤Ã÷ÖĞÉú³É²åÖµ,
+¶ø²»¿ÉÂú×ãÖ¤Ã÷ÓÉMiniSAT\cite{EXTSAT}¸ø³ö.
+
+\subsection{µİ¹é°ë¾¶}
+
+Ò»¸öµçÂ·¿ÉÒÔÓÃMealyÓĞÏŞ×´Ì¬»ú\cite{MEALY}½¨Ä£.
+
+\begin{definition11}\label{MealyFSM_old}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\textbf{MealyÓĞÏŞ×´Ì¬»ú}ÊÇÒ»¸ö5Ôª×é$M=(S,s_0,I,O,T)$,
+ÆäÖĞ$S$ÊÇÓĞÏŞ×´Ì¬¼¯ºÏ,
+$s_0\in S$Îª³õÊ¼×´Ì¬,
+$I$ÎªÓĞÏŞÊäÈë×Ö·û¼¯ºÏ,
+$O$ÎªÓĞÏŞÊä³ö×Ö·û¼¯ºÏ,
+Ç¨ÒÆº¯Êı$T: S\times I\to S\times O$´Óµ±Ç°×´Ì¬ºÍÊäÈë×Ö·û¼ÆËã´ÎÌ¬ºÍÊä³ö×Ö·û.
+%}
+\end{definition11}
+
+ÎÒÃÇ¼ÇµÚ$n$¸öÖÜÆÚµÄ×´Ì¬£¬ÊäÈë×Ö·ûºÍÊä³ö×Ö·ûÎª$s_n$, $i_n$ºÍ$o_n$.
+ÎÒÃÇ½øÒ»²½¼Ç´ÓµÚ$n$¸öµ½µÚ$m$¸öÖÜÆÚµÄ×´Ì¬£¬ÊäÈë×Ö·ûºÍÊä³ö×Ö·ûĞòÁĞÎª$s_n^m$, $i_n^m$ºÍ$o_n^m$.
+Ò»¸öÂ·¾¶ÊÇ×´Ì¬ĞòÁĞ$s_n^{m}$ÆäÖĞ$\exists i_jo_j (s_{j+1},o_j)\equiv T(s_j,i_j)$¶ÔËùÓĞ$n\le j< m$³ÉÁ¢.
+Ò»¸ö»·ÊÇÒ»¸öÂ·¾¶$s_n^{m}$ÆäÖĞ$s_n\equiv s_m$.
+% A \textbf{loop-like path} is a state sequence $s_n^{m}$ with $s_i\equiv s_j$,
+% where $n\le i< j\le m$.
+
+Kroening et al. \cite{RecDiam}¶¨Òå$M$µÄ×´Ì¬±äÁ¿µİ¹é°ë¾¶$rrd(M)$Îª
+´Ó³õÊ¼×´Ì¬³ö·¢µÄ×î³¤ÎŞ»·Â·¾¶.
+
+% \begin{equation}\label{equ_svrd}
+% rrd(M)\stackrel{def}{=}\max\{i|\exists s_0 \dots s_i:
+% I(s_0)\wedge \bigwedge^{i-1}_{j=0}T(s_j,s_{j+1})\wedge\bigwedge^{i-1}_{j=0}\bigwedge^{i}_{k=j+1}s_{j}\ne s_{k}\}
+% \end{equation}
+
+±¾ÎÄÖĞ,
+ÎÒÃÇ¶¨ÒåÁËÒ»¸öÏàËÆµÄ¸ÅÄî:·Ç³õÊ¼»¯µÄ×´Ì¬±äÁ¿µİ¹é°ë¾¶$uirrd(M)$Îª×î³¤ÎŞ»·Â·¾¶£º
+%}
+
+\begin{equation}\label{equ_uisvrd}
+\begin{split}
+uirrd(M)\stackrel{def}{=}\max\{i|\exists s_0 \dots s_i  i_0 \dots i_i o_0 \dots o_i:\\
+\bigwedge^{i-1}_{j=0}(s_{j+1},o_j)\equiv T(s_j,i_j)\wedge\bigwedge^{i-1}_{j=0}\bigwedge^{i}_{k=j+1}s_{j}\ne s_{k}\}
+\end{split}
+\end{equation}
+
+ËûÃÇÖ®¼äµÄÎ¨Ò»Çø±ğÔÚÓÚ
+ÎÒÃÇµÄ$uirrd$²»¿¼ÂÇ³õÊ¼×´Ì¬.
+ÕâĞ©¶¨Òå½öÓÃÓÚÖ¤Ã÷ÏÂÃæµÄ¶¨Àí.
+ÎÒÃÇµÄËã·¨²»ĞèÒª¼ÆËãÕâĞ©°ë¾¶.
+
+% Obviously,
+% a state sequence longer than $uirrd(M)$ must be a loop-like path.
+
+\subsection{È·ÈÏ½âÂëÆ÷´æÔÚĞÔµÄÔ­Ê¼Ëã·¨}\label{subsec_chkextdec}
+
+
+×îÔçµÄ¶ÔÅ¼×ÛºÏËã·¨\cite{ShengYuShen:iccad09}°üº¬Á½²½:
+È·ÈÏ½âÂëÆ÷´æÔÚĞÔºÍÌØÕ÷»¯½âÂëÆ÷µÄ²¼¶ûº¯Êı.
+ÕâÀïÎÒÃÇ½«½ö½ö½éÉÜµÚÒ»²½.
+
+ÎªÁË½¨Ä£°üº¬ÅäÖÃĞÅºÅµÄµçÂ·,
+ÎÒÃÇÀ©Õ¹ÁËÔ­Ê¼µÄMealyÓĞÏŞ×´Ì¬»ú\cite{MEALY}:
+
+\begin{definition11}\label{MealyFSM}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\textbf{´øÅäÖÃµÄMealyÓĞÏŞ×´Ì¬»ú}ÊÇÒ»¸ö6Ôª×é$M=(S,s_0,I,C,O,T)$,
+ÆäÖĞ$S$ÊÇ×´Ì¬¼¯ºÏ,
+$s_0\in S$Îª³õÊ¼×´Ì¬,
+$I$ÎªÓĞÏŞÊäÈë×Ö·û¼¯ºÏ,
+$C$ÎªÓĞÏŞÅäÖÃ×Ö·û¼¯ºÍ,
+$O$ÎªÓĞÏŞÊä³ö×Ö·û¼¯ºÏ,
+Ç¨ÒÆº¯Êı$T: S\times I\times C\to S\times O$´Óµ±Ç°×´Ì¬£¬ÊäÈë×Ö·ûºÍÅäÖÃ×Ö·û¼ÆËã³ö´ÎÌ¬ºÍÊä³ö×Ö·û.
+%}
+\end{definition11}
+
+\begin{figure}[t]
+\centering
+\includegraphics{mealy}
+\caption{´øÅäÖÃµÄMealyÓĞÏŞ×´Ì¬»ú}
+\label{mealy}
+\end{figure}
+
+ÈçÍ¼\ref{mealy}ËùÊ¾,
+ÔÚ±¾ÎÄÊ£Óà²¿·ÖÖĞ,
+×´Ì¬Ê¹ÓÃ»ÒÉ«Ô²½Ç¿ò±íÊ¾,
+¶øÇ¨ÒÆº¯Êı$T$ÔòÊ¹ÓÃ°×É«·½¿ò±íÊ¾.
+
+ÎÒÃÇ¼ÇµÚ$n$ÖÜÆÚµÄÅäÖÃĞÅºÅ×Ö·ûÎª$c_n$.
+²¢¼Ç´ÓµÚ$n$µ½µÚ$m$¸öÖÜÆÚµÄÅäÖÃ×Ö·ûĞòÁĞÎª$c_n^m$.
+
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=0.45\textwidth]{t1}
+\end{center}
+\caption{²ÎÊı¶ÔÅ¼Ìõ¼ş}
+  \label{t1}
+\end{figure}
+
+\begin{definition11}\label{def_ass}
+\textbf{ÔÚÅäÖÃĞÅºÅÉÏµÄ¶ÏÑÔ(»ò¹«Ê½)}ÊÇÒ»¸öÅäÖÃ×Ö·û¼¯ºÏ$R$.
+¶ÔÓÚÒ»¸öÅäÖÃ×Ö·û$c$,
+$R(c)$ÒâÎ¶×Å$c\in R$.
+Èç¹û$R(c)$³ÉÁ¢,
+ÎÒÃÇÒ²Ëµ$R$¸²¸Ç$c$.
+\end{definition11}
+
+
+ÈçÍ¼\ref{t1},
+$E^{-1}$´æÔÚµÄ³ä·ÖÌõ¼şÊÇ,
+´æÔÚ²ÎÊı$p$, $d$ºÍ$l$,
+Ê¹µÃ$i_n$¿ÉÒÔ±»±àÂëÆ÷µÄÊä³ö×Ö·ûĞòÁĞ$o_{n+d-l}^{n+d-1}$Î¨Ò»¾ö¶¨.
+$d$ÊÇ$o_{n+d-l}^{n+d-1}$ºÍ$i_n$Ö®¼äµÄÏà¶ÔÑÓÊ±,
+¶ø$l$ÊÇ$o_{n+d-l}^{n+d-1}$µÄ³¤¶È,
+¶ø$p$ÊÇÓÃÓÚÌŞ³ıÒ»²¿·Ö²»¿É´ï×´Ì¬µÄÇ°×ºĞòÁĞ.
+¸ÃÌõ¼ş¶¨ÒåÈçÏÂ:
+
+\begin{definition11}\label{def_pcc}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\textbf{²ÎÊı¶ÔÅ¼Ìõ¼ş(PC)}:
+¶ÔÓÚ±àÂëÆ÷$E$,
+¶ÏÑÔ$R$,
+ºÍÈı¸ö²ÎÊı$p$,$d$ and $l$,
+$E\vDash PC(p,d,l,R)$³ÉÁ¢µ±
+\begin{enumerate}
+ \item $i_n$¿ÉÒÔ±»$o_{n+d-l}^{n+d-1}$ÔÚ$s_{n-p}^{n+d-1}$ÉÏÎ¨Ò»¾ö¶¨.
+ \item ¶ÏÑÔ$R$¸²¸Ç$c_x$,ÆäÖĞ$n-p\le x\le n+d-1$.
+\end{enumerate}
+
+ÕâµÈ¼ÛÓÚ¹«Ê½(\ref{uniqt1})ÖĞµÄ$F_{PC}(p,d,l,R)$µÄ²»¿ÉÂú×ã.
+ÎÒÃÇ½øÒ»²½¶¨Òå$E\vDash PC(R)$Îª$\exists p,d,l:E\vDash PC(p,d,l,R)$.
+\end{definition11}
+
+\begin{equation}\label{uniqt1}
+\begin{split}
+&F_{PC}(p,d,l,R)\stackrel{def}{=}\\
+&\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s_{m+1},o_m)\equiv T(s_m,i_m,c_m)
+\}
+\\
+\wedge&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s'_{m+1},o'_m)\equiv T(s'_m,i'_m,c'_m)
+\}
+\\
+\wedge&\bigwedge_{m=n+d-l}^{n+d-1}o_m\equiv o'_m \\
+\wedge& i_n\ne i'_n \\
+\wedge&\bigwedge_{x=n-p}^{n+d-1}c_x\equiv c \\
+\wedge&\bigwedge_{x=n-p}^{n+d-1}c_x'\equiv c \\
+\wedge& R(c)
+\end{array}
+\right\}
+\end{split}
+\end{equation}
+
+%This definition is the same as that of Subsection \ref{subsec_chkextdec} and paper \cite{ShengYuShen:iccad09}.
+
+¹«Ê½(\ref{uniqt1})µÄµÚ2µ½5ĞĞ¶ÔÓ¦ÓÚ¶¨Òå\ref{def_pcc}µÄÌõ¼ş1.
+¹«Ê½(\ref{uniqt1})µÄµÚ2ºÍµÚ3ĞĞ·Ö±ğ¶ÔÓ¦ÓÚ$E$µÄÁ½ÌõÂ·¾¶.
+ËûÃÇÖ®¼äµÄÎ¨Ò»²î±ğÔÚÓÚµÚ3ĞĞµÄËùÓĞ±äÁ¿´øÓĞÒ»¸öprime.
+µÚ4ĞĞÇ¿ÖÆÕâÁ½¸öÂ·¾¶µÄÊä³öĞòÁĞÏàÍ¬,
+¶øµÚ5ĞĞÇ¿ÖÆËûÃÇµÄÊäÈë×Ö·û²»Í¬.
+
+Í¬Ê±,
+¹«Ê½(\ref{uniqt1})µÄ×îºóÈıĞĞ¶ÔÓ¦ÓÚ¶¨Òå\ref{def_pcc}µÄÌõ¼ş2.
+¶øµÚ6he 7ĞĞÇ¿ÖÆÃ¿¸öÖÜÆÚµÄ$c$¾ùÏàµÈ,
+¶ø×îºóÒ»ĞĞÔòÇ¿ÖÆ$c$±»$R$¸²¸Ç.
+
+»ùÓÚ¼ìÑé$E\vDash PC(R)$\cite{ShengYuShen:iccad09,ShengYuShen:tcad}µÄËã·¨¼òµ¥µÄ±éÀú$p$,$d$µÄ$l$ËùÓĞ×éºÏ,
+´ÓĞ¡µ½´ó,
+Ö±µ½$F_{PC}(p,d,l,R)$²»¿ÉÂú×ã,
+¶øÕâÒâÎ¶×Å$E^{-1}$´æÔÚ.
+
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=0.45\textwidth]{doubleloop}
+\end{center}
+\caption{»·ĞÎ·Ç¶ÔÅ¼Ìõ¼ş}
+  \label{fig_double_loop}
+\end{figure}
+
+\section{ÍÆµ¼¶ÏÑÔµÄÍ£»úËã·¨}\label{sec_exist}
+¶¨Òå\ref{def_pcc}ÖĞµÄ$PC$Ö»¶¨ÒåÁËÈçºÎÈ·ÈÏ$E^{-1}$µÄ´æÔÚ.
+Òò´Ëµ±Æä²»´æÔÚÊ±,
+¸ÃËã·¨$E\vDash PC(R)$\cite{ShengYuShen:iccad09,ShengYuShen:tcad}½«²»Í£»ú.
+
+ÎªÁËÕÒµ½Ò»¸öÍ£»úËã·¨,
+ÎÒÃÇ±ØĞë¶¨ÒåÈçºÎÈ·ÈÏ$E^{-1}$²»´æÔÚ.
+Õâ½«ÔÚĞ¡½Ú\ref{subsec_chknonext}ÖĞÌÖÂÛ,
+¶øÆäÕıÈ·ĞÔÖ¤Ã÷½«ÔÚĞ¡½Ú\ref{subsec_correctness}ÖĞ¸ø³ö.
+»ùÓÚÕâĞ©½á¹û,
+±¾ÎÄËã·¨µÄÕûÌå¿ò¼Ü½«ÔÚĞ¡½Ú\ref{subsec_algo}ÖĞ¸ø³ö,
+
+\subsection{È·ÈÏ½âÂëÆ÷²»´æÔÚ}\label{subsec_chknonext}
+
+
+´Ó¶¨Òå\ref{def_pcc}ºÍÍ¼\ref{t1}¿ÉÖª,
+$E^{-1}$´æÔÚµ±´æÔÚ$<p,d,l>$Ê¹µÃ
+$E\vDash PC(p,d,l,R)$³ÉÁ¢.
+% such that every path longer than $p$ always reaches a particular state $s_n$,
+% in which the input letter $i_n$ can be uniquely determined by the output sequence $o_{n+d-l}^{n+d-1}$.
+
+Òò´ËÖ±¹ÛµÄ,
+$E^{-1}$²»´æÔÚµ±¶ÔÈÎÒâ$<p,d,l>$,
+ÎÒÃÇ×ÜÄÜÕÒµ½ÁíÒ»¸ö$<p',d',l'>$ÆäÖĞ$p'>p$,$l'>l$ÇÒ$d'>d$,
+Ê¹µÃ$E\vDash PC(p',d',l',R)$²»³ÉÁ¢.
+
+ÕâÖÖÇéĞÎ¿ÉÒÔ±»Í¼\ref{fig_double_loop}ÖĞµÄSATÊµÀı¼ìÑé,
+¸ÄÍ¼ÀàËÆÓÚ\ref{t1},
+³ıÁËÈı¸öĞÂµÄÔ¼Êø±»ÓÃÀ´¼ìÑé$s_{n-p}^{n+d-l}$,$s_{n+d-l+1}^n$ºÍ$s_{n+1}^{n+d}$ÉÏµÄ»·.
+
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.45\textwidth]{doubleloop_unfold}
+\end{center}
+\caption{Õ¹¿ª$q$´ÎµÄ»·ĞÎ·Ç¶ÔÅ¼Ìõ¼ş}
+  \label{fig_double_loop_unfold}
+\end{figure}
+
+Èç¹û¸ÃSATÊµÀı¿ÉÂú×ã,
+¶ÔÓÚÈÎÒâ$<p,d,l>$,
+ÎÒÃÇ¿ÉÒÔÕ¹¿ªÕâĞ©»·Ö±ÖÁÎÒÃÇÕÒµ½´óÓÚ$<p,d,l>$µÄ$<p',d',l'>$.
+ÔÚÏÂÒ»Ğ¡½ÚÖĞÎÒÃÇ½«Ö¤Ã÷¸ÃÕ¹¿ªµÄSATÊµÀıÊÇ¿ÉÂú×ãµÄ,
+ÕâÒâÎ¶×Å$E\vDash PC(p',d',l',R)$²»³ÉÁ¢.
+Òò´Ë½âÂëÆ÷²»´æÔÚ.
+
+ÓÉ¹«Ê½(\ref{uniqt1})µÄĞĞ2ºÍĞĞ3,
+Êµ¼ÊÉÏ´æÔÚÁ½ÌõÂ·¾¶,
+Òò´ËÎÒÃÇĞèÒªÔÚÕâÁ½ÌõÂ·¾¶ÉÏ¼ì²â»·,
+¼´ÔÚÈçÏÂ¶¨ÒåµÄ$M^2$ÉÏ¼ì²â»·:
+
+\begin{definition11}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\textbf{³Ë»ı»ú:} ¶ÔÓÚMealyÓĞÏŞ×´Ì¬»ú$M=(S,s_0,I,C,O,T)$,
+Æä³Ë»ı»úÎª$M^2=(S^2,s_0^2,I^2,C^2$ $,O^2,T^2)$,
+ÆäÖĞ
+$T^2$¶¨ÒåÎª$(<s_{m+1},s'_{m+1}>,<o_m,o'_m>)=T^2(<s_m,s'_m>,<i_m,i'_m>,<c_m,c'_m>)$ÆäÖĞ$(s_{m+1},o_m)=T(s_m,i_m,c_m)$ ÇÒ $(s'_{m+1},o'_m)=T(s'_m,i'_m,c'_m)$.
+\end{definition11}
+
+ÓÉ´ËÎÒÃÇ¶¨ÒåÈçÏÂµÄ»·ĞÎ·Ç¶ÔÅ¼Ìõ¼şÒÔ¼ìÑé$E^{-1}$µÄ²»´æÔÚ:
+
+\begin{definition11}\label{def_lnc}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\textbf{»·ĞÎ·Ç¶ÔÅ¼Ìõ¼ş(LN):} ¶ÔÓÚ±àÂëÆ÷$E$¼°ÆäMealyÓĞÏŞ×´Ì¬»ú$M=(S,s_0,I,C,O,T)$,
+¼ÙÉèÆä³Ë»ı»úÎª$M^2=(S^2,s_0^2$ $,I^2,C^2,O^2,T^2)$,
+Ôò$E\vDash LN(p,d,l,R)$³ÉÁ¢µ±
+$i_n$²»ÄÜ¹»ÔÚÂ·¾¶$s_{n-p}^{n+d-1}$ÉÏ±»$o_{n+d-l}^{n+d-1}$Î¨Ò»¾ö¶¨,
+ÇÒÔÚ$(s^2)_{n-p}^{n+d-l}$, $(s^2)_{n+d-l+1}^n$ºÍ$(s^2)_{n+1}^{n+d}$ÉÏ´æÔÚÈı¸ö»·.
+ÕâµÈ¼ÛÓÚ¹«Ê½(\ref{uniqln})ÖĞµÄ$F_{LN}(p,d,l,R)$µÄ¿ÉÂú×ã.
+ÎÒÃÇ½øÒ»²½¶¨Òå$E\vDash LN(R)$Îª$\exists p,d,l:E\vDash LN(p,d,l,R)$.
+\end{definition11}
+
+
+\begin{equation}\label{uniqln}
+\begin{split}
+&F_{LN}(p,d,l,R)\stackrel{def}{=}\\
+&\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s_{m+1},o_m)\equiv T(s_m,i_m,c_m)
+\}
+\\
+\wedge&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s'_{m+1},o'_m)\equiv T(s'_m,i'_m,c'_m)
+\}
+\\
+\wedge&\bigwedge_{m=n+d-l}^{n+d-1}o_m\equiv o'_m \\
+\wedge& i_n\ne i'_n \\
+\wedge&\bigwedge_{x=n-p}^{n+d-1}c_x\equiv c \\
+\wedge&\bigwedge_{x=n-p}^{n+d-1}c_x'\equiv c \\
+\wedge& R(c) \\
+\wedge& \bigvee_{x=n-p}^{n+d-l-1}\bigvee_{y=x+1}^{n+d-l} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+d-l+1}^{n-1}\bigvee_{y=x+1}^{n} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+1}^{n+d-1}\bigvee_{y=x+1}^{n+d} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\}
+\end{array}
+\right\}
+\end{split}
+\end{equation}
+
+Í¨¹ı±È½Ï¹«Ê½(\ref{uniqt1})ºÍ(\ref{uniqln}),
+ºÜÃ÷ÏÔËûÃÇÖ®¼äµÄ²îÒìÔÚÓÚ¹«Ê½(\ref{uniqln})µÄ×îºóÈıĞĞ,
+ËûÃÇ½«±»ÓÃÓÚÔÚÍ¼\ref{fig_double_loop}ÖĞ¼ì²âÒ»ÏÂÈı¸öÂ·¾¶ÉÏµÄ»·:
+\begin{equation}
+\begin{array}{c}
+Prefix_{p,d,l}=(s^2)_{n-p}^{n+d-l} \\
+Left_{p,d,l}=(s^2)_{n+d-l+1}^n \\
+Right_{p,d,l}=(s^2)_{n+1}^{n+d}
+\end{array}
+\end{equation}
+
+ÔÚÏÂÒ»Ğ¡½ÚÖĞ,
+ÎÒÃÇ½«Ö¤Ã÷$E\vDash LN(R)\leftrightarrow \neg \{E\vDash PC(R)\}$,
+¼´
+$LN$ºÍ$PC$ÊÇ»¥³âµÄ.
+
+
+
+ÔÚ½øÈëÏÂÒ»Ğ¡½ÚÖ®Ç°,
+ÎÒÃÇĞèÒª¶¨ÒåÈçºÎÕ¹¿ªÉÏÊöµÄÈı¸ö»·.
+¼ÙÉè$Prefix_{p,d,l}$, $Left_{p,d,l}$ºÍ$Right_{p,d,l}$ÖĞµÄ»·µÄ³¤¶È·Ö±ğÎª$l_1$, $l_2$ºÍ$l_3$.
+ÎÒÃÇ½øÒ»²½¼ÙÉèËûÃÇ±»Õ¹¿ª$q$´Î.
+Ôò´Ó¸ÃÕ¹¿ªÖĞµÄµ½µÄSATÊµÀıÈçÍ¼\ref{fig_double_loop_unfold}ËùÊ¾,
+ºÜÃ÷ÏÔ,
+¸ÃÕ¹¿ªµÄSATÊµÀı¶ÔÓ¦ÓÚ$F_{LN}(p",d",l",R)$,
+ÆäÖĞ:
+
+\begin{equation}
+\begin{array}{ccc}
+p"&=&l_1*q+(d-l+p-l_1)+l_2*q+(l-d-l_2) \\
+d"&=&l_3*q+(d-l_3) \\
+l"&=&l_2*q+(l-d-l_2)+l_3*q+(d-l_3)
+\end{array}
+\end{equation}
+
+Òò´Ë¶ÔÓÚÈÎÒâ$<p,d,l>$ and $<p',d',l'>$,
+ÎÒÃÇ×ÜÄÜÕÒµ½$q$,
+Ê¹µÃ$Prefix_{p",d",l"}$, $Left_{p",d",l"}$ ºÍ $Right_{p",d",l"}$
+²»¶ÌÓÚ$Prefix_{p',d',l'}$,$Left_{p',d',l'}$ºÍ$Right_{p',d',l'}$.
+
+
+
+\subsection{ÕıÈ·ĞÔÖ¤Ã÷}\label{subsec_correctness}
+
+ÔÚÖ¤Ã÷$E\vDash LN(R)\leftrightarrow \neg \{E\vDash PC(R)\}$Ö®Ç°,
+ÎÒÃÇĞèÒªÒÔÏÂÒıÀí.
+
+\begin{figure}[b]
+\centering
+\includegraphics[width=0.45\textwidth]{doubleloop_unfold_cmp}
+\caption{$F_{LN}(p,d,l,R)$ºÍ$F_{LN}(p",d",l",R)$Ö®¼äµÄ¶ÔÓ¦¹ØÏµ}
+\label{doubleloop_unfold_cmp}
+\end{figure}
+
+\begin{lemma}[]\label{lemma_unfold_longer}
+¶ÔÓÚÍ¼\ref{fig_double_loop_unfold}ÖĞµÄ$F_{LN}(p",d",l",R)$,
+ÎÒÃÇÓĞ$F_{LN}(p,d,l,R)\to F_{LN}(p",d",l",R)$
+\end{lemma}
+\begin{proof}
+$F_{LN}(p",d",l",R)$ÊÇ:
+
+\begin{equation}\label{equ_correspondance}
+\begin{split}
+&F_{LN}(p",d",l",R)\stackrel{def}{=}\\
+&\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n-p"}^{n+d"-1}
+\{
+(s_{m+1},o_m)\equiv T(s_m,i_m,c_m)
+\}
+\\
+\wedge&\bigwedge_{m=n-p"}^{n+d"-1}
+\{
+(s'_{m+1},o'_m)\equiv T(s'_m,i'_m,c'_m)
+\}
+\\
+\wedge&\bigwedge_{m=n+d"-l"}^{n+d"-1}o_m\equiv o'_m \\
+\wedge& i_n\ne i'_n \\
+\wedge&\bigwedge_{x=n-p"}^{n+d"-1}c_x\equiv c \\
+\wedge&\bigwedge_{x=n-p"}^{n+d"-1}c_x'\equiv c \\
+\wedge& R(c) \\
+\wedge& \bigvee_{x=n-p"}^{n+d"-l"-1}\bigvee_{y=x+1}^{n+d"-l"} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+d"-l"+1}^{n-1}\bigvee_{y=x+1}^{n} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+1}^{n+d"-1}\bigvee_{y=x+1}^{n+d"} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\}
+\end{array}
+\right\}
+\end{split}
+\end{equation}
+
+¼ÙÉè$F_{LN}(p,d,l,R)$¿ÉÂú×ã,
+ÇÒÆäÂú×ã¸³ÖµÎª$A$.
+ÎÒÃÇĞèÒªÖ¤Ã÷$F_{LN}(p",d",l",R)$Ò²¿ÉÒÔ±»$A$Âú×ã.
+
+Í¼\ref{doubleloop_unfold_cmp}ÖĞ±àºÅ´Ó1µ½12µÄÓĞÏò±ß¸ø³öÁË$F_{LN}(p,d,l,R)$ºÍ$F_{LN}(p",d",l",R)$Ö®¼äµÄ¶ÔÓ¦¹ØÏµ.
+
+±ß2ºÍ3ÒâÎ¶×ÅÎÒÃÇ¿ÉÒÔ½«$Right_{p,d,l}$ÖĞ»·µÄ¸³Öµ¸³Óè$Right_{p",d",l"}$ÖĞÕ¹¿ªµÄ»·.
+¶ø±ß1ºÍ4ÒâÎ¶×ÅÎÒÃÇ¿ÉÒÔ½«$Right_{p,d,l}$·Ç»·²¿·ÖµÄ¸³Öµ¸³Óè$Right_{p",d",l"}$.
+ÓÉÕâËÄÌõ±ß,
+ÎÒÃÇ¿ÉÒÔÈÃ$Right_{p",d",l"}$¿ÉÂú×ã.
+
+ÀàËÆµÄ,
+ÎÒÃÇÒ²¿ÉÒÔÈÃ$Prefix_{p",d",l"}$ºÍ$Left_{p",d",l"}$¿ÉÂú×ã.
+
+Ôò¹«Ê½(\ref{equ_correspondance})µÄµÚ2ĞĞ¿ÉÒÔ±»$A$Âú×ã.
+
+ÀàËÆµÄ,
+¹«Ê½(\ref{equ_correspondance})µÄµÚ3µ½8ĞĞ¿ÉÒÔ±»$A$Âú×ã.
+
+Í¬Ê±,
+$Prefix_{p",d",l"}$, $Left_{p",d",l"}$ºÍ$Right_{p",d",l"}$ÖĞ´æÔÚ$q$¸ö»·,
+Õâ½«Ê¹µÃ¹«Ê½(\ref{equ_correspondance})µÄ×îºóÈıĞĞÂú×ã.
+
+$F_{LN}(p,d,l,R)$µÄÂú×ã¸³Öµ$A$¿ÉÒÔÊ¹$F_{LN}(p",d",l",R)$Âú×ã.
+
+µÃÖ¤.
+\end{proof}
+
+\begin{lemma}[]\label{lemma_pc_long}
+¶ÔÓÚÁ½¸öÈıÔª×é$<p,d,l>$ºÍ$<p',d',l'>$,
+Èç¹û$Prefix_{p',d',l'}$,$Left_{p',d',l'}$ ºÍ $Right_{p',d',l'}$·Ö±ğ²»¶ÌÓÚ$Prefix_{p,d,l}$,$Left_{p,d,l}$ ºÍ $Right_{p,d,l}$,
+Ôò $E\vDash PC(p,d,l,R)\to E\vDash PC(p',d',l',R)$.
+\end{lemma}
+\begin{proof}
+ºÜÃ÷ÏÔ$F_{PC}(p,d,l,R)$ÊÇ$F_{PC}(p',d',l',R)$µÄ×Ó¹«Ê½,
+Òò´ËÇ°ÕßµÄ²»¿ÉÂú×ãÖ±½Óµ¼ÖÂÁËºóÕßµÄ²»¿ÉÂú×ã.
+Òò´Ë,
+$E\vDash PC(p,d,l,R)\to E\vDash PC(p',d',l',R)$³ÉÁ¢.
+\end{proof}
+
+ÏÂÃæµÄÁ½¸ö¶¨Àí½«Ö¤Ã÷$E\vDash LN(R)\leftrightarrow \neg \{E\vDash PC(R)\}$.
+
+\begin{theorem}[]\label{thm_pc_nln}
+$E\vDash LN(R)\to \neg \{E\vDash PC(R)\}$
+\end{theorem}
+\begin{proof}
+ÎÒÃÇÊ¹ÓÃ·´Ö¤·¨.
+¼ÙÉè$E\vDash LN(R)$ºÍ$E\vDash PC(R)$Í¬Ê±³ÉÁ¢.
+ÕâÒâÎ¶×Å´æÔÚ$<p,d,l>$ºÍ$<p',d',l'>$,
+Ê¹µÃ$E\vDash PC(p,d,l,R)$ ºÍ $E\vDash LN(p',d',l',R)$.
+
+Ò»·½Ãæ,
+$E\vDash LN(p',d',l',R)$ÒâÎ¶×ÅÔÚ$Prefix_{p',d',l'}$,$Left_{p',d',l'}$ºÍ$Right_{p',d',l'}$ÉÏ´æÔÚ»·.
+Í¨¹ıÕ¹¿ªÕâĞ©»·,
+ÎÒÃÇÄÜ¹»µÃµ½ÁíÒ»¸öÈıÔª×é$<p",d",l">$,
+Ê¹µÃ:
+\begin{enumerate}
+\item $Prefix_{p",d",l"}$,$Left_{p",d",l"}$ ºÍ $Right_{p",d",l"}$·Ö±ğ³¤ÓÚ$Prefix_{p,d,l}$,$Left_{p,d,l}$ºÍ$Right_{p,d,l}$¡£
+\item ÓÉÒıÀí\ref{lemma_unfold_longer}¿ÉÖª,
+$F_{LN}(p",d",l",R)$¿ÉÂú×ã.
+\end{enumerate}
+
+$F_{PC}(p",d",l",R)$ÊÇ$F_{LN}(p",d",l",R)$µÄ×Ó¹«Ê½,
+Òò´Ë$F_{PC}(p",d",l",R)$Ò²ÊÇ¿ÉÂú×ãµÄ,
+ÕâÒâÎ¶×Å$E\vDash PC(p",d",l",R)$²»³ÉÁ¢.
+
+¶øÁíÒ»·½Ãæ,
+ÓÉÒıÀí\ref{lemma_pc_long},
+$E\vDash PC(p",d",l",R)$³ÉÁ¢.
+
+¸ÃÃ¬¶Üµ¼ÖÂ¶¨ÀíµÃÖ¤.
+\end{proof}
+
+\begin{theorem}[]\label{thm_nln_pc}
+$E\vDash LN(R)\gets \neg \{E\vDash PC(R)\}$
+\end{theorem}
+\begin{proof}
+ÈÔÈ»Ê¹ÓÃ·´Ö¤·¨.
+¼ÙÉè$E\vDash LN(R)$ºÍ$E\vDash PC(R)$¾ù²»³ÉÁ¢.
+Ôò¶ÔÓÚÈÎÒâ$<p,d,l>$ºÍ$<p',d',l'>$,
+$F_{PC}(p,d,l,R)$¿ÉÂú×ã,
+¶ø$F_{LN}(p',d',l',R)$²»¿ÉÂú×ã.
+
+Òò´Ë,
+¼ÙÉè$uirrd(M^2)$ÊÇ$E$µÄ³Ë»ı»úµÄ·Ç³õÊ¼»¯µİ¹é°ë¾¶.
+¶¨Òå$<p,d,l>$Îª:
+\begin{equation}
+\begin{array}{c}
+p=uirrd(M^2)*2+2 \\
+d=uirrd(M^2)+1 \\
+l=uirrd(M^2)*2+2
+\end{array}
+\end{equation}
+
+»ùÓÚÒÔÉÏ¶¨Òå,
+ºÜÃ÷ÏÔ$Prefix_{p,d,l}$,$Left_{p,d,l}$ºÍ$Right_{p,d,l}$È«²¿³¤ÓÚ$uirrd(M^2)$.
+ÕâÒâÎ¶×ÅÔÚÕâÈı¸öÂ·¾¶ÉÏ¾ù´æÔÚ»·,
+Õâ½«Ê¹µÃ$F_{LN}(p,d,l,R)$¿ÉÂú×ã.
+ÕâÓë$F_{LN}(p',d',l',R)$¶ÔÈÎÒâ$<p',d',l'>$¾ù²»¿ÉÂú×ãµÄÊµÊ©³åÍ».
+
+¸ÃÃ¬¶Üµ¼ÖÂ¶¨ÀíµÃÖ¤.
+\end{proof}
+
+
+\subsection{Ëã·¨ÊµÏÖ}\label{subsec_algo}
+¶¨Àí\ref{thm_pc_nln}ºÍ\ref{thm_nln_pc}Ö¸³ö,
+ÎÒÃÇ¿ÉÒÔ´ÓĞ¡µ½´ó±éÀú$<p,d,l>$µÄËùÓĞ×éºÏ,
+²¢ÔÚÃ¿¸öÑ­»·ÖĞ¼ìÑé$E\vDash PC(p,d,l,R)$ºÍ$E\vDash LN(p,d,l,R)$.
+¸Ã¹ı³Ì×îÖÕ×Ü»áÍ£»ú£¬²¢ÔÚ$E\vDash PC(R)$ºÍ$E\vDash LN(R)$Ö®¼ä¸ø³öÎ¨Ò»´ğ°¸.
+¸ÃËã·¨µÄÊµÏÖÔÚËã·¨\ref{algo_pcln}ÖĞ¸ø³ö.
+
+\begin{algorithm}
+\caption{InferAssertion}
+\label{algo_pcln}
+\begin{algorithmic}[1]
+\STATE $NA=\{\}$
+\FOR{$x=0\to \infty$}
+\STATE $<p,d,l>=<2x,x,2x>$
+\IF{$F_{PC}(p,d,l,\bigwedge_{na\in NA}\neg na)$²»¿ÉÂú×ã}
+\IF{$\bigwedge_{na\in NA}\neg na$¿ÉÂú×ã}
+\STATE ½âÂëÆ÷´æÔÚÇÒ×îÖÕ¶ÏÑÔÎª$\bigwedge_{na\in NA}\neg na$
+\ELSE
+\STATE ½âÂëÆ÷²»´æÔÚ
+\ENDIF
+\STATE Í£»ú
+\ELSIF{$F_{LN}(p,d,l,\bigwedge_{na\in NA}\neg na)$¿ÉÂú×ã}
+\STATE Áî$c$Îªµ¼ÖÂ½âÂëÆ÷²»´æÔÚµÄÅäÖÃ×Ö·û
+\STATE $na\leftarrow InferCoveringFormula(c)$
+\STATE $NA\leftarrow NA\cup \{na\}$
+\ENDIF
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+ÔÚËã·¨\ref{algo_pcln}µÄĞĞ1ÖĞ,
+$NA$½«±»ÓÃÓÚ¼ÇÂ¼ËùÓĞµ¼ÖÂ½âÂëÆ÷²»´æÔÚµÄÅäÖÃ×Ö·û.
+ËûÃÇ¶¼ÊÇÓÉĞĞ13ÖĞµÄ$InferCoveringFormula$º¯Êı¸ø³öµÄ,
+¸Ãº¯ÊıµÄ×÷ÓÃÔÚÓÚÕÒµ½Ò»¸ö¹«Ê½²»½ö¸²¸Ç$c$,
+¶øÇÒ¸²¸Ç´óÁ¿ÆäËûµ¼ÖÂ½âÂëÆ÷²»´æÔÚµÄÅäÖÃ×Ö·û.
+¸Ãº¯ÊıµÄ¸ü¶àÏ¸½Ú½«ÔÚ½Ú\ref{sec_infer}ÖĞ¸ø³ö.
+
+ĞĞ3È·±£$Prefix_{p,d,l}$,$Left_{p,d,l}$ºÍ$Right_{p,d,l}$µÄ³¤¶ÈÈ«²¿±»ÉèÖÃÎª$x$,
+¶øÆäÖµ½«ÔÚĞĞ2ÖĞ±»±éÀú.
+Èç´Ë,
+´óÁ¿$p$,$d$ºÍ$l$µÄÈßÓà×éºÏ½«²»ÔÙ±»±éÀú.
+Òò´ËËã·¨\ref{algo_pcln}µÄĞÔÄÜ½«µÃµ½¾Ş´óµÄÌáÉı.
+
+ĞĞ 4ÒâÎ¶×ÅÔÚ¶ÏÑÔ$\bigwedge_{na\in NA}\neg na$ÏÂ£¬
+ÊäÈë×Ö·ûÄÜ¹»±»Êä³öĞòÁĞÎ¨Ò»¾ö¶¨.
+ĞĞ5ÒâÎ¶×ÅÖÁÉÙ´æÔÚÒ»¸öÅäÖÃ×Ö·ûµ¼ÖÂ½âÂëÆ÷´æÔÚ,
+¶ø×îÖÕµÄ¶ÏÑÔ¿ÉÒÔÍ¨¹ı½«ĞĞ6ÖĞµÄ$NA$ÖĞµÄËùÓĞ¶ÏÑÔÈ¡·´²¢ÓëÔÚÒ»ÆğµÃµ½.
+
+ĞĞ7ÒâÎ¶×Å$\bigwedge_{na\in NA}\neg na$ÒÑ¾­ÌŞ³ıÁËËùÓĞµÄÅäÖÃ×Ö·û,
+¼´²»´æÔÚÄÜ¹»µ¼ÖÂ½âÂëÆ÷´æÔÚµÄÅäÖÃ×Ö·û.
+ÕâÒâÎ¶×ÅÔÚ±àÂëÆ÷ÖĞ±ØÈ»´æÔÚÄ³Ğ©Bug.
+
+ĞĞ11ÒâÎ¶×ÅÕë¶ÔĞĞ12µÄ$c$½âÂëÆ÷²»´æÔÚ.
+ÎÒÃÇĞèÒªÌŞ³ı$c$ÒÔ±ãËã·¨\ref{algo_pcln}¿ÉÒÔ¼ÌĞøËÑË÷ÆäËûµ¼ÖÂ½âÂëÆ÷²»´æÔÚµÄÅäÖÃ×Ö·û.
+ĞĞ13ÖĞµÄº¯Êı$InferCoveringFormula$½«±»ÓÃÓÚÍÆµ¼Ò»¸ö¹«Ê½$na$Ê¹Æä²»½öÄÜ¹»¸²¸Ç$c$,
+¶øÇÒÄÜ¹»¸²¸Ç´óÁ¿ÆäËûµÄ·Ç·¨ÅäÖÃ×Ö·û.
+¶øËùÓĞÕâĞ©ÅäÖÃ×Ö·û½«ÔÚĞĞ14ÖĞ±»ÌŞ³ı.
+
+ÎÒÃÇ¿ÉÒÔÖ¤Ã÷Ëã·¨\ref{algo_pcln}ÊÇ¿ÉÍ£»úµÄ.
+\begin{theorem}[]\label{thm_pcln_halt}
+Ëã·¨\ref{algo_pcln}ÊÇ¿ÉÍ£»úµÄ.
+\end{theorem}
+\begin{proof}
+ÓÉ¶¨Àí\ref{thm_pc_nln}ºÍ\ref{thm_nln_pc},
+Ëã·¨\ref{algo_pcln}½«×îÖÕµ½´ïĞĞ4»ò11.
+
+¶ÔÓÚÇ°Ò»ÖÖÇé¿ö,
+¸ÃËã·¨½«ÔÚĞĞ10Í£»ú.
+
+¶ø¶ÔÓÚºóÒ»ÖÖÇé¿ö,
+Ò»¸öĞÂ¹«Ê½$na$½«±»ÍÆµ¼,
+Æä½«¸²¸Ç$c$.
+ÓÉÓÚ´ËÀà$c$µÄÊıÄ¿ÊÇÓĞÏŞµÄ,
+ËûÃÇ×îÖÕ½«ÍêÈ«±»$\bigwedge_{na\in NA}\neg na$ÌŞ³ı.
+ÔòËã·¨\ref{algo_pcln}×îÖÕ»¹ÊÇ½«µ½´ïĞĞ4,
+²¢ÔÚĞĞ10ÖĞÍ£»ú.
+
+\end{proof}
+
+\section{ÍÆµ¼ÄÜ¹»¸²¸Ç$c$µÄ¹«Ê½}\label{sec_infer}
+±¾½Ú½«½éÉÜËã·¨\ref{algo_pcln}ĞĞ13ÖĞµÄº¯Êı$InferCoveringFormula$.
+¸Ãº¯Êı½«±»ÓÃÀ´ÍÆµ¼¹«Ê½$na$
+¶ø¸Ã¹«Ê½²»½ö¸²¸Ç$c$,
+¶øÇÒ¸²¸Ç´óÁ¿ÆäËûµ¼ÖÂ½âÂëÆ÷²»´æÔÚµÄÅäÖÃ×Ö·û.
+¸Ã¹¤×÷½«ÓÉÒÔÏÂÈı²½Íê³É:
+\begin{enumerate}
+ \item ×ª»»$F_{LN}$Îª´øÓĞÄ¿±ê±äÁ¿µÄµÈ¼ÛĞÎÊ½,
+       ÒÔ±ã¿ÉÒÔÓÃÆä¶¨Òåº¯Êı$f$.
+ \item Ê¹ÓÃcofactoring\cite{Cofact}Ï÷¼õ$f$µÄÖ§³Å¼¯,
+       Ö±µ½Ö»Ê£ÏÂ$c$.
+ \item Ê¹ÓÃCraig²åÖµÌØÕ÷»¯$f$.
+       ¸Ã$f$Í¬Ê±Ò²ÊÇËã·¨\ref{algo_pcln}ĞĞ13ÖĞµÄ$na$.
+\end{enumerate}
+
+ÕâÈı²½½«ÔÚÒÔÏÂµÄÈı¸öĞ¡½ÚÖĞ·Ö±ğÃèÊö.
+
+\subsection{$F_{LN}$µÄµÈ¼ÛĞÎÊ½}
+
+ÈçÉÏÃæËùÊö,
+ÎÒÃÇĞèÒª½«$F_{LN}$×ª»»Îª´øÓĞÄ¿±ê±äÁ¿µÄµÈ¼ÛĞÎÊ½.
+
+Ê×ÏÈ,
+ÎÒÃÇĞèÒª½«¹«Ê½(\ref{uniqln})µÄµÚ4ĞĞºÍ×îºóÈıĞĞÓÃÓÚ¹¹ÔìÏÂÃæµÄĞÂ¹«Ê½:
+
+\begin{equation}\label{uniqln_subg}
+\begin{split}
+&G(p,d,l)\stackrel{def}{=}\\
+&\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n+d-l}^{n+d-1}o_m\equiv o'_m \\
+\wedge& \bigvee_{x=n-p}^{n+d-l-1}\bigvee_{y=x+1}^{n+d-l} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+d-l+1}^{n-1}\bigvee_{y=x+1}^{n} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+1}^{n+d-1}\bigvee_{y=x+1}^{n+d} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\}
+\end{array}
+\right\}
+\end{split}
+\end{equation}
+
+Òò´Ë,
+$F_{LN}$¿ÉÒÔ±»×ª±äÎª:
+\begin{equation}\label{uniqln_new}
+\begin{split}
+&F'_{LN}(p,d,l,R)\stackrel{def}{=}\\
+&\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s_{m+1},o_m)\equiv T(s_m,i_m,c_m)
+\}
+\\
+\wedge&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s'_{m+1},o'_m)\equiv T(s'_m,i'_m,c'_m)
+\}
+\\
+\wedge& i_n\ne i'_n \\
+\wedge&\bigwedge_{x=n-p}^{n+d-1}c_x\equiv c \\
+\wedge&\bigwedge_{x=n-p}^{n+d-1}c_x'\equiv c \\
+\wedge& R(c) \\
+\wedge& t\equiv G(p,d,l)
+\end{array}
+\right\}
+\end{split}
+\end{equation}
+
+ºÜÃ÷ÏÔ$F_{LN}$ºÍ$F'_{LN}\wedge t\equiv 1$ÊÇµÈ¼ÛµÄ.
+
+Í¬Ê±,
+ÓÉÍ¼\ref{fig_double_loop}¿ÉÖª,
+$F'_{LN}$Êµ¼ÊÉÏ¶¨ÒåÁËÒ»¸öº¯Êı$f':S^{2}\times I^{(d+p)*2}\times C\to B$,
+¸Ãº¯ÊıµÄÖ§³Å¼¯Îª$supp(f')$ is $\{s_{n-p},s'_{n-p},i_{n-p}^{n+d-1},(i')_{n-p}^{n+d-1},c\}$,
+¶øÆäÊä³öÎª¹«Ê½(\ref{uniqln_new})µÄ×îºóÒ»ĞĞµÄÄ¿±ê±äÁ¿$t$.
+
+\subsection{Cofactoring}
+ÓÉËã·¨\ref{algo_pcln}µÄĞĞ11,
+$F_{LN}$ÊÇ¿ÉÂú×ãµÄ.
+ÎÒÃÇ½øÒ»²½¼ÙÉè$A$ÊÇ$F_{LN}$µÄÂú×ã¸³Öµ.
+ÎÒÃÇ¿ÉÒÔÖ±½Ó½«$i_{n-p}^{n+d-1}$, $(i')_{n-p}^{n+d-1}$, $s_{n-p}$ ºÍ $(s')_{n-p}$µÄÂú×ã¸³Öµ¸³Óè$F'_{LN}$,
+´Ó¶øµÃµ½:
+
+\begin{equation}\label{equ_char}
+\begin{split}
+&F"_{LN}(c,t)\stackrel{def}{=}\\
+&\left\{
+\begin{array}{cc}
+& F'_{LN}\\
+\wedge& i_{n-p}^{n+d-1}\equiv A(i_{n-p}^{n+d-1})\\
+\wedge& (i')_{n-p}^{n+d-1}\equiv A((i')_{n-p}^{n+d-1})\\
+\wedge& s_{n-p}\equiv A(s_{n-p})\\
+\wedge& (s')_{n-p}\equiv A((s')_{n-p})
+\end{array}
+\right\}
+\end{split}
+\end{equation}
+
+ÏÖÔÚ,
+$F"_{LN}$¶¨ÒåÁËÁíÒ»¸öº¯Êı$f"$,
+ÆäÖ§³Å¼¯Îª$c$.
+ºÜÃ÷ÏÔ$F"_{LN}(c,t)\wedge t\equiv 1$ ÒÑ¾­ÊÇÒ»¸ö¸²¸Ç¶à¸ö·Ç·¨ÅäÖÃ×Ö·ûµÄ¹«Ê½.
+È»¶øËûÈÔÈ»ÊÇÒ»¸ö¸´ÔÓµÄCNF¶Ì¾ä¼¯ºÏ.
+ÎªÁË¼õĞ¡Æä³ß´ç,
+ÎÒÃÇĞèÒªÏÂÒ»Ğ¡½ÚµÄÌØÕ÷»¯Ëã·¨.
+
+\subsection{Ê¹ÓÃCraig²åÖµÌØÕ÷»¯$f"$}
+
+ÎÒÃÇ½«$F"_{LN}(c,t)$±àÂëÎªCNF¸ñÊ½,
+²¢¼ÇÎª$CNF(F"_{LN}(c,t))$.
+¼ÙÉè$CNF'(F"_{LN}(c,t'))$ÊÇ$CNF(F"_{LN}(c,t))$µÄÒ»¸ö¿½±´.
+ËûÃÇÖ®¼äÖ»¹²Ïí$c$,
+¶øËùÓĞÆäËû±äÁ¿¶¼¶ÀÁ¢±àÂë.
+Èç´Ë,
+ÎÒÃÇ¿ÉÒÔ¹¹ÔìÁ¬¸öÈçÏÂ¹«Ê½$\phi_A$ºÍ$\phi_B$:
+
+\begin{equation}\label{equ_interpA}
+\phi_A\stackrel{def}{=}CNF(F"_{LN}(c,t))\wedge t\equiv 1
+\end{equation}
+
+\begin{equation}\label{equ_interpB}
+\phi_B\stackrel{def}{=}CNF'(F"_{LN}(c,t'))\wedge t'\equiv 0
+\end{equation}
+
+ºÜÃ÷ÏÔ$\phi_A\wedge \phi_B$²»¿ÉÂú×ã.
+Í¨¹ıÊ¹ÓÃMcMillan\cite{interp_McMillan}Ìá³öµÄ²åÖµËã·¨,
+ÎÒÃÇ¿ÉÒÔ²úÉúÒ»¸ö²åÖµµçÂ·$ITP:C\to B$.
+
+ÓĞ¶¨Àí\ref{thm_craig}¿ÉÖª,
+$ITP$Óë¹«Ê½(\ref{equ_interpB})ÖĞµÄ$\phi_B$²»¼æÈİ.
+Òò´ËÆäÌØÕ÷»¯ÁËÒ»¸ö¼¯ºÏ$C'\subseteq C$ÄÜ¹»ÊÇ¹«Ê½(\ref{equ_interpA})ÖĞµÄ$\phi_A$¿ÉÂú×ã.
+ÓÉ¹«Ê½(\ref{uniqln_new})ºÍ(\ref{equ_char})¿ÉÖª,
+ºÜÃ÷ÏÔ:
+\begin{enumerate}
+ \item Ëã·¨\ref{algo_pcln}µÄĞĞ12µÄ$c$±»°üº¬ÓÚ$C'$ÖĞ.
+ÓÉ¶¨Àí\ref{thm_pcln_halt}¿ÉÖª,
+Õâ½«È·±£Ëã·¨\ref{algo_pcln}Í£»ú.
+ \item ËùÓĞ$c'\in C'$Ò²ÄÜ¹»µ¼ÖÂ½âÂëÆ÷²»´æÔÚ.
+Õâ½«¼«´óµÄ¼ÓËÙËã·¨\ref{algo_pcln}.
+\end{enumerate}
+
+\section{ÒÆ³ıÈßÓà}\label{sec_rmred}
+\begin{algorithm}
+\caption{$RemoveRedundancy(p,d,l,R)$}
+\label{algo_remove}
+\begin{algorithmic}[1]
+\FOR{$p'=p \to 0$}
+  \IF{$F_{PC}(p'-1,d,l,R)$ÊÇ¿ÉÂú×ãµÄ}
+    \STATE break
+  \ENDIF
+\ENDFOR
+\FOR{$d'=d \to 0$}
+  \IF{$F_{PC}(p',d'-1,l,R)$ÊÇ¿ÉÂú×ãµÄ}
+    \STATE break
+  \ENDIF
+\ENDFOR
+\FOR{$l'=1 \to l-(d-d')$}
+  \IF{$F_{PC}(p',d',l',R)$ÊÇ²»¿ÉÂú×ãµÄ}
+    \STATE break
+  \ENDIF
+\ENDFOR
+\PRINT \texttt{"×îÖÕ½á¹ûÊÇ$<p',d',l'>$"}
+\end{algorithmic}
+\end{algorithm}
+
+Ëã·¨\ref{algo_pcln}µÃµ½µÄ$<p,d,l>$°üº¬Ò»Ğ©ÈßÓà,
+Õã½­µ¼ÖÂĞ¾Æ¬Ãæ»ıºÍÌØÕ÷»¯ÔËĞĞÊ±¼äÉÏµÄ²»±ØÒª¿ªÏú.
+Òò´Ë,
+Ëã·¨\ref{algo_remove}±»ÓÃÓÚÔÚ½«$<p,d,l>$´«¸øÌØÕ÷»¯Ëã·¨Ç°½«ÆäÏ÷¼õ.
+
+¸ÃËã·¨Öğ²½Ï÷¼õ$p$, $d$ºÍ$l$,
+²¢²âÊÔËûÃÇÊÇ·ñÈÔÈ»ÄÜ¹»Ê¹$E\vDash PC(R)$³ÉÁ¢.
+ÎÒÃÇÔÚÕâÀï½«²»ÔÙ½øÒ»²½ÉîÈëÏ¸½Ú.
+
+
+\section{ÊÔÑé½á¹û}\label{sec_exp}
+ÎÒÃÇÔÚOCamlÓïÑÔÖĞÊµÏÖÁË¸ÃËã·¨,
+²¢Ê¹ÓÃMinisatÇó½âÆ÷\cite{EXTSAT}Çó½âÉú³ÉµÄSATÊµÀı.
+ËùÓĞµÄÊµÑéÔÚÒ»Ì¨PCÉÏ½øĞĞ£¬
+¸ÃPC¾ßÓĞÒ»¸ö2.4GHzµÄIntel Core 2 Q6600´¦ÀíÆ÷, 8GBÄÚ´æºÍUbuntu 10.04 linux²Ù×÷ÏµÍ³ÊÇ.
+%All experimental results and programs can be downloaded from \url{http://www.ssypub.org}.
+%All related programs and data files can be downloaded from \url{http://www.ssypub.org}.
+\subsection{Benchmarks}
+
+\begin{table}[b]
+\centering
+\caption{BenchmarksµÄÏà¹ØĞÅÏ¢}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+&XGXS&XFI&scrambler&PCIE&T2 et-\\
+&&&&&hernet\\\hline
+Verilog&&&&&\\
+´úÂë&214&466&24&1139&1073\\
+ĞĞÊı&&&&&\\\hline
+¼Ä´æÆ÷¸öÊı&15&135&58&22&48\\\hline
+Êı¾İÂ·¾¶&8&64&66&10&10\\
+¿í¶È&&&&&\\ \hline
+\end{tabular}\label{tab_benchmark}
+\end{table}
+
+
+
+
+±í\ref{tab_benchmark}¸ø³öÁËÒÔÏÂBenchmarkµÄÏà¹ØĞÅÏ¢.
+\begin{enumerate}
+
+\item Ò»¸ö×ñ´ÓIEEE-802.3ae 2002±ê×¼\cite{IEEE80232002}¶Ì¾ä48µÄXGXS±àÂëÆ÷.
+
+\item Ò»¸ö×ñ´ÓÍ¬Ò»¸öIEEE±ê×¼µÄ¶Ì¾ä49µÄXFI±àÂëÆ÷.
+
+\item Ò»¸ö66Î»¼ÓÈÅÆ÷ÓÃÓÚÈ·±£Êä³öÊı¾İÖĞ°üº¬×ã¹»¶àµÄ0-1Ç¨ÒÆ,
+ÒÔ±ãÆäÄÜ¹»¿É¿¿µÄ´©Ô½¸ßÔëÉùÍ¨Ñ¶ĞÅµÀ.
+
+\item Ò»¸öPCI-EÎïÀí±àÂë×Ó²ãÄ£¿é\cite{PCIESPEC}.
+
+\item  Sun¹«Ë¾µÄOpenSparc T2´¦ÀíÆ÷µÄÒÔÌ«ÍøÄ£¿é.
+\end{enumerate}
+
+\subsection{Results}
+\begin{table}[t]
+\centering
+\caption{ÊÔÑé½á¹û}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+&                                        &XG-     &XFI       &scra-     &PCI-    &T2 e-\\
+&                                        &XS      &          &mbler     &E         &ther\\\hline
+&¼ì²é                           &&&&&\\
+&$PC$                    &0.07     &17.84     &2.70      &0.47    &30.59       \\
+\cite{ShengYuShen:fmcad10}&Ê±¼ä(sec)     &&&&&\\\cline{2-7}
+&$d,p,l$                                 &1,2,1    &0,3,2     &0,2,2     &2,2,1   &4,2,1         \\ \hline\hline
+&ÅäÖÃ                 &&&&&\\
+&ĞÅºÅÊıÁ¿                              &3        &120       &1         &16      &26\\\cline{2-7}
+&ÍÆµ½                         &&&&&\\
+±¾ÎÄ&¶ÏÑÔ                   &3.69     &372.15    &3.14      &30.53   &188.56      \\
+Ëã·¨&Ê±¼ä                      &&&&&\\\cline{2-7}
+&$d,p,l$                                 &1,3,1    &0,4,2     &0,2,2     &2,2,1   &4,4,1          \\ \hline
+\end{tabular}\label{tab_res}
+\end{table}
+
+±í\ref{tab_res}µÄµÚ2ĞĞ¸ø³öÁËShen et.al\cite{ShengYuShen:fmcad10}µÄËã·¨¼ìÑé½âÂëÆ÷´æÔÚĞÔµÄÔËĞĞÊ±¼ä.
+¶øĞĞ3¸ø³öÁË¸ÃËã·¨·¢¾òµÄ$d$, $p$ºÍ$l$µÄÖµ.
+
+Í¬Ê±,
+ĞĞ4¸ø³öÁËÅäÖÃĞÅºÅµÄÊıÁ¿,
+¶øĞĞ5¸ø³öÁË±¾ÎÄËã·¨ÍÆµ½¶ÏÑÔµÄÔËĞĞÊ±¼ä¡£
+¶ø×îºóÒ»ĞĞ¸ø³öÁË±¾ÎÄËã·¨·¢¾òµÄ$d$, $p$ºÍ$l$µÄÖµ.
+
+Í¨¹ı±È½ÏµÚ2ºÍ5ĞĞ,
+ºÜÃ÷ÏÔ±¾ÎÄËã·¨±È\cite{ShengYuShen:fmcad10}ÂıºÜ¶à,
+ÕâÊÇÓÉ$InferCoveringFormula$Ôì³ÉµÄ.
+
+Í¨¹ı±È½ÏµÚ3ºÍ6ĞĞ,
+ºİÃüÏòËûÃÇÔÚ·¢¾òµÄ²ÎÊıÖµÉÏÓĞÒ»Ğ©²î±ğ.
+ÕâÊÇÓĞ¼ìÑé²»Í¬²ÎÊı×éºÏµÄÑ­Ğò²»Í¬Ôì³ÉµÄ.
+
+\subsection{ÍÆµ¼µÃµ½µÄ¶ÏÑÔ}
+ÏÂÃæ½«¸ø³öÍÆµ¼µÃµ½µÄ¶ÏÑÔ.
+
+\textbf{¶ÔÓÚ XGXS}:
+
+!( ( bad\_disp \& !rst \& bad\_code ) ) \& !( ( rst \& bad\_code ) ) \& !( ( !rst \& !bad\_disp \& bad\_code ) )
+
+\textbf{¶ÔÓÚ XFI}:
+
+!( ( !RESET \& !TEST\_MODE \& !DATA\_VALID \& DATA \_PAT\_SEL ) ) \& !( ( !RESET \& !TEST\_MODE \& !DATA\_VA LID \& !DATA\_PAT\_SEL ) )
+
+\textbf{¶ÔÓÚ scrambler}:
+
+True
+
+\textbf{¶ÔÓÚ PCI-E}:
+
+!( ( CNTL\_RESETN\_P0 \& !TXELECIDLE \& CNTL\_TXE nable\_P0 \& CNTL\_Loopback\_P0 ) | ( CNTL\_RESETN\_P0 \& !TXELECIDLE \& !CNTL\_TXEnable\_P0 ) ) \& !( ( CNTL\_RE SETN\_P0 \& TXELECIDLE ) | ( CNTL\_RESETN\_P0 \& !TXELECIDLE \& !CNTL\_TXEnable\_P0 ) | ( !CNTL\_RESET N\_P0 ) )
+
+\textbf{¶ÔÓÚ T2 ÒÔÌ«Íø}:
+
+!( ( reset\_tx \& !txd\_sel[0] \& !txd\_sel[1] \& link\_up\_loc \& jitter\_study\_pci[0] \& !jitter\_study\_pci[1] ) ) \& !( ( reset\_tx \& !txd\_sel[0] \& !txd\_sel[1] \& link\_up\_loc \& jitter\_study\_pci[0] \& jitter\_study\_pci[1] ) ) \& !( ( reset\_tx \& !txd\_sel[0] \& !txd\_sel[1] \& link\_up\_loc \& !jitter\_study\_pci[0] \& jitter\_study\_pci[1] ) ) \& !( ( jitter\_study\_pci[1] \& jitter\_study\_pci[0] \& !txd\_sel[0] \& !txd\_sel[1] \& !reset\_tx \& link\_up\_loc ) ) \& !( ( jitter\_study\_pci[1] \& !jitter\_study\_pci[0] \& !reset\_tx \& !txd\_sel[0] \& !txd\_sel[1] \& link\_up\_loc ) ) \& !( ( jitter\_study\_pci[0] \& !jitter\_study\_pci[1] \& !txd\_sel[0] \& !txd\_sel[1] \& !reset\_tx \& link\_up\_loc ) ) \& !( ( reset\_tx \& !jitter\_study\_pci[0] \& !txd\_sel[0] \& !txd\_sel[1] \& link\_up\_loc \& !jitter\_study\_pci[1] ) )
+
+% \subsection{Scalability of Our Algorithm}\label{subsec_scale}
+% According to the 3th and 6th row,
+% the values of $d$, $p$ and $l$ are all small.
+% To show that our algorithm can scale to larger parameter values,
+% we insert a test logic module into the most complex XFI circuit.
+% This module include an eight bit counter,
+% which means that its diameter will not be shorter than 256.
+% So,
+% to infer an assertion that rules out the test mode,
+% we need to construct an SAT instance as long as $p+d+1$,
+% that is,
+% 513.
+
+% We run our algorithm on XFI again.
+
+\section{Ïà¹Ø¹¤×÷}\label{sec_relwork}
+\subsection{¶ÔÅ¼×ÛºÏºÍ³ÌĞòÈ¡·´}
+¶ÔÅ¼×ÛºÏµÄ¸ÅÄîÊ×ÏÈÓÉShen et.al\cite{ShengYuShen:iccad09,ShengYuShen:tcad}Ìá³ö.
+ÆäÖ÷ÒªÎÊÌâÔÚÓÚ¸ÃËã·¨²»Í£»ú.
+Shen et.al\cite{ShengYuShen:fmcad10}Í¨¹ı¹¹ÔìÒ»ÏµÁĞÀàËÆÓÚÑó´ĞÈ¦µÄÉÏ¹À¼Æ½â¾öÁË¸ÃÎÊÌâ.
+
+»ùÓÚGulwani\cite{dim_syn},
+³ÌĞòÈ¡·´ÊÇÕë¶ÔÌØ¶¨³ÌĞò$P$£¬Éú³É¾ßÓĞÏà·´¹¦ÄÜµÄ³ÌĞò$P^{-1}$.
+Òò´Ë³ÌĞòÈ¡·´µÄ¶¨ÒåºÍ¶ÔÅ¼×ÛºÏ·Ç³£ÀàËÆ.
+
+ÔçÆÚµÄ³ÌĞòÈ¡·´Ëã·¨Ê¹ÓÃ»ùÓÚÖ¤Ã÷µÄËã·¨\cite{prog_inv},
+È»¶ø¸ÃËã·¨½öÄÜ´¦Àí¼òµ¥µÄÓï·¨½á¹¹ºÍºÜĞ¡µÄ³ÌĞò.
+
+Gl\"{u}ck et.al \cite{mtd_autoProginv}Ê¹ÓÃ»ùÓÚLRµÄ·ÖÎöËã·¨È¥³ı³ÌĞòÖĞµÄ²»È·¶¨ĞÔ£¬´Ó¶øÈ¡·´Ò»½×º¯Êı³ÌĞò.
+È»¶øÊ¹ÓÃº¯ÊıÊ½ÓïÑÔµÄÒªÇóÊ¹µÃ¸ÃËã·¨²»ÄÜÊÊÓÃÓÚÎÒÃÇµÄÓ¦ÓÃ»·¾³.
+
+Srivastava et.al \cite{prog_inv_rev}¼ÙÉèÒ»¸ö·´³ÌĞòºÍÔ­Ê¼³ÌĞòÊÇ½ôÃÜÏà¹ØµÄ,
+Òò´ËÇ±ÔÚµÄÕıÈ··´³ÌĞò¿ÉÒÔÍ¨¹ıÍÚ¾òÔ­Ê¼³ÌĞòµÄ±í´ïÊ½£¬Î½´ÊºÍ¿ØÖÆÁ÷¶øµÃµ½.
+¸ÃËã·¨Öğ²½µÄÌŞ³ı²»ÄÜÂú×ã·´³ÌĞòÒªÇóµÄÔËĞĞÂ·¾¶,
+ÒÔËõ¼õ¿ÉÄÜµÄ½â¿Õ¼äÖ±ÖÁÊ£ÏÂÎ¨Ò»µÄÒ»¸ö½â.
+Òò´Ë¸ÃËã·¨Ö»ÄÜ±£Ö¤½âµÄ´æÔÚĞÔ,
+¶ø²»ÄÜ±£Ö¤ÆäÕıÈ·ĞÔ.
+
+
+\subsection{Ğ­Òé×ª»»Æ÷×ÛºÏ}
+Ğ­Òé×ª»»Æ÷×ÛºÏÊÇÔÚÁ½¸ö²»¼æÈİµÄÍ¨Ñ¶Ğ­ÒéÖ®¼ä×ÛºÏÒ»¸ö½Ó¿ÚµçÂ·.
+
+Avnit et.al \cite{converter_date08}Ê×ÏÈ¶¨ÒåÁËÒ»·İÃèÊö²»Í¬Í¨Ñ¶Ğ­ÒéµÄÍ¨ÓÃÄ£ĞÍ.
+¶øºóÌá³öÁËÒ»¸öÄÜ¹»È·ÈÏÁ½¸öĞ­ÒéÊÇ·ñ¼æÈİµÄËã·¨£¬
+¼´ÊÇ·ñ´æÔÚÒ»¸öĞ­ÒéÖĞµÄ¹¦ÄÜ²»ÄÜÔÚÁíÒ»¸öĞ­ÒéÖĞÊµÏÖ.
+×îºó,
+¸ÃËã·¨Í¨¹ıÎª»º³åÇøµÄ¹ÜÀíº¯Êı¼ÆËãÒ»¸ö²»¶¯µã¶øµÃµ½×îÖÕµÄ½Ó¿ÚµçÂ·.
+Avnit et.al\cite{converter_date09}Í¨¹ıÌá³öÒ»¸ö¸ü¸ßĞ§µÄ½â¿Õ¼ä±éÀúËã·¨´Ó¶øÌá¸ßËã·¨Çó½âĞ§ÂÊ.
+%The implementation of this tool is introduced in \cite{converter_tacas10}.
+
+\section{½áÂÛ}\label{sec_conclude}
+
+±¾ÎÄÌá³öÁËÒ»¸ö×Ô¶¯ÍÆµ¼¶ÏÑÔµÄ¶ÔÅ¼×ÛºÏËã·¨.
+ÊÔÑé½á¹û±íÃ÷±¾ÎÄËã·¨ÄÜ¹»ÎªĞí¶à¸´ÔÓµÄ±àÂëÆ÷ÍÆµ¼³öÕıÈ·µÄ¶ÏÑÔ,
+ÈçPCI-E\cite{PCIESPEC}ºÍÒÔÌ«Íø\cite{IEEE80232002},.
+
+% One direction for future work is to develop an abstraction and refinement framework for complementary synthesis,
+% to conquer the very large diameter problem raises in Subsection \ref{subsec_scale}.
+
+
+%ACKNOWLEDGMENTS are optional
+%\section{Acknowledgments}
+%This project 60603088 is supported by National Natural Science Foundation of China ,
+%and Supported by the Program for Changjiang Scholars and Innovative Research Team in University No IRT0614.
+%Thanks to anonymous reviewers for their effort in reviewing this paper.
+
+%This section is optional; it is a location for you
+%to acknowledge grants, funding, editing assistance and
+%what have you.  In the present case, for example, the
+%authors would like to thank Gerald Murray of ACM for
+%his help in codifying this \textit{Author's Guide}
+%and the \textbf{.cls} and \textbf{.tex} files that it describes.
+
+%
+% The following two commands are all you need in the
+% initial runs of your .tex file to
+% produce the bibliography for the citations in your paper.
+\bibliographystyle{abbrv}
+%\bibliography{sigproc}  % sigproc.bib is the name of the Bibliography in this case
+% You must have a proper ".bib" file
+%  and remember to run:
+% latex bibtex latex latex
+% to resolve all references
+%
+% ACM needs 'a single self-contained file'!
+%
+
+\begin{thebibliography}{10}
+
+\bibitem{ShengYuShen:iccad09}
+S.~Shen, J.~Zhang, Y.~Qin, and S.~Li.
+\newblock Synthesizing complementary circuits automatically.
+\newblock In {\em ICCAD09 Conference Proceedings}, pages 381--388. IEEE,
+  November 2009.
+
+\bibitem{ShengYuShen:tcad}
+S.~Shen, Y.~Qin, K.~Wang, L.~Xiao, J.~Zhang, and S.~Li.
+\newblock Synthesizing complementary circuits automatically.
+\newblock {\em IEEE transaction on CAD of Integrated Circuits and Systems},
+  29(8):1191--1202, August 2010.
+
+\bibitem{Cofact}
+M.~K. Ganai, A.~Gupta, and P.~Ashar.
+\newblock Efficient sat-based unbounded symbolic model checking using circuit
+  cofactoring.
+\newblock In {\em ICCAD04 Conference Proceedings}, pages 510--517. IEEE,
+  November 2004.
+
+\bibitem{Craig}
+W.~Craig.
+\newblock Linear reasoning: A new form of the herbrand-gentzen theorem.
+\newblock {\em J. Symbolic Logic}, 22(3):250--268, 1957.
+
+\bibitem{CHAFF}
+M. W. Moskewicz, C. F. Madigan, Y. Zhao, L. Zhang, and S. Malik.
+\newblock Chaff: Engineering an Efficient SAT Solver.
+\newblock In {\em DAC01 Conference Proceedings}, pages 530--535. IEEE, June
+  2001.
+
+\bibitem{grasp}
+J. P. M. Silva and K. A. Sakallah.
+\newblock GRASP - a new search algorithm for satisfiability.
+\newblock In {\em ICCAD96 Conference Proceedings}, pages 220--227. IEEE, November
+  1996.
+
+\bibitem{BERKMIN}
+E. Goldberg and Y. Novikov.
+\newblock BerkMin: a fast and robust SAT-solver.
+\newblock In {\em DATE02 Conference Proceedings}, pages 142--149. IEEE, March
+  2002.
+
+\bibitem{EXTSAT}
+N.~E\'en and N.~S\"orensson.
+\newblock An extensible sat-solver.
+\newblock In {\em SAT03 Conference Proceedings}, pages 502--518. Springer, May
+  2003.
+
+\bibitem{PCIESPEC}
+{\em PCI Express Base Specification Revision 1.0. Download from
+  http://www.pcisig.com}.
+
+\bibitem{IEEE80232002}
+{\em IEEE Standard for Information technology Telecommunications and
+  information exchange between systems Local and metropolitan area networks
+  Specific requirements Part 3: Carrier Sense Multiple Access with Collision
+  Detection (CSMA/CD) Access Method and Physical Layer Specifications
+  Amendment: Media Access Control (MAC) Parameters, Physical Layers, and
+  Management Parameters for 10 Gb/s Operation, IEEE Std. 802.3, 2002.}
+
+\bibitem{interp_McMillan}
+K.~L. McMillan.
+\newblock Interpolation and sat-based model checking.
+\newblock In {\em CAV03 Conference Proceedings}, pages 1--13. Springer, July
+  2003.
+
+\bibitem{MEALY}
+G.~H. Mealy.
+\newblock A method for synthesizing sequential circuits.
+\newblock {\em Bell Systems Technical Journal}, 34(5):1045--1079, 1955.
+
+\bibitem{RecDiam}
+D.~Kroening and O.~Strichman.
+\newblock Efficient computation of recurrence diameters.
+\newblock In {\em VMCAI03 Conference Proceedings}, pages 298--309. Springer,
+  January 2003.
+
+\bibitem{ShengYuShen:fmcad10}
+S.~Shen, Y.~Qin, J.~Zhang, and S.~Li.
+\newblock A halting algorithm to determine the existence of decoder.
+\newblock In {\em FMCAD10 Conference Proceedings}, pages 91--100. IEEE, October
+  2010.
+
+\bibitem{dim_syn}
+S.~Gulwani.
+\newblock Dimensions in program synthesis.
+\newblock In {\em PPDP10 Conference Proceedings}, pages 13--24. ACM, July 2010.
+
+\bibitem{prog_inv}
+E.~W. Dijkstra.
+\newblock Program inversion.
+\newblock In {\em Program Construction 1978 Conference Proceedings}, pages
+  54--57, 1978.
+
+\bibitem{mtd_autoProginv}
+R.~Gl\"uck and M.~Kawabe.
+\newblock A method for automatic program inversion based on lr(0) parsing.
+\newblock {\em Fundam. Inf.}, 66(4):367--395, November 2005.
+
+\bibitem{prog_inv_rev}
+S.~Srivastava, S.~Gulwani, S.~Chaudhuri, and J.~Foster.
+\newblock Program inversion revisited.
+\newblock {\em Technical Report MSR-TR-2010-34, Microsoft Research}, 2010.
+
+
+
+
+
+
+\bibitem{converter_date08}
+K.~Avnit, V.~D'Silva, A.~Sowmya, S.~Ramesh, and S.~Parameswaran.
+\newblock A formal approach to the protocol converter problem.
+\newblock In {\em DATE08 Conference Proceedings}, pages 294--299. IEEE, March
+  2008.
+
+\bibitem{converter_date09}
+K.~Avnit and A.~Sowmya.
+\newblock A formal approach to design space exploration of protocol converters.
+\newblock In {\em DATE09 Conference Proceedings}, pages 129--134. IEEE, March
+  2009.
+
+
+
+
+\end{thebibliography}
+%\vspace{-2mm}\\
+%\cline{2-2}\end{tabular} \vskip0.2in \footnotesize{\songti \REF{1\
+%}×¯îÈÎÄ, ĞìÕñº£, Ğ¤Ë³Æ½. ¼«»¯Ãô¸ĞÕóÁĞĞÅºÅ´¦Àí. ±±¾©: ¹ú·À¹¤Òµ³ö°æÉç,
+%2005. 1--10
+%
+%\REF{2\ }×¯îÈÎÄ, Ğ¤Ë³Æ½, ÍõÑ©ËÉ. À×´ï¼«»¯ĞÅÏ¢´¦ÀíÓëÓ¦ÓÃ. ±±¾©:
+%¹ú·À¹¤Òµ³ö°æÉç, 1999. 1--10
+%
+%\REF{3\ }Johnson R. Antenna Engineering Handbook. 3rd ed. New York:
+%McGraw-Hill, 1993. 79--157
+%
+%\REF{4\ }Lo Y T, Lee S W. Antenna Handbook Theory, Applications, and
+%Design. Newyork: Van Nostrand Reinhold Company, 1988. 102--143
+%
+%\REF{5\ }Balanis C A. Antenna Theory: Analysis and Design. Newyork:
+%Harper {\&} Row, 1982. 1--56
+%
+%\REF{6\ }ÕÅÏÍ´ï. ÏÖ´úĞÅºÅ´¦Àí. ±±¾©: Çå»ª´óÑ§³ö°æÉç, 1997. 43--95
+%
+%\REF{7\ }Li J, Compton R T. Angle and polarization estimation using
+%ESPRIT with a polarization sensitive array. IEEE Trans Antenn
+%Propag, 1991, 39(9): 1376--1383
+%
+%\REF{8\ }Li J, Compton R T. Two-dimensional angle and polarization
+%estimation using the ESPRIT algorithm. IEEE Trans Antenn Propag,
+%1992, 40(5): 550--555
+%
+%\REF{9\ }Hua Y. A pencil-MUSIC algorithm for finding two-dimensional
+%angles and polarizations using crossed-dipoles. IEEE Trans Antenn
+%Propag, 1993, 41(3): 370--375
+%
+%\REF{10\ }Cheng Q, Hua Y. Further study of the pencil-MUSIC
+%algorithm. IEEE Trans Aero Elec Sys, 1996, 32(1): 284--301
+%
+%\REF{11\ }Íõ½¨Ó¢, ³ÂÌì÷è. ÆµÂÊ¡¢¶şÎ¬µ½´ï½ÇºÍ¼«»¯µÄÁªºÏ¹À¼Æ.
+%µç×ÓÑ§±¨, 1999, 27(11): 74--76
+%
+%\REF{12\ }Wang J Y, Chen T L. Joint frequency 2D AoA and plarization
+%estimation using fourth-order cumulants. Ser china Ser E, 2000,
+%43(3): 297--303
+%
+%\REF{13\ }Wang J Y, Wang J Y, Chen T Q. Joint frequency, 2-D AOA and
+%polarization estimation in broad-band. Sci China Ser F-Inf Sci,
+%2001, 44(3): 161--167
+%
+%\REF{14\ }ÖÜÔÆÖÓ, ³ÂÌì÷è.¶àĞÅºÅ¼«»¯Óëµ½´ï½Ç¹À¼ÆËã·¨. µç²¨¿ÆÑ§Ñ§±¨,
+%1997, 12(2): 220--224
+%
+%\REF{15\ }Roy R, Kailath T. ESPRIT-estimation of signal parameters
+%via rotational invariance techniques. IEEE Trans Acous Speech Signal
+%Proces, 1989, 37(7): 984--995
+%
+%\REF{16\ }Schmidt R. Multiple emitter location and signal parameter
+%estimation. IEEE Trans Antenn Propag, 1986, 34(3): 276--280
+%
+%\REF{17\ }Liu T H, Mendel J M. Azimuth and elevation direction
+%finding using arbitrary array geometries. IEEE Trans Signal Proces,
+%1998, 46(2): 2061--2065
+%
+%\REF{18\ }Dogan M C, Mendel J M. Applications of cumulants to array
+%processing-Part I: aperture extension and array calibration. IEEE
+%Trans Signal Proces, 1995, 43(5): 1200--1216
+%
+%\REF{19\ }Liang J L. Joint azimuth and elevation direction finding
+%using cumulant. IEEE Sensor J, 2009, 9(4): 390--398
+%
+%\REF{20\ }Chevalier P, Ferreol A, Albera L. High-resolution
+%direction finding from higher order statistics: the 2q-MUSIC
+%algorithm. IEEE Trans Signal Proces, 2006, 54(8): 2986--2997
+%
+%\REF{21\ }ÕÅÏÍ´ï. Ê±¼äĞòÁĞ·ÖÎö: ¸ß½×Í³¼ÆÁ¿·½·¨. ±±¾©:
+%Çå»ª´óÑ§³ö°æÉç, 1996. 1--85
+%
+%\REF{22\ }Chevalier P, Albera L, Comon P. On the virtual array
+%concept for higher order array processing. IEEE Trans Signal Proces,
+%2005, 53(4): 1254--1271
+%
+%\REF{23\ }Mendel J M. Tutorial on higher-order statistics (spectra)
+%in signal processing and system theory: theoretical results and some
+%applications. P IEEE, 1991, 79(3): 278--305
+%
+%\REF{24\ }ÍõÓÀÁ¼, ³Â»Ô, ÅíÓ¦Äş, µÈ. ¿Õ¼äÆ×¹À¼ÆÀíÂÛÓëËã·¨. ±±¾©:
+%Çå»ª´óÑ§³ö°æÉç, 2004. 29--108
+%
+%\REF{25\ }Bro R. PARAFAC: tutorial and applications. Chemometr
+%Intell Lab, 1997, 38(2): 149--171
+%
+%\REF{26\ }Cattell R B. Parallel proportional profiles and other
+%principles for determining the choice of factors by rotation.
+%Psychometrika, 1944, (9): 267--283
+%
+%\REF{27\ }Carroll J D, Chang J. Analysis of individual differences
+%in multidimensional scaling via an N-way generalization of
+%`Eckart-Young' decomposition. Psychometrika, 1970, 35(3): 283--319
+%
+%\REF{28\ }Harshman R A. Foundation of the PARAFAC procedure: model
+%and conditions for an `explanatory' multi-mode factor analysis. UCLA
+%Work Paper Phonetics, 1970,16: 1--84
+%
+%\REF{29\ }Sidiropoulos N D, Giannakis G B, Bro R. Blind PARAFAC
+%receivers for DS-CDMA systems. IEEE Trans Signal Proces, 2000,
+%48(3): 810--823
+%
+%\REF{30\ }Sidropoulos N D, Bro R, Giannakis G B. Parallel factor
+%analysis in sensor array processing. IEEE Trans Signal Proces, 2000,
+%48(8): 2377--2388
+%
+%\REF{31\ }Rong Y, Vorobyov S A, Gershman A B, et al. Blind spatial
+%signature estimation via time-varying user power loading and
+%parallel factor analysis. IEEE Trans Signal Proces, 2005, 53(5):
+%1697--1710
+%
+%\REF{32\ }Kruskal J B. Three-way arrays: rank and uniqueness of
+%trilinear decompositions, with application to arithmetic complexity
+%and statistics. Linear Algebra Appl, 1977, 18: 95--138
+%
+%\REF{33\ }Kruskal J B. Rank decomposition, and uniqueness for 3-way
+%and N-way arrays. In: Coppi R, Bolasco S, eds. Multiway Data
+%Analysis. Amsterdam: North-Holland, 1988. 7--18
+%
+%\REF{34\ }Jiang T, Sidiropouls N D. Kruskal's permutation lemma and
+%the identification of CANDECOMP/PARAFAC and bilinear models with
+%constant modulus constraints. IEEE Trans Signal Proces, 2004, 52(9):
+%2625--2636
+%
+%\REF{35\ }Smilde A, Bro R, Geladi P. Multi-way Analysis with
+%Applications in the Chemical Sciences. Chichester: John Wiley {\&}
+%Sons Ltd, 2004. 49--75
+%
+%\REF{36\ }Tomasi G. Practical and computational aspects in
+%chemometric data analysis. PhD Thesis. Demark: Frederiksberg, 2006.
+%20--25
+%
+%\REF{37\ }Liang J L, Yang S Y, zhang J T, et al. 4-D near-field
+%source localization using cumulant. Eurasip J Adv Signal Proces,
+%2007, 2007: 1--10
+%
+%\REF{38\ }Áº¾üÀû, ÑîÊ÷Ôª.
+%Ò»ÖÖÎŞĞë²ÎÊıÅä¶ÔµÄ½ü³¡Ô´¶¨Î»ĞÂËã·¨.µç×ÓÑ§±¨, 2007, 35(6): 1122--1127
+%
+%\REF{39\ }Liang J L, Yang S Y, Zhang J Y. A cumulant-based parameter
+%estimation algorithm for near-field sources. Prog Nat Sci, 2007,
+%17(8): 900--905
+%
+%\REF{40\ }²ÌÓ¢¿¡,
+%ÄßÓÀÄê.Æ½ĞĞÒò×Ó·¨ÓÃÓÚÍ¬²½Ó«¹â·¨Í¬Ê±²â¶¨Ê³Æ·ÖĞµÄÎ¬ÉúËØBI,B2ºÍB6.
+%¹ãÎ÷Ê¦·¶´óÑ§Ñ§±¨(×ÔÈ»¿ÆÑ§°æ), 2003, 21(2): 312--313
+%
+%\REF{41\ }Bro R, Sidiropwlos N D, Giannakis G B. A fast least
+%squares algorithm for separating trilinewr mixtures. In: Proceedings
+%of the 1st International Workshop on Independent Component Analysis
+%and Blind Signal Separation. Aussois, 1999. 289--294
+%
+%\REF{42\ }ÁÎ¹ğÉú, ±£ï£.
+%Ò»ÖÖĞÂµÄĞı×ª²»±ä·½·¨ÊµÏÖÆğ·üÄ¿±êµÄ¸ß·Ö±æ·½Ïò\!--\!¶àÆÕÀÕÆµÂÊÃ¤¹À¼Æ.
+%µç×ÓÑ§±¨, 1996, 24(12): 6--11
+%
+%\REF{43\ }Chen J F, Zhu X L, Zhang X D. A new algorithm for joint
+%range-DOA-frequency estimation of near-field sources. Eurasip J Appl
+%Signal Proces, 2004, 2004(3): 386--392
+
+
+
+\end{document}
+
+
+\vspace{5mm}\noindent\textbf{¸½Â¼A}{\xiaowuhao                 }
+
+
+\begin{center}\vspace{4mm}
+\centerline{\includegraphics{122008-700-100001t1.eps}}
+\centerline{\bahao\bf Í¼1\quad ËäÈ»ÓĞÁËÕâĞ©Ô¼Êø} \centerline{\liuhao
+ËäÈ»ÓĞÁËÕâĞ©Ô¼Êø, ¿ÉÊÇÎÒÃÇÈİÁ¿·ÖÎö½á¹û¼È¿ÉÒÔÊÊÓÃÓÚÒÆ¶¯·äÎÑÏµÍ³}
+\end{center}\vspace{-2mm}
+
+\begin{figure}
+\begin{center}
+\includegraphics{122008-700-100001t1.eps}
+\centerline{\bahao {\bf Figure 1}\quad Separate coding model of the
+communication system.}
+\end{center}\vspace{-4mm}
+\end{figure}
+
+
+\newpage
+*******************************************´ò±í¸ñ*********************
+
+\noindent {\zihao{-5}\bf \small ±í1\quad LoIÀ©Õ¹ºóµÄÂ·¾¶¿Õ¼ä±í}\vspace{-6mm}\\
+{\zihao{6}\footnotesize
+\begin{center} \doublerulesep 0.4pt \tabcolsep 23pt
+\begin{tabular*}{\textwidth}{cccccc}
+\hline \hline \multicolumn{6}{c}{Routing Space Table}\\
+\hline Routing Space &Dimension &Dimension
+type&$\cdots$&EXTEND&PACE\\
+\raisebox{-2mm}[0mm][0mm]{PositionSpace}&pos\_x&Float&$\cdots$&4&50.0\\
+&pos\_y&Float&$\cdots$&4&50.0\\ \hline \hline
+\end{tabular*}
+\end{center}}\vspace{2mm}
+
+°ëÀ¸±í
+
+\noindent {\zihao{-5}\bf \small ±í1\quad LoIÀ©Õ¹ºóµÄÂ·¾¶¿Õ¼ä±í}\vspace{-6mm}\\
+{\zihao{6}\footnotesize
+\begin{center} \doublerulesep 0.4pt \tabcolsep 23pt
+\begin{tabular}{cccccc}
+\hline \hline \multicolumn{6}{c}{Routing Space Table}\\
+\hline Routing Space &Dimension &Dimension
+type&$\cdots$&EXTEND&PACE\\
+\raisebox{-2mm}[0mm][0mm]{PositionSpace}&pos\_x&Float&$\cdots$&4&50.0\\
+&pos\_y&Float&$\cdots$&4&50.0\\ \hline \hline
+\end{tabular}
+\end{center}}\vspace{2mm}
+
+*******************************************×öÍ¼*********************
+\begin{center}
+\centerline{\psfig{figure=012006-183-062018t1.eps}}
+\centerline{\small \zihao{-5}Í¼1\quad  }
+\end{center}
+
+
+*******************************************×öÍ¼*********************
+\begin{center}
+\centerline{\psfig{figure=zkxf33.eps}} \centerline{\footnotesize
+Fig. 1.\quad }
+\end{center}
+
+\parbox[c]{60mm}{\centerline{\psfig{figure=zkxf33.eps}}
+\centerline{\footnotesize Fig. 1.\quad }}
+\parbox[c]{60mm}
+{ }
+
+
+\linebreak \vspace{1mm}\\ \noindent{\small\sf www.scichina.com\quad
+www.springerlink.com}\newpage\noindent
+
+
+%Ë«Ò³Âë
+ \textwidth=132truemm \textheight=213truemm
+\thispagestyle{empty} \noindent \vbox{\vspace{-10mm}\hbox to
+\textwidth{\xiaoliuhao \ \hbox to 1cm{\thepage\hspace {2mm}}
+\hfill\hfill{\ } \hfill $Science~in~China$\!$:~Series~A~
+Mathematics~$ 2006~Vol.~49~No.~2~212--224 }\vspace{1.6truemm}
+\hspace{2mm}}
+
+
+%ºÚĞ±
+\bf {\boldmath
+
+
+
+\noindent \begin{center}
+\begin{tabular}{c}
+\psfig{figure=122008-934-100002t9a.eps}
+\end{tabular}
+\end{center}\vspace{-4mm}
+
+\noindent \parbox[c]{75mm}{\footnotesize {\bf Figure 9}\quad
+ Bifurcation curves in the parameter plane $(a,b)$.}\hspace{10mm}
+\parbox[c]{75mm}
+{\centerline{} {\footnotesize {\bf Figure 10}\quad Sign of the
+Lyapunov exponent in the parameter plane $(a,b)$.}}\vspace{5mm}
