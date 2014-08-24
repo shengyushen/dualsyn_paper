@@ -1,0 +1,110 @@
+Dear Ying Qin,
+
+On behalf of the MEMOCODE 2013 Program Committee, we are pleased to inform you that your submission to MEMOCODE’14 has been accepted for a short presentation.
+
+   6: Structure-Aware CNF Obfuscation for Privacy-Preserving SAT Solving
+
+The competition was high and the program schedule constrained, leading us to accept 14 submissions for regular presentations, and 6 more for short talks, from a total of around 50 submissions.
+
+Given these constraints, accepted papers were well-above the average borderline evaluation.  The reviews of your submission are attached to this message.  We hope that you will take them into consideration, positive and negative ones, in order to improve your submission for publication in the proceedings.
+
+Please note that the final version of your paper is due September 4th, 2014.
+
+Its publication in the MEMOCODE’14 proceedings requires prior registration for attendance and presentation of the paper at the conference.  The link to the MEMOCODE’14 registration page will be made available on the conference website http://www.memocode-conference.com at the soonest.
+
+Publication in the MEMOCODE’14 proceedings further requires conformance of the final manuscript to the IEEE-XPress publication requirements. To this end, detailed instructions have been made available on this page http://filebox.vt.edu/users/yideng56/memocode-2014/final.html by the Publication Chair, Yi Deng <yideng56@vt.edu>, who will assist you through this process.
+
+Finally, details and instructions regarding regular and short presentations will be made available on the conference website and program.  Accepted papers in both categories will be at most 10 pages long.
+
+Thank you for considering MEMOCODE’14 and congratulations on the acceptance of your submission. We look forward to meeting you in Lausanne
+
+Best regards,
+
+Sandeep Shukla and Jean-Pierre Talpin, MEMOCODE’14 program chairs
+
+
+----------------------- REVIEW 1 ---------------------
+PAPER: 6
+TITLE: Structure-Aware CNF Obfuscation for Privacy-Preserving SAT Solving
+AUTHORS: Ying Qin and Shengyu Shen
+
+OVERALL EVALUATION: 1 (weak accept)
+REVIEWER'S CONFIDENCE: 2 (low)
+
+----------- REVIEW -----------
+This paper proposes new techniques for preserve input and output privacy based on CNF obfuscation. The main contribution of the paper is a structure aware obfuscation algorithm that reuse existing efficient sat-solver but add extra information (based on husk formula) to avoid public cloud to retrieve either the satisfaction solution, or even the circuit from which the formula is generated. The paper also presents experimental results.
+
+I am not a sat-solver expert, but rather a user of sat-solvers. For me the paper sounds interesting and presents new concepts. I am however a bit disappointed by the experimental results and their interpretation.  How do we measure the impact of obfuscation in terms of security there?
+
+
+----------------------- REVIEW 2 ---------------------
+PAPER: 6
+TITLE: Structure-Aware CNF Obfuscation for Privacy-Preserving SAT Solving
+AUTHORS: Ying Qin and Shengyu Shen
+
+OVERALL EVALUATION: 1 (weak accept)
+REVIEWER'S CONFIDENCE: 3 (medium)
+
+----------- REVIEW -----------
+This paper details a structure-preserving CNF transformation which maintain input-output privacy. This allows a CNF term to be offloaded without compromising on internal security. This is done by integrating the input CNF propositional formula with a generated husk formula. To ensure the two formulas are not easily separatable the transformation inserts variables from clauses of one formula  into that of the other in such a way that no change to the solution space occurs. 
+
+This is very interesting work; CNF represents a useful offloadable computational block and providing some a higher guarantee of privacy of information is key in producting results. 
+
+One point of worry I have is tha your evaluation does not distinguish between the cost of offloading a computation to the cloud and the incremental cost of adding obfuscation. If the cost is really a trivial increase over the cost offloading it seems natural to keep it on always; if it is significant one may not wish to use it for non-security important queries (especially those queries with a solution which can be easily checked by the private cloud). To this end, you should add a measure for the cost of communication; In my experience this can easily be on par with the complexity of the problems itself for "easy" queries.
+
+
+----------------------- REVIEW 3 ---------------------
+PAPER: 6
+TITLE: Structure-Aware CNF Obfuscation for Privacy-Preserving SAT Solving
+AUTHORS: Ying Qin and Shengyu Shen
+
+OVERALL EVALUATION: 1 (weak accept)
+REVIEWER'S CONFIDENCE: 4 (high)
+
+----------- REVIEW -----------
+Summary of the content
+==================
+The authors proposed a structure aware obfuscation algorithm to preserve input and output
+privacy during outsourcing the SAT solving computation problems to the solvers in the 
+untrusted public Cloud. The obfuscated CNF over-approximates the solution space of the 
+original CNF. The obfuscation algorithm is the polynomial complexity and solution 
+recovery algorithm is the linear complexity, which reduces the impact on the overall 
+SAT solving performance.
+
+The paper mainly presents the algorithmic design of major steps in their obfuscation based
+privacy-preserving SAT solving framework: Husks formula generation, structure aware 
+obfuscation, solution recovery and verifier. The correctness, effectiveness and complexity 
+of the designed algorithms are formally proved and analysed. Experiment results show that 
+the overhead of SAT solving time incurred by obfuscation varies among different circuits. 
+
+Evaluation
+=================
+Firstly, the idea of using CNF obfuscation for the privacy-preserving SAT solving in the 
+public cloud is new and straightforward. With the CSA strategy, the obfuscation changes 
+the clause and literal sets of the original formula to prevent its structures from being 
+recovered. With the SSH rules, the solution space is over-approximated after obfuscation 
+to prevent its solution from being known by the Solver in public Cloud. The
+experiments show the impact of obfuscation on solving time varies. 
+But the paper does not discuss why the solving time overhead for some circuits are high or 
+how to adjust the obfuscation algorithm to reduce or stabilize the overhead. So it is not 
+very convincing that the proposed approach is effective in the solving time. Secondly, the 
+presentation and organization of this paper are overall acceptable. But there are multiple 
+typos in the paper. The experiments section is relatively weak. The related work section 
+lacks comparisons. Based on the above evaluation points, I would recommend grading it at 
+"Weakly Accept". 
+
+Detailed comments
+==============
+1). In the Algorithm 1 GENERATOR on page 3, it is not clear how the prime numbers are 
+modeled, like modelling width.  
+2). On page 5, the description of the algorithm 2 procedure is confusing, especially the
+mapping of lines in Algorithm to three procedural steps. For example, the lines mapped 
+to Step 3 may not be correct. And it is not clear the usage of line 12 to 19 in Algorithm 2.
+3). In the related work section, the comparisons between the presented work and related
+research work are weak or even omitted.  
+4). From Table 1, there is no information about the SAT property of all CNF formulas, like
+which are SAT cases, which are UNSAT cases. For the SAT case, the solution recovery stage
+may be iterative in order to find the correct SAT solution. It is not clear whether the 
+solution recovery succeeds once or after multiple iterations. 
+5). The Acknowledge section is empty. The reference formats in the References section are mixed. All references should follow the same format.
+
