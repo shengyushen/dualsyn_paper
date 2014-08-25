@@ -98,9 +98,11 @@
 % When switching from latex to pdflatex and vice-versa, the compiler may
 % have to be run twice to clear warning/error messages.
 
-\usepackage{amsmath,amssymb}
-\usepackage[linesnumbered,boxed,ruled]{algorithm2e}
-\usepackage[dvips]{graphicx}
+\usepackage{amsmath,amssymb}
+
+\usepackage[linesnumbered,boxed,ruled,vlined]{algorithm2e}
+\usepackage[dvips]{graphicx}
+
 
 
 
@@ -351,11 +353,16 @@
 % correct bad hyphenation here
 \hyphenation{op-tical net-works semi-conduc-tor}
 
-\newtheorem{theorem}{\textbf{Theorem}} 
-\newtheorem{definition}{\textbf{Definition}} 
-\newtheorem{lemma}{\textbf{Lemma}} 
-\newtheorem{Procedure}{\textbf{Procedure}} 
-\newtheorem{inference}{\textbf{Inference}} 
+\newtheorem{theorem}{\textbf{Theorem}} 
+
+\newtheorem{definition}{\textbf{Definition}} 
+
+\newtheorem{lemma}{\textbf{Lemma}} 
+
+\newtheorem{Procedure}{\textbf{Procedure}} 
+
+\newtheorem{inference}{\textbf{Inference}} 
+
 
 
 \begin{document}
@@ -690,23 +697,29 @@ not all 0 or all 1.
 % while assignments of n variables are unique in all the solutions of $F$.
 % \end{definition}
 Detailed implementation of this framework is shown in Figure \ref{fig_cldSAT}.
+The SAT problem is solved in 4 steps.
 \begin{figure}
 \footnotesize\centering
 \centerline{\includegraphics[width=8.2cm]{Visio-cloudsat.eps}}
 \caption{Privacy-preserving SAT solving framework based on CNF formula obfuscation.}
 \label{fig_cldSAT}
 \end{figure}
-In this framework, SAT problem is solved in 4 steps.\\
+
 % \begin{enumerate}
 % \item[$\textbf{Step 1,}$]GENERATOR algorithm generates a Husks formula $F_H$ and one of its solution $R_H$.
 % \item[$\textbf{Step 2,}$]OBFUSCATOR algorithm obfuscates the Original CNF $F_C$ to obtain a new CNF formula $F_O$.
 % \item[$\textbf{Step 3,}$]$F_O$ is solved by SAT Solver deployed in public Cloud, which returns solution $S_O$.
 % \item[$\textbf{Step 4,}$]MAPPER and VERIFIER algorithm maps $S_O$ to $S_C$, and check if $F_C$ is satisfied under $S_C$.
 % \end{enumerate}
-$\textbf{Step 1}$, GENERATOR algorithm generates a Husks formula $F_H$ and one of its solution $R_H$.\\
-$\textbf{Step 2}$, OBFUSCATOR algorithm obfuscates the Original CNF $F_C$ to obtain a new CNF formula $F_O$.\\
-$\textbf{Step 3}$, $F_O$ is solved by SAT Solver deployed in public Cloud, which returns solution $S_O$.\\
+
+$\textbf{Step 1}$, GENERATOR algorithm generates a Husks formula $F_H$ and one of its solution $R_H$.
+
+$\textbf{Step 2}$, OBFUSCATOR algorithm obfuscates the Original CNF $F_C$ to obtain a new CNF formula $F_O$.
+
+$\textbf{Step 3}$, $F_O$ is solved by SAT Solver deployed in public Cloud, which returns solution $S_O$.
+
 $\textbf{Step 4}$, MAPPER and VERIFIER algorithm maps $S_O$ to $S_C$, and check if $F_C$ is satisfied under $S_C$.
+
 % % $\mathbf{Step 1}$, GENERATOR algorithm generates a Husks formula $F_H$ and one of its solution $R_H$.
 % 
 % $\mathbf{Step 2}$, OBFUSCATOR algorithm obfuscates the Original CNF $F_C$ to obtain a new CNF formula $F_O$.
@@ -771,8 +784,8 @@ We take one of them as $R_H$.
 % \end{procedure}
 
 \begin{algorithm}[b]
-%\SetAlgoLined
-\SetAlgoNoLine
+% \SetAlgoLined
+% \SetAlgoNoLine
 \KwData{NULL}
 \KwResult{Husks CNF $F_H$ and Husks result $R_H$}
 \Begin{
@@ -976,21 +989,15 @@ For SSH based obfuscation, we have following theorems.
 \begin{theorem}[SSE Obfuscation]\label{SSEtheorem}
 
 For arbitrary CNF formula $F_C$, and Singular Husk formula $F_{_SH}$, 
-if
-
-~~$V_{F_C}$ $\cap$ $V_{F_{_SH}}$ =$\phi$, and
+if $V_{F_C} \cap V_{F_{_SH}} \equiv \phi$, and
 $R_{_SH}$ is the unique solution of $F_{_SH}$,
-
 \textbf{then} $Obf(F_C,F_{_SH},R_{_SH}) \equiv F_C\wedge F_{_SH}$.
 \end{theorem}
 
 \begin{theorem}[SSO Obfuscation]\label{SSOtheorem}
-
-For arbitrary CNF formula $F_C$, Husks formula $F_H$, if
-  
-~~$V_{F_C}$ $\cap$ $V_{F_H}$ = $\phi$, and
-$R_H$ is one of solutions of $F_H$.
-  
+For arbitrary CNF formula $F_C$, Husks formula $F_H$, if 
+$V_{F_C} \cap V_{F_H} \equiv \phi$, and
+$R_H$ is one of solutions of $F_H$.  
 \textbf{then} $F_C \vdash_{_{SSO}} Obf(F_C,F_H,R_H)$.
 % \textbf{then} $F_C\wedge F_H \vdash F_O$.
 \end{theorem}
@@ -999,10 +1006,8 @@ According to Theorem \ref{SSEtheorem} and Definition \ref{SSEdefinition}, we hav
 % inference \ref{SSEinference}.
 \begin{inference}\label{SSEinference}
 For arbitrary CNF formula $F_C$, Singular Husk formula $F_{_SH}$, if
-
-~~$V_{F_C}$ $\cap$ $V_{F_{_SH}}$ =$\phi$, and
+$V_{F_C}\cap V_{F_{_SH}}\equiv \phi$, and
 $R_{_SH}$ is the unique solution of $F_{_SH}$,
-
 \textbf{then} $Obf(F_C,F_{_SH},R_{_SH}) \equiv_{_{SSE}} F_C$.
 \end{inference}
 
@@ -1042,6 +1047,71 @@ In conclusion, the solution space of $F_O$ is overapproximation of $F_C$.
 As a result,
 $F_O$ can be solved with the same SAT solver as $F_C$, 
 but solution of $F_C$ can not be recovered from that of $F_O$ without knowing $R_H$.
+
+\begin{algorithm}[t]
+% \SetLine
+\KwData{The original CNF $F_C$, Husks CNF $F_H$, Husks result $R_H$}
+\KwResult{The obfuscated CNF $F_O$, variable mapping $M$}
+\Begin{
+$mark(F_C)$\;\label{mark}
+\ForEach{$c\in F_C$}{
+\If{$c \in$  Key Clause Set } {\label{keyclause}
+    lit =get literal $ \in R_H$\;
+    $c=c \cup \neg lit$\;\label{rule1}
+    $nc=generate\_new\_clause(c,lit)$\;\label{gennewclause}
+    $F_C=F_C \cup nc$\;\label{blendclause1}
+ }
+}
+\ForEach{$ c \in F_C $} {
+$averagelen=\frac{\sigma _{c'\in F_C}|c'|}{|F_C|}$ \;
+\While{$|c| < averagelen$}{
+$lit=$get literal $\in R_H$ \;
+\While{$\neg lit \in c$} {
+lit=get literal $ \in R_H $ \;
+}
+$c=c \cup \neg lit$\;\label{rule1-2}
+}
+$M$ =remap all variable in $F_C\cup F_H$ \;\label{MV}
+$F_O$ =reorder all clause in $F_C\cup F_H$ \; \label{blendclause2}
+}
+}
+\caption{OBFUSCATOR}
+\label{algo_obs}
+\end{algorithm}
+
+\begin{algorithm}[t]
+% \SetAlgoNoLine
+$\mathbf{mark}$\;
+\KwData{CNF formula $S$}
+\KwResult{marked $S$ }
+\Begin{
+\ForEach{$(C \in S) ~\&~ (|C|\equiv 3)$}{
+\ForEach{$l \in C$ }{
+\ForEach{$(C_1 \in S) ~\&~ (\neg l\in C_1)~ \&~ (|C_1|\equiv 2)$ }{
+\ForEach{$l_1 \in C_1$ }{
+\uIf{$(\neg l_1 \in C)~\&~(l_1\ne l)$} {
+$match++$ \;
+}
+}
+}
+}
+}
+\If{$match\equiv 2$} {
+mark $l$ as output literal \;
+mark $C$ as Key Clause\;
+}
+}
+$\mathbf{generate\_new\_clause}$\;
+\KwData{key clause $C$ in AND2, Husk literal $lit$}
+\KwResult{new clause $C_1$}
+\Begin{
+$olit$=Getting output literal from $C$ \;
+$C_1= lit \cup \neg olit$ \;\label{rule2}
+}
+\caption{$\mathbf{mark}$ and $\mathbf{generate\_new\_clause}$}
+\label{algo_mark}
+\end{algorithm}
+
 
 \subsubsection{Circuit Structure Aware strategy}\label{embeded strategy}
 Through SSH, OBFUSCATOR can insert new literals into clauses and generate new clauses, 
@@ -1086,69 +1156,6 @@ so we only present the implementation of $mark$ for AND2 in Algorithm \ref{algo_
 Similarly, we also present only the implementation of $\mathbf{generate\_new\_clause}$ for AND2 in Algorithm \ref{algo_mark}.
 These two algorithms can transform a CNF signature of AND2 to that of AND3.
 
-\begin{algorithm}[t]
-\SetAlgoNoLine
-\KwData{The original CNF $F_C$, Husks CNF $F_H$, Husks result $R_H$}
-\KwResult{The obfuscated CNF $F_O$, variable mapping $M$}
-\Begin{
-$mark(F_C)$\;\label{mark}
-\ForEach{$c\in F_C$}{
-\If{$c \in$  Key Clause Set } {\label{keyclause}
-    lit =get literal $ \in R_H$\;
-    $c=c \cup \neg lit$\;\label{rule1}
-    $nc=generate\_new\_clause(c,lit)$\;\label{gennewclause}
-    $F_C=F_C \cup nc$\;\label{blendclause1}
- }
-}
-\ForEach{$ c \in F_C $} {
-$averagelen=\frac{\sigma _{c'\in F_C}|c'|}{|F_C|}$ \;
-\While{$|c| < averagelen$}{
-$lit=$get literal $\in R_H$ \;
-\While{$\neg lit \in c$} {
-lit=get literal $ \in R_H $ \;
-}
-$c=c \cup \neg lit$\;\label{rule1-2}
-}
-$M$ =remap all variable in $F_C\cup F_H$ \;\label{MV}
-$F_O$ =reorder all clause in $F_C\cup F_H$ \; \label{blendclause2}
-}
-}
-\caption{OBFUSCATOR}
-\label{algo_obs}
-\end{algorithm}
-
-\begin{algorithm}[t]
-\SetAlgoNoLine
-$\mathbf{mark}$\;
-\KwData{CNF formula $S$}
-\KwResult{marked $S$ }
-\Begin{
-\ForEach{$(C \in S) ~\&~ (|C|\equiv 3)$}{
-\ForEach{$l \in C$ }{
-\ForEach{$(C_1 \in S) ~\&~ (\neg l\in C_1)~ \&~ (|C_1|\equiv 2)$ }{
-\ForEach{$l_1 \in C_1$ }{
-\uIf{$(\neg l_1 \in C)~\&~(l_1\ne l)$} {
-$match++$ \;
-}
-}
-}
-}
-}
-\If{$match\equiv 2$} {
-mark $l$ as output literal \;
-mark $C$ as Key Clause\;
-}
-}
-$\mathbf{generate\_new\_clause}$\;
-\KwData{key clause $C$ in AND2, Husk literal $lit$}
-\KwResult{new clause $C_1$}
-\Begin{
-$olit$=Getting output literal from $C$ \;
-$C_1= lit \cup \neg olit$ \;\label{rule2}
-}
-\caption{$\mathbf{mark}$ and $\mathbf{generate\_new\_clause}$}
-\label{algo_mark}
-\end{algorithm}
 
 SSH and CSA based obfuscation procedure implemented in Algorithm \ref{algo_obs} and \ref{algo_mark} is described below.
 % \textbf{SSO obfuscation with SSH rule and CSA strategy}
@@ -1207,8 +1214,8 @@ generated by OBFUSCATOR(at Line \ref{MV} in Algorithm \ref{algo_obs}).
 $M[var].variable$ (at Line \ref{var}) represents the original variables name of var, 
 and $M[var].formula$ (at Line \ref{formula}) may be $F_C$ or $F_H$, which the var belongs to.
 
-\begin{algorithm}
-\SetAlgoNoLine
+\begin{algorithm}[t]
+% \SetAlgoNoLine
 \KwData{Obfuscated result $S_O$, variable mapping table $M$, Husk result $R_H$}
 \KwResult{Result $S_C$}
 \Begin{
@@ -2107,7 +2114,7 @@ with polynomial complexity and without narrowing down its solution space.
 
 % use section* for acknowledgement
 \section*{Acknowledgment}
-
+This work was funded by projects 61070132 and 61133007 supported by National Natural Science Foundation of China.
 
 % The authors would like to thank...
 
@@ -2140,83 +2147,56 @@ with polynomial complexity and without narrowing down its solution space.
 \begin{thebibliography}{26}
 
 \bibitem{SATtheory} 
-D.Putnam.
-A Computing Procedure for Quantification Theory.
-Journal of the ACM 7 (3): 201.
+M. Davis, H. Putnam: A Computing Procedure for Quantification Theory. J. ACM 7(3): 201-215 (1960)
 \bibitem{HardwareSAT}
 G. Hachtel, F. Somenzi.
 Logic synthesis and verification algorithms. Springer 2006: I-XXIII, 1-564.
 \bibitem{softwareSAT}
-E. Clarke, O. Grumberg, S. Jha, Y. Lu, H. Veith.
-Counterexample-Guided Abstraction Refinement.
-CAV'00, pp 154-169.
+E. Clarke, O. Grumberg, S. Jha, Y. Lu, Helmut Veith: Counterexample-Guided Abstraction Refinement. CAV 2000: 154-169
 \bibitem{cryptoSAT}
-M.Soos, K. Nohl, and C. Castelluccia. Extending SAT Solvers to Cryptographic Problems.
- Springer, LNCS 5584, pp. 244-257, 2009.
+M. Soos, K. Nohl, C. Castelluccia: Extending SAT Solvers to Cryptographic Problems. SAT 2009: 244-257
 \bibitem{Nordugrid}
-A. E. J. Hyvarinen, T. Junttila, and I. Niemel?a.
-Grid-Based SAT Solving with Iterative Partitioning and Clause Learning. In Proc. CP:385?399, 2011
+A. Hyv\"arinen, T. Junttila, I. Niemel\"a: Grid-Based SAT Solving with Iterative Partitioning and Clause Learning. CP 2011: 385-399
 \bibitem{Tseitin}
 G. Tseitin.
 On the complexity of derivation in propositional calculus. Studies in Constr. Math. and Math. Logic, 1968.
 \bibitem{c.WANG}
-C. Wang, K. Ren, J. Wang.
-Secure and practical outsourcing of linear programming in Cloud computing. INFOCOM'11: 820-828.
+C. Wang, K. Ren, J. Wang: Secure and practical outsourcing of linear programming in cloud computing. INFOCOM 2011: 820-828
 \bibitem{csLiequivalency}
-C. Li.
-Integrating equivalency reasoning into Davis-Putnam procedure. in AAAI'00, pp. 291-296.
+C. Li: Integrating Equivalency Reasoning into Davis-Putnam Procedure. AAAI/IAAI 2000: 291-296
 \bibitem{csOstrowski}	
-R. Ostrowski.
-Recovering and exploiting structural knowledge from cnf formulas, CP'02, pp. 185-199.
+R. Ostrowski, \'E. Gr\'egoire, B. Mazure, L. Sais: Recovering and Exploiting Structural Knowledge from CNF Formulas. CP 2002: 185-199
 \bibitem{csRoy}
-J.Roy, I.Markov,V. Bertacco.
-Restoring Circuit Structure from SAT Instances IWLS'04, pp. 361-368.
+J. Roy, I. Markov,V. Bertacco:
+Restoring Circuit Structure from SAT Instances. IWLS'04, pp. 361-368.
 \bibitem{csFu}
-Z. Fu, S. Malik.
-Extracting Logic Circuit Structure from Conjunctive Normal Form Descriptions.
-VLSI Design'07, pp 37-42.
+Z. Fu, S. Malik: Extracting Logic Circuit Structure from Conjunctive Normal Form Descriptions. VLSI Design 2007: 37-42
 \bibitem{Minisat}
 MiniSat-SAT Algorithms and Applications Invited talk given by Niklas Sorensson at the CADE-20 workshop ESCAR.
 http://minisat.se/Papers.html
 \bibitem{AMI}
-Balduzzi, M., Zaddach, J., Balzarotti, D., Kirda, E., Loureiro, S. (2012).
-A security analysis of amazon's elastic compute Cloud service. the 27th Annual ACM Symposium on Applied Computing (pp. 1427-1434). ACM.
+M. Balduzzi, J. Zaddach, D. Balzarotti, E. Kirda, S. Loureiro: A security analysis of amazon's elastic compute cloud service. SAC 2012: 1427-1434
 \bibitem{InformationLeakageofCloud}	
-H. You.
-Get Off of My Cloud: Exploring Information Leakage in Third-Party Compute Clouds, CCS'09
+T. Ristenpart, E. Tromer, H. Shacham, S. Savage: Hey, you, get off of my cloud: exploring information leakage in third-party compute clouds. CCS 2009: 199-212
 \bibitem{microgenSAT}
-D.Achlioptas,C.Gomes,H.Kautz,B.Selman.Generating Satisfiable Problem Instances.
- 12th National Conference on Artificial Intelligence (AAAI-2000) 2000, 256-301
+D. Achlioptas, C. Gomes, H. Kautz, B. Selman: Generating Satisfiable Problem Instances. AAAI/IAAI 2000: 256-261
 \bibitem{genSAT} 
 M Jarvisalo. Equivalence checking hardware multiplier designs.
 SAT Competition 2007 benchmark description.
 \bibitem{OBfuscationd-CNFs}
-Z. Brakerski and G. Rothblum.
-Black-Box Obfuscation for d-CNFs.
-ITCS'14,pp. 235-250.
+Z. Brakerski, G. Rothblum: Black-box obfuscation for d-CNFs. ITCS 2014: 235-250
 \bibitem{R.Gennaro}
-R. Gennaro, C. Gentry, B. Parno.
-Non-interactive Verifiable Computing: Outsourcing Computation to Untrusted Workers.
-CRYPTO'10, pp 465-482.
+R. Gennaro, C. Gentry, B. Parno: Non-interactive Verifiable Computing: Outsourcing Computation to Untrusted Workers. CRYPTO 2010: 465-482
 \bibitem{HV-grid}
-W. Du and M. Goodrich.
-Searching for High-Value Rare Events with Uncheatable Grid Computing.2004.
+W. Du, M. Goodrich: Searching for High-Value Rare Events with Uncheatable Grid Computing. ACNS 2005: 122-137
 \bibitem{t19}
-M. Atallah, K. Pantazopoulos, J. Rice, E. Spafford.
-Secure outsourcing of scientific computations.
-Advances in Computers 54: 215-272 (2001)
+M. Atallah, K. Pantazopoulos, J. Rice, E. Spafford: Secure outsourcing of scientific computations. Advances in Computers 54: 215-272 (2001)
 \bibitem{t20}
-M. Atallah, J. Li.
-Secure outsourcing of sequence comparisons.
-Int. J. Inf. Sec. 4(4): 277-287 (2005).
+M. Atallah, J. Li: Secure outsourcing of sequence comparisons . Int. J. Inf. Sec. 4(4): 277-287 (2005)
 \bibitem{t32}	
-P. Golle and I. Mironov.
-Uncheatable distributed computations.
-CT-RSA'01, pp. 425-40.
+P. Golle, I. Mironov: Uncheatable Distributed Computations. CT-RSA 2001: 425-440
 \bibitem{t33}
-D. Szajda, B. G. Lawson, and J. Owen.
-Hardening functions for large scale distributed computations.
-ISSP'03, pp. 216-224.
+D. Szajda, B. Lawson, J. Owen: Hardening Functions for Large Scale Distributed Computations. IEEE Symposium on Security and Privacy 2003: 216-224
 \bibitem{CloudSMT}
 Paralleling OpenSMT Towards Cloud Computing http://www.inf.usi.ch/urop-Tsitovich-2-127208.pdf
 \bibitem{OneSpin}
@@ -2224,8 +2204,8 @@ Formal in the Cloud OneSpin: New Spin on Cloud Computing.http://www. eejournal.c
 \bibitem{obfuscationBible}
 X.S. Zhang, F.L. He and W.l. Zuo. Theory and Practice of Program Obfuscation.
 Convergence and Hybrid Information Technologies, Book edited by: Marius Crisan, ISBN 978-953-307-068-1, pp. 426, March 2010, INTECH, Croatia.
-\bibitem{Partition} G. Karypis, R. Aggarwal, V. Kumar, and S. Shekhar.
-Multilevel Hypergraph Partitioning: Application in VLSI Do main, in Proc. DAC, pp. 526-529, 1997.
+\bibitem{Partition} 
+G. Karypis, R. Aggarwal, V. Kumar, S. Shekhar: Multilevel Hypergraph Partitioning: Application in VLSI Domain. DAC 1997: 526-529
 %  \bibitem{IEEEhowto:kopka}
 % H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
 %   0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
