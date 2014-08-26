@@ -467,8 +467,8 @@ which make outsourcing hard SAT problem to public Cloud or computation grid\cite
 However, security issues make many customers reluctant to move their critical computation tasks to grid or Cloud.
 Since the grid is constructed by loosely connecting a large number of readily available, high-end, heterogeneous computing facilities\cite{Nordugrid},
 the risks posed by hoarding participants in grid computing environments are real and immediate\cite{HV-grid}.
-While the Cloud vendors can be trusted and the Cloud infrastructure (i.e., the virtualization layer) can be assumed to be secure,
-the virtual machines cannot be trusted to be always honest and loyal.
+While the Cloud vendors can be trusted,
+the virtual machines cannot.
 Literature\cite{AMI} points out security vulnerability that Amazon EC2 suffered from: 
 Since Amazon Machine Image (AMI) are widely shared among the EC2 community,
 a malicious AMI could flood the community with hundreds of infected virtual instances.
@@ -479,7 +479,7 @@ through another virtual machine in the same physical machine.
 These facts show that input and output data of SAT problem may be exposed to untrusted third party,
 who may inspect valuable information from these data.
 For example, SAT program originated from verification may suffer from leakage of privacy, such as circuit structure information.
-Works carried out by Roy\cite{csRoy} and Fu \cite{csFu} suggest the possibility of extracting circuit information from CNF formula.
+Roy\cite{csRoy} and Fu \cite{csFu} suggest the possibility of extracting circuit information from CNF formula.
 Furthermore, Du\cite{HV-grid} called solution of hard SAT problem generating from cryptograph etc as high-value rare events, 
 and point out that the solution of SAT problem should also be treated as privacy, 
 because it may be leaked to third party by hoarding participants.
@@ -506,11 +506,11 @@ Finally, obfuscation algorithm is  polynomial complexity,
 and solution recovery algorithm is linear complexity,
 which reduce the impact on the overall performance of SAT solving.
 
-The remainder of this paper is organized as follows.
+This paper is organized as follows.
 Preliminaries are presented in Section 2.
-Section 3 describes of the threat model,
-while the implementation of privacy persevering SAT solver based on obfuscation is presented in Section 4.
-Section 5 analyzes correctness, effectiveness and algorithms complexity of obfuscation;
+Section 3 describes the threat model,
+while our algorithms are presented in Section 4.
+Section 5 analyzes correctness, effectiveness and algorithms complexity;
 Section 6 describes the related work;
 Section 7 gives the experimental results,
 while Section 8 concludes this paper.
@@ -524,8 +524,8 @@ while Section 8 concludes this paper.
 
 \section{Preliminaries}
 
-\subsection{SAT solving}
-The Boolean value set is denoted as $B=\{T,F\}$.
+% \subsection{SAT solving}
+The Boolean value set is $B=\{T,F\}$.
 For a Boolean formula $F_C$ over a variable set $V$,
 the propositional satisfiability problem (abbreviated as SAT) is
 to find a satisfying assignment $A : V\to B$,
@@ -544,24 +544,22 @@ in which a formula is a conjunction of its clause set,
 and a clause is a disjunction of its literal set,
 while a literal is a variable or its negation.
 
-$\Phi$ in Equation (\ref{eqn_phi}) is a CNF formula
-with four variables $x_1$, $x_2$, $x_3$, $x_4$,
-and three clauses $x_1\vee \neg x_2$, $x_2\vee x_3$, $x_2\vee \neg x_4$.
-Literal $x_1$ is positive literal of variable $x_1$ in clause $x_1\vee \neg x_2$,
-while $ \neg x_2$ is a negative literal.
-\begin{equation}\label{eqn_phi}
-\centering \Phi=(x_1\vee \neg x_2)
-\wedge(x_2\vee x_3)
-\wedge(x_2\vee \neg x_4)
-\end{equation}
+% $\Phi$ in Equation (\ref{eqn_phi}) is a CNF formula
+% with four variables $x_1$, $x_2$, $x_3$, $x_4$,
+% and three clauses $x_1\vee \neg x_2$, $x_2\vee x_3$, $x_2\vee \neg x_4$.
+% Literal $x_1$ is positive literal of variable $x_1$ in clause $x_1\vee \neg x_2$,
+% while $ \neg x_2$ is a negative literal.
+% \begin{equation}\label{eqn_phi}
+% \centering \Phi=(x_1\vee \neg x_2)
+% \wedge(x_2\vee x_3)
+% \wedge(x_2\vee \neg x_4)
+% \end{equation}
 
 The number of literals in clause $C$ is denoted as $|C|$.
 The number of clauses in a CNF formula $F$ is denoted as $|F|$.
-For example $| x_1\vee  \neg x_2 |\equiv 2$,
-while $|\Phi|\equiv 3$.
-
+% For example $| x_1\vee  \neg x_2 |\equiv 2$,
+% while $|\Phi|\equiv 3$.
 Variable set of CNF formula $F_C$ is denoted as $V_{F_C}$.
-
 When variables in CNF formula $F_C$ are assigned with solution $S_C$, we denote it as $F_C(S_C/V_{F_C})$.
 % \begin{definition}[$V_{F}$]\label{VariableSet}
 % $V_{F}$ denotes variable set of CNF formula $F$.
@@ -570,7 +568,7 @@ When variables in CNF formula $F_C$ are assigned with solution $S_C$, we denote 
 % \begin{definition}[$F(S/V_{F})$]\label{VariableAssignment}
 % Variables in CNF formula $F$ are assigned with $S$, denoted as $F(S/V_F)$,
 % \end{definition}
-\subsection{Tseitin encoding}
+% \subsection{Tseitin encoding}
 
 In hardware verification,
 circuits and properties are converted into CNF formula by Tseitin encoding\cite{Tseitin},
@@ -584,25 +582,25 @@ For gate AND2 $z=x_1\wedge x_2$,
 its CNF formula is $( \neg x_1\vee \neg x_2\vee z)\wedge(x_1\vee \neg z) \wedge(x_2\vee \neg z)$.
 For a complex circuit $C$ expressed by a combination of AND2 and INV,
 its Tseitin encoding $Tseitin(C)$ is a conjunctive of all these gates' Tseitin encoding.
-For a circuit $C$ with an INV $d=\neg a$ and an AND2 $e=d\wedge c$,
-its Tseitin encoding is shown in Equation (\ref{eqn_andinv}).
-\begin{multline}\label{eqn_andinv}
-% \begin{equation}\label{eqn_andinv}
-Tseitin(C)=\\
-\left\{
-\begin{array}{cc}
-& (a\vee d) \\
-\wedge & (\neg a\vee \neg d)
-\end{array}
-\right\}\wedge\left\{
-\begin{array}{cc}
-& (\neg e\vee c) \\
-\wedge & (\neg e\vee d) \\
-\wedge & (e\vee \neg c\vee\neg d)
-\end{array}
-\right\}
-% \end{equation}
-\end{multline}
+% For a circuit $C$ with an INV $d=\neg a$ and an AND2 $e=d\wedge c$,
+% its Tseitin encoding is shown in Equation (\ref{eqn_andinv}).
+% \begin{multline}\label{eqn_andinv}
+% % \begin{equation}\label{eqn_andinv}
+% Tseitin(C)=\\
+% \left\{
+% \begin{array}{cc}
+% & (a\vee d) \\
+% \wedge & (\neg a\vee \neg d)
+% \end{array}
+% \right\}\wedge\left\{
+% \begin{array}{cc}
+% & (\neg e\vee c) \\
+% \wedge & (\neg e\vee d) \\
+% \wedge & (e\vee \neg c\vee\neg d)
+% \end{array}
+% \right\}
+% % \end{equation}
+% \end{multline}
 
 \section{Threat model}
 \subsection{System assumption}
@@ -621,21 +619,18 @@ while SAT solover is deployed in public Cloud to solve the CNF formula and retur
 
 Algorithms \cite{csLiequivalency,csOstrowski,csRoy,csFu}
 have been proposed to extract and utilize circuit structure in CNF formula.
-Circuit structure extraction algorithms,
-presented by Roy et al. \cite{csRoy} and Fu et al.\cite{csFu},
+Circuit structure extraction algorithms\cite{csRoy,csFu},
 are based on subgraph isomorphism and pattern matching technique,
 and can recover lots of circuits from CNF formula.
 These pattern matching or subgraph isomorphism techniques are available freely.
-In public Cloud computing environment, adversary, who has controled VM\cite{InformationLeakageofCloud,AMI},
+In public Cloud computing environment, adversary who has controled VM\cite{InformationLeakageofCloud,AMI}
 may use these algorithms to recover the circuit structure from the CNF formula.
 
-As pointed out by literature \cite{HV-grid}, since solutions to difficult instances of NP-complete problems are rare events,
+According to \cite{HV-grid}, since solutions to difficult instances of NP-complete problems are rare events,
 with the practical importance of many of these problems, hoarding participants may keep these solutions for economic value.
 
 Therefore both CNF formula and its solutions should  be treated as privacy that should be preserved.
-
-As a result,
-in our research,
+So in our research,
 we assume there are
 curious and hoarding participants\cite{HV-grid} in public Cloud.
 That means,
@@ -646,8 +641,8 @@ And if the solution are valuable, they may keep the computation results and leak
 
 \section{System design}
 
-\subsection{Privacy-preserving SAT solving framework based on obfuscation}
-When we design the Cloud or grid oriented SAT solving framework, the following four goals are taken into consideration:
+\subsection{Privacy-preserving SAT solving based on obfuscation}
+When we design the Cloud oriented SAT solving framework, the following four goals are taken into consideration:
 \begin{enumerate}
  \item 
 %First,
@@ -668,7 +663,7 @@ As for the resilence\cite{obfuscationBible}, the framework should prevent accura
 As for the cost, the framework should not incur too much overhead.
 \end{enumerate}
 
-According to these goals,
+Thus,
 we present a privacy-preserving SAT solving framework based on CNF formula obfuscation.
 To obfuscate the CNF formula,
 according to SSH rules and CSA strategies described below,
@@ -679,17 +674,15 @@ to attain goals  \ref{g2}) and \ref{g3}).
 SSH rules and CSA strategies are described in \textit{\ref{embeded rules})} and \textit{\ref{embeded strategy})}.
 
 \begin{definition}[Singular Husk formula]\label{Singular-Husk-formula-definition}
-Singular Husk formula is a CNF formula with only one solution,
-and assignments of variables in this solution is non-uniform,
+Singular Husk formula is a CNF with only one solution,
+and assignments of variables is non-uniform,
 that is,
 not all 0 or all 1.
 \end{definition}
 
 \begin{definition}[Husks formula]\label{Husks-formula-definition}
 Husks formula is a satisfiable CNF formula with more than one solution,
-and assignments of variables in each of its solutions are non-uniform,
-that is,
-not all 0 or all 1.
+and assignments of variables in every solution are non-uniform.
 \end{definition}
 
 % \begin{definition}[unique cluster shaped solution]
@@ -729,17 +722,14 @@ $\textbf{Step 4}$, MAPPER and VERIFIER algorithm maps $S_O$ to $S_C$, and check 
 % $\mathbf{Step 4}$, MAPPER and VERIFIER algorithm maps $S_O$ to $S_C$,the sulution  of $F_C$, and check if $F_C$ is satisfied under $S_C$.
 
 The \textbf{Step 3} run in public Cloud, while other steps run in trusted private Cloud.
-
-The GENERATOR, OBFUSCATOR, MAPPER and VERIFIER algorithms will be described in Subsection \ref{genhusk}, \ref{obfuscating}
+These algorithms will be described in Subsection \ref{genhusk}, \ref{obfuscating}
 and \ref{mappping} respectively.
 
 \subsection{Husks formula Generation}\label{genhusk}
 
-There are several methods to generate satisfiable CNF formula\cite{microgenSAT,genSAT}.
-In this paper, Husks formula (in Definition \ref{Husks-formula-definition}) is constructed based on prime factorization method,
-as described in literature\cite{genSAT}.
-
-GENERATOR algorithm to generate Husks formula is shown in Algorithm \ref{algo2_gen}.
+% There are several methods to generate satisfiable CNF formula\cite{microgenSAT,genSAT}.
+In this paper, Husks formula is constructed based on prime factorization method\cite{genSAT},
+as shown in Algorithm \ref{algo2_gen}.
 %\subsubsection{Generating Husks formula with unique solution}
 %Husks formula is a special satisfied CNF formula,which has unique solution.
 %\textbf{First},
@@ -813,13 +803,13 @@ Before discussing them, some concepts should be introduced first.
 CNF signature of gate $g$ is its Tseitin encoding $Tseitin(g)$.
 Each clause in CNF signature is called characteristic clause.
 A characteristic clause containing all variables in CNF signature is a \textbf{key clause}.
-Variable corresponding to output of a gate is called \textbf{output variable}.
+Variable of a gate's output is \textbf{output variable}.
 \end{definition}
 
-For AND2 in Equation (\ref{eqn_andinv}), 
-$\neg e\vee c$ is a characteristic clause.
-Clause $e\vee \neg c\vee\neg d$ is a key clause.
-$e$ is an output variable.
+% For AND2 in Equation (\ref{eqn_andinv}), 
+% $\neg e\vee c$ is a characteristic clause.
+% Clause $e\vee \neg c\vee\neg d$ is a key clause.
+% $e$ is an output variable.
 
 As metioned in \cite{csRoy}, 
 gates with the same characteristic functions will be encoded into the same CNF signature.
@@ -839,12 +829,11 @@ gates with the same characteristic functions will be encoded into the same CNF s
 % or minus when clause contains negative variable.
 % \end{definition}
 With these definitions, 
-Roy et al. \cite{csRoy}
+Roy\cite{csRoy}
 first converts the CNF to an Hypergraph $G$, 
 and then matches the CNF signatures of all types of gates in $G$ to recover gates by subgraph isomorphism, 
 finally creates a maximal independent set instance to represent the recovered circuit.
-
-Fu et al.\cite{csFu} presents another algorithm that
+Fu\cite{csFu} presents another algorithm that
 first detects all possible gates with key clause and CNF signature based pattern matching, 
 and then constructs a maximum acyclic combinational circuit by selecting a maximum subset of matched gate.
 
@@ -856,7 +845,7 @@ To prevent information carried by CNF formula and its solution from leakage, a p
 the scheme is based on the following facts and anticipations:
 \\$\textbf{Fact 1:}$ Changing CNF signature and key clause in CNF formula will make circuit recovering
 based on pattern matching or subgraph isomorphism impossible.
-\\$\textbf{Fact 2:}$ Solution space should not be under-approximated after obfuscation, otherwise the result will be misleading even for real user.
+\\$\textbf{Fact 2:}$ Solution space should not be under-approximated after obfuscation, otherwise the result will be incorrect.
 \\$\textbf{Anticipation 1:}$ According to Fact 2, solution space have to be over-approximated  after obfuscation, so as to mislead hoarding participants in public Cloud.
 \\$\textbf{Anticipation 2:}$ The solution of obfuscated CNF formula should be easily mapped back to the original formula.
 % \begin{enumerate}
@@ -875,13 +864,13 @@ The proposed scheme, denoted as OBFUSCATOR, generates a new CNF formula $F_O$,
 by embedding Husks formula $F_H$ into the original formula $F_C$, 
 with Circuit Structure Aware(CSA) strategy and Solution Space Hold(SSH) rules .
 By CSA strategy, 
-the scheme changes the clause set and literal set in clauses of $F_C$, 
+the scheme changes the clause set and literal set of $F_C$, 
 to prevent its structure from being recovered.
 By SSH rules, 
 the solution space is over-approximated after obfuscation, 
 so as to prevent its accurate solutions from being known even by SAT solver in public Cloud.
 % We will describe them below in \ref{embeded rules}) and \ref{embeded strategy}) respectively. 
-We will describe them below in Subsection \textit{\ref{embeded rules}}) and \textit{\ref{embeded strategy}}) respectively. 
+We will describe them in Subsection \textit{\ref{embeded rules}}) and \textit{\ref{embeded strategy}}) respectively. 
 
 \subsubsection{Solution Space Hold rules}\label{embeded rules}
 % In order to blend a CNF formula $F_C$ with $F_H$ seamlessly, 
@@ -895,9 +884,8 @@ We outsource CNF formula generated from SAT problem,
 and wish SAT solver deployed in Cloud to give solutions to the SAT problem,
 without knowing exactly what the SAT problem is and what the exactly solution is.
 
-A simple approach is to blend CNF formula of real SAT problem with that of another satifiable SAT problem,
-and outsource the blended CNF formula.
-Unfortunately, partition based technique \cite{Partition} can easily separate the two undependent formulas. 
+% A simple approach is to blend CNF formula of real SAT problem with that of another satifiable SAT problem.
+% But partition based technique \cite{Partition} can easily separate the two undependent formulas. 
 
 Let's consider an incremental approach:
 An arbitrary formula $F_C$,
@@ -914,8 +902,8 @@ On the contrary,
 adding new clauses which consist variables in $F_C$,
 may narrow down its solution space. 
 How can we ensure all the solutions of $F_C$ still in new formula?
-Before giving answer to this problem,
-following concepts should be clarified.
+Before answering this question,
+we need some new concepts.
 
 \begin{definition}[$ Solution~S_C \subseteq Solution~S_O$]~
 CNF formula $F_C$ and $F_O$ have $n_{F_C}$ common variables $x_1,...,x_{n_{F_C}}$ and
@@ -957,21 +945,21 @@ so as to make the solution space over-approximated after obfuscation.
 \begin{enumerate}
 \item \textbf{Rule 1}:
 For any clause $c\in F_{C}$, 
-take one variable from $R_H$, 
-and insert it into $c$ according to the following rule:
-If assignment of variable is $T$ in $R_H$, insert its negative literal;
-If assignment of variable is $F$ in $R_H$, insert its positive literal.
+take one variable from $R_H$.
+% and insert it into $c$ according to the following rule:
+If this variable is $T$ in $R_H$, insert its negative literal into $c$;
+Otherwise, insert its positive literal.
 Then clause $c$ is replaced with the resulted clause.
 \item \textbf{Rule 2}:
 %generating new clauses with literals from $R_H$ and output variables in $F_C$ according to the following rule:
 Generating new clauses with literals from $R_H$ and variables in $F_C$ according to the following rule:
-If assignment of variable is $T$ in $R_H$, insert positive literal into clause;
-If assignment of variable is $F$ in $R_H$, insert negative literal into clause.
+If this variable is $T$ in $R_H$, insert its positive literal into clause;
+Otherwise, insert its negative literal.
 %Literal of output variable is extracted directly from the key clause and inverted.
 \end{enumerate}
 
 \begin{definition}[${\textbf{Obf(}}F_C,F_H,R_H\textbf{)}$]\label{OBFUSCATORSSH}
-For arbitrary formula $F_C$, and satisfiable formula $F_H$ with $R_H$ as one of its assignments, 
+For formula $F_C$, and satisfiable formula $F_H$ with $R_H$ as one of its assignments, 
 $Obf(F_C,F_H,R_H)$ is the result of applying SSH Rules when blending $F_C$ with $F_H$.
 If $F_H$ is a Singular Husk formula and $R_H$ is its unique solution, $Obf(F_C,F_H,R_H)$ is called ${\textbf{SSE obfuscation}}$.
 If $F_H$ is Husks formula and $R_H$ is one of its solutions, $Obf(F_C,F_H,R_H)$ is called ${\textbf{SSO obfuscation}}$.
@@ -1005,7 +993,7 @@ $R_H$ is one of solutions of $F_H$.
 According to Theorem \ref{SSEtheorem} and Definition \ref{SSEdefinition}, we have:
 % inference \ref{SSEinference}.
 \begin{inference}\label{SSEinference}
-For arbitrary CNF formula $F_C$, Singular Husk formula $F_{_SH}$, if
+For CNF formula $F_C$, Singular Husk formula $F_{_SH}$, if
 $V_{F_C}\cap V_{F_{_SH}}\equiv \phi$, and
 $R_{_SH}$ is the unique solution of $F_{_SH}$,
 \textbf{then} $Obf(F_C,F_{_SH},R_{_SH}) \equiv_{_{SSE}} F_C$.
@@ -1015,13 +1003,10 @@ Theorem \ref{SSEtheorem} and \ref{SSOtheorem} will be proved in Subsection \ref{
 
 An obfuscated CNF formula $F_O=Obf(F_C,F_H,R_H)$ generated by SSO obfuscation 
 consists of all the variables of $F_C$ and $F_H$.
-
 If variables from $F_H$ are assigned with $R_H$, then we have:
+$F_O(R_H/V_{F_O})=Obf(F_C,F_H(R_H/V_{F_H}),R_H)$ 
 
-$F_O(R_H/V_{F_O})
-=Obf(F_C,F_H(R_H/V_{F_H}),R_H)$ 
-
-Accdording to Lemma \ref{HE} in Subsection \ref{correctness}, 
+According to Lemma \ref{HE} in Subsection \ref{correctness}, 
 $F_H(R_H/V_{F_H})$ can be expressed as a Singular Husk formula with unique solution $R_H$.
 According to Inference \ref{SSEinference}, for CNF formulas $F_C$  and its obfuscated formula $F_O$, we have:
 \begin{enumerate}
@@ -1031,7 +1016,7 @@ According to Inference \ref{SSEinference}, for CNF formulas $F_C$  and its obfus
  And the solution of $F_C$  can be obtained by projecting solution of $F_O$ into variables set of $F_C$ .
 \end{enumerate}
 
-As a result, each solution of $F_O$ can be partitioned into solutions of $F_C$ and $F_H$. So
+Thus, each solution of $F_O$ can be partitioned into solutions of $F_C$ and $F_H$. So
 the solution of $F_C$ can be extracted from that of $F_O$ by projection on variables set of $F_C$.
 
 If variables from $F_H$ are assigned with other solution except $R_H$, that is $(S_H\neq R_H)$, then we have:
@@ -1173,7 +1158,7 @@ corresponding clause sets denoted as \textbf{$F_{Ck}$} and \textbf{$F_{Cn}$}.
 % $~~~~R_H$ is one sultion of $F_H$.
 \textbf{Step 1}: 
 For key clause $c\in F_{Ck}$, 
-take one literal lit from $R_H$, 
+take one literal $lit\in R_H$, 
 and insert $\neg lit$ into $c$ (at line \ref{rule1}, \ref{rule1-2} in Algorithm \ref{algo_obs})  according to  SSH rule 1.
 % if variable is $T$ in $R_H$, insert its negative literal;
 % if variable is $F$ in $R_H$, insert its positive literal.
@@ -1241,19 +1226,21 @@ $Hlit=lit>0?rvar:\neg rvar$\;\label{verifer1}
 \caption{MAPPER and VERIFIER}
 \label{algo_map}
 \end{algorithm}
+  
 \section{Correctness, Effectiveness and Complexity}
 \subsection{Correctness}\label{correctness}
+
 According to Theorems \ref{SSEtheorem} and \ref{SSOtheorem}, under SSH rules, 
 original CNF formula can be blended with Husks formula seamless, without narrowing down the solution space.
 In this section, we prove these theorems.
-First of all, let's introduce some lemmas.
+First let's introduce some lemmas.
 
 
 % \begin{lemma}[Husks Equation]\label{HE}
 % 
 % For Husks formula ${F_H}$ with one of its solutions $S_H$,
 % and $|V_{F_H}|= n$, and \\
-% $S_H$=$\{(y_i=B_i,y_j=B_j)|B_i\equiv T, B_j\equiv F, ~~1\leqslant i, j\leqslant n \}$.\\
+% $S_H=\{(y_i=B_i,y_j=B_j)|B_i\equiv T, B_j\equiv F, ~~1\leqslant i, j\leqslant n \}$.\\
 % let $F_{_SH}=F_H\wedge (\bigwedge_{1\leqslant i\leqslant n}^{B_i\equiv T}y_i)\wedge(\bigwedge_{1\leqslant j\leqslant n}^{B_j\equiv F}\neg y_j)$\\
 % then $F_{_SH} \vdash F_H $.
 % \end{lemma}
@@ -1264,9 +1251,9 @@ First of all, let's introduce some lemmas.
 % $F_{_SH}=(\bigwedge_{1\leqslant i\leqslant n}^{B_i\equiv T}y_i)\wedge(\bigwedge_{1\leqslant j\leqslant n}^{B_j\equiv F}\neg y_j$,\\ 
 % then must have \\
 % $\{(y_i=T,y_j=F)|B_i\equiv T, B_j\equiv F, ~~1\leqslant i, j\leqslant n \}$,\\
-% let $S_H$=$\{(y_i=T,y_j=F)|B_i\equiv T, B_j\equiv F, ~~1\leqslant i, j\leqslant n \}$,\\
+% let $S_H=\{(y_i=T,y_j=F)|B_i\equiv T, B_j\equiv F, ~~1\leqslant i, j\leqslant n \}$,\\
 % let $B_i$ substitutes $T$, $B_j$ substitutes $F$,\\
-% then  $S_H$=$\{(y_i=B_i,y_j=B_j)|B_i\equiv T, B_j\equiv F, ~~1\leqslant i, j\leqslant n\}$\\
+% then  $S_H=\{(y_i=B_i,y_j=B_j)|B_i\equiv T, B_j\equiv F, ~~1\leqslant i, j\leqslant n\}$\\
 % $S_H$ is one solution of $F_H$, then  $F_H(S_H/V_{F_H}) $ is true.\\
 % then $F_{_SH} \vdash F_H $.
 % 
@@ -1279,17 +1266,14 @@ First of all, let's introduce some lemmas.
 For Husks formula ${F_H}$ and $|V_{F_H}|= n$,
 with its all $m$ solutions $\{S_{H_l}|1\leqslant l\leqslant m\}$,
 and $S_{H_l}=\{y_k=B_{l_k}|B_{l_k} \in \{T,F\}, 1\leqslant k\leqslant n\}$.
-
-For each $S_{H_l}$, let $F_{slH}=
-(\bigwedge_{1\leqslant i\leqslant n}^{B_{l_i}\equiv T}y_{i})\wedge 
+For each $S_{H_l}$, let $F_{slH}=(\bigwedge_{1\leqslant i\leqslant n}^{B_{l_i}\equiv T}y_{i})\wedge 
 (\bigwedge_{1\leqslant j\leqslant n}^{B_{l_j}\equiv F}\neg y_{j})$,
-
 and $F_{_SH}=\bigvee_{1\leqslant l\leqslant m}F_{slH}$,
-
-\textbf{then}  $F_{_SH} \equiv F_H $.
+we have $F_{_SH} \equiv F_H $.
 \end{lemma}
 
-\begin{proof} \\
+\begin{proof} 
+
 1) Since $F_{_SH} \equiv T$ then there must exist
 % $F_{slH}\equiv T$, for
 \begin{equation}
@@ -1305,10 +1289,12 @@ Let $B_i$, $B_j$ substitutes $T$ in $y_{i}=T$ and $F$ in $y_{j}=F$ respectively,
 \begin{equation}
 S_{H_l}=\{(y_i=B_{l_i},y_j=B_{l_j})|B_{l_i}\equiv T, B_{l_j}\equiv F, 1\leqslant i, j\leqslant n\} 
 \end{equation}
-Since $S_{H_l}$ is one solution of $F_H$, then  $F_H(S_H/V_{F_H}) $ is true. thus we have:
+$S_{H_l}$ is one solution of $F_H$, so $F_H(S_H/V_{F_H}) $ is true.
+So:
 \begin{equation}\label{left}
  F_{_SH} \vdash F_H
 \end{equation}
+
 2) Since $F_H\equiv T$, then there exists a solution of $F_H$,
 shown in Equation (\ref{solution_hl}), that make $F_H(S_{H_1}/V_{F_H})$ true.
 \begin{equation}\label{solution_hl}
@@ -1340,22 +1326,20 @@ According to Equation (\ref{left}) and (\ref{right}), we have:
 \begin{lemma}[Singular Husk Equation(SHE)]\label{SHE}
 
 For singular Husk formula ${F_H}$ with $|V_{F_H}|= n$,
-and unique solutions $S_H$=$\{(y_i=B_i,y_j=B_j)|B_i\equiv T, B_j\equiv F, 1\leqslant i, j\leqslant n \}$.
-
-let $F_{_SH}=F_H\wedge (\bigwedge_{1\leqslant i\leqslant n}^{B_i\equiv T}y_i)\wedge(\bigwedge_{1\leqslant j\leqslant n}^{B_j\equiv F}\neg y_j)$
-
+and unique solutions $S_H=\{(y_i=B_i,y_j=B_j)|B_i\equiv T, B_j\equiv F, 1\leqslant i, j\leqslant n \}$.
+Let $F_{_SH}=F_H\wedge (\bigwedge_{1\leqslant i\leqslant n}^{B_i\equiv T}y_i)\wedge(\bigwedge_{1\leqslant j\leqslant n}^{B_j\equiv F}\neg y_j)$,
 \textbf{then} $F_H \equiv F_{_SH}$.
 \end{lemma}
-\begin{proof}
-\textsl{Abbr}. Similar to Lemma \ref{HE}.
-\end{proof}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% \begin{proof}
+Its proof is similar to Lemma \ref{HE}.
+% \end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \begin{lemma}[Singular Husk Equation(SHE)]\label{SHE}
 % 
 % For singular Husk formula ${F_H}$ with $|V_{F_H}|= n$,
 % and unique solutions $S_H$,
-% with $S_H$=$\{(y_i=B_i,y_j=B_j)|B_i\equiv T, B_j\equiv F, 1\leqslant i, j\leqslant n \}$.
+% with $S_H=\{(y_i=B_i,y_j=B_j)|B_i\equiv T, B_j\equiv F, 1\leqslant i, j\leqslant n \}$.
 % let $F_{_SH}=F_H\wedge (\bigwedge_{1\leqslant i\leqslant n}^{B_i\equiv T}y_i)\wedge(\bigwedge_{1\leqslant j\leqslant n}^{B_j\equiv F}\neg y_j)$
 % 
 % \textbf{then} $F_H \equiv F_{_SH}$.
@@ -1368,7 +1352,7 @@ let $F_{_SH}=F_H\wedge (\bigwedge_{1\leqslant i\leqslant n}^{B_i\equiv T}y_i)\we
 % 1)$F_H \vdash F_{_SH}$
 % 
 % $F_H\equiv T$, $S_H$ is unique solution, and\\  
-% $S_H$=$\{(y_i=B_i,y_j=B_j)|B_i\equiv T, B_j\equiv F, 1\leqslant i, j\leqslant n \}$.\\
+% $S_H=\{(y_i=B_i,y_j=B_j)|B_i\equiv T, B_j\equiv F, 1\leqslant i, j\leqslant n \}$.\\
 % let $F_{_{lS}H}=(\bigwedge_{1\leqslant i\leqslant n}^{B_i\equiv T}y_i)\wedge(\bigwedge_{1\leqslant j\leqslant n}^{B_j\equiv F}\neg y_j)$,
 % then $F_{_{lS}H} \equiv T $.\\
 % let $F_{_SH}=F_H\wedge F_{_{lS}H}$, then $F_{_SH}\equiv T$.
@@ -1378,9 +1362,9 @@ let $F_{_SH}=F_H\wedge (\bigwedge_{1\leqslant i\leqslant n}^{B_i\equiv T}y_i)\we
 % 
 % $F_{_SH}\equiv T$,
 % and $F_{_SH}=(\bigwedge_{1\leqslant i\leqslant n }^{B_i\equiv T}y_i)\wedge(\bigwedge_{1\leqslant j\leqslant n}^{B_j\equiv F}\neg y_j)$ \\
-% then $S_H$=$\{(y_i=T,y_j=F)|B_i\equiv T, B_j\equiv F, 1\leqslant i, j\leqslant n \}$ is unique solution of $F_{_SH}$.\\  
+% then $S_H=\{(y_i=T,y_j=F)|B_i\equiv T, B_j\equiv F, 1\leqslant i, j\leqslant n \}$ is unique solution of $F_{_SH}$.\\  
 % let $B_i$ substitutes $T$, $B_j$ substitutes $F$,
-% then \\ $S_H$=$\{(y_i=B_i,y_j=B_j)|B_i\equiv T, B_j\equiv F, 1\leqslant i, j\leqslant n \}$\\
+% then \\ $S_H=\{(y_i=B_i,y_j=B_j)|B_i\equiv T, B_j\equiv F, 1\leqslant i, j\leqslant n \}$\\
 % Since $S_H$ is solution of $F_H$, then  $F_H(S_H/V_{F_H})\equiv T$.\\
 % So $F_H \vdash F_{_SH}$
 % \\
@@ -1392,7 +1376,6 @@ let $F_{_SH}=F_H\wedge (\bigwedge_{1\leqslant i\leqslant n}^{B_i\equiv T}y_i)\we
 % 
 % %\textit{end proof.}
 % \end{proof}
-
 % \begin{lemma}[Husks Equation(HE)]\label{HE}
 % 
 % For Husks formula ${F_H}$ and $|V_{F_H}|= n$,
@@ -1414,9 +1397,9 @@ let $F_{_SH}=F_H\wedge (\bigwedge_{1\leqslant i\leqslant n}^{B_i\equiv T}y_i)\we
 % (\bigwedge_{1\leqslant i\leqslant n}^{B_{l_i}\equiv T}y_{i})\wedge 
 % (\bigwedge_{1\leqslant j\leqslant n}^{B_{l_j}\equiv F}\neg y_{j})$,\\
 % then we have 
-% $S_H$=$\{y_{i}=T,y_{j}=F|B_{l_i}\equiv T, B_{l_j}\equiv F, 1\leqslant i, j\leqslant n \}$,\\
+% $S_H=\{y_{i}=T,y_{j}=F|B_{l_i}\equiv T, B_{l_j}\equiv F, 1\leqslant i, j\leqslant n \}$,\\
 % let $B_i$ substitutes $T$ in $y_{i}=T$, $B_j$ substitutes $F$ in $y_{j}=F$,\\
-% then we have $S_H$=$\{(y_i=B_{l_i},y_j=B_{l_j})|B_{l_i}\equiv T, B_{l_j}\equiv F, 1\leqslant i, j\leqslant n\}$\\
+% then we have $S_H=\{(y_i=B_{l_i},y_j=B_{l_j})|B_{l_i}\equiv T, B_{l_j}\equiv F, 1\leqslant i, j\leqslant n\}$\\
 % $S_H$ is one solution of $F_H$, then  $F_H(S_H/V_{F_H}) $ is true.\\
 % So $F_{_SH} \vdash F_H $.
 % \\
@@ -1437,8 +1420,7 @@ let $F_{_SH}=F_H\wedge (\bigwedge_{1\leqslant i\leqslant n}^{B_i\equiv T}y_i)\we
 %  
 % %\textit{end proof.}
 % \end{proof}
-
-% $F_H$ and its one solution $R_H$=$\{(y_1=B_1,...,y_n=B_n), B_k \in \{T,F\}, 1\leqslant k\leqslant n\}$.\\
+% $F_H$ and its one solution $R_H=\{(y_1=B_1,...,y_n=B_n), B_k \in \{T,F\}, 1\leqslant k\leqslant n\}$.\\
 %         and its other all $m-1$ solutions\\
 %         $S_{H_l}=\{(y_1=B_{l_1},...,y_n=B_{l_n}), B_{l_k} \in \{ T,F \}, 1\leqslant l\leqslant m-1, 1\leqslant k\leqslant n\}$. 
 %         
@@ -1453,16 +1435,14 @@ while each solution clause is conjunction of literals in the solution.
 
 \begin{lemma}[OR Hold Obfuscation]\label{ORrelation-Holding-Obfuscation}
 For formula $F_C$ and $F_{_RH}\vee F_{_SH}$, with $R_H$ is an assignment of $F_{_RH} \vee F_{_SH}$,
-then
-
-$Obf(F_C,F_{_RH}\vee F_{_SH},R_H)\equiv Obf(F_C,F_{_RH},R_H) \vee Obf(F_C,F_{_SH},R_H)$
+then $Obf(F_C,F_{_RH}\vee F_{_SH},R_H)\equiv Obf(F_C,F_{_RH},R_H) \vee Obf(F_C,F_{_SH},R_H)$
 \end{lemma}
 \begin{proof}
 Assume
 \begin{enumerate}
- \item[-]$F_C$=$F_{Ck} \wedge F_{Cn}$,  $F_{Ck}$= $\bigwedge_{1}^{m}(a_i\vee X_i$).  
- \item[-]$F_H$=$F_{_RH}\vee F_{_SH}$
- \item[-]$R_H$=$\{y_j=B_j| B_j \in \{T,F\}, 1\leqslant j\leqslant n\}$.
+ \item[-]$F_C=F_{Ck} \wedge F_{Cn}$,  $F_{Ck}$= $\bigwedge_{1}^{m}(a_i\vee X_i$).  
+ \item[-]$F_H=F_{_RH}\vee F_{_SH}$
+ \item[-]$R_H=\{y_j=B_j| B_j \in \{T,F\}, 1\leqslant j\leqslant n\}$.
  \item[-]Let $F_O=Obf(F_C,F_H,R_H)$
  \end{enumerate}
 % \begin{enumerate}
@@ -1471,7 +1451,7 @@ Assume
 % \item[-] Let $F_O=Obf(F_C,F_H,R_H)$
 % \end{enumerate}
 %  ~~~~then $F_O=(F_C\wedge F_H) \vee Obf(F_C,F_{_SH} ,R_H$
-According to \textbf{Procedure} \ref{obsprocedure}, construct $F_O$ as following 3 \textbf{steps}.
+According to \textbf{Procedure} \ref{obsprocedure}, construct $F_O$ in 3 \textbf{steps}.
 \begin{enumerate}
 \item With $(y_j\equiv B_j)\in$ $R_H$, $(a_i\vee X_i) \in F_{Ck}$ and Rule 1:
 \begin{itemize}
@@ -1520,13 +1500,11 @@ F_O \equiv Obf(F_C,F_{_RH} ,R_H)
 \begin{lemma}[AND Hold Obfuscation]\label{ANDrelation-Holding-Obfuscation}
 For formula $F_C$ and $F_{_RH}\wedge F_{_SH}$, 
 with $R_H$ is an assignment of $F_{_RH} \wedge F_{_SH}$, then
-
-$Obf(F_C,F_{_RH} \wedge F_{_SH},R_H) $ \\
-$\equiv Obf(F_C,F_{_RH},R_H) \wedge Obf(F_C,F_{_SH} ,R_H)$
+$Obf(F_C,F_{_RH} \wedge F_{_SH},R_H) \equiv Obf(F_C,F_{_RH},R_H) \wedge Obf(F_C,F_{_SH} ,R_H)$
 \end{lemma}
-\begin{proof} 
-\textsl{Abbr.}
-Similar to Lemma \ref{ORrelation-Holding-Obfuscation}.
+
+% \begin{proof} 
+Its proof is similar to Lemma \ref{ORrelation-Holding-Obfuscation}.
   % \textbf{Assume}
 % \begin{enumerate}
 % \item[-] Clause $A=a\vee X$,and clause $B=b$, while $b\notin X$,arbitary formula $F_{Cn},F_{_SH}$
@@ -1562,23 +1540,21 @@ Similar to Lemma \ref{ORrelation-Holding-Obfuscation}.
 % $F_O  = Obf(F_C,F_{_RH},R_H)\wedge Obf(F_C,F_{_SH},R_H)$
 % 
 % \textit{end proof.}
-\end{proof}
-
+% \end{proof}
 According to Lemma \ref{ORrelation-Holding-Obfuscation} and \ref{ANDrelation-Holding-Obfuscation},
 for Husk formula $F_H$,  AND and OR relation are true after obfuscation.
 
 \begin{lemma}[Unique Positive literal SSE Obfuscation]\label{UPSSE-lemma}
 % \textbf{(Unique Positive literal SSE Obfuscation)}
 For any CNF formula $F_C$, we have
-
 \textbf{$Obf(F_C,B=b,{b\equiv T})\equiv F_C\wedge b$}
 \end{lemma}
 \begin{proof}
 %\textbf{Unique Positive literal SSE Obfuscation (UPSSE)}:\label{UPSSE-lemma}
 Assume
 \begin{enumerate}
- \item[-]$F_C$=$F_{Ck} \wedge F_{Cn}$, $F_{Ck}=A$, $A=a\vee X$.  
- \item[-]$F_H$=$B$, $B=b$~while $b\notin X$, $R_H$=$\{b\equiv T\}$.
+ \item[-]$F_C=F_{Ck} \wedge F_{Cn}$, $F_{Ck}=A$, $A=a\vee X$.  
+ \item[-]$F_H=B$, $B=b$~while $b\notin X$, $R_H=\{b\equiv T\}$.
  \item[-]Let $F_O=Obf(F_C,F_H,R_H)$
  \end{enumerate}
 % \begin{enumerate}
@@ -1587,7 +1563,8 @@ Assume
 % \item[-] Let $F_O=Obf(F_C,F_H,R_H)$
 % \end{enumerate}
 %  ~~~~then $F_O=F_C\wedge F_H$.
-According to \textbf{Procedure} \ref{obsprocedure}, Construct $F_O$ as following 3 \textbf{steps}.
+According to \textbf{Procedure} \ref{obsprocedure}, 
+construct $F_O$ in 3 \textbf{steps}.
 \begin{enumerate}
 \item With $(b\equiv T) \in $ $R_H$ and Rule 1, 
 we have clause $C=A\vee \neg b$, and $S_3=C$.
@@ -1617,14 +1594,13 @@ F_O  =  F_C \wedge b                                    &   &
 
 \begin{lemma}[Unique Negative literal SSE Obfuscation]\label{UNSSE-lemma}
 For any CNF formula $F_C$, we have
-
- \textbf{$Obf(F_C,B=\neg b,{b=F})=F_C\wedge \neg b$}
+ \textbf{$Obf(F_C,B\equiv\neg b,{b\equiv F})\equiv F_C\wedge \neg b$}
 % % Lemma \ref{UNSSE-lemma} can be expressed as following:
 \end{lemma}
-\begin{proof}
- \textsl{Abbr.}
-  Similar to Lemma \ref{UPSSE-lemma}.
-\end{proof}
+% \begin{proof}
+
+Its proof is similar to Lemma \ref{UPSSE-lemma}.
+% \end{proof}
 % \begin{proof}
 % 
 % \begin{enumerate}
@@ -1633,7 +1609,6 @@ For any CNF formula $F_C$, we have
 % \item Let $F_O=Obf(F_C,F_H,R_H)$
 % \end{enumerate}
 %  ~~~~then $F_O=F_C\wedge F_H$.
-
 % According to \textbf{Procedure} \ref{obsprocedure}, Construct $F_O$ as following 3 steps.
 % \begin{enumerate}
 % \item[Step1]
@@ -1664,41 +1639,39 @@ For any CNF formula $F_C$, we have
 % 
 % \textit{end proof.}
 % \end{proof}
-
 According to Lemma \ref{UPSSE-lemma} and \ref{UNSSE-lemma},
 after unique literal obfuscation, solution space is unchanged.
 
-Then let's discuss SSE Obfuscation based on singular Husk formula,
+Let's discuss SSE Obfuscation based on singular Husk formula,
 and SSO Obfuscation based on Husks formula.
 
 \textbf{Theorem \ref{SSEtheorem} Solution Space Equated (SSE) Obfuscation}
-
-For arbitrary CNF formula $F_C$, and Singular Husk formula $F_{_SH}$, if
+For CNF formula $F_C$, and Singular Husk formula $F_{_SH}$, if
 \begin{enumerate}
- \item[-] $V_{F_C}$ $\cap$ $V_{F_H}$ = $\phi$, $R_H$ is unique solutions of $F_H$.
+ \item[-] $V_{F_C}\cap V_{F_H}\equiv \phi$, $R_H$ is unique solutions of $F_H$.
  \item[-] $F_O=Obf(F_C,F_H,R_H)$.
 \end{enumerate}
 ~~~then  $F_C\wedge F_H \equiv F_O$.
 \begin{proof}
 
-Assume $R_H$=$\{y_k=B_k| B_k \in \{T,F\}, 1\leqslant k\leqslant n\}$.
+Assume $R_H=\{y_k=B_k| B_k \in \{T,F\}, 1\leqslant k\leqslant n\}$.
          
-According to \textbf{Procedure} \ref{obsprocedure}, constuct $F_O$ as following \textbf{steps}:
+According to \textbf{Procedure} \ref{obsprocedure}, constuct $F_O$ in 2 \textbf{steps}:
 \begin{enumerate}
 \item \label{Fop}  
-Let $F_{Op}=F_C$.  \\
+Let $F_{Op}=F_C$.  
 % for all $B_i\equiv T$, let
 for $y_i \in \{y_i|(y_i=B_{i})\in R_H \parallel B_i\equiv T)\}$, let
-\begin{itemize}
- \item[] $F_{Op}$=$Obf(F_{Op},B=y_i,{y_i\equiv B_i})$. 
-\end{itemize}
+% \begin{itemize}
+$F_{Op}=Obf(F_{Op},B=y_i,{y_i\equiv B_i})$. 
+% \end{itemize}
 \item  \label{Fonp}
-Let $F_{On}=F_{Op}$. \\
+Let $F_{On}=F_{Op}$. 
 % for all $B_j\equiv F$, let 
 for $y_j \in \{y_j|(y_j=B_j)\in R_H \parallel B_j\equiv F)\}$, let
-\begin{itemize}
- \item[] $F_{On}$= $Obf(F_{On},B=\neg y_j,{y_j\equiv B_j})$.
-\end{itemize}
+% \begin{itemize}
+$F_{On}=Obf(F_{On},B=\neg y_j,{y_j\equiv B_j})$.
+% \end{itemize}
 \item  \label{SSEFOend}
 $F_{O}=F_{On}\wedge F_H$.
 \end{enumerate}
@@ -1740,8 +1713,7 @@ F_O\equiv_{_{SSE}}  F_C
 \end{proof}
 
 \textbf{Theorem \ref{SSOtheorem} Solution Space Overapproximated (SSO) Obfuscation}
-
-For arbitrary CNF formula $F_C$, Husks formula $F_H$, if
+For CNF formula $F_C$, Husks formula $F_H$, if
 \begin{enumerate}
  \item $V_{F_C}$ $\cap$ $V_{F_H}$ = $\phi$, $R_H$ is one of $m$ solutions of $F_H$.
  \item $F_O=Obf(F_C,F_H,R_H)$.
@@ -1751,10 +1723,9 @@ For arbitrary CNF formula $F_C$, Husks formula $F_H$, if
 \begin{proof}
 
 Assume 
-        one solution of $F_H$ is $R_H$=$\{y_i=B_{R_k}|B_{R_k} \in \{T,F\}, 1\leqslant k\leqslant n\}$,
-        and its all other $m-1$ solutions $\{S_{H_l} | 1\leqslant l\leqslant m-1\}$.
+        a solution of $F_H$ is $R_H=\{y_i=B_{R_k}|B_{R_k} \in \{T,F\}, 1\leqslant k\leqslant n\}$,
+        and all other $m-1$ solutions $\{S_{H_l} | 1\leqslant l\leqslant m-1\}$.
         $S_{H_l}=\{y_k=B_{l_k}|B_{l_k}\in \{ T,F \},~1\leqslant k\leqslant n\}$.   
-        
         According to $R_H$ and $S_H$, let's define $F_{_RH}$ and $F_{_SH}$:
  %Equation (\ref{SSORH}) and \ref{SSOSH})
         \begin{equation}\label{SSORH}
@@ -1765,33 +1736,33 @@ Assume
         \begin{equation}\label{SSOSH}
          F_{_SH}=\bigvee_{1\leqslant l\leqslant m-1}(
         (\bigwedge_{1\leqslant i\leqslant n}^{B_{l_i}\equiv T}y_i)\wedge
-        (\bigwedge_{1\leqslant j\leqslant n}^{B_{l_j}\equiv F}\neg y_j))   \\ 
+        (\bigwedge_{1\leqslant j\leqslant n}^{B_{l_j}\equiv F}\neg y_j))  
 	  \end{equation}        
-According to Lemma \ref{HE}, we have:\\
+According to Lemma \ref{HE}, we have:
         \begin{equation}\label{SSOEquation}
         F_{_RH}\vee F_{_SH}\equiv F_H
         \end{equation}        
-With $F_O=Obf(F_C,F_H,R_H)$ and Equation (\ref{SSOEquation}), we have:\\  
+With $F_O=Obf(F_C,F_H,R_H)$ and Equation (\ref{SSOEquation}), we have:
         \begin{equation}\label{SSOE2}
 	F_O \equiv Obf(F_C,F_{_RH}\vee F_{_SH},R_H)
         \end{equation}
-According to Lemma \ref{ORrelation-Holding-Obfuscation} and Equation (\ref{SSOE2}), we have:\\
+According to Lemma \ref{ORrelation-Holding-Obfuscation} and Equation (\ref{SSOE2}), we have:
         \begin{equation}\label{SSOE3}
 	  F_O=Obf(F_C,F_{_RH},R_H) \vee Obf(F_C,F_{_SH},R_H)
 	\end{equation}
-According to Theorem \ref{SSEtheorem}, we have:\\
+According to Theorem \ref{SSEtheorem}, we have:
 	\begin{equation}\label{SSOE4}
 	  Obf(F_C,F_{_RH},R_H)\equiv F_C\wedge F_{_RH}
         \end{equation}
-With Equation (\ref{SSOE3}) and (\ref{SSOE4}), we have:\\
+With Equation (\ref{SSOE3}) and (\ref{SSOE4}), we have:
         \begin{equation}\label{SSOE5}
 	  F_O \equiv (F_C\wedge F_{_RH}) \vee Obf(F_C,F_{_SH},R_H)
 	\end{equation}
-With Equation (\ref{SSOE5}), we have:\\
+With Equation (\ref{SSOE5}), we have:
 	 \begin{equation}\label{SSOE6}
-	  F_C \wedge F_{_RH}\vdash_{_{SSO}} F_{O} \\
+	  F_C \wedge F_{_RH}\vdash_{_{SSO}} F_{O} 
 	\end{equation}
-Since $F_{_RH}$ is satisfiable, $V_{F_C}$ $\cap$ $V_{F_H}$ = $\phi$, with Equation (\ref{SSOE6}):\\	
+Since $F_{_RH}$ is satisfiable, $V_{F_C}$ $\cap$ $V_{F_H}$ = $\phi$:
 	 \begin{equation}\label{SSOEND}
           F_C \vdash_{_{SSO}} F_O
          \end{equation}
@@ -1799,11 +1770,11 @@ Since $F_{_RH}$ is satisfiable, $V_{F_C}$ $\cap$ $V_{F_H}$ = $\phi$, with Equati
 % \begin{enumerate}
 % \item \label{SSOFop}  let $F_{Op}=F_C$;\\
 % for $y \in \{y_i|(y_i=B_{R_i}|B_{R_i}\equiv T)\in R_H\}$,
-% let\\$F_{Op}$=$Obf(F_{Op},B=y_i,{y_i\equiv B_{R_i}})$. 
+% let\\$F_{Op}=Obf(F_{Op},B=y_i,{y_i\equiv B_{R_i}})$. 
 % \item \label{SSOFonp} let $F_{On}=F_{Op}$;\\
 % for $y \in \{y_j|(y_j=B_{R_j}|B_{R_j}\equiv F)\in R_H\}$,
 % % for all $B_j\equiv F$ in $R_H$,
-% let\\$F_{On}$=$Obf(F_{On},B=\neg y_j,{y_j\equiv B_{R_j}})$.
+% let\\$F_{On}=Obf(F_{On},B=\neg y_j,{y_j\equiv B_{R_j}})$.
 % \item \label{SSOFO}
 % % $F_{RO}=F_{Onp}$.
 % $F_O=F_{On} \vee Obf(F_C,F_{_SH} F_{_SH},R_H)$.
@@ -1876,7 +1847,6 @@ circuit structure in original CNF formula will not  be exposed to adversary.
 %While their CNF signature and hypergraph after obfuscating are shown in Figure \ref{fig_beforeafter}c) and \ref{fig_beforeafter}d).
 Figure \ref{fig_beforeafter}a) and \ref{fig_beforeafter}b) shows the CNF signatures of two AND2 gates $a$ and $e$,
 while their CNF signatures after obfuscation are shown in Figure \ref{fig_beforeafter}c) and \ref{fig_beforeafter}d).
-
 There are three types of changes:
 \begin{enumerate}
  \item
@@ -1899,19 +1869,19 @@ This makes it impossible to distinguish gates AND2 and AND3.
 
 \subsubsection{Output Camouflage by over-approximating solution space}
 According to Theorem \ref{SSOtheorem},
-the solution space after SSO obfuscation is an over-approximated version of the original one.
-That means, even SAT solver can't find out the real solution.
+the solution space after SSO obfuscation is an overapproximation of the original one.
+So even SAT solver can't find out the real solution.
 First, they can not tell real valuable variables from variables of Husks formula, 
 which are meaningless to verification.
 Second, they cannot tell if a satisfied solution means whether the original SAT problem is also satisfiable,
 because some false solutions are produced by obfuscation.
 Through overapproximation, We just turn an obvious Rare Events into a Camouflaged Rare Events, 
-as anticipation in literature \cite{HV-grid} .
+as anticipation in \cite{HV-grid} .
 
 \subsection{Complexity}
 \subsubsection{Obfuscation algorithm complexity}
 Obfuscation is implemented in Algorithm \ref{algo_obs}.
-The main procedure of Algorithm \ref{algo_obs} consists only one layer of loop,
+Its main procedure consists only one layer of loop,
 but one of it sub-procedure $\mathbf{mark}$ (Algorithm \ref{algo_mark}) consists 4 layers of loop, 
 and the runtimes of the 2 inner loops are bounded by length of clauses.
 So the complexity of the obfuscation algorithm is $O(n^2)$.
@@ -1958,17 +1928,17 @@ Szada et al. \cite{t33} extended the ringer scheme and propose methods
 to deal with cheating detection.
 
 \section{Experiments}
-Algorithms presented in this paper are implemented in language $C$.
-The experiments is conducted on a laptop with Intel Core(TM) i7-3667U CPU @ 2.00GHz, 8GB RAM.
+Algorithms are implemented in language $C$.
+The experiments are conducted on a laptop with Intel Core i7 CPU @ 2.00GHz and 8GB RAM.
+We use MiniSat as solver.
 
-We unroll circuits in ISCAS89 benchmark for 100 times and transform them into CNF formulas,
+We unroll circuits in ISCAS89 benchmark for 100 times,
 and generate Husks formula with variables number $vn=675$ and clauses number $cn=2309$,
 and then obfuscate the CNF formula by transform 2 input gates into 3 input gates.
-We use MiniSat as solver.
 
 Table \ref{fig_exp} presents experiments result on benchmarks, meaning of parameters are listed below. \\
 $~~$\textbf{vn/cn}:variable and clause number of CNF formula.\\
-$~~$\textbf{Marked Gate}:number of gates being changed in obfuscation.\\
+$~~$\textbf{Marked Gate}:number of gates being changed.\\
 $~~$\textbf{Solve Times}:SAT Solver time before and after obfuscation.\\
 $~~$\textbf{Obfuscation Times}:obfuscation time.\\
 $~~$\textbf{Map Time}:solution recovery time.
@@ -1979,13 +1949,14 @@ while solution recovery time is up to size of CNF formula,
 experiments manifest the fact.
 % Detailed information are listed in columns of \textbf{Marked~Gate}, \textbf{Obfuscation Times} and \textbf{Map~Times}.
 
-As for Asymmetric Speedup\cite{c.WANG}, for more than 60 \% of circuits, the value is more than 260\%,
+As for Asymmetric Speedup\cite{c.WANG} defined in Equation (\ref{asyncspeedup}), 
+for more than 60\% of circuits, the value is more than 260\%.
 It indicates the necessity of outsourcing complex SAT solving.
 But for some small size circuits, 
 Asymmetric Speedup is less than 1. 
 Especially for circuit s3384, 
 since the obfuscation takes lots of time to transform 139860 gates, Asymmetric Speedup is only 5.22\%.
-\begin{equation}
+\begin{equation}\label{asyncspeedup}
  Asymmetric~Speedup= \frac{Solving~Time}{Obfuscation~Times + Map~Time} 
 \end{equation}
 
@@ -1993,11 +1964,11 @@ The experiments also show that overhead of SAT solving time, incurred by obfusca
 are different among circuits.
 For more than 60 \% of circuits, overhead is less than 30\%; But for the other 40\% circuits, overhead exceed 100\%.
 
-These facts remind us at least two things: 
+These facts remind us of two issues: 
 First, since  obfuscation time is up to gates being changed, 
 delicate obfuscation algorithm which change less gates but still can mislead adversary should be studied.
 Second, since overhead on SAT solving incurred by obfuscation are different among circuit benchmarks, 
-much more attention should be pay on the impact on solving time,  when designing obfuscation algorithm. 
+much more attention should be pay on the impact on solving time. 
 %\begin{figure}
 %\centering
 %\includegraphics[width=16cm]{Experiment}
