@@ -1,0 +1,102 @@
+Web Technologies and Applications
+APWeb 2014 Workshops, SNA, NIS, and IoTS, Changsha, China, September 5, 2014, Proceedings
+Series: Lecture Notes in Computer Science, Vol. 8710
+Subseries: Information Systems and Applications, incl. Internet/Web, and HCI
+Han, W., Huang, Z., Hu, C., Zhang, H., Li, G. (Eds.)
+2014, XIV, 404 p. 158 illus.
+Available Formats:
+eBook Information
+Softcover Information
+64,00 €
+ABOUT THIS BOOK
+BUY CHAPTER
+This book constitutes the refereed proceedings of the workshops held at the 16th Asia-Pacific Web Conference, APWeb 2014, in Changsha, China, in September 2014. The 34 full papers were carefully reviewed and selected from 59 submissions. This volume presents the papers that have been accepted for the following workshops: First International Workshop on Social Network Analysis, SNA 2014; First International Workshop on Network and Information Security, NIS 2014; First International Workshop on Internet of Things Search, IoTS 2014. The papers cover various issues in social network analysis, security and information retrieval against the heterogeneous big data.
+Content Level » Research
+Keywords » applied computing - big data - computer forensics - data mining - group behavior - information integration - information retrieval - intrusion detection - knowledge management - location-based services - network forensics - network security - network simulation - security and privacy - security risk assessment - sentiment analysis - social networks - social web - web mining - wireless sensor networks
+Related subjects » Communication Networks - Database Management & Information Retrieval - Security and Cryptology - Software Engineering
+TABLE OF CONTENTS
+First International Workshop on Social Network Analysis, SNA 2014.- First International Workshop on Network and Information Security, NIS 2014.- First International Workshop on Internet of Things Search, IoTS 2014.
+POPULAR CONTENT WITHIN THIS PUBLICATION
+  7 days 30 days 90 days
+Articles
+READ THIS BOOK ON SPRINGERLINK
+Read this book on SpringerLink
+SERVICES FOR THIS BOOK
+Access an Online Book Review Copy
+Download Product Flyer
+Download High-Resolution Cover
+NEW BOOK ALERT
+Get alerted on new Springer publications in the subject area of Data Mining and Knowledge Discovery.
+Your E-Mail Address
+
+ISSN: 0302-9743
+
+
+Title
+Cloud-Oriented SAT Solver Based on Obfuscating CNF Formula
+Book Title
+Web Technologies and Applications
+Book Subtitle
+APWeb 2014 Workshops, SNA, NIS, and IoTS, Changsha, China, September 5, 2014. Proceedings
+Pages
+pp 188-199
+Copyright
+2014
+DOI
+10.1007/978-3-319-11119-3_18
+Print ISBN
+978-3-319-11118-6
+Online ISBN
+978-3-319-11119-3
+Series Title
+Lecture Notes in Computer Science
+Series Volume
+8710
+Series ISSN
+0302-9743
+Publisher
+Springer International Publishing
+Copyright Holder
+Springer International Publishing Switzerland
+Additional Links
+About this Book
+Topics
+Data Mining and Knowledge Discovery
+Information Storage and Retrieval
+Information Systems Applications (incl. Internet)
+Systems and Data Security
+Computer Communication Networks
+Management of Computing and Information Systems
+Keywords
+SAT solver
+CNF formula
+Privacy
+Obfuscating
+Cloud computing
+Industry Sectors
+Electronics
+Telecommunications
+IT & Software
+eBook Packages
+eBook Package english Computer Science
+eBook Package english full Collection
+Editors
+Weihong Han  hanweihong@gmail.com (15)
+Zi Huang  huang@itee.uq.edu.au (16)
+Changjun Hu  huchangjun@ies.ustb.edu.cn (17)
+Hongli Zhang  zhanghongli@hit.edu.cn (18)
+Li Guo  guoli@iie.ac.cn (19)
+Editor Affiliations
+15. School of Computer Science, National University of Defense Technology
+16. School of Information Technology & Electrical Engineering, University of Queensland
+17. School of Computer and Communication Engineering, University of Science and Technology Beijing
+18. School of Computer Science and Technology, Harbin Institute of Technology
+19. Institute of Information Engineering, Chinese Academy of Sciences
+Authors
+Ying Qin  yingqin@nudt.edu.cn (20)
+Shengyu Shen  syshen@nudt.edu.cn (20)
+Jingzhu Kong  kongjinzhu@vip.163.com (20)
+Huadong Dai  hddai@vip.163.com (20)
+Author Affiliations
+20. College of Computer, National University of Defense Technology, ChangSha, China
+
