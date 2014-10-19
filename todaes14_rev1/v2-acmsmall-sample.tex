@@ -133,29 +133,40 @@ Yan Jia , School of Computer, National University of Defense Technology.
 
 One of the most difficult jobs in designing communication
 and multimedia chips is to design and verify complex encoder and decoder pairs.
-The encoder maps its input variables $\vec{i}$ to its output variables 
-$\vec{o}$ according to some predefined rules,
-such as Ethernet \cite{WIKIether} and PCI Express \cite{WIKIpcie},
+The encoder maps its input variables $\vec{i}$ to its output variables $\vec{o}$,
+% according to some predefined rules,
+% such as Ethernet \cite{WIKIether} and PCI Express \cite{WIKIpcie},
 while the decoder recovers $\vec{i}$ from $\vec{o}$.
-Complementary synthesis \cite{ShenICCAD09} facilitates this job by 
-automatically generating an encoders' decoder.
+\textbf{By assuming that $\vec{i}$ can always be
+uniquely determined by a bounded sequence of $\vec{o}$,
+complementary synthesis [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}]
+can automatically generate the encoders' decoder.}
 
-\textbf{However,
-State-of-the-art complementary synthesis algorithms
-[\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}] 
-all assume that $\vec{i}$ can always be
-uniquely determined by a bounded sequence of $\vec{o}$.
-This assumption is too restrictive for todays high speed communication systems,
-such as Ethernet \cite{WIKIether} and PCI Express \cite{WIKIpcie},
-that transmit several gigabits per second.}
-It is physically impossible to distribute so fast a clock to both the transmitter and receiver.
-\textbf{So as shown in Figure~\ref{fig:nonuniq}a),
-the transmitter and receiver} must be driven by two clocks with slightly different frequencies.
-To prevent the faster transmitter from overwhelming the slower receiver,
-flow control mechanism \cite{WIKIfc} is widely employed to 
-insert \textbf{some predefined control symbols} into the sequence of input variables $\vec{i}$,
-so that the decoder can recognize and discard them.
-
+\textbf{
+As shown in Figure~\ref{fig:nonuniq}a),
+todays high speed communication systems
+% such as Ethernet \cite{WIKIether} and PCI Express \cite{WIKIpcie},
+employ flow control mechanism \cite{WIKIfc} in the encoder and decoder to 
+prevent the faster transmitter from overwhelming the slower receiver.
+% transmit several Gigabits per second.
+% It is physically impossible to 
+% distribute so fast a clock at Gigahertz to both the encoder and decoder.
+% So as shown in Figure~\ref{fig:nonuniq}a),
+% the encoder and decoder must be driven by two clocks with slightly different frequencies.
+% To prevent the faster encoder from overwhelming the slower decoder,
+% flow control mechanism \cite{WIKIfc} is employed in the encoder to 
+% insert some control symbols $C$s into the sequence of data symbols $D_j$s.
+% Such control symbols C are defined by the standard of communication systems,
+% such as the K28.5 symbol defined in clause 36 of IEEE 802.3 standard\cite{IEEE8023_S3}.
+In such systems,
+the encoder inserts some control symbols $C$s 
+into the sequence of data symbols $D_j$s.
+The communication system standards guarantee 
+that $C$ can never be equal to any $D_j$.
+So the decoder can recognize and discard all $C$s.
+In this way,
+the speed difference between transmitter and receiver can be compensated for.
+}
 
 \begin{figure}
 \centerline{\includegraphics[width=\textwidth]{nonuniq}}
@@ -163,43 +174,56 @@ so that the decoder can recognize and discard them.
 \label{fig:nonuniq}
 \end{figure}
 
-As shown in Figure~\ref{fig:nonuniq}b),
-an encoder with flow control mechanism partitions its input variables $\vec{i}$ into two sets:
+\textbf{
+However,
+such encoder can not be handled by state-of-the-art complementary synthesis algorithms,
+because $C$ can not be used to uniquely determine the value of $i$.
+Figure~\ref{fig:nonuniq}b) shows the pseudo code of such 
+an encoder with flow control mechanism.
+Its input variables $\vec{i}$ are partitioned into two sets:
 the input data variables $\vec{d}$ to be encoded,
-and the flow control variables $\vec{f}$ indicating the validness of $\vec{d}$ with a predicate $valid(\vec{f})$.
+and the flow control variables $\vec{f}$ indicating 
+the validness of $\vec{d}$ with a predicate $valid(\vec{f})$.}
 
 \begin{enumerate}
 \item When $valid(\vec{f}) \equiv 1$, 
-the encoder maps $\vec{d}$ with an encoding function $enc$ to the output variables $\vec{o}:=enc(\vec{d})$,
-in which case both $\vec{d}$ and $\vec{f}$ can be uniquely determined by a bounded sequence of $\vec{o}$.
+the encoder maps $\vec{d}$ with an encoding function $enc$ 
+to the output variables $\vec{o}:=enc(\vec{d})$.
+In this case $\vec{d}$ and $\vec{f}$ can both be uniquely determined 
+by a bounded sequence of $\vec{o}$.
 
-\item However,
+\item \textbf{However,
 when $valid(\vec{f}) \equiv 0$,
-the encoder drives some predefined special control symbol to $\vec{o}$ independent of $\vec{d}$,
-such as the K28.5 character defined in clause 36 of IEEE 802.3 standard\cite{IEEE8023_S3},
-which can uniquely determine only $\vec{f}$,
-but not $\vec{d}$.
-In this case,
-the decoder is supposed to recognize only the validness of $\vec{d}$ instead of their exact value,
-which means recovering $\vec{f}$ is enough.
+the encoder send some control symbol $C$ to $\vec{o}$ 
+without considering the value of $\vec{d}$.
+So in this case,
+$\vec{d}$ can not be uniquely determined.
+This prevent all current complementary synthesis algorithms from handling this encoder.
+On the other hand,
+sending $C$ to $\vec{o}$ without considering $\vec{d}$
+means that $\vec{d}$ is meaningless in this case,
+and the encoder actually do not need the decoder to recover $\vec{d}$.
+Thus,
+to handle such an encoder,
+we should exclude the case $valid(\vec{f}) \equiv 0$.}
 \end{enumerate}
 
 %% TODO : clarify what should do and what have do, and their difference
 % This makes the encoder reaching the non-unique state set infinitely often,
 % like path 2 in Figure~\ref{fig:nonuniq}a).
 
-So,
-just like the path 2 in Figure~\ref{fig:nonuniq}a),
-such an encoder with flow control mechanism may visit the non-unique state set infinitely often,
-that is,
-its input variables $\vec{i}$ cannot always be uniquely determined by a bounded sequence of $\vec{o}$.
-Thus,
-none of the current complementary synthesis algorithms can handle such encoders,
-because they all assume that $\vec{i}$ can always be uniquely determined by $\vec{o}$,
-that is,
-they all assume that the encoder will eventually reach and never leave the unique state set.
-They ensure this with manually specified assertion [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11}],
-or automatically inferred assertions \cite{ShenTCAD12} .
+% So,
+% just like the path 2 in Figure~\ref{fig:nonuniq}a),
+% such an encoder with flow control mechanism may visit the non-unique state set infinitely often,
+% that is,
+% its input variables $\vec{i}$ cannot always be uniquely determined by a bounded sequence of $\vec{o}$.
+% Thus,
+% none of the current complementary synthesis algorithms can handle such an encoder.
+% because they all assume that $\vec{i}$ can always be uniquely determined by $\vec{o}$,
+% that is,
+% they all assume that the encoder will eventually reach and never leave the unique state set.
+% They ensure this with manually specified assertion [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11}],
+% or automatically inferred assertions \cite{ShenTCAD12} .
 % Current algorithms avoid such case by manually specifying assertion $valid(\vec{f}) \equiv 1$ 
 % % [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}],
 % \cite{ShenICCAD09}

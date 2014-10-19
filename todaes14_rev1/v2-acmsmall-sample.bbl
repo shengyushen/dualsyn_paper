@@ -166,26 +166,15 @@
 \url{http://dx.doi.org/10.1145/1836089.1836091}}
 
 
-\bibitem[\protect\citeauthoryear{IEEE}{IEEE}{2012a}]%
+\bibitem[\protect\citeauthoryear{IEEE}{IEEE}{2012}]%
         {IEEE8023_S4}
-{IEEE}. 2012a.
+{IEEE}. 2012.
 \newblock IEEE Standard for Ethernet SECTION FOURTH.
 \newblock   (2012).
 \newblock
 \showURL{%
 Retrieved January 25, 2013 from
   \url{http://standards.ieee.org/getieee802/download/802.3-2012_section4.pdf}}
-
-
-\bibitem[\protect\citeauthoryear{IEEE}{IEEE}{2012b}]%
-        {IEEE8023_S3}
-{IEEE}. 2012b.
-\newblock IEEE Standard for Ethernet SECTION THREE.
-\newblock   (2012).
-\newblock
-\showURL{%
-Retrieved January 25, 2013 from
-  \url{http://standards.ieee.org/getieee802/download/802.3-2012_section3.pdf}}
 
 
 \bibitem[\protect\citeauthoryear{Liu, Chou, Lin, and Jiang}{Liu

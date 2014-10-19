@@ -11,45 +11,45 @@ I was expecting a `,' or a `}'---line 1337 of file acmsmall-sample-bibfile.bib
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
 Reallocated singl_function (elt_size=4) to 100 items from 50.
-You've used 28 entries,
+You've used 27 entries,
             5290 wiz_defined-function locations,
-            1656 strings with 23589 characters,
-and the built_in function-call counts, 33424 in all, are:
-= -- 4345
-> -- 1064
+            1652 strings with 23458 characters,
+and the built_in function-call counts, 31963 in all, are:
+= -- 4149
+> -- 1046
 < -- 4
-+ -- 321
-- -- 773
-* -- 2198
-:= -- 3595
-add.period$ -- 147
-call.type$ -- 28
-change.case$ -- 184
++ -- 316
+- -- 697
+* -- 2098
+:= -- 3449
+add.period$ -- 142
+call.type$ -- 27
+change.case$ -- 179
 chr.to.int$ -- 24
-cite$ -- 28
-duplicate$ -- 2388
-empty$ -- 1682
-format.name$ -- 431
-if$ -- 7460
-int.to.chr$ -- 5
+cite$ -- 27
+duplicate$ -- 2339
+empty$ -- 1644
+format.name$ -- 424
+if$ -- 7203
+int.to.chr$ -- 4
 int.to.str$ -- 0
 missing$ -- 81
-newline$ -- 300
-num.names$ -- 226
-pop$ -- 765
+newline$ -- 290
+num.names$ -- 219
+pop$ -- 746
 preamble$ -- 1
-purify$ -- 320
+purify$ -- 311
 quote$ -- 0
-skip$ -- 717
+skip$ -- 704
 stack$ -- 0
-substring$ -- 4016
-swap$ -- 275
-text.length$ -- 823
+substring$ -- 3701
+swap$ -- 272
+text.length$ -- 684
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 392
+type$ -- 378
 warning$ -- 0
-while$ -- 242
+while$ -- 234
 width$ -- 0
-write$ -- 589
+write$ -- 570
 (There was 1 error message)
