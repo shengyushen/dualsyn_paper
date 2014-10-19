@@ -1,0 +1,1952 @@
+% v2-acmsmall-sample.tex, dated March 6 2012
+% This is a sample file for ACM small trim journals
+%
+% Compilation using 'acmsmall.cls' - version 1.3 (March 2012), Aptara Inc.
+% (c) 2010 Association for Computing Machinery (ACM)
+%
+% Questions/Suggestions/Feedback should be addressed to => "acmtexsupport@aptaracorp.com".
+% Users can also go through the FAQs available on the journal's submission webpage.
+%
+% Steps to compile: latex, bibtex, latex latex
+%
+% For tracking purposes => this is v1.3 - March 2012
+
+\documentclass[prodmode,acmtodaes]{acmsmall} % Aptara syntax
+
+% Package to generate and customize Algorithm as per ACM style
+\usepackage[ruled,linesnumbered]{algorithm2e}
+\renewcommand{\algorithmcfname}{ALGORITHM}
+\SetAlFnt{\small}
+\SetAlCapFnt{\small}
+\SetAlCapNameFnt{\small}
+\SetAlCapHSkip{0pt}
+\IncMargin{-\parindent}
+
+% Metadata Information
+\acmVolume{9}
+\acmNumber{4}
+\acmArticle{39}
+\acmYear{2010}
+\acmMonth{3}
+
+% Document starts
+\begin{document}
+
+% Page heads
+\markboth{Y. Qin et al.}{Complementary Synthesis for Encoder with Flow Control Mechanism}
+
+% Title portion
+\title{Complementary Synthesis for Encoder with Flow Control Mechanism}
+\author{YING QIN and
+QINGBO WU and
+HUADONG DAI and
+YAN JIA and 
+SHENGYU SHEN
+\affil{School of Computer, National University of Defense Technology}}
+% NOTE! Affiliations placed here should be for the institution where the
+%       BULK of the research was done. If the author has gone to a new
+%       institution, before publication, the (above) affiliation should NOT be changed.
+%       The authors 'current' address may be given in the "Author's addresses:" block (below).
+%       So for example, Mr. Abdelzaher, the bulk of the research was done at UIUC, and he is
+%       currently affiliated with NASA.
+
+\begin{abstract}
+Complementary synthesis automatically generates an encoder's decoder
+with the assumption that the encoder's all input variables can always be uniquely determined by a bounded sequence of its output variables.
+However,
+many modern encoders employ flow control mechanism that inserts \emph{invalid} data into the encoder's input sequence,
+which prevents some input variables from being uniquely determined.
+None of the current algorithms can handle such cases.
+
+Flow control mechanisms classify the encoder's input variables into two sets:
+the flow control variables that can always be uniquely determined,
+and the input data variables whose validness is indicated by a predicate over the flow control variables.
+When the input data variables are invalid,
+the decoder is supposed to recognize its invalidness by recovering the flow control variables and ignoring the input data variables.
+
+Thus,
+a novel algorithm is proposed
+for the first time
+to handle such encoders with flow control mechanism.
+\textbf{First},
+it identifies all variables that can be uniquely determined,
+and take them as flow control variables.
+\textbf{Second},
+it infers a predicate over these flow control variables
+that enables all other input data variables to be uniquely determined.
+\textbf{Third},
+it characterizes the decoder's Boolean function for each input variable,
+by first building a conjunction of two formulas that assign conflicting values to this input variable,
+and then generating a Craig interpolant from its unsatisfiability proof.
+In addition,
+for the input data variables,
+the inferred predicate must be enforced before generating Craig interpolant.
+
+Experimental results on several complex encoders indicate that
+our algorithm can always correctly identify the flow control variables,
+infer the predicates
+and generate the decoder's Boolean functions.
+\end{abstract}
+
+\category{B.5.2}{Design Aids}{Automatic synthesis}
+\category{B.6.3}{Design Aids}{Automatic synthesis}
+
+\terms{Algorithms, Logic synthesis, Verification}
+
+\keywords{Craig interpolation, decoder, encoder, finite-state transition system, satisfiability solving}
+
+\acmformat{Ying Qin and
+QingBo Wu and
+HuaDong Dai and
+Yan Jia and
+ShengYu Shen, 2014. Complementary Synthesis for Encoder with Flow Control Mechanism.
+% ACM Trans. Embedd. Comput. Syst. X, X, Article XX (XXXX 201X), X pages.
+% DOI:http://dx.doi.org/10.1145/0000000.0000000
+}
+% At a minimum you need to supply the author names, year and a title.
+% IMPORTANT:
+% Full first names whenever they are known, surname last, followed by a period.
+% In the case of two authors, 'and' is placed between them.
+% In the case of three or more authors, the serial comma is used, that is, all author names
+% except the last one but including the penultimate author's name are followed by a comma,
+% and then 'and' is placed before the final author's name.
+% If only first and middle initials are known, then each initial
+% is followed by a period and they are separated by a space.
+% The remaining information (journal title, volume, article number, date, etc.) is 'auto-generated'.
+
+\begin{bottomstuff}
+This work was funded by projects 61070132 and 61133007 supported by National Natural Science Foundation of China,
+the 863 Project of China under contract 2012AA01A301.
+
+Author's addresses: Ying Qin,
+QingBo Wu,
+HuaDong Dai,
+Yan Jia and
+ShengYu Shen, School of Computer, National University of Defense Technology.
+\end{bottomstuff}
+\markboth{Ying Qin et al.}{Complementary Synthesis for Encoder with Flow Control Mechanism}
+
+\maketitle
+
+
+\section{Introduction}
+
+One of the most difficult jobs in designing communication
+and multimedia chips is to design and verify complex encoder and decoder pairs.
+The encoder maps its input variables $\vec{i}$ to its output variables $\vec{o}$ according to some predefined rules,
+such as Ethernet \cite{WIKIether} and PCI Express \cite{WIKIpcie},
+while the decoder recovers $\vec{i}$ from $\vec{o}$.
+Complementary synthesis \cite{ShenICCAD09} facilitates this job by automatically generating an encoders' decoder.
+\textbf{As shown in Figure~\ref{fig:nonuniq}a),
+this algorithm assumes that the encoder's state space can be partitioned into two set:
+the unique state set in which $\vec{i}$ can always be uniquely determined by $\vec{o}$,
+and the non-unique state set in which $\vec{i}$ can not be uniquely determined by $\vec{o}$.
+And like Path 1 in Figure~\ref{fig:nonuniq}a),
+this algorithm further assumes that the encoder eventually reaches and never leaves the unique state set.
+}
+
+At the same time,
+high speed communication systems,
+such as Ethernet \cite{WIKIether} and PCI Express \cite{WIKIpcie},
+transmit several gigabits per second.
+It is impossible to distribute so fast a clock to both the transmitter and receiver.
+So they must be driven by two clocks with slightly different frequencies.
+To prevent the faster transmitter from overwhelming the slower receiver,
+flow control mechanism \cite{WIKIfc} is widely employed to 
+insert \emph{invalid} data into the sequence of input variables $\vec{i}$,
+so that the decoder can recognize and discard them.
+
+
+\begin{figure}
+\centerline{\includegraphics[width=\textwidth]{nonuniq}}
+\caption{An encoder with flow control mechanism}
+\label{fig:nonuniq}
+\end{figure}
+
+As shown in Figure~\ref{fig:nonuniq}b),
+an encoder with flow control mechanism partitions its input variables $\vec{i}$ into two sets:
+the input data variables $\vec{d}$ to be encoded,
+and the flow control variables $\vec{f}$ indicating the validness of $\vec{d}$ with a predicate $valid(\vec{f})$.
+
+\begin{enumerate}
+\item When $valid(\vec{f}) \equiv 1$, 
+the encoder maps $\vec{d}$ with an encoding function $enc$ to the output variables $\vec{o}:=enc(\vec{d})$,
+in which case both $\vec{d}$ and $\vec{f}$ can be uniquely determined by a bounded sequence of $\vec{o}$.
+
+\item However,
+when $valid(\vec{f}) \equiv 0$,
+the encoder drives some predefined special control symbol to $\vec{o}$ independent of $\vec{d}$,
+such as the K28.5 character defined in clause 36 of IEEE 802.3 standard\cite{IEEE8023_S3},
+which can uniquely determine only $\vec{f}$,
+but not $\vec{d}$.
+In this case,
+the decoder is supposed to recognize only the validness of $\vec{d}$ instead of their exact value,
+which means recovering $\vec{f}$ is enough.
+\end{enumerate}
+
+%% TODO : clarify what should do and what have do, and their difference
+% This makes the encoder reaching the non-unique state set infinitely often,
+% like path 2 in Figure~\ref{fig:nonuniq}a).
+
+So,
+just like the path 2 in Figure~\ref{fig:nonuniq}a),
+such an encoder with flow control mechanism may visit the non-unique state set infinitely often,
+that is,
+its input variables $\vec{i}$ cannot always be uniquely determined by a bounded sequence of $\vec{o}$.
+Thus,
+none of the current complementary synthesis algorithms can handle such encoders,
+because they all assume that $\vec{i}$ can always be uniquely determined by $\vec{o}$,
+that is,
+they all assume that the encoder will eventually reach and never leave the unique state set.
+They ensure this with manually specified assertion [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11}],
+or automatically inferred assertions \cite{ShenTCAD12} .
+% Current algorithms avoid such case by manually specifying assertion $valid(\vec{f}) \equiv 1$ 
+% % [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}],
+% \cite{ShenICCAD09}
+% or automatically inferring it \cite{ShenTCAD12}.
+% But such paths must be handled properly to make the complementary synthesis techniques more useful.
+
+For the first time,
+we propose in this paper a novel three-step algorithm to handle such encoders with flow control mechanism.
+\textbf{First},
+it applies the classical halting complementary synthesis algorithm \cite{ShenTCAD11}
+to identify all the flow control variables $\vec{f}$ that can be uniquely determined.
+\textbf{Second},
+it infers a sufficient and necessary predicate $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined
+by a bounded sequence of the encoder's output $\vec{o}$.
+\textbf{Finally},
+% $\vec{f}$ can be uniquely determined by $\vec{o}$,
+it characterizes the decoder's Boolean function that computes each flow control variable $f\in\vec{f}$ 
+by building two copies of unrolled transition function sequence with common output sequences $\vec{o}$, 
+but different values on $f$.
+The conjunction of these two copies is unsatisfiable.
+So a Craig interpolant\cite{interp_McMillan} can be built and used as the decoder's Boolean function that computes $f$.
+On the other hand,
+for other input data variables $\vec{d}$,
+their values are meaningful only when $valid(\vec{f}) \equiv 1$.
+Thus, the decoder's Boolean functions that compute each $d\in\vec{d}$ can be built similarly,
+but only after enforcing $valid(\vec{f}) \equiv 1$.
+
+The second step of this algorithm seems somewhat similar to that of \cite{ShenTCAD12} in the sense that 
+both algorithms infer predicates that enable $\vec{d}$ or $\vec{i}$ to be uniquely determined.
+But the essential difference between them is that
+the algorithm of \cite{ShenTCAD12} infers a \textbf{global} assertion that must be enforced at all cycles,
+so that the encoder eventually reaches and never leaves the unique state set,
+whereas our algorithm infers a \textbf{local} predicate that is enforced at the current cycle only when we need to recover the value of $\vec{d}$.
+So,
+our algorithm is the first algorithm that allows the unique and non-unique states to be interleaved freely.
+
+% This new algorithm has been implemented with the OCaml language. 
+% All generated SAT instances are solved with Minisat solver \cite{EXTSAT}. 
+Experimental results indicate that,
+for several complex encoders from real projects (e.g., Ethernet \cite{WIKIether} and PCI Express \cite{WIKIpcie}),
+our algorithms can always correctly identify the flow control variables, infer the predicates and generate the decoders. 
+% All these experimental results and programs can be downloaded from http://www.ssypub.org.
+
+
+\emph{The remainder of this paper is organized as follows}.
+%Section \ref{sec_casestudy} explains our ideas with a simple example.
+Section \ref{sec_prem} introduces the background material;
+Section \ref{sec_findfc} presents the algorithm that identifies the flow control variables,
+while Section \ref{sec_infer} infers the predicate that enables $\vec{d}$ to be uniquely determined by a bounded sequence of $\vec{o}$;
+Section \ref{sec_char} presents the algorithm to characterize the decoder's Boolean function;
+Sections \ref{sec_exp} and \ref{sec_relwork} present the experimental results and related works;
+Finally,
+Section \ref{sec_conclude} sums up the conclusion.
+
+\section{Preliminaries}\label{sec_prem}
+
+% \subsection{Flow control mechanism}\label{subsec_fc}
+
+
+
+\subsection{Propositional satisfiability}\label{subsec_SAT}
+% We use a denotation similar to that of \cite{TuDAC13}.
+The Boolean value set is denoted as $B=\{0,1\}$.
+A vector of variables is represented as $\vec{v}=(v,\dots)$.
+The number of variables in $\vec{v}$ is denoted as $|\vec{v}|$.
+If a variable $v$ is a member of $\vec{v}$,
+that is $\vec{v}=(\dots,v,\dots)$,
+then we say $v\in\vec{v}$;
+otherwise we say $v\notin\vec{v}$.
+For a variable $v$ and a vector $\vec{v}$,
+if $v\notin\vec{v}$,
+then the new vector that contains both $v$ and all members of $\vec{v}$ is denoted as $v\cup\vec{v}$.
+If $v\in \vec{v}$,
+then the new vector that contains all members of $\vec{v}$ except $v$,
+is denoted as $\vec{v}-v$.
+For the two vectors $\vec{a}$ and $\vec{b}$,
+the new vector with all members of $\vec{a}$ and $\vec{b}$ is denoted as $\vec{a}\cup\vec{b}$.
+The set of truth valuations of $\vec{v}$ is denoted as $[\![\vec{v}]\!]$,
+for instance,
+$[\![(v_1,v_2)]\!]=\{(0,0),(0,1),(1,0),(1,1)\}$.
+
+A Boolean formula $F$ over a variable set $V$ is constructed by connecting variables from $V$ 
+with symbols $\neg$, $\wedge$, $\vee$ and $\Rightarrow$,
+which stand for logical connectives negation, conjunction, disjunction, and implication, respectively.
+
+The propositional satisfiability problem(abbreviated as SAT) for a Boolean formula $F$ over a variable set $V$ 
+is to find a satisfying assignment $A:V\to B$,
+so that $F$ can be evaluated to $1$.
+If such a satisfying assignment exists, then $F$ is satisfiable;
+otherwise,
+it is unsatisfiable.
+
+% A computer program that decides the existence of such a satisfying assignment is called a SAT solver,
+%  such as Zchaff\cite{CHAFF},
+%  Grasp\cite{grasp},
+%  Berkmin\cite{BERKMIN},
+%  and MiniSAT\cite{EXTSAT}.
+ 
+% Normally,
+% a SAT solver requires the formula to be represented in the conjunctive normal form(CNF),
+% in which a formula is a conjunction of its clause set,
+% and a clause is a disjunction of its literal set,
+% and a literal is a variable or its negation.
+% A formula in the CNF format is also called a SAT instance,
+
+
+% \subsection{Cofactoring}\label{subsec_pre_cofact}
+
+% For a Boolean function $f:B^n\to B$,
+% we use $supp(f)$ to denote its support set $\{v_1\dots v_n\}$.
+According to \cite{Cofact},
+the positive and negative cofactors of $f(v_1\dots v\dots v_n)$ with respect to variable
+$v$ are $f_v=f(v_1\dots 1\dots v_n)$ and $f_{\overline{v}}=f(v_1\dots 0\dots v_n)$,
+respectively.
+% Existential quantification of $f(v_1\dots v\dots v_n)$ with respect to a
+% variable $v$ is $\exists v f=f_v+f_v’$.
+\textbf{Cofactoring} is the action that applies 1 or 0 to $v$ to get $f_v$ or $f_{\overline{v}}$.
+
+% \subsection{Craig interpolation}\label{subsec_pre_interp}
+% Craig\cite{Craig} had proved the following theorem:
+% \begin{theorem}[Craig Interpolation Theorem\cite{Craig}]\label{thm_craig}
+Given two Boolean formulas $\phi_A$ and $\phi_B$,
+with $\phi_A\wedge \phi_B$ unsatisfiable,
+there exists a formula $\phi_I$ referring only
+to the common variables of $\phi_A$ and $\phi_B$ such that $\phi_A\Rightarrow \phi_I$
+and $\phi_I\wedge \phi_B$ is unsatisfiable.
+We call $\phi_I$ the \textbf{interpolant}\cite{Craig} of $\phi_A$ with respect to $\phi_B$
+% \end{theorem}
+and use McMillan's algorithm \cite{interp_McMillan} to generate it.
+
+% In the remainder of this paper,
+% we will focus on the propositional logic only,
+% There are many approaches to generate interpolants for propositional logic,
+% so please refer to Krajicek\cite{interp_Krajicek},
+% Pudlak\cite{interp_Pudlak} and McMillan\cite{interp_McMillan} for more details.
+% which is generated by MiniSAT\cite{EXTSAT}.
+
+\subsection{Finite state machine}
+
+% \begin{figure}[t]
+% \centering
+% \includegraphics{mealy}
+% \caption{Mealy finite state machine}
+% \label{mealy}
+% \end{figure}
+
+The encoder is modeled by a finite state machine $M=(\vec{s},\vec{i},\vec{o},T)$,
+consisting of a state variable vector $\vec{s}$,
+% an initial state $s_0\in S$,
+an input variable vector $\vec{i}$,
+% a finite set of configuration letters $C$,
+an output variable vector $\vec{o}$,
+and a transition function $T: [\![\vec{s}]\!]\times [\![\vec{i}]\!]\to [\![\vec{s}]\!]\times [\![\vec{o}]\!]$ 
+that computes the next state and output variable vector from the current state and input variable vector.
+
+% As shown in Figure \ref{mealy},
+% as well as in the remainder of this paper,
+% the state is represented as a gray round corner box,
+% and the transition function $T$ is represented as a white rectangle.
+The state variable $s\in\vec{s}$, input variable $i\in\vec{i}$ and output variable $o\in\vec{o}$ at the $n$-th cycle 
+are respectively denoted as $s_n$, $i_n$ and $o_n$.
+Furthermore,
+the state, the input and the output variable vectors at the $n$-th cycle are respectively denoted as $\vec{s}_n$, $\vec{i}_n$ and $\vec{o}_n$.
+% We further denote the sequence of state, input letter and output letter from the $n$-th to the $m$-th cycle respectively as $s_n^m$, $i_n^m$ and $o_n^m$.
+A \textbf{path} is a state sequence $<\vec{s}_n,\dots,\vec{s}_m>$ with $\exists \vec{i}_j\vec{o}_j (\vec{s}_{j+1},\vec{o}_j)\equiv T(\vec{s}_j,\vec{i}_j)$ for all $n\le j< m$.
+A \textbf{loop} is a path $<\vec{s}_n,\dots,\vec{s}_m>$ with $\vec{s}_n\equiv \vec{s}_m$.
+
+\subsection{The halting algorithm to determine 
+if an input variable can be uniquely determined by a bounded sequence of output variable vector}\label{subsec_chkextdec}
+
+All the state-of-the-art complementary synthesis algorithms \cite{ShenICCAD09,LiuICCAD11,TuDAC13} assume that $\vec{i}$ can be uniquely determined,
+so they always take $\vec{i}$ as a whole,
+and never consider individual variables $i\in\vec{i}$.
+But in this paper,
+we need to check each $i\in\vec{i}$ one by one,
+so there may be minor differences between our presentation and that of \cite{ShenICCAD09,LiuICCAD11,TuDAC13}.
+
+As shown in Figure \ref{pcln}a),
+$i\in\vec{i}$ can be uniquely determined,
+if there exist three integers $p$, $l$ and $r$,
+such that for any particular valuation of the output sequence $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$,
+$i_{p+l}$ cannot take on two different values.
+This can be checked by solving $F_{PC}(p,l,r)$ in Equation (\ref{uniqt1}).
+
+\begin{equation}\label{uniqt1}
+% \begin{split}
+F_{PC}(p,l,r)\stackrel{def}{=}
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
+\wedge& i_{p+l}\ne i'_{p+l} 
+\end{array}
+\right\}
+% \end{split}
+\end{equation}
+
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=\textwidth]{pcln}
+\end{center}
+\caption{Checking whether or not the input can be uniquely determined by the output}
+  \label{pcln}
+\end{figure}
+
+Here,
+$p$ is the length of the prefix state transition sequence that leads the encoder into the unique state set,
+in which $i$ can be uniquely determined.
+$l$ and $r$ are the lengths of the two output sequences $<\vec{o}_{p+1},\dots,\vec{o}_{p+l}>$ and $<\vec{o}_{p+l+1},\dots,\vec{o}_{p+l+r}>$
+that are on the left-hand and right-hand sides of $i_{p+l}$,
+which is used to determine $i_{p+l}$.
+Line 1 of Equation (\ref{uniqt1}) corresponds to the path in Figure \ref{pcln}a),
+while Line 2 is a copy of it.
+Line 3 forces these two paths' output sequences to be the same,
+while Line 4 forces their $i_{p+l}$ to be different.
+
+
+% $d$ is the relative delay between $o_{n+d-l}^{n+d-1}$ and $i_n$,
+% while $l$ is the length of $o_{n+d-l}^{n+d-1}$,
+% and $p$ is the length of the prefix path used to rule out some unreachable states.
+% This condition is formally defined below:
+
+% \begin{definition11}\label{def_pcc}%\addtolength{\itemsep}{-0.5\baselineskip}
+% %{\setlength{\baselineskip}{0.5\baselineskip}
+% \textbf{Parameterized Complementary Condition (PC)}:
+% For encoder $E$,
+% assertion $R$,
+% and three integers $p$,$d$ and $l$,
+% $E\vDash PC(p,d,l,R)$ holds if
+% \begin{enumerate}
+%  \item $i_n$ can be uniquely determined by $o_{n+d-l}^{n+d-1}$ on $s_{n-p}^{n+d-1}$.
+%  \item $R$ covers all $c_x$, where $n-p\le x\le n+d-1$.
+% \end{enumerate}
+% 
+% This equals the unsatisfiability of $F_{PC}(p,d,l,R)$ in Equation (\ref{uniqt1}).
+% We further define $E\vDash PC(R)$ as $\exists p,d,l:E\vDash PC(p,d,l,R)$.
+% \end{definition11}
+
+%This definition is the same as that of Subsection \ref{subsec_chkextdec} and paper \cite{ShengYuShen:iccad09}.
+Thus,
+we have the following proposition:
+
+\begin{proposition}\label{prop_pc1}
+If $F_{PC}(p,l,r)$ is unsatisfiable,
+% then $i_{p+l}$ cannot take on two different values for any particular valuation of the output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$,
+then $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
+\end{proposition}
+
+% At the same time,
+% the last three lines of Equation (\ref{uniqt1}) correspond to Condition 2 of Definition \ref{def_pcc}.
+% The 6th and the 7th lines constrain that all configuration letters are equal to $c$,
+% while the last line constrains $c$ to be covered by $R$.
+
+% The algorithm based on checking $E\vDash PC(R)$\cite{ShengYuShen:iccad09,ShengYuShen:tcad} just enumerates all combinations of $p$,$d$ and $l$,
+% from small to large,
+% until $F_{PC}(p,d,l,R)$ becomes unsatisfiable,
+% which means that the decoder $E^{-1}$ exists.
+% 
+% \begin{figure}[b]
+% \begin{center}
+% \includegraphics[width=0.45\textwidth]{doubleloop}
+% \end{center}
+% \caption{The loop-like non-complementary condition}
+%   \label{fig_double_loop}
+% \end{figure}
+
+\textbf{On the other hand},
+if $F_{PC}(p,l,r)$ is satisfiable,
+then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for this particular combination of $p$, $l$ and $r$.
+There are two possible cases:
+\begin{enumerate}
+ \item 
+$i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for larger $p$, $l$ and $r$;
+ \item 
+$i_{p+l}$ can not be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for any $p$, $l$ and $r$ at all.
+\end{enumerate}
+
+If it is the first case,
+then by iteratively increasing the value of $p$, $l$ and $r$,
+$F_{PC}(p,l,r)$ will eventually become unsatisfiable.
+But if it is the second case,
+then this iterative algorithm will never terminate.
+
+So,
+to obtain a halting algorithm,
+we need to distinguish between these two cases.
+One such solution is shown in Figure \ref{pcln}b),
+which is similar to Figure \ref{pcln}a) but with three additional constraints to detect loops 
+on the three state sequences $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
+$<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
+It is formally defined in Equation (\ref{uniqln}) with the last three lines corresponding to the three constraints used to detect loops.
+
+\begin{equation}\label{uniqln}
+% \begin{split}
+F_{LN}(p,l,r)\stackrel{def}{=}\\
+\left\{
+\begin{array}{cc}
+&F_{PC}(p,l,r)\\
+\wedge&\bigvee_{x=0}^{p-1}\bigvee_{y=x+1}^{p} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
+\wedge&\bigvee_{x=p+1}^{p+l-1}\bigvee_{y=x+1}^{p+l} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
+\wedge&\bigvee_{x=p+l+1}^{p+l+r-1}\bigvee_{y=x+1}^{p+l+r} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\}
+\end{array}
+\right\}
+% \end{split}
+\end{equation}
+
+\begin{algorithm}[b]
+\SetAlgoVlined
+\KwIn{The input variable $i$.}
+\KwOut{whether $i$ can be uniquely determined by $\vec{o}$, and the value of $p$, $l$ and $r$.}
+$p$:= 1; ~$l$:= 1;~$r$:= 1\;
+\While{$1$}{
+   $p$++;~$l$++;~$r$++\;\ShowLnLabel{linepc1}
+   \uIf{$F_{PC}(p,l,r)$ is unsatisfiable}{
+    \KwRet ($1$,$p$,$l$,$r$);\ShowLnLabel{lineln1}
+   }\ShowLnLabel{lnsat}\uElseIf{$F_{LN}(p,l,r)$ is satisfiable} {
+    \KwRet ($0$,$p$,$l$,$r$);
+   }
+}
+\caption{$CheckUniqueness(i)$:The halting algorithm to determine 
+whether $i$ can be uniquely determined by a bounded sequence of output variable vector $\vec{o}$}
+\label{alg_pcln}
+\end{algorithm}
+
+When $F_{LN}(p,l,r)$ is satisfiable,
+then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
+More importantly,
+by unrolling these three loops,
+we can further prove that:
+
+\begin{proposition}\label{prop_ln1}
+If $F_{LN}(p,l,r)$ is satisfiable,
+then $i_{p'+l'}$ cannot be uniquely determined by $<\vec{o}_{p'},\dots,\vec{o}_{p'+l'+r'}>$ for any larger $p'\ge p$, $l'\ge l$ and $r'\ge r$.
+\end{proposition}
+
+Thus,
+with Propositions \ref{prop_pc1} and \ref{prop_ln1},
+Algorithm \ref{alg_pcln} is a halting algorithm that determines if there exists $p$, $l$ and $r$ that enable
+an input variable $i_{p+l}$ to be uniquely determined by the encoder's output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
+On the one hand, 
+if there actually exists such $p$, $l$ and $r$,
+then eventually $F_{PC}(p,l,r)$ will become unsatisfiable in Line \ref{linepc1};
+on the other hand,
+if there does not exist such $p$, $l$ and $r$,
+then eventually $p$, $l$ and $r$ will be larger than the longest path without loop,
+which means that there will be three loops in $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
+$<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
+This will make $F_{LN}(p,l,r)$ satisfiable in Line \ref{lnsat}.
+Both cases will lead to this Algorithm's termination.
+Please refer to \cite{ShenTCAD11} for more details.
+
+\section{Identifying flow control variables}\label{sec_findfc}
+
+To facilitate the presentation of our algorithm,
+we partition the input variable vector $\vec{i}$ into two vectors: 
+the flow control vector $\vec{f}$ and the input data vector $\vec{d}$.
+
+% In this section,
+% we propose a two-step algorithm to 
+% first find out $\vec{f}$,
+% and then characterize a formula over the $\vec{f}$ that makes $\vec{d}$ to be uniquely determined by the encoder's output variable vector $\vec{o}$.
+% 
+% \subsection{}
+
+The flow control variables $\vec{f}$ are used to represent the validness of $\vec{d}$.
+So,
+for a properly designed encoder,
+$\vec{f}$ should always be uniquely determined by a bounded sequence of the encoder's output $\vec{o}$,
+or else the decoder cannot recognize the validness of $\vec{d}$.
+
+\begin{algorithm}[b]
+\SetAlgoVlined
+\KwIn{The input variable vector $\vec{i}$.}
+\KwOut{$\vec{f}\subset \vec{i}$ is the vector of the encoder's input variables that can be uniquely determined by a bounded sequence of output variable vector $\vec{o}$, 
+and the maximal value of $p$, $l$ and $r$ .}
+$\vec{f}$: = $<>$;~$p_{max}$:= 0 ;~$l_{max}$:= 0 ;~$r_{max}$:= 0 \;
+\ForEach{$i\in \vec{i}$}{\ShowLnLabel{chkuniq}
+  ($uniq$,$p$,$l$,$r$):= $CheckUniqueness(i)$\;
+  \eIf {$uniq\equiv1$} {
+    \ShowLnLabel{adduniq}
+    $\vec{f}:= i\cup\vec{f}$\;
+    $p_{max}:= max(p_{max},p$)\;
+    $l_{max}:= max(l_{max},l$)\;
+    $r_{max}:= max(r_{max},r$)\;
+  }{
+\ShowLnLabel{nonuniqres}    Assume $A$ is the satisfying assignment of $F_{LN}(p,l,r)$ in Line \ref{lnsat} of Algorithm \ref{alg_pcln}\;
+    \ForEach{$j\in\vec{i}$} {
+\ShowLnLabel{ruleout}      \lIf {$A(j_{p+l})\neq A(j'_{p+l})$} {
+	$\vec{i}:=\vec{i}-j$
+      }
+    }
+  }
+}
+\KwRet ($\vec{f}$,$p_{max}$,$l_{max}$,$r_{max}$)
+\caption{$FindFlowControl(\vec{i})$:Identifying the flow control variables}
+\label{alg_fofc}
+\end{algorithm}
+
+Thus,
+Algorithm \ref{alg_fofc} is proposed to identify $\vec{f}$.
+
+At Line \ref{chkuniq},
+it simply applies Algorithm \ref{alg_pcln} to each input variable $i\in\vec{i}$ of the encoder,
+to check whether $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
+If yes,
+the values of $p$,$l$ and $r$ are also computed.
+
+At Line \ref{adduniq},
+the input variable $i$ that can be uniquely determined will be added to the vector $\vec{f}$.
+And,
+at the following three lines, 
+the maximal values of $p$, $l$ and $r$ are computed.
+
+On the other hand,
+when $\vec{i}$ is very long,
+the run time overhead of testing each $i\in\vec{i}$ one by one would also be very large.
+To speed up this testing procedure,
+when the result of $CheckUniqueness$ is (0,?,?,?) at Line \ref{chkuniq},
+every $j\in\vec{i}$ that has different values for $j_{p+l}$ and $j'_{p+l}$ in the satisfying assignment of $F_{LN}(p,l,r)$ can also be ruled out at Line \ref{ruleout},
+because their own $F_{LN}(p,l,r)$ is also satisfiable.
+
+\section{Inferring predicate that enables the encoder's input data vector to be uniquely determined}\label{sec_infer}
+
+% Furthermore,
+% the validness of $\vec{d}$ is indicated by a predicate $valid(\vec{f})$.
+% So for a properly designed encoder,
+% $valid(\vec{f})$ should make $\vec{d}$ to be uniquely determined by the encoder's output.
+
+In subsection \ref{subsec_craig},
+we propose  an algorithm 
+% based on Craig interpolant \cite{interp_McMillan} and Cofactoring\cite{Cofact}
+to characterize a Boolean function that makes a Boolean formula satisfiable.
+In subsection \ref{subsec_infer},
+we apply this algorithm to infer $valid(\vec{f})$,
+the predicate that enable $\vec{d}$ to be uniquely determined by a bounded sequence of $\vec{o}$.
+
+
+\subsection{Characterizing a function that makes a Boolean formula satisfiable}\label{subsec_craig}
+
+Assume that $R(\vec{a},\vec{b},t)$ is a Boolean formula with $R(\vec{a},\vec{b},0)\wedge R(\vec{a},\vec{b},1)$ unsatisfiable.
+that is,
+$\vec{a}$ and $\vec{b}$ uniquely determine $t$.
+$\vec{a}$ and $\vec{b}$ are respectively called the important and the non-important variable vectors,
+while $t$ is the target variable.
+
+We need to characterize a Boolean function $FSAT(\vec{a})$,
+which covers and only covers all the valuations of $\vec{a}$ 
+that can make $R(\vec{a},\vec{b},1)$ satisfiable.
+It is formally defined below:
+
+\begin{equation}\label{fchar}
+% \begin{split}
+FSAT(\vec{a})\stackrel{def}{=}
+\left\{
+\begin{array}{rcl}
+1 & & \exists\vec{b}.R(\vec{a},\vec{b},1) \\
+0 & & otherwise
+\end{array}
+\right.
+% \end{split}
+\end{equation}
+%% HAHA come to here
+Thus,
+a naive algorithm of computing $FSAT(\vec{a})$ is to enumerate all valuations of $\vec{a}$,
+and collect all those valuations that make $R(\vec{a},\vec{b},1)$ satisfiable.
+But the number of valuations to be enumerated is $2^{|\vec{a}|}$,
+which will prevent this algorithm from terminating within reasonable time for a long $\vec{a}$.
+
+We can speed up this naive algorithm by expanding each valuation of $\vec{a}$ to a larger set with Craig interpolant\cite{interp_McMillan}.
+Intuitively,
+assume that $R(\vec{a},\vec{b},1)$ is satisfiable with a satisfying assignment $A:\vec{a}\cup\vec{b}\cup\{t\}\to\{0,1\}$,
+the following new formula can be constructed by cofactoring:
+
+\begin{algorithm}[b]
+\SetAlgoVlined
+\KwIn{The Boolean formula $R(\vec{a},\vec{b},t)$, 
+its important variable vector $\vec{a}$,
+its non-important variable vector $\vec{b}$,
+and its target variable $t$.}
+\KwOut{$FSAT(\vec{a})$ that makes $R(\vec{a},\vec{b},1)$ satisfiable.}
+\ShowLnLabel{initcondition}
+$FSAT(\vec{a}):= 0$ \;
+\ShowLnLabel{testsat}
+\While { $R(\vec{a},\vec{b},t)\wedge\neg FSAT(\vec{a})$ is satisfiable } {
+  assume $A:\vec{a}\cup\vec{b}\cup\{t\}\rightarrow \{0,1\}$ is the satisfying assignment \;
+\ShowLnLabel{cofact1}
+  $\phi_A(\vec{a}):= R(\vec{a},A(\vec{b}),1)$ \;
+\ShowLnLabel{cofact2}
+  $\phi_B(\vec{a}):= R(\vec{a},A(\vec{b}),0)$ \;
+\ShowLnLabel{ab}
+  assume $ITP(\vec{a})$ is the Craig interpolant of $\phi_A$ with respect to $\phi_B$ \;
+\ShowLnLabel{add}
+  $FSAT(\vec{a}):= ITP(\vec{a}) \vee FSAT(\vec{a})$ \;
+}
+\KwRet $FSAT(\vec{a})$
+\caption{$CharacterizingFormulaSAT(R,\vec{a},\vec{b},t)$:Characterizing a Boolean function over $\vec{a}$ that can make $R(\vec{a},\vec{b},1)$ satisfiable}
+\label{alg_craigchar}
+\end{algorithm}
+
+\begin{equation}
+% \begin{split}
+R(\vec{a},A(\vec{b}),1)
+% \end{split}
+\end{equation}
+
+Because $R(\vec{a},A(\vec{b}),0)\wedge R(\vec{a},A(\vec{b}),1)$ is unsatisfiable,
+the Craig interpolant $ITP(\vec{a})$ of $R(\vec{a},A(\vec{b}),1)$ with respect to $R(\vec{a},A(\vec{b}),0)$ can be computed 
+and used as an over-approximation of the set of $\vec{a}$ that makes $R(\vec{a},A(\vec{b}),1)$ satisfiable.
+At the same time,
+$ITP(\vec{a})\wedge R(\vec{a},A(\vec{b}),0)$ is unsatisfiable,
+so $ITP(\vec{a})$ covers nothing that can make $R(\vec{a},A(\vec{b}),0)$ satisfiable.
+Thus,$ITP(\vec{a})$ covers exactly the set of valuations of $\vec{a}$ that can make $R(\vec{a},A(\vec{b}),1)$ satisfiable.
+
+
+Based on the foregoing discussion,
+Algorithm \ref{alg_craigchar} is proposed to characterize $FSAT(\vec{a})$.
+% Line \ref{initcondition} initializes $FSAT$ to an empty formula.
+Line \ref{testsat} checks whether there is still some new valuation of $\vec{a}$ that can make $R(\vec{a},\vec{b},1)$ satisfiable,
+but has not been covered by $FSAT(\vec{a})$.
+Lines \ref{cofact1} and \ref{cofact2} assign the value of $\vec{b}$ 
+from the satisfying assignment to $R(\vec{a},\vec{b},1)$ and $R(\vec{a},\vec{b},0)$ respectively, 
+to remove $\vec{b}$ from them.
+
+Thus,
+$\phi_A\wedge \phi_B$ in Line \ref{ab} is unsatisfiable,
+and the common variables vector of $\phi_A$ and $\phi_B$ is $\vec{a}$.
+So a Craig interpolant $ITP(\vec{a})$ can be generated with the Mcmillian's algorithm\cite{interp_McMillan}.
+
+$ITP(\vec{a})$ is added to $FSAT(\vec{a})$ in Line \ref{add} and ruled out in Line \ref{testsat}.
+
+Each iteration of the while loop in Algorithm \ref{alg_craigchar} adds at least a valuation of $\vec{a}$ to $FSAT(\vec{a})$,
+which means that $FSAT(\vec{a})$ is a Boolean function that covers a bounded and strictly increasing set of valuations of $\vec{a}$.
+So Algorithm \ref{alg_craigchar} is a halting one.
+
+
+
+
+
+
+\subsection{Inferring $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined}\label{subsec_infer}
+
+By replacing $i$ in Equation (\ref{uniqt1}) with $\vec{d}$,
+we have:
+
+\begin{equation}\label{uniqt1d}
+% \begin{split}
+F^d_{PC}(p,l,r)\stackrel{def}{=}
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
+\wedge& \vec{d}_{p+l}\ne \vec{d}'_{p+l} 
+\end{array}
+\right\}
+% \end{split}
+\end{equation}
+
+If $F^d_{PC}(p,l,r)$ is satisfiable,
+then $\vec{d}_{p+l}$ cannot be uniquely determined by $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$.
+We define a new formula $T_{PC}(p,l,r)$ by collecting the 3rd line of Equation (\ref{uniqt1d}):
+
+\begin{equation}\label{tpc}
+% \begin{split}
+T_{PC}(p,l,r)\stackrel{def}{=}\\
+\left\{
+\begin{array}{cc}
+      &\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
+\end{array}
+\right\}
+% \end{split}
+\end{equation}
+
+By substituting $T_{PC}(p,l,r)$ back into $F^d_{PC}(p,l,r)$,
+we have a new formula:
+\begin{equation}\label{fpcq}
+% \begin{split}
+F'_{PC}(p,l,r,t)\stackrel{def}{=}
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge& \vec{d}_{p+l}\ne \vec{d'}_{p+l} \\
+\wedge& t\equiv T_{PC}(p,l,r)
+\end{array}
+\right\}
+% \end{split}
+\end{equation}
+
+It is obvious that $\vec{d}$ cannot be uniquely determined for a particular valuation of $p$, $l$ and $r$ if $F'_{PC}(p,l,r,1)$ is satisfiable.
+We further define:
+
+% By comparing Equation (\ref{fpcq}),
+% it is obvious that $F_{PC}(p,l,r)$ in Equation (\ref{uniqt1}) can be reformulated as: 
+% \begin{equation}\label{fpcref}
+% % \begin{split}
+% F_{PC}(p,l,r)\stackrel{def}{=}F'_{PC}(p,l,r,t)\wedge (t\equiv 1)
+% \end{equation}
+% 
+% $\vec{f}_{p+l}$ can be uniquely determined by $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$,
+% so $\vec{f}_{p+l}\equiv \vec{f'}_{p+l}$ always holds.
+% Thus,
+% $\vec{i}_{p+l}\ne \vec{i'}_{p+l}$ in Line 3 of Equation (\ref{fpcq}) should be reformulated as $\vec{d}_{p+l}\ne \vec{d'}_{p+l}$.
+
+
+% Thus,
+% to use Algorithm \ref{alg_craigchar} to characterize the formula over $\vec{f}_{p+l}$ that makes $F'_{PC}(p,l,r,1)$ satisfiable,
+% we can define the following equation:
+\begin{equation}\label{pcdef1}
+\vec{a}\stackrel{def}{=}\vec{f}_{p+l}
+\end{equation}
+
+\begin{equation}\label{pcdef2}
+\vec{b}\stackrel{def}{=}\vec{d}_{p+l}\cup \vec{d'}_{p+l}\cup \vec{s}_0\cup \vec{s'}_0\cup\bigcup_{0\le x\le p+l+r,x\neq (p+l)}(\vec{i}_{x}\cup\vec{i'}_{x})
+\end{equation}
+
+$\vec{f}_{p+l}$ can be uniquely determined, 
+so we do not need to consider $\vec{f'}_{p+l}$.
+Thus,
+$\vec{a}\cup\vec{b}$ is the vector that contains all the input variable vectors $<\vec{i}_0,\dots,\vec{i}_{p+l+r}>$ and $<\vec{i'}_0,\dots,\vec{i'}_{p+l+r}>$
+at all cycles for the two sequences of unrolled transition function.
+It also contains the two initial states $\vec{s}_0$ and $\vec{s'}_0$.
+In addition,
+$T$ is a function that computes the next state and the output variable vector from the current state and input variable vector.
+So $\vec{a}$ and $\vec{b}$ can uniquely determine the value of $t$ in $F'_{PC}(p,l,r,t)$.
+Thus,
+for a particular combination of $p$,$l$ and $r$,
+the Boolean function over $\vec{f}_{p+l}$ that makes $F'_{PC}(p,l,r,1)$ satisfiable can be computed 
+by calling Algorithm \ref{alg_craigchar} with $F'_{PC}(p,l,r,t)$, $\vec{a}$ and $\vec{b}$ defined above:
+
+\begin{equation}\label{fsat_pc}
+FSAT_{PC}(p,l,r)\stackrel{def}{=}CharacterizingFormulaSAT(F'_{PC}(p,l,r,t),\vec{a},\vec{b},t)
+\end{equation}
+
+Thus,
+we have the following proposition:
+\begin{proposition}\label{prop_pc}
+$FSAT_{PC}(p,l,r)$ is the Boolean function over $\vec{f}_{p+l}$ that makes $\vec{d}_{p+l}$ to be not uniquely determined for a particular $p$, $l$ and $r$.
+\end{proposition}
+
+Similarly,
+by replacing $i$ in Equation (\ref{uniqln}) with $\vec{d}$,
+we have:
+
+\begin{equation}\label{uniqlnd}
+% \begin{split}
+F^d_{LN}(p,l,r)\stackrel{def}{=}\\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
+\wedge& \vec{d}_{p+l}\ne \vec{d}'_{p+l} \\
+\wedge&\bigvee_{x=0}^{p-1}\bigvee_{y=x+1}^{p} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
+\wedge&\bigvee_{x=p+1}^{p+l-1}\bigvee_{y=x+1}^{p+l} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
+\wedge&\bigvee_{x=p+l+1}^{p+l+r-1}\bigvee_{y=x+1}^{p+l+r} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\}
+\end{array}
+\right\}
+% \end{split}
+\end{equation}
+
+If $F^d_{LN}(p,l,r)$ is satisfiable,
+then $\vec{d}_{p+l}$ cannot be uniquely determined by $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$.
+Furthermore,
+by unrolling those three loops in the last three lines of Equation (\ref{uniqlnd}),
+we can prove that $\vec{d}$ cannot be uniquely determined for any larger $p'\ge p$,$l'\ge l$ and $r'\ge r$.
+We further define a new formula $T_{PC}(p,l,r)$ by collecting the 3rd line and the last three lines of Equation (\ref{uniqlnd}):
+
+\begin{equation}\label{tln}
+% \begin{split}
+T_{LN}(p,l,r)\stackrel{def}{=}\\
+\left\{
+\begin{array}{cc}
+      &\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
+\wedge&\bigvee_{x=0}^{p-1}\bigvee_{y=x+1}^{p} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
+\wedge&\bigvee_{x=p+1}^{p+l-1}\bigvee_{y=x+1}^{p+l} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
+\wedge&\bigvee_{x=p+l+1}^{p+l+r-1}\bigvee_{y=x+1}^{p+l+r} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\}
+\end{array}
+\right\}
+% \end{split}
+\end{equation}
+
+By replacing the 3rd line and the last three lines of Equation (\ref{uniqlnd}) with $T_{LN}(p,l,r)$,
+we got:
+
+\begin{equation}\label{lndef1}
+F'_{LN}(p,l,r,t)\stackrel{def}{=}
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+% \wedge& \vec{f}_{p+l}\equiv \vec{f'}_{p+l}\\
+\wedge& \vec{d}_{p+l}\ne \vec{d'}_{p+l} \\
+\wedge& t\equiv T_{LN}(p,l,r)
+\end{array}
+\right\}
+\end{equation}
+
+Then $\vec{d}$ cannot be uniquely determined for any larger $p'\ge p$,$l'\ge l$ and $r'\ge r$ if $F'_{LN}(p,l,r,1)$ is satisfiable.
+Thus,
+for a particular combination of $p$,$l$ and $r$,
+the formula over $\vec{f}_{p+l}$ that makes $F'_{LN}(p,l,r,1)$ satisfiable can be computed by 
+
+\begin{equation}\label{fsat_ln}
+FSAT_{LN}(p,l,r)\stackrel{def}{=}CharacterizingFormulaSAT(F'_{LN}(p,l,r,t),\vec{a},\vec{b},t)
+\end{equation}
+
+Thus we have the following proposition:
+
+\begin{proposition}\label{prop_ln}
+$FSAT_{LN}(p,l,r)$ is the formula over $\vec{f}_{p+l}$ that makes  $\vec{d}_{p+l}$ to be not uniquely determined for every $p'\ge p$, $l'\ge l$ and $r'\ge r$.
+\end{proposition}
+
+% It is obvious that $FSAT_{LN}(p,l,r)\to FSAT_{PC}(p,l,r)$.
+% Thus,
+% for a particular valuation of $p$, $l$ and $r$,
+% if $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ is unsatisfiable,
+% then $\neg FSAT_{LN}(p,l,r)$ is the formula over $\vec{f}_{p+l}$ that makes $\vec{d}_{p+l}$ to be uniquely determined by the encoder's output sequence.
+
+\begin{algorithm}[t]
+\SetAlgoNoLine
+% \KwIn{The Boolean formula $R(\vec{a},\vec{b},t)$, 
+% its important variable vector $\vec{a}$,
+% its non-important variable vector $\vec{b}$,
+% and its target variable $t$.}
+% \KwOut{$F_i(\vec{a})$ that makes $R(\vec{a},\vec{b},1)$ satisfiable.}
+$p$:= $p_{max}$;~$l$:= $l_{max}$;~$r$:= $r_{max}$ \;
+\While { $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ is satisfiable } {
+  $p$ ++ ;~$l$ ++ ;~$r$ ++ \;
+}
+\KwRet {$\neg FSAT_{LN}(p,l,r)$}
+\caption{$InferringUniqueFormula$:inferring the predicate $valid(\vec{f}_{p+l})$ that enables $\vec{d}_{p+l}$ to be uniquely determined}
+\label{algo_pcln}
+\end{algorithm}
+
+With Propositions \ref{prop_pc} and \ref{prop_ln},
+the algorithm that infers the predicate $valid(\vec{f}_{p+l})$ is shown in Algorithm \ref{algo_pcln}.
+It just iteratively increases the value of $p$, $l$ and $r$, 
+until $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ is unsatisfiable.
+The proofs of its termination and correctness are given in the next subsection.
+
+\subsection{Proofs of termination and correctness}
+
+First we need to prove the following three lemmas:
+
+\begin{lemma}\label{lemmapcdec}
+$\mathbf{FSAT_{PC}(p,l,r)}$ in Algorithm \ref{algo_pcln} monotonically decreases.
+\end{lemma}
+\begin{proof}
+ According to the definition of $F'_{PC}(p,l,r,t)$ in Equation (\ref{fpcq}),
+for any $p'>p$,$l'>l$ and $r'>l$,
+we have $F'_{PC}(p',l',r',1)\Rightarrow F'_{PC}(p,l,r,1)$.
+So,
+according to Equation (\ref{fsat_pc}),
+we have $FSAT_{PC}(p',l',r')\Rightarrow FSAT_{PC}(p,l,r)$.
+Thus,
+$FSAT_{PC}(p,l,r)$ monotonically decreases.
+\end{proof}
+
+\begin{lemma}\label{lemmalninc}
+$\mathbf{FSAT_{LN}(p,l,r)}$ in Algorithm \ref{algo_pcln} monotonically increases.
+\end{lemma}
+\begin{proof}
+According to the definition of $F'_{LN}(p,l,r,t)$ in Equation (\ref{lndef1}),
+with any satisfying assignment of $F'_{LN}(p,l,r,1)$,
+those three loops in $T_{LN}(p,l,r)$ can be unrolled to make $F'_{LN}(p',l',r',1)$ satisfiable for all larger $p'$, $l'$ and $r'$.
+So,
+according to Equation (\ref{fsat_ln}),
+we have $FSAT_{LN}(p,l,r)\Rightarrow FSAT_{LN}(p',l',r')$,
+that is,
+$FSAT_{LN}(p,l,r)$ monotonically increases.
+\end{proof}
+
+
+\begin{lemma}\label{lemmaln2pc}
+$FSAT_{LN}(p,l,r)\Rightarrow FSAT_{PC}(p,l,r)$
+\end{lemma}
+\begin{proof}
+It is obvious that $F'_{LN}(p,l,r,1)\Rightarrow F'_{PC}(p,l,r,1)$,
+so $FSAT_{LN}(p,l,r)\Rightarrow FSAT_{PC}(p,l,r)$ holds.
+\end{proof}
+
+These three lemmas are depicted intuitively in Figure \ref{fig_mono},
+which makes it obvious that $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ monotonically decreases in Algorithm \ref{algo_pcln}.
+With these lemmas,
+let's first prove that Algorithm \ref{algo_pcln} is a halting one.
+
+\begin{theorem}
+ Algorithm \ref{algo_pcln} is a halting algorithm.
+\end{theorem}
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{mono}
+\end{center}
+\caption{The monotonicity of $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$}
+  \label{fig_mono}
+\end{figure}
+
+\begin{proof}
+As the encoder is represented by a finite state machine,
+the length of the longest path without loop is finite.
+If Algorithm \ref{algo_pcln} does not halt,
+then eventually the values of $p$, $l$ and $r$ in Algorithm \ref{algo_pcln} will be larger than the length of the longest path without loop,
+which means there will be loops in these three state sequences $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
+$<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
+Thus,
+every satisfying assignment of $F'_{PC}(p,l,r,1)$ also satisfies $F'_{LN}(p,l,r,1)$,
+which means $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ is unsatisfiable.
+This will lead to the termination of Algorithm \ref{algo_pcln}.
+So,
+it is a halting algorithm.
+\end{proof}
+
+
+
+We will then prove the correctness of Algorithm \ref{algo_pcln}.
+
+\begin{theorem}
+$\neg FSAT_{LN}(p,l,r)$ returned by Algorithm \ref{algo_pcln} covers and only covers all valuations of $\vec{f}$ that
+enable $\vec{d}$ to be uniquely determined by a bounded sequence of $\vec{o}$.
+\end{theorem}
+\begin{proof}
+Let's first prove the covering case.
+$FSAT_{LN}(p,l,r)$ covers a set of valuations of $\vec{f}$ that make 
+$\vec{d}$ to be not uniquely determined for some particular $p$, $l$ and $r$.
+So $\neg FSAT_{LN}(p,l,r)$ rules them out and covers all  valuations of $\vec{f}$ that
+enable $\vec{d}$ to be uniquely determined.
+
+We then prove the only covering case.
+If $\neg FSAT_{LN}(p,l,r)$ covers a valuation of $\vec{f}$ that makes $\vec{d}$ to be \textbf{NOT} uniquely determined for some particular $p'$, $l'$ and $r'$,
+then $FSAT_{LN}(p',l',r')$ also covers this valuation but $FSAT_{LN}(p,l,r)$ does not.
+% According to Figure \ref{fig_mono},
+% the terminating condition of the while loop is actually $FSAT_{LN}(p,l,r)\equiv FSAT_{PC}(p,l,r)$.
+% So $FSAT_{PC}(p,l,r)$ also does not cover it.
+But according to Lemmas \ref{lemmapcdec}, \ref{lemmalninc} and \ref{lemmaln2pc},
+this is impossible,
+because $FSAT_{LN}(p,l,r)$ is the maximal $FSAT_{LN}(p',l',r')$ for all possible $p'$, $l'$ and $r'$.
+So $\neg FSAT_{LN}(p,l,r)$ covers no valuation of $\vec{f}$ that makes $\vec{d}$ to be \textbf{NOT} uniquely determined.
+This proves the only covering case.
+\end{proof}
+
+\section{Characterizing the decoder's Boolean function}\label{sec_char}
+In Section \ref{sec_findfc},
+the encoder's input vector $\vec{i}$ has been partitioned into two vectors:
+the flow control vector $\vec{f}$ and the input data vector $\vec{d}$.
+The algorithms to characterize the decoder's Boolean functions that compute $\vec{f}$ and $\vec{d}$ are different,
+so they are discussed separately in the following two subsections.
+
+\subsection{Characterizing the decoder's Boolean function that computes $\vec{f}$}
+
+Each variable $f\in \vec{f}$ can be uniquely determined by a bounded sequence of the encoder's output.
+So,
+for each particular valuation of the encoder's output sequence $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$,
+$f_{p+l}$ cannot be 0 and 1 at the same time.
+Thus,
+the decoder's Boolean function that computes $f_{p+l}$ is exactly the Craig interpolant of $\phi_A$ with respect to $\phi_B$:
+
+\begin{equation}\label{fa}
+\phi_A\stackrel{def}{=}
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge& f_{p+l}\equiv 1 
+\end{array}
+\right\}
+\end{equation}
+\begin{equation}\label{fb}
+\phi_B\stackrel{def}{=}
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
+\wedge& f'_{p+l}\equiv 0
+\end{array}
+\right\}
+\end{equation}
+
+It is obvious that $\phi_A\wedge \phi_B$ equals $F_{PC}(p,l,r)$ in Equation (\ref{uniqt1}),
+so it is unsatisfiable.
+The common variable set of $\phi_A$ and $\phi_B$ is $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$.
+So,
+a Craig interpolant $ITP$ can be derived by Mcmillian's algorithm\cite{interp_McMillan} from the unsatisfiability proof of $\phi_A\wedge \phi_B$,
+which covers all values of $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$ that make $f_{p+l}\equiv 1$.
+At the same time,
+$ITP\wedge \phi_B$ is unsatisfiable,
+so $ITP$ covers nothing that can make $f_{p+l}$ 0.
+Thus,
+$ITP$ is the decoder's Boolean function that computes $f\in\vec{f}$.
+
+\subsection{Characterizing the decoder's Boolean function that computes $\vec{d}$}
+
+Assume that the predicate over $\vec{f}$ inferred by Algorithm \ref{algo_pcln},
+is $valid(\vec{f})$.
+Let's define the following two formulas for each input data variable $d\in\vec{d}$:
+
+\begin{equation}\label{da}
+\phi_A'\stackrel{def}{=}
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge& d_{p+l}\equiv 1 \\
+\wedge& valid(\vec{f}_{p+l})
+\end{array}
+\right\}
+\end{equation}
+
+\begin{equation}\label{db}
+\phi_B'\stackrel{def}{=}
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
+\wedge& d'_{p+l}\equiv 0\\
+\wedge& valid(\vec{f'}_{p+l})
+\end{array}
+\right\}
+\end{equation}
+
+Each variable $d\in \vec{d}$ can be uniquely determined by the encoder's output only when $valid(\vec{f})$ holds.
+So,
+if $valid(\vec{f}_{p+l})$ holds,
+for each particular valuation of the encoder's output sequence $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$,
+$d_{p+l}$ cannot be 0 and 1 at the same time.
+So,
+$\phi_A'\wedge \phi_B'$ is unsatisfiable.
+Thus,
+a Craig interpolant $ITP$ can be derived by Mcmillian's algorithm\cite{interp_McMillan} from the unsatisfiability proof of $\phi_A'\wedge \phi_B'$,
+which covers and only covers all valuations of $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$ that make $d_{p+l}\equiv 1$.
+Thus,
+$ITP$ is the decoder's Boolean function that computes $d\in\vec{d}$.
+
+Furthermore,
+when $valid(\vec{f}_{p+l})$ does not hold,
+the input data variable $d\in\vec{d}_{p+l}$ cannot be uniquely determined.
+So,
+no function can be used to calculate its value.
+But this is not a problem,
+because the decoder is supposed 
+to recognize the invalid input data vector by computing the value of control flow vector $\vec{f}$,
+and ignore the exact value of $\vec{d}$.
+
+
+
+
+% 
+% As a new technology, Wireless Sensor Networks (WSNs) has a wide
+% range of applications [Culler 2001,Bahl 2002,Akyildiz 2001], including
+% environment monitoring, smart buildings, medical care, industrial and
+% military applications. Among them, a recent trend is to develop
+% commercial sensor networks that require pervasive sensing of both
+% environment and human beings, for example, assisted living
+% [Akyildiz 2002,Harvard 2001,CROSSBOW] and smart homes
+% [Harvard 2001,Adya 2001,CROSSBOW].
+% % quote
+% \begin{quote}
+% ``For these applications, sensor devices are incorporated into human
+% cloths [Natarajan 2001,Zhou 2006,Bahl 2002,Adya 2001] for monitoring
+% health related information like EKG readings, fall detection, and voice recognition".
+% \end{quote}
+% While collecting all these multimedia information
+% [Akyildiz 2002] requires a high network throughput, off-the-shelf
+% sensor devices only provide very limited bandwidth in a single
+% channel: 19.2Kbps in MICA2 [Bahl 2002] and 250Kbps in MICAz.
+% 
+% In this article, we propose MMSN, abbreviation for Multifrequency
+% Media access control for wireless Sensor Networks. The main
+% contributions of this work can be summarized as follows.
+% % itemize
+% \begin{itemize}
+% \item To the best of our knowledge, the MMSN protocol is the first
+% multifrequency MAC protocol especially designed for WSNs, in which
+% each device is equipped with a single radio transceiver and
+% the MAC layer packet size is very small.
+% \item Instead of using pairwise RTS/CTS frequency negotiation
+% [Adya 2001,Culler 2001; Tzamaloukas 2001; Zhou 2006],
+% we propose lightweight frequency assignments, which are good choices
+% for many deployed comparatively static WSNs.
+% \item We develop new toggle transmission and snooping techniques to
+% enable a single radio transceiver in a sensor device to achieve
+% scalable performance, avoiding the nonscalable ``one
+% control channel + multiple data channels'' design [Natarajan 2001].
+% \end{itemize}
+
+% Head 1
+% \section{MMSN Protocol}
+% 
+% % Head 2
+% \subsection{Frequency Assignment}
+% 
+% We propose a suboptimal distribution to be used by each node, which is
+% easy to compute and does not depend on the number of competing
+% nodes. A natural candidate is an increasing geometric sequence, in
+% which
+% % Numbered Equation
+% \begin{equation}
+% \label{eqn:01}
+% P(t)=\frac{b^{\frac{t+1}{T+1}}-b^{\frac{t}{T+1}}}{b-1},
+% \end{equation}
+% where $t=0,{\ldots}\,,T$, and $b$ is a number greater than $1$.
+% 
+% In our algorithm, we use the suboptimal approach for simplicity and
+% generality. We need to make the distribution of the selected back-off
+% time slice at each node conform to what is shown in Equation
+% (\ref{eqn:01}). It is implemented as follows: First, a random
+% variable $\alpha$ with a uniform distribution within the interval
+% $(0, 1)$ is generated on each node, then time slice $i$ is selected
+% according to the following equation:
+% % Unnumbered Equation
+% \[
+% i=\lfloor(T+1)\log_b[\alpha(b-1)+1]\rfloor.
+% \]
+% It can be easily proven that the distribution of $i$ conforms to Equation
+% (\ref{eqn:01}).
+% 
+% So protocols [Bahl 2002,Culler 2001,Zhou 2006,Adya 2001,Culler 2001;
+% Tzamaloukas-01; Akyildiz-01] that use RTS/CTS
+% controls\footnote{RTS/CTS controls are required to be implemented by
+% 802.11-compliant devices. They can be used as an optional mechanism
+% to avoid Hidden Terminal Problems in the 802.11 standard and
+% protocols based on those similar to [Akyildiz 2001] and
+% [Adya 2001].} for frequency negotiation and reservation are not
+% suitable for WSN applications, even though they exhibit good
+% performance in general wireless ad hoc
+% networks.
+% 
+% % Head 3
+% \subsubsection{Exclusive Frequency Assignment}
+% 
+% In exclusive frequency assignment, nodes first exchange their IDs
+% among two communication hops so that each node knows its two-hop
+% neighbors' IDs. In the second broadcast, each node beacons all
+% neighbors' IDs it has collected during the first broadcast period.
+% 
+% % Head 4
+% \paragraph{Eavesdropping}
+% 
+% Even though the even selection scheme leads to even sharing of
+% available frequencies among any two-hop neighborhood, it involves a
+% number of two-hop broadcasts. To reduce the communication cost, we
+% propose a lightweight eavesdropping scheme.
+% 
+% \subsection{Basic Notations}
+% 
+% As Algorithm~\ref{alg:one} states, for each frequency
+% number, each node calculates a random number (${\textit{Rnd}}_{\alpha}$) for
+% itself and a random number (${\textit{Rnd}}_{\beta}$) for each of its two-hop
+% neighbors with the same pseudorandom number generator.
+% % Algorithm
+% \begin{algorithm}[t]
+% \SetAlgoNoLine
+% \KwIn{Node $\alpha$'s ID ($ID_{\alpha}$), and node $\alpha$'s
+% neighbors' IDs within two communication hops.}
+% \KwOut{The frequency number ($FreNum_{\alpha}$) node $\alpha$ gets assigned.}
+% $index$ = 0; $FreNum_{\alpha}$ = -1\;
+% \Repeat{$FreNum_{\alpha} > -1$}{
+%         $Rnd_{\alpha}$ = Random($ID_{\alpha}$, $index$)\;
+%         $Found$ = $TRUE$\;
+%         \For{each node $\beta$ in $\alpha$'s two communication hops
+%     }{
+%       $Rnd_{\beta}$ = Random($ID_{\beta}$, $index$)\;
+%       \If{($Rnd_{\alpha} < Rnd_{\beta}$) \text{or} ($Rnd_{\alpha}$ ==
+%           $Rnd_{\beta}$ \text{and} $ID_{\alpha} < ID_{\beta}$)\;
+%       }{
+%         $Found$ = $FALSE$; break\;
+%       }
+%         }
+%      \eIf{$Found$}{
+%            $FreNum_{\alpha}$ = $index$\;
+%          }{
+%            $index$ ++\;
+%      }
+%       }
+% \caption{Frequency Number Computation}
+% \label{alg:one}
+% \end{algorithm}
+% 
+% Bus masters are divided into two disjoint sets, $\mathcal{M}_{RT}$
+% and $\mathcal{M}_{NRT}$.
+% % description
+% \begin{description}
+% \item[RT Masters]
+% $\mathcal{M}_{RT}=\{ \vec{m}_{1},\dots,\vec{m}_{n}\}$ denotes the
+% $n$ RT masters issuing real-time constrained requests. To model the
+% current request issued by an $\vec{m}_{i}$ in $\mathcal{M}_{RT}$,
+% three parameters---the recurrence time $(r_i)$, the service cycle
+% $(c_i)$, and the relative deadline $(d_i)$---are used, with their
+% relationships.
+% \item[NRT Masters]
+% $\mathcal{M}_{NRT}=\{ \vec{m}_{n+1},\dots,\vec{m}_{n+m}\}$ is a set
+% of $m$ masters issuing nonreal-time constrained requests. In our
+% model, each $\vec{m}_{j}$ in $\mathcal{M}_{NRT}$ needs only one
+% parameter, the service cycle, to model the current request it
+% issues.
+% \end{description}
+% 
+% Here, a question may arise, since each node has a global ID. Why
+% don't we just map nodes' IDs within two hops into a group of
+% frequency numbers and assign those numbers to all nodes within two
+% hops?
+% 
+% \section{Simulator}
+% \label{sec:sim}
+% 
+% If the model checker requests successors of a state which are not
+% created yet, the state space uses the simulator to create the
+% successors on-the-fly. To create successor states the simulator
+% conducts the following steps.
+% % enumerate
+% \begin{enumerate}
+% \item Load state into microcontroller model.
+% \item Determine assignments needed for resolving nondeterminism.
+% \item For each assignment.
+%       \begin{enumerate}
+%       \item either call interrupt handler or simulate effect of next instruction, or
+%       \item evaluate truth values of atomic propositions.
+%       \end{enumerate}
+% \item Return resulting states.
+% \end{enumerate}
+% Figure~\ref{fig:one} shows a typical microcontroller C program that
+% controls an automotive power window lift. The program is one of the
+% programs used in the case study described in Section~\ref{sec:sim}.
+% At first sight, the programs looks like an ANSI~C program. It
+% contains function calls, assignments, if clauses, and while loops.
+% % Figure
+% \begin{figure}
+% \centerline{\includegraphics{acmsmall-mouse}}
+% \caption{Code before preprocessing.}
+% \label{fig:one}
+% \end{figure}
+% 
+% \subsection{Problem Formulation}
+% 
+% The objective of variable coalescence-based offset assignment is to find
+% both the coalescence scheme and the MWPC on the coalesced graph. We start
+% with a few definitions and lemmas for variable coalescence.
+% 
+% % Enunciations
+% \begin{definition}[Coalesced Node (C-Node)]A C-node is a set of
+% live ranges (webs) in the AG or IG that are coalesced. Nodes within the same
+% C-node cannot interfere with each other on the IG. Before any coalescing is
+% done, each live range is a C-node by itself.
+% \end{definition}
+% 
+% \begin{definition}[C-AG (Coalesced Access Graph)]The C-AG is the access
+% graph after node coalescence, which is composed of all C-nodes and C-edges.
+% \end{definition}
+% 
+% \begin{lemma}
+% The C-MWPC problem is NP-complete.
+% \end{lemma}
+% \begin{proof} C-MWPC can be easily reduced to the MWPC problem assuming a
+% coalescence graph without any edge or a fully connected interference graph.
+% Therefore, each C-node is an uncoalesced live range after value separation
+% and C-PC is equivalent to PC. A fully connected interference graph is made
+% possible when all live ranges interfere with each other. Thus, the C-MWPC
+% problem is NP-complete.
+% \end{proof}
+% 
+% \begin{lemma}[Lemma Subhead]The solution to the C-MWPC problem is no
+% worse than the solution to the MWPC.
+% \end{lemma}
+% \begin{proof}
+% Simply, any solution to the MWPC is also a solution to the
+% C-MWPC. But some solutions to C-MWPC may not apply to the MWPC (if any
+% coalescing were made).
+% \end{proof}
+% 
+% \section{Performance Evaluation}
+% 
+% During all the experiments, the Geographic Forwarding (GF)
+% [Akyildiz 2001] routing protocol is used. GF exploits geographic
+% information of nodes and conducts local data-forwarding to achieve
+% end-to-end routing. Our simulation is
+% configured according to the settings in
+% Table~\ref{tab:one}. Each run lasts for 2 minutes and
+% repeated 100 times. For each data value we present in the results,
+% we also give its 90\% confidence interval.
+% % Table
+% \begin{table}%
+% \tbl{Simulation Configuration\label{tab:one}}{%
+% \begin{tabular}{|l|l|}
+% \hline
+% TERRAIN{$^a$}   & (200m$\times$200m) Square\\\hline
+% Node Number     & 289\\\hline
+% Node Placement  & Uniform\\\hline
+% Application     & Many-to-Many/Gossip CBR Streams\\\hline
+% Payload Size    & 32 bytes\\\hline
+% Routing Layer   & GF\\\hline
+% MAC Layer       & CSMA/MMSN\\\hline
+% Radio Layer     & RADIO-ACCNOISE\\\hline
+% Radio Bandwidth & 250Kbps\\\hline
+% Radio Range     & 20m--45m\\\hline
+% \end{tabular}}
+% \begin{tabnote}%
+% \Note{Source:}{This is a table
+% sourcenote. This is a table sourcenote. This is a table
+% sourcenote.}
+% \vskip2pt
+% \Note{Note:}{This is a table footnote.}
+% \tabnoteentry{$^a$}{This is a table footnote. This is a
+% table footnote. This is a table footnote.}
+% \end{tabnote}%
+% \end{table}%
+
+\section{Experimental Results}\label{sec_exp}
+
+We have implemented these algorithms
+and solved the generated SAT instances with Minisat\cite{EXTSAT}.
+All experiments have been run on a PC with a 2.4GHz Intel Core 2 Q6600 processor, 8 GB memory, and Ubuntu Linux 12.04.
+
+By studying the benchmarks used in our previous papers [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12}],
+we found that most of them have built-in flow control mechanisms.
+This is not a surprise to us,
+because these benchmarks all come from real industrial projects.
+% But these mechanisms were turned off in previous papers by enforcing manually specified assertion[\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11}],
+% or automatically inferred assertions\cite{ShenTCAD12}.
+% Thus,
+% the algorithm presented here is the first one that allows the flow control mechanism to be turned on and off freely.
+% We will discuss these benchmarks one by one in the following subsections.
+We will present the experimental result for them in the following subsections.
+
+On the other hand,
+we have also found that the benchmarks used in \cite{TuDAC13} contain no flow control mechanism,
+and hence they will not be discussed here.
+
+
+
+\subsection{PCI Express 2.0 encoder}
+This encoder is compliant with the PCI Express 2.0 standard \cite{pcie21}.
+After deleting empty line and comments,
+its source code has 259 lines of verilog.
+After being mapped to LSI10K library,
+it contains 113 AND2 gates, 212 OR2 gates, 68 inverters and 23 registers.
+And its total area is 879.
+
+
+\begin{table}[t]%
+\tbl{The input and output variables of the PCI Express 2.0 encoder\label{tab:pcieio}}{%
+\begin{tabular}{|c|c|c|c|}
+\hline
+         & variable name          & width & description\\\hline\hline
+         & $TXDATA$             & 8     &The data to be encoded \\\cline{2-4}
+Inputs   & $TXDATAK$            & 1     &1 means $TXDATA$ is a controlling character, \\
+         &                      &       &0 means $TXDATA$ is normal data \\\cline{2-4}
+         & $CNTL\_TXEnable\_P0$ & 1     &Indicating the validness of $TXDATA$ and $TXDATAK$\\\hline
+Outputs  & $HSS\_TXD$           & 10    &The encoded data \\\cline{2-4}
+         & $HSS\_TXELECIDLE$    & 1     &The electrical idle state\\\hline
+\end{tabular}}
+% \begin{tabnote}%
+% \Note{Source:}{This is a table
+% sourcenote. This is a table sourcenote. This is a table
+% sourcenote.}
+% \vskip2pt
+% \Note{Note:}{This is a table footnote.}
+% \tabnoteentry{$^a$}{This is a table footnote. This is a
+% table footnote. This is a table footnote.}
+% \end{tabnote}%
+\end{table}%
+
+The list of input and output variables is shown in Table \ref{tab:pcieio}.
+According to the 8b/10b encoding scheme's coding table\cite{WIKI810e},
+when $TXDATAK\equiv 0$,
+$TXDATA$ can be of any value.
+But when $TXDATAK\equiv 1$,
+$TXDATA$ can only be 1C, 3C, 5C, 7C, 9C, BC, DC, FC, F7, FB, FD and FE.
+So,
+we write an assertion to rule out those combinations that are not in this coding table.
+This assertion is embed into the transition function $T$,
+so that it can be enforced at every cycle in the unrolled state sequences.
+
+Algorithm \ref{alg_fofc} costs 0.924754 seconds to identify the flow control variable $CNTL\_TXEnable\_P0$.
+And then Algorithm \ref{algo_pcln} costs 2.067509 seconds to infer the predicate $CNTL\_TXEnable\_P0\equiv 1$ that enables the input data vector to be uniquely determined.
+Finally, 
+with the inferred predicate,
+generating the decoder's Boolean functions for $CNTL\_TXEnable\_P0$, $TXDATA$ and $TXDATAK$ costs 3.121821 seconds.
+After being mapped to LSI10K library,
+the decoder contains 614 AND2, 198 OR2 and 22 registers.
+Its total area is 1778.
+
+The major breakthrough of this paper's algorithms is their ability to handle invalid input data vector.
+So,
+it should be very interesting to show how the invalid input data vector is mapped to output variable vector $\vec{o}$.
+By studying the source code of this encoder,
+we find that,
+when and only when $CNTL\_TXEnable\_P0\equiv 0$ holds,
+that is,
+$TXDATA$ and $TXDATAK$ are invalid,
+the output electrical idle variable $HSS\_TXELECIDLE$ becomes 1.
+% which will force the analog transmitter into a electrical idle state.
+% The analog receiver can detect such an electrical idle state and recover the $HSS\_TXELECIDLE$.
+So,
+the decoder can use the output variable $HSS\_TXELECIDLE$ to uniquely determine the value of flow control variable $CNTL\_TXEnable\_P0$.
+
+\subsection{10G Ethernet encoder}
+This encoder is compliant with clause 48 of IEEE 802.3 standard \cite{IEEE8023_S4}.
+After deleting empty line and comments,
+this encoder has 214 lines of verilog.
+After being mapped to LSI10K library,
+it contains 65 AND2 gates, 192 OR2 gates, 75 inverters and 17 registers.
+Its total area is 708.
+
+\begin{table}[b]%
+\tbl{The input and output variables of the 10G Ethernet encoder\label{tab:eth10g}}{%
+\begin{tabular}{|c|c|c|c|}
+\hline
+         & variable name          & width & description\\\hline\hline
+         & $encode\_data\_in$   & 8     &The data to be encoded \\\cline{2-4}
+Inputs   & $konstant$           & 1     &1 means $encode\_data\_in$ is a special character, \\
+         &                      &       &0 means $encode\_data\_in$ is normal data \\\cline{2-4}
+         & $bad\_code$          & 1     &Indicating the validness of $konstant$ and $encode\_data\_in$\\\hline
+Outputs  & $encode\_data\_out$  & 10    &The encoded data \\\hline
+\end{tabular}}
+% \begin{tabnote}%
+% \Note{Source:}{This is a table
+% sourcenote. This is a table sourcenote. This is a table
+% sourcenote.}
+% \vskip2pt
+% \Note{Note:}{This is a table footnote.}
+% \tabnoteentry{$^a$}{This is a table footnote. This is a
+% table footnote. This is a table footnote.}
+% \end{tabnote}%
+\end{table}%
+
+The list of input and output variables is shown in Table \ref{tab:eth10g}.
+This encoder also employs an 8b/10b encoding scheme\cite{WIKI810e} with two inputs:
+the 8-bit $encode\_data\_in$ to be encoded
+and 1-bit $konstant$ indicating a controlling character.
+According to the coding table in \cite{WIKI810e},
+when $konstant\equiv 0$,
+$encode\_data\_in$ can be of any value.
+But when $konstant\equiv 1$,
+$encode\_data\_in$ can only be 1C, 3C, 5C, 7C, 9C, BC, DC, FC, F7, FB, FD and FE.
+So,
+we write an assertion to exclude those combinations that are not in this table
+and embed it into the the transition function $T$.
+
+Algorithm \ref{alg_fofc} costs 0.619508 seconds to identify the flow control variable $bad\_code$.
+And then Algorithm \ref{algo_pcln} costs 1.443065 seconds to infer the predicate $bad\_code\equiv 0$ that enables the input data vector to be uniquely determined.
+Finally, generating the decoder's Boolean functions for $bad\_code$, $encode\_data\_in$ and $konstant$ costs 2.202401 seconds.
+After being mapped to LSI10K library,
+the decoder contains 597 AND2, 174 OR2 and 30 registers.
+Its total area is 1752.
+
+Although this encoder uses the same coding mechanism as does the PCI Express 2.0 encoder mentioned above,
+the way it handle the invalid input data vector is different.
+This encoder does not have a separate output variable to indicate the validness of the output data;
+instead,
+the validness and exact value of all input variables are both encoded in $encode\_data\_out$.
+By studying this encoder's source code,
+we find that when and only when $bad\_code\equiv 1$,
+that is,
+$encode\_data\_in$ and $konstant$ are invalid,
+the output variable $encode\_data\_out$ will become  $0010111101$.
+So the decoder can use the output variable $encode\_data\_out$ to uniquely determine the value of the flow control variable $bad\_code$.
+
+
+
+\subsection{UltraSPARC T2 Ethernet encoder}
+This encoder comes from the UltraSPARC T2 open source processor designed by Sun Microsystems.
+It is compliant with clause 36 of IEEE 802.3 standard \cite{IEEE8023_S4}.
+After deleting empty line and comments,
+this encoder's source code has 864 lines of verilog.
+After being mapped to LSI10K library,
+it contains 344 AND2 gates, 649 OR2 gates, 128 inverters and 53 registers.
+Its total area is 2485.
+
+\begin{table}[t]%
+\tbl{The input and output variables of the UltraSPARC T2 Ethernet encoder\label{tab:t2eth}}{%
+\begin{tabular}{|c|c|c|c|}
+\hline
+         & variable name          & width & description\\\hline\hline
+         & $txd$                & 8     &The data to be encoded \\\cline{2-4}
+Inputs   & $tx\_enc\_ctrl\_sel$ & 1     &Refer to Table \ref{tab:one} \\\cline{2-4}
+         & $tx\_en$             & 1     &Transmission enable \\\cline{2-4}
+         & $tx\_er$             & 1     &Transmitting an error character \\\hline
+         & $tx\_10bdata$        & 10    &The encoded data \\\cline{2-4}
+         & $txd\_eq\_crs\_ext$  & 10    &Transmitting an special error character \\
+Outputs  &                      &       &with $tx\_er\equiv 1$ and $txd\equiv 8'h0F$ \\\cline{2-4}
+         & $tx\_er\_d$          & 1     &Transmitting an error character \\\cline{2-4}
+         & $tx\_en\_d$          & 1     &Transmission enable \\\cline{2-4}
+         & $pos\_disp\_tx\_p$   & 1     &Indicating positive parity \\\hline
+\end{tabular}}
+% \begin{tabnote}%
+% \Note{Source:}{This is a table
+% sourcenote. This is a table sourcenote. This is a table
+% sourcenote.}
+% \vskip2pt
+% \Note{Note:}{This is a table footnote.}
+% \tabnoteentry{$^a$}{This is a table footnote. This is a
+% table footnote. This is a table footnote.}
+% \end{tabnote}%
+\end{table}%
+
+The list of input and output variables is shown in Table \ref{tab:t2eth}.
+This encoder also employs an 8b/10b encoding scheme\cite{WIKI810e},
+but with yet another style of flow control mechanism that is significantly different from that of the above two encoders.
+The data to be encoded is the 8-bit $txd$,
+but there is no standalone variable to indicate the control symbol.
+But only a 4-bit $tx\_enc\_ctrl\_sel$ used to define the action to be performed,
+as shown in Table \ref{tab:one}.
+It is obvious that the functionalities of the control symbol indication and flow control mechanism are combined in $tx\_enc\_ctrl\_sel$.
+The last four cases in Table \ref{tab:one} can never be uniquely determined,
+because they cannot be distinguished from the case of `PCS\_ENC\_DATA.
+So we write an assertion to rule them out.
+
+\begin{table}[b]%
+\tbl{Actions to be performed in UltraSPARC T2 Ethernet encoder\label{tab:one}}{%
+\begin{tabular}{|l|l|}
+\hline
+The name of action   & The meaning of action\\\hline\hline
+`PCS\_ENC\_K285   & sending K28.5 control symbol\\\hline
+`PCS\_ENC\_SOP  & sending K27.7 control symbol\\\hline
+`PCS\_ENC\_T\_CHAR    & sending K29.7 control symbol\\\hline
+`PCS\_ENC\_R\_CHAR   & sending K23.7 control symbol\\\hline
+`PCS\_ENC\_H\_CHAR     & sending K30.7 control symbol\\\hline
+`PCS\_ENC\_DATA     & sending the encoded txd\\\hline
+`PCS\_ENC\_IDLE2     & sending D16.2 data symbol following K28.5\\\hline
+`PCS\_ENC\_IDLE1       & sending D5.6 data symbol\\\hline
+`PCS\_ENC\_LINK\_CONFA & sending D21.5 data symbol following K28.5\\\hline
+`PCS\_ENC\_LINK\_CONFB     & sending D2.2 data symbol following K28.5\\\hline
+\end{tabular}}
+% \begin{tabnote}%
+% \Note{Source:}{This is a table
+% sourcenote. This is a table sourcenote. This is a table
+% sourcenote.}
+% \vskip2pt
+% \Note{Note:}{This is a table footnote.}
+% \tabnoteentry{$^a$}{This is a table footnote. This is a
+% table footnote. This is a table footnote.}
+% \end{tabnote}%
+\end{table}%
+
+Algorithm \ref{alg_fofc} costs 11.750317 seconds to identify the flow control variables $tx\_enc\_ctrl\_sel$, $tx\_en$ and $tx\_er$.
+And then Algorithm \ref{algo_pcln} costs 27.456717 seconds to infer the predicate $tx\_enc\_ctrl\_sel\equiv `PCS\_ENC\_DATA$ that enables the input data vector to be uniquely determined.
+Finally, generating the decoder's Boolean functions for $txd$, $tx\_enc\_ctrl\_sel$, $tx\_en$ and $tx\_er$ costs 22.156704 seconds.
+After being mapped to LSI10K library,
+the decoder contains 2245 AND2, 794 OR2 and 22 registers.
+Its total area is 6232.
+
+As shown in the last column of Table \ref{tab:one},
+the first 5 cases have their own particular control symbol values assigned to $tx\_10bdata$,
+so the decoder can recover the value of the flow control variable $tx\_enc\_ctrl\_sel$ from $tx\_10bdata$.
+
+\section{RELATED PUBLICATIONS}\label{sec_relwork}
+%\subsection{Complementary Synthesis}
+%%Complementary synthesis is an emerging new research topic,
+%%there are only two papers that discuss this problem.
+%
+%The concept of complementary synthesis was first proposed by us\cite{ShengYuShen:iccad09} in ICCAD 2009.
+%Its major shortcomings are that it is incomplete,
+%and its run-time overhead of building decoder is too large.
+%
+%The incomplete problem has been addressed by \cite{ShengYuShen:fmcad10}, while \cite{ShengYuShen:tcad} addresses the second shortcoming by simplifying the SAT instance with unsatisfiable core extraction before building decoders.
+
+\subsection{Complementary synthesis}\label{subsec_compsyn_relat}
+The first complementary synthesis algorithm was proposed by \cite{ShenICCAD09}.
+It checks the decoder's existence by iteratively increasing the bound of unrolled transition function sequence,
+and generates the decoder's Boolean function by enumerating all satisfying assignments of the decoder's output.
+Its major shortcomings are that it may not halt and that it has large runtime overhead
+in building the decoder.
+
+Shen et al.\citeyear{ShenTCAD11} and Liu et al.\citeyear{LiuICCAD11} tackled the halting problem independently by searching for loops in the state sequence,
+while the runtime overhead problem was addressed in \cite{ShenTCAD12,LiuICCAD11} by Craig interpolant\cite{interp_McMillan}.
+
+Shen et al.\citeyear{ShenTCAD12} automatically inferred an assertion for configuration pins, 
+which can lead to the decoder's existence.
+It can be seen as a special case of Algorithm \ref{algo_pcln} in Section \ref{sec_infer},
+with the restriction that the inferred assertion must hold on all cycles,
+to prevent the encoder from leaving the unique state set.
+Our Algorithm \ref{algo_pcln},
+on the other hand,
+is the first algorithm that allows states with and without the inferred assertion to be interleaved freely with each other,
+which make it possible to handle encoder with flow control mechanism.
+
+Tu and Jiang \citeyear{TuDAC13} proposed a break-through algorithm 
+based on property directed reachability analysis\cite{BradleyVMCAI11,EenFMCAD11} 
+that can take the encoder's initial state into consideration,
+so that the infinite history of the encoder and the decoder can be used to generate the decoder's output.
+This algorithm can handle some special encoders that cannot be handled by the state-of-the-art algorithms.
+But for the encoders with flow control mechanism used in our experiments,
+our algorithm is enough, 
+and therefore we have not implemented their algorithm in our framework.
+
+
+\subsection{Program inversion}\label{subsec_proinv}
+According to Gulwani\shortcite{dim_syn},
+program inversion involves deriving a program $P^{-1}$
+that negates the computation of a given program $P$.
+So,
+the definition of program inversion is very similar to complementary synthesis.
+
+The initial work on deriving program inversion used proof-based approaches\cite{prog_inv},
+which could handle only very small programs and very simple syntax structures.
+
+Gl\"{u}ck et al. \shortcite{mtd_autoProginv} inverted first-order functional programs
+by eliminating nondeterminism with LR-based parsing methods.
+But,
+the use of functional languages in that work is incompatible with our complementary synthesis.
+
+{Srivastava et al. \shortcite{prog_inv_rev,program_inversion_11} assumed that an inverse program was typically related to the original program,
+and so the space of possible inversions can be inferred by automatically
+mining the original program for expressions, predicates, and control flow.
+This algorithm inductively rules out invalid paths that cannot fulfill the requirement of inversion
+to narrow down the space of candidate programs until only the valid ones remain.
+So,
+it can only guarantee the existence of a solution,
+but not the correctness of this solution if its assumptions do not hold.
+
+% \subsection{The completeness of bounded model checking}\label{subsec_bmc_relate}
+% Bounded model checking(BMC) \cite{bmc_tacas99} is a model checking technology that considers only paths of limited length.
+% So it is an incomplete algorithm.
+% Many researchers have tried to find complete approaches for BMC.
+% 
+% One line of research\cite{bmc_tacas99,RecDiam} tried to find out a bound $b$,
+% which can guarantee the correctness of a specification,
+% if the specification is correct on all paths that are shorter than $b$.
+% Line 8 of Algorithm \ref{algo_pcln} finds out the value of $p$,$d$ and $l$ that can prove the non-existence of the decoder,
+% which is similar to \cite{bmc_tacas99,RecDiam}.
+% 
+% The other line of research\cite{kind_tacas99} tried to find a bound for induction,
+% such that the correctness of a specification within any bound $b$ implies the correctness on bound $b+1$.
+% Our algorithm proves the non-existence of the decoder by unfolding loops.
+% This is similar to finding induction patterns \cite{kind_tacas99}.
+
+% \textbf{This paper achieves completeness without following these two approaches.
+% Instead,
+% it defines two complement uniqueness conditions,
+% $LP$ and $LL$,
+% and find out proper algorithms to check them.}
+
+%\subsection{Temporal Logic Synthesis}
+%%Automatically synthesis of program from logic specification is first identified as Church's problem in 1962\cite{LOGARTHAUTO}.
+%%Some early researches \cite{SLVSQFSS,AUTOINF} solve this problem by reducing it to checking emptiness of tree automata.
+%
+%The temporal logic synthesis was first addressed by Clarke et al.\cite{DSGSYNTMPLG} and Manna et al. \cite{SYNTMPLGSPC}.
+%But Pnueli et al. \cite{SYNRCTVMD} pointed out that the complexity of LTL synthesis is double exponent.
+%%This high complexity drives researchers turning their focus to find smaller but still useful subset of temporal logic,
+%%such that synthesis problem can be solved with lower complexity.
+%
+%One line of research \cite{CNTLSYNTMDAUTO,DTMGENGMELTL,SYNRCTVDES} focuses on the so-called generalized reactive formulas of the form:
+%$(\square \lozenge p_1 \wedge \cdots \square \lozenge p_m) \to (\square \lozenge q_1 \wedge \cdots \square \lozenge q_n)$.
+%Complexity of solving synthesis problem for such formula is $O(N^3)$.
+%
+%The other line of research focuses on finding efficient algorithm \cite{SYNCNTLBNDRPN}
+%for expensive safra determination algorithm \cite{CMPLXAUTO} on an useful formula subset,
+%or just avoiding it\cite{NEWALGSTRGSYN}.
+%
+%%Yet another approach is antichain\cite{ANTICHAIN},
+%%which reduces the expensive state set computation to computation on maximal and minimal elements of lattice.
+%
+%Based on these research works,
+%some tools\cite{ANZU} that can handle small temporal formulas have been developed.
+%
+%All these works assume a hostile environment,
+%which seems too restrictive for many applications.
+%So Fisman et al. \cite{rationalsyn_tacas10}, Chatterjee et al. \cite{assguasyn_tacas07} and Ummels et al. \cite{ralgame_istta06} proposed rational synthesis algorithm,
+%which assumes that each agents act to achieve their own goals instead of failing each other.
+
+
+\subsection{Protocol converter synthesis}
+Protocol converter synthesis is a process that automatically generates a translator between two different communication protocols.
+This is relevant to our work,
+because both focus on synthesizing communication circuits.
+
+Avnit et al. \shortcite{converter_date08,converter_todeas09} first defined a general model for describing different protocols,
+and then provided an algorithm to decide
+whether there is some functionality of a protocol that cannot be translated into another.
+Finally,
+they synthesized a translator by computing the greatest fixed point for the update function of the buffer's control states.
+Latter, 
+they \shortcite{converter_date09} improved their algorithm with a more efficient design space exploration algorithm.
+
+
+\section{Conclusions}\label{sec_conclude}
+
+In this paper,
+we propose,
+for the first time,
+a framework to handle flow control mechanism in complementary synthesis problem.
+Experimental results indicate that our framework can always successfully handle many complex encoders from real industrial projects,
+such as PCI Express \cite{WIKIpcie} and Ethernet \cite{WIKIether}.
+
+% In this article, we develop the first multifrequency MAC protocol for
+% WSN applications in which each device adopts a
+% single radio transceiver. The different MAC design requirements for
+% WSNs and general wireless ad-hoc networks are
+% compared, and a complete WSN multifrequency MAC design (MMSN) is
+% put forth. During the MMSN design, we analyze and evaluate different
+% choices for frequency assignments and also discuss the nonuniform
+% back-off algorithms for the slotted media access design.
+
+% Start of "Sample References" section
+
+% \section{Typical references in new ACM Reference Format}
+% A paginated journal article \cite{Abril07}, an enumerated
+% journal article \cite{Cohen07}, a reference to an entire issue \cite{JCohen96},
+% a monograph (whole book) \cite{Kosiur01}, a monograph/whole book in a series (see 2a in spec. document)
+% \cite{Harel79}, a divisible-book such as an anthology or compilation \cite{Editor00}
+% followed by the same example, however we only output the series if the volume number is given
+% \cite{Editor00a} (so Editor00a's series should NOT be present since it has no vol. no.),
+% a chapter in a divisible book \cite{Spector90}, a chapter in a divisible book
+% in a series \cite{Douglass98}, a multi-volume work as book \cite{Knuth97},
+% an article in a proceedings (of a conference, symposium, workshop for example)
+% (paginated proceedings article) \cite{Andler79}, a proceedings article
+% with all possible elements \cite{Smith10}, an example of an enumerated
+% proceedings article \cite{VanGundy07},
+% an informally published work \cite{Harel78}, a doctoral dissertation \cite{Clarkson85},
+% a master's thesis: \cite{anisi03}, an online document / world wide web resource \cite{Thornburg01}, \cite{Ablamowicz07},
+% \cite{Poker06}, a video game (Case 1) \cite{Obama08} and (Case 2) \cite{Novak03}
+% and \cite{Lee05} and (Case 3) a patent \cite{JoeScientist001},
+% work accepted for publication \cite{rous08}, 'YYYYb'-test for prolific author
+% \cite{SaeediMEJ10} and \cite{SaeediJETC10}. Other cites might contain
+% 'duplicate' DOI and URLs (some SIAM articles) \cite{Kirschmer:2010:AEI:1958016.1958018}.
+% Boris / Barbara Beeton: multi-volume works as books
+% \cite{MR781536} and \cite{MR781537}.
+% 
+% % Appendix
+% \appendix
+% \section*{APPENDIX}
+% \setcounter{section}{1}
+% In this appendix, we measure
+% the channel switching time of Micaz [CROSSBOW] sensor devices.
+% In our experiments, one mote alternatingly switches between Channels
+% 11 and 12. Every time after the node switches to a channel, it sends
+% out a packet immediately and then changes to a new channel as soon
+% as the transmission is finished. We measure the
+% number of packets the test mote can send in 10 seconds, denoted as
+% $N_{1}$. In contrast, we also measure the same value of the test
+% mote without switching channels, denoted as $N_{2}$. We calculate
+% the channel-switching time $s$ as
+% \begin{eqnarray}%
+% s=\frac{10}{N_{1}}-\frac{10}{N_{2}}. \nonumber
+% \end{eqnarray}%
+% By repeating the experiments 100 times, we get the average
+% channel-switching time of Micaz motes: 24.3$\mu$s.
+
+\appendixhead{ZHOU}
+
+% Acknowledgments
+\begin{acks}
+The authors would like to thank the anonymous reviewers for their fruitful suggestions.
+\end{acks}
+
+% Bibliography
+\bibliographystyle{ACM-Reference-Format-Journals}
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+
+\bibliography{acmsmall-sample-bibfile}
+                             % Sample .bib file with references that match those in
+                             % the 'Specifications Document (V1.5)' as well containing
+                             % 'legacy' bibs and bibs with 'alternate codings'.
+                             % Gerry Murray - March 2012
+
+% History dates
+\received{February 2014}{March 2014}{June 2014}
+
+% Electronic Appendix
+\elecappendix
+
+\medskip
+
+% \section{This is an example of Appendix section head}
+% 
+% Channel-switching time is measured as the time length it takes for
+% motes to successfully switch from one channel to another. This
+% parameter impacts the maximum network throughput, because motes
+% cannot receive or send any packet during this period of time, and it
+% also affects the efficiency of toggle snooping in MMSN, where motes
+% need to sense through channels rapidly.
+% 
+% By repeating experiments 100 times, we get the average
+% channel-switching time of Micaz motes: 24.3 $\mu$s. We then conduct
+% the same experiments with different Micaz motes, as well as
+% experiments with the transmitter switching from Channel 11 to other
+% channels. In both scenarios, the channel-switching time does not have
+% obvious changes. (In our experiments, all values are in the range of
+% 23.6 $\mu$s to 24.9 $\mu$s.)
+
+% \section{Appendix section head}
+% 
+% The primary consumer of energy in WSNs is idle listening. The key to
+% reduce idle listening is executing low duty-cycle on nodes. Two
+% primary approaches are considered in controlling duty-cycles in the
+% MAC layer.
+
+\end{document}
+% End of v2-acmsmall-sample.tex (March 2012) - Gerry Murray, ACM
+
+

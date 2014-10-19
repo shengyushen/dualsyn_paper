@@ -1,0 +1,55 @@
+This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: v2-acmsmall-sample.aux
+The style file: ACM-Reference-Format-Journals.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: acmsmall-sample-bibfile.bib
+I was expecting a `,' or a `}'---line 1337 of file acmsmall-sample-bibfile.bib
+ :   
+ :   month =   "",
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+You've used 28 entries,
+            5290 wiz_defined-function locations,
+            1656 strings with 23589 characters,
+and the built_in function-call counts, 33424 in all, are:
+= -- 4345
+> -- 1064
+< -- 4
++ -- 321
+- -- 773
+* -- 2198
+:= -- 3595
+add.period$ -- 147
+call.type$ -- 28
+change.case$ -- 184
+chr.to.int$ -- 24
+cite$ -- 28
+duplicate$ -- 2388
+empty$ -- 1682
+format.name$ -- 431
+if$ -- 7460
+int.to.chr$ -- 5
+int.to.str$ -- 0
+missing$ -- 81
+newline$ -- 300
+num.names$ -- 226
+pop$ -- 765
+preamble$ -- 1
+purify$ -- 320
+quote$ -- 0
+skip$ -- 717
+stack$ -- 0
+substring$ -- 4016
+swap$ -- 275
+text.length$ -- 823
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 392
+warning$ -- 0
+while$ -- 242
+width$ -- 0
+write$ -- 589
+(There was 1 error message)
