@@ -52,28 +52,28 @@ YAN JIA
 
 \begin{abstract}
 Complementary synthesis automatically generates an encoder's decoder
-with the assumption that the encoder's all input variables can always be uniquely determined by a bounded sequence of its output variables.
+with the assumption that the encoder's all input variables can always 
+be uniquely determined by its output variables.
 However,
-many modern encoders employ flow control mechanism that inserts \emph{invalid} data into the encoder's input sequence,
-which prevents some input variables from being uniquely determined.
-None of the current algorithms can handle such cases.
+many modern encoders employ flow control mechanism that 
+can not be handled by all these algorithms.
+When the encoder's output sequence is too fast to be processed by the decoder,
+to prevent losing data,
+the encoder with flow control mechanism will stop outputting valid data symbol,
+but instead output an idle symbol that can only uniquely determine a subset of the encoder's input variables.
+And the decoder should recognize this idle symbol and discard it.
+Although this mechanism can prevent the faster encoder from overwhelming the slower decoder,
+the fact that some input variables can not be uniquely determined by the idle symbol 
+fail the assumption of all complementary synthesis algorithm.
 
-Flow control mechanisms classify the encoder's input variables into two sets:
-the flow control variables that can always be uniquely determined,
-and the input data variables whose validness is indicated by a predicate over the flow control variables.
-When the input data variables are invalid,
-the decoder is supposed to recognize its invalidness by recovering the flow control variables and ignoring the input data variables.
-
-Thus,
-a novel algorithm is proposed
-for the first time
+This paper propose the first algorithm 
 to handle such encoders with flow control mechanism.
 \textbf{First},
 it identifies all variables that can be uniquely determined,
 and take them as flow control variables.
 \textbf{Second},
 it infers a predicate over these flow control variables
-that enables all other input data variables to be uniquely determined.
+that enables all other input variables to be uniquely determined.
 \textbf{Third},
 it characterizes the decoder's Boolean function for each input variable,
 by first building a conjunction of two formulas that assign conflicting values to this input variable,

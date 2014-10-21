@@ -52,28 +52,40 @@ YAN JIA
 
 \begin{abstract}
 Complementary synthesis automatically generates an encoder's decoder
-with the assumption that the encoder's all input variables can always be uniquely determined by a bounded sequence of its output variables.
+with the assumption that the encoder's all input variables can always 
+be uniquely determined by its output variables.
 However,
-many modern encoders employ flow control mechanism that inserts \emph{invalid} data into the encoder's input sequence,
-which prevents some input variables from being uniquely determined.
-None of the current algorithms can handle such cases.
+% to prevent the faster encoder from overwhelming the slower decoder,
+many modern encoders employ flow control mechanism that 
+can not be handled by current complementary synthesis algorithms.
 
-Flow control mechanisms classify the encoder's input variables into two sets:
-the flow control variables that can always be uniquely determined,
-and the input data variables whose validness is indicated by a predicate over the flow control variables.
-When the input data variables are invalid,
-the decoder is supposed to recognize its invalidness by recovering the flow control variables and ignoring the input data variables.
+When the encoder's output sequence is too fast to be processed by the decoder,
+to prevent losing data,
+the encoder with flow control mechanism will stop outputting valid data,
+but instead output an idle symbol that can only uniquely determine a subset of the encoder's input variables.
+And the decoder should recognize this idle symbol and discard it.
+Although this mechanism can prevent the faster encoder from overwhelming the slower decoder,
 
-Thus,
-a novel algorithm is proposed
-for the first time
+
+The flow control mechanism classify the encoder's input variables into two sets:
+the data variables $\vec{d}$ to be encoded, 
+and the flow control variables $\vec{f}$ that indicate the validness of $\vec{d}$ with a predicate $valid(\vec{f})$.
+$\vec{f}$ will be set to a value that make $valid(\vec{f})\equiv 0$.
+In this case,
+but instead insert an idle symbol into its output sequence without considering the value of $\vec{d}$.
+And the decoder should recognize and discard this idle symbol.
+Although this mechanism can prevent losing data,
+the idle symbol can only uniquely determine the $\vec{f}$ but not $\vec{d}$.
+This immediately fail the assumption of all current complementary synthesis algorithm.
+
+This paper propose the first algorithm 
 to handle such encoders with flow control mechanism.
 \textbf{First},
 it identifies all variables that can be uniquely determined,
-and take them as flow control variables.
+and take them as flow control variables $\vec{f}$.
 \textbf{Second},
-it infers a predicate over these flow control variables
-that enables all other input data variables to be uniquely determined.
+it infers a predicate $valid(\vec{f})$ 
+that enables all other input data variables $\vec{d}$ to be uniquely determined.
 \textbf{Third},
 it characterizes the decoder's Boolean function for each input variable,
 by first building a conjunction of two formulas that assign conflicting values to this input variable,
@@ -143,11 +155,11 @@ complementary synthesis [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,
 can automatically generate the encoders' decoder.}
 
 \textbf{
-At the same time,
-todays high speed communication systems,
-such as Ethernet \cite{WIKIether} and PCI Express \cite{WIKIpcie},
-employ flow control mechanism \cite{WIKIfc} to compensate for
-the frequency difference between the encoder and decoder.
+As shown in Figure~\ref{fig:nonuniq}a),
+todays high speed communication systems
+% such as Ethernet \cite{WIKIether} and PCI Express \cite{WIKIpcie},
+employ flow control mechanism \cite{WIKIfc} in the encoder and decoder to 
+prevent the faster transmitter from overwhelming the slower receiver.
 % transmit several Gigabits per second.
 % It is physically impossible to 
 % distribute so fast a clock at Gigahertz to both the encoder and decoder.
@@ -155,15 +167,17 @@ the frequency difference between the encoder and decoder.
 % the encoder and decoder must be driven by two clocks with slightly different frequencies.
 % To prevent the faster encoder from overwhelming the slower decoder,
 % flow control mechanism \cite{WIKIfc} is employed in the encoder to 
-% insert some control symbols $C$s into the sequence of data symbols $D_i$s.
+% insert some control symbols $C$s into the sequence of data symbols $D_j$s.
 % Such control symbols C are defined by the standard of communication systems,
 % such as the K28.5 symbol defined in clause 36 of IEEE 802.3 standard\cite{IEEE8023_S3}.
-As shown in Figure~\ref{fig:nonuniq}a),
-The communication system standards define $C$
-in such a way that $C$ can never be equal to any $D_i$,
-such that the decoder can recognize and discard all $C$s.
-In this way, 
-the frequency difference between the encoder and decoder can be compensated for.
+In such systems,
+the encoder inserts some control symbols $C$s 
+into the sequence of data symbols $D_j$s.
+The communication system standards guarantee 
+that $C$ can never be equal to any $D_j$.
+So the decoder can recognize and discard all $C$s.
+In this way,
+the speed difference between transmitter and receiver can be compensated for.
 }
 
 \begin{figure}
@@ -172,7 +186,11 @@ the frequency difference between the encoder and decoder can be compensated for.
 \label{fig:nonuniq}
 \end{figure}
 
-\textbf{Figure~\ref{fig:nonuniq}b) shows the pseudo code of such 
+\textbf{
+However,
+such encoder can not be handled by state-of-the-art complementary synthesis algorithms,
+because $C$ can not be used to uniquely determine the value of $i$.
+Figure~\ref{fig:nonuniq}b) shows the pseudo code of such 
 an encoder with flow control mechanism.
 Its input variables $\vec{i}$ are partitioned into two sets:
 the input data variables $\vec{d}$ to be encoded,
@@ -186,15 +204,20 @@ to the output variables $\vec{o}:=enc(\vec{d})$.
 In this case $\vec{d}$ and $\vec{f}$ can both be uniquely determined 
 by a bounded sequence of $\vec{o}$.
 
-\item However,
+\item \textbf{However,
 when $valid(\vec{f}) \equiv 0$,
-the encoder drives some control symbol $C$ to $\vec{o}$ 
+the encoder send some control symbol $C$ to $\vec{o}$ 
 without considering the value of $\vec{d}$.
 So in this case,
 $\vec{d}$ can not be uniquely determined.
-At the same time,
-the decoder is supposed to recognize and discard $C$,
-which means recovering $\vec{f}$ is enough.
+This prevent all current complementary synthesis algorithms from handling this encoder.
+On the other hand,
+sending $C$ to $\vec{o}$ without considering $\vec{d}$
+means that $\vec{d}$ is meaningless in this case,
+and the encoder actually do not need the decoder to recover $\vec{d}$.
+Thus,
+to handle such an encoder,
+we should exclude the case $valid(\vec{f}) \equiv 0$.}
 \end{enumerate}
 
 %% TODO : clarify what should do and what have do, and their difference
@@ -206,13 +229,13 @@ which means recovering $\vec{f}$ is enough.
 % such an encoder with flow control mechanism may visit the non-unique state set infinitely often,
 % that is,
 % its input variables $\vec{i}$ cannot always be uniquely determined by a bounded sequence of $\vec{o}$.
-Thus,
-none of the current complementary synthesis algorithms can handle such encoders,
-because they all assume that $\vec{i}$ can always be uniquely determined by $\vec{o}$,
-that is,
-they all assume that the encoder will eventually reach and never leave the unique state set.
-They ensure this with manually specified assertion [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11}],
-or automatically inferred assertions \cite{ShenTCAD12} .
+% Thus,
+% none of the current complementary synthesis algorithms can handle such an encoder.
+% because they all assume that $\vec{i}$ can always be uniquely determined by $\vec{o}$,
+% that is,
+% they all assume that the encoder will eventually reach and never leave the unique state set.
+% They ensure this with manually specified assertion [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11}],
+% or automatically inferred assertions \cite{ShenTCAD12} .
 % Current algorithms avoid such case by manually specifying assertion $valid(\vec{f}) \equiv 1$ 
 % % [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}],
 % \cite{ShenICCAD09}
