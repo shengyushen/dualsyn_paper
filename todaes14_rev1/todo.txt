@@ -1,1 +1,4 @@
+举一个例子说明8b-10b 其中有输入k码 输出10b
 replaceing control character idle symbols.
+input data variables改成data variables
+
