@@ -406,7 +406,7 @@ while Line 4 forces their $i_{p+l}$ to be different.
 \textbf{One important fact here is that the unrolled transition relation does not include an initial state.
 This leads to two major advantages:
 First,
-it simplify and speedup our algorithm by avoid the need to compute the reachable state set or inductive in.
+it simplify and speedup our algorithm by avoiding the need to compute the reachable state set or inductive invariants.
 Second and more important,
 it improve the decoder's reliability by preventing any corrupted data from affecting the decoder's state,
 that is,
@@ -414,15 +414,16 @@ any corrupted $\vec{o}$ fed to the decoder can only affect the decoder for finit
 
 \textbf{Of course this approach have one drawback that it is a little bit too stronger than necessary.
 That is,
-if requires that $\vec{i}$ must be uniquely determined on all states that is reachable in $p$ steps from any states,
-instead of on all reachable states.
+it requires that $\vec{i}$ must be uniquely determined on a state set $R^p$ that is reachable in $p$ steps from any states,
+instead of on the reachable states $R$.
+It is obvious that $R\subset R^p$.
 Tu and Jiang \citeyear{TuDAC13} propose a breakthrough algorithm that handle this problem by inferring inductive invariants.
 That work is orthogonal to ours,
 so to simplify our discussion,
 we will not integrate their work here.
 At the same time,
 for all the benchmarks we have tried,
-our current solution is sufficient.}
+our current approach is sufficient.}
 
 
 % $d$ is the relative delay between $o_{n+d-l}^{n+d-1}$ and $i_n$,
@@ -735,7 +736,7 @@ to remove $\vec{b}$ from them.
 Thus,
 $\phi_A\wedge \phi_B$ in Line \ref{ab} is unsatisfiable,
 and the common variables vector of $\phi_A$ and $\phi_B$ is $\vec{a}$.
-So a Craig interpolant $ITP(\vec{a})$ can be generated with the Mcmillian's algorithm\cite{interp_McMillan}.
+So a Craig interpolant $ITP(\vec{a})$ can be generated with the McMillian's algorithm\cite{interp_McMillan}.
 
 $ITP(\vec{a})$ is added to $FSAT(\vec{a})$ in Line \ref{add} and ruled out in Line \ref{testsat}.
 
@@ -1131,7 +1132,7 @@ It is obvious that $\phi_A\wedge \phi_B$ equals $F_{PC}(p,l,r)$ in Equation (\re
 so it is unsatisfiable.
 The common variable set of $\phi_A$ and $\phi_B$ is $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$.
 So,
-a Craig interpolant $ITP$ can be derived by Mcmillian's algorithm\cite{interp_McMillan} from the unsatisfiability proof of $\phi_A\wedge \phi_B$,
+a Craig interpolant $ITP$ can be derived by McMillian's algorithm\cite{interp_McMillan} from the unsatisfiability proof of $\phi_A\wedge \phi_B$,
 which covers all values of $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$ that make $f_{p+l}\equiv 1$.
 At the same time,
 $ITP\wedge \phi_B$ is unsatisfiable,
@@ -1184,7 +1185,7 @@ $d_{p+l}$ cannot be 0 and 1 at the same time.
 So,
 $\phi_A'\wedge \phi_B'$ is unsatisfiable.
 Thus,
-a Craig interpolant $ITP$ can be derived by Mcmillian's algorithm\cite{interp_McMillan} from the unsatisfiability proof of $\phi_A'\wedge \phi_B'$,
+a Craig interpolant $ITP$ can be derived by McMillian's algorithm\cite{interp_McMillan} from the unsatisfiability proof of $\phi_A'\wedge \phi_B'$,
 which covers and only covers all valuations of $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$ that make $d_{p+l}\equiv 1$.
 Thus,
 $ITP$ is the decoder's Boolean function that computes $d\in\vec{d}$.
