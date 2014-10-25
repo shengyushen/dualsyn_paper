@@ -364,7 +364,7 @@ This can be checked by solving $F_{PC}(p,l,r)$ in Equation (\ref{uniqt1}).
 
 \begin{equation}\label{uniqt1}
 % \begin{split}
-F_{PC}(p,l,r)\stackrel{def}{=}
+F_{PC}(p,l,r):=
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+l+r}
@@ -378,7 +378,9 @@ F_{PC}(p,l,r)\stackrel{def}{=}
 \}
 \\
 \wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
-\wedge& i_{p+l}\ne i'_{p+l} 
+\wedge& i_{p+l}\ne i'_{p+l} \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
 \end{array}
 \right\}
 % \end{split}
@@ -392,9 +394,9 @@ F_{PC}(p,l,r)\stackrel{def}{=}
   \label{pcln}
 \end{figure}
 
+
 Here,
-$p$ is the length of the prefix state transition sequence that leads the encoder into a set of state
-that enable $i$ to be uniquely determined.
+$p$ is the length of the prefix state transition sequence.
 $l$ and $r$ are the lengths of the two output sequences $<\vec{o}_{p+1},\dots,\vec{o}_{p+l}>$ and $<\vec{o}_{p+l+1},\dots,\vec{o}_{p+l+r}>$
 that are on the left-hand and right-hand sides of $i_{p+l}$,
 which is used to determine $i_{p+l}$.
@@ -402,9 +404,13 @@ Line 1 of Equation (\ref{uniqt1}) corresponds to the path in Figure \ref{pcln}a)
 while Line 2 is a copy of it.
 Line 3 forces these two paths' output sequences to be the same,
 while Line 4 forces their $i_{p+l}$ to be different.
+\textbf{Line 5 and 6 are the assertion predicates given by the user that constrain the valid valuation on $\vec{i}$.}
 
-\textbf{One important fact here is that the unrolled transition relation does not include an initial state.
-This leads to two major advantages:
+\textbf{Equation (\ref{uniqt1}) does not include an initial state,
+instead it use the $p$ steps prefix state transition sequence $<\vec{s_0},\dots,\vec{s_p}>$ 
+to propagate the constraints $assertion(\vec{i})$ into the state sequence $\vec{s_{p+1}},\dots,\vec{s_{p+l+r}}$,
+such that some states that can not be reached with $assertion(\vec{i})$ can be eliminated.
+This leads to two major advantages over considering initial states:
 First,
 it simplify and speedup our algorithm by avoiding the need to compute the reachable state set or inductive invariants.
 Second and more important,
@@ -414,17 +420,18 @@ any corrupted $\vec{o}$ fed to the decoder can only affect the decoder for finit
 
 \textbf{Of course this approach have one drawback that it is a little bit too stronger than necessary.
 That is,
-it requires that $\vec{i}$ must be uniquely determined on a state set $R^p$ that is reachable in $p$ steps from any states,
-instead of on the reachable states $R$.
+it requires that $\vec{i}$ must be uniquely determined on a larger state set $R^p$ 
+that is reachable in $p$ steps from any states,
+instead of on the smaller reachable states $R$.
 It is obvious that $R\subset R^p$.
-Tu and Jiang \citeyear{TuDAC13} propose a breakthrough algorithm that handle this problem by inferring inductive invariants.
-That work is orthogonal to ours,
-so to simplify our discussion,
+Tu and Jiang \citeyear{TuDAC13} propose a breakthrough algorithm that overcomes this shortcoming 
+by inferring inductive invariants.
+Their work is orthogonal to ours.
+So to simplify our discussion,
 we will not integrate their work here.
 At the same time,
 for all the benchmarks we have tried,
 our current approach is sufficient.}
-
 
 % $d$ is the relative delay between $o_{n+d-l}^{n+d-1}$ and $i_n$,
 % while $l$ is the length of $o_{n+d-l}^{n+d-1}$,
@@ -448,14 +455,7 @@ our current approach is sufficient.}
 % \end{definition11}
 
 %This definition is the same as that of Subsection \ref{subsec_chkextdec} and paper \cite{ShengYuShen:iccad09}.
-Thus,
-we have the following proposition:
 
-\begin{proposition}\label{prop_pc1}
-If $F_{PC}(p,l,r)$ is unsatisfiable,
-% then $i_{p+l}$ cannot take on two different values for any particular valuation of the output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$,
-then $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
-\end{proposition}
 
 % At the same time,
 % the last three lines of Equation (\ref{uniqt1}) correspond to Condition 2 of Definition \ref{def_pcc}.
@@ -474,6 +474,15 @@ then $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}
 % \caption{The loop-like non-complementary condition}
 %   \label{fig_double_loop}
 % \end{figure}
+
+Thus,
+we have the following proposition:
+
+\begin{proposition}\label{prop_pc1}
+If $F_{PC}(p,l,r)$ is unsatisfiable,
+% then $i_{p+l}$ cannot take on two different values for any particular valuation of the output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$,
+then $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
+\end{proposition}
 
 \textbf{On the other hand},
 if $F_{PC}(p,l,r)$ is satisfiable,
@@ -503,7 +512,7 @@ It is formally defined in Equation (\ref{uniqln}) with the last three lines corr
 
 \begin{equation}\label{uniqln}
 % \begin{split}
-F_{LN}(p,l,r)\stackrel{def}{=}\\
+F_{LN}(p,l,r):=\\
 \left\{
 \begin{array}{cc}
 &F_{PC}(p,l,r)\\
@@ -661,7 +670,7 @@ It is formally defined below:
 
 \begin{equation}\label{fchar}
 % \begin{split}
-FSAT(\vec{a})\stackrel{def}{=}
+FSAT(\vec{a}):=
 \left\{
 \begin{array}{rcl}
 1 & & \exists\vec{b}.R(\vec{a},\vec{b},1) \\
@@ -744,11 +753,6 @@ Each iteration of the while loop in Algorithm \ref{alg_craigchar} adds at least 
 which means that $FSAT(\vec{a})$ is a Boolean function that covers a bounded and strictly increasing set of valuations of $\vec{a}$.
 So Algorithm \ref{alg_craigchar} is a halting one.
 
-
-
-
-
-
 \subsection{Inferring $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined}\label{subsec_infer}
 
 By replacing $i$ in Equation (\ref{uniqt1}) with $\vec{d}$,
@@ -756,7 +760,7 @@ we have:
 
 \begin{equation}\label{uniqt1d}
 % \begin{split}
-F^d_{PC}(p,l,r)\stackrel{def}{=}
+F^d_{PC}(p,l,r):=
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+l+r}
@@ -770,7 +774,9 @@ F^d_{PC}(p,l,r)\stackrel{def}{=}
 \}
 \\
 \wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
-\wedge& \vec{d}_{p+l}\ne \vec{d}'_{p+l} 
+\wedge& \vec{d}_{p+l}\ne \vec{d}'_{p+l} \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
 \end{array}
 \right\}
 % \end{split}
@@ -782,7 +788,7 @@ We define a new formula $T_{PC}(p,l,r)$ by collecting the 3rd line of Equation (
 
 \begin{equation}\label{tpc}
 % \begin{split}
-T_{PC}(p,l,r)\stackrel{def}{=}\\
+T_{PC}(p,l,r):=\\
 \left\{
 \begin{array}{cc}
       &\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
@@ -795,7 +801,7 @@ By substituting $T_{PC}(p,l,r)$ back into $F^d_{PC}(p,l,r)$,
 we have a new formula:
 \begin{equation}\label{fpcq}
 % \begin{split}
-F'_{PC}(p,l,r,t)\stackrel{def}{=}
+F'_{PC}(p,l,r,t):=
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+l+r}
@@ -809,7 +815,9 @@ F'_{PC}(p,l,r,t)\stackrel{def}{=}
 \}
 \\
 \wedge& \vec{d}_{p+l}\ne \vec{d'}_{p+l} \\
-\wedge& t\equiv T_{PC}(p,l,r)
+\wedge& t\equiv T_{PC}(p,l,r)\\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
 \end{array}
 \right\}
 % \end{split}
@@ -822,7 +830,7 @@ We further define:
 % it is obvious that $F_{PC}(p,l,r)$ in Equation (\ref{uniqt1}) can be reformulated as: 
 % \begin{equation}\label{fpcref}
 % % \begin{split}
-% F_{PC}(p,l,r)\stackrel{def}{=}F'_{PC}(p,l,r,t)\wedge (t\equiv 1)
+% F_{PC}(p,l,r):=F'_{PC}(p,l,r,t)\wedge (t\equiv 1)
 % \end{equation}
 % 
 % $\vec{f}_{p+l}$ can be uniquely determined by $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$,
@@ -835,11 +843,11 @@ We further define:
 % to use Algorithm \ref{alg_craigchar} to characterize the formula over $\vec{f}_{p+l}$ that makes $F'_{PC}(p,l,r,1)$ satisfiable,
 % we can define the following equation:
 \begin{equation}\label{pcdef1}
-\vec{a}\stackrel{def}{=}\vec{f}_{p+l}
+\vec{a}:=\vec{f}_{p+l}
 \end{equation}
 
 \begin{equation}\label{pcdef2}
-\vec{b}\stackrel{def}{=}\vec{d}_{p+l}\cup \vec{d'}_{p+l}\cup \vec{s}_0\cup \vec{s'}_0\cup\bigcup_{0\le x\le p+l+r,x\neq (p+l)}(\vec{i}_{x}\cup\vec{i'}_{x})
+\vec{b}:=\vec{d}_{p+l}\cup \vec{d'}_{p+l}\cup \vec{s}_0\cup \vec{s'}_0\cup\bigcup_{0\le x\le p+l+r,x\neq (p+l)}(\vec{i}_{x}\cup\vec{i'}_{x})
 \end{equation}
 
 $\vec{f}_{p+l}$ can be uniquely determined, 
@@ -857,7 +865,7 @@ the Boolean function over $\vec{f}_{p+l}$ that makes $F'_{PC}(p,l,r,1)$ satisfia
 by calling Algorithm \ref{alg_craigchar} with $F'_{PC}(p,l,r,t)$, $\vec{a}$ and $\vec{b}$ defined above:
 
 \begin{equation}\label{fsat_pc}
-FSAT_{PC}(p,l,r)\stackrel{def}{=}CharacterizingFormulaSAT(F'_{PC}(p,l,r,t),\vec{a},\vec{b},t)
+FSAT_{PC}(p,l,r):=CharacterizingFormulaSAT(F'_{PC}(p,l,r,t),\vec{a},\vec{b},t)
 \end{equation}
 
 Thus,
@@ -872,7 +880,7 @@ we have:
 
 \begin{equation}\label{uniqlnd}
 % \begin{split}
-F^d_{LN}(p,l,r)\stackrel{def}{=}\\
+F^d_{LN}(p,l,r):=\\
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+l+r}
@@ -887,6 +895,8 @@ F^d_{LN}(p,l,r)\stackrel{def}{=}\\
 \\
 \wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
 \wedge& \vec{d}_{p+l}\ne \vec{d}'_{p+l} \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) \\
 \wedge&\bigvee_{x=0}^{p-1}\bigvee_{y=x+1}^{p} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
 \wedge&\bigvee_{x=p+1}^{p+l-1}\bigvee_{y=x+1}^{p+l} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
 \wedge&\bigvee_{x=p+l+1}^{p+l+r-1}\bigvee_{y=x+1}^{p+l+r} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\}
@@ -904,7 +914,7 @@ We further define a new formula $T_{PC}(p,l,r)$ by collecting the 3rd line and t
 
 \begin{equation}\label{tln}
 % \begin{split}
-T_{LN}(p,l,r)\stackrel{def}{=}\\
+T_{LN}(p,l,r):=\\
 \left\{
 \begin{array}{cc}
       &\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
@@ -920,7 +930,7 @@ By replacing the 3rd line and the last three lines of Equation (\ref{uniqlnd}) w
 we got:
 
 \begin{equation}\label{lndef1}
-F'_{LN}(p,l,r,t)\stackrel{def}{=}
+F'_{LN}(p,l,r,t):=
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+l+r}
@@ -935,7 +945,9 @@ F'_{LN}(p,l,r,t)\stackrel{def}{=}
 \\
 % \wedge& \vec{f}_{p+l}\equiv \vec{f'}_{p+l}\\
 \wedge& \vec{d}_{p+l}\ne \vec{d'}_{p+l} \\
-\wedge& t\equiv T_{LN}(p,l,r)
+\wedge& t\equiv T_{LN}(p,l,r)\\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
 \end{array}
 \right\}
 \end{equation}
@@ -946,7 +958,7 @@ for a particular combination of $p$,$l$ and $r$,
 the formula over $\vec{f}_{p+l}$ that makes $F'_{LN}(p,l,r,1)$ satisfiable can be computed by 
 
 \begin{equation}\label{fsat_ln}
-FSAT_{LN}(p,l,r)\stackrel{def}{=}CharacterizingFormulaSAT(F'_{LN}(p,l,r,t),\vec{a},\vec{b},t)
+FSAT_{LN}(p,l,r):=CharacterizingFormulaSAT(F'_{LN}(p,l,r,t),\vec{a},\vec{b},t)
 \end{equation}
 
 Thus we have the following proposition:
@@ -991,12 +1003,48 @@ First we need to prove the following three lemmas:
 $\mathbf{FSAT_{PC}(p,l,r)}$ in Algorithm \ref{algo_pcln} monotonically decreases.
 \end{lemma}
 \begin{proof}
- According to the definition of $F'_{PC}(p,l,r,t)$ in Equation (\ref{fpcq}),
-for any $p'>p$,$l'>l$ and $r'>l$,
-we have $F'_{PC}(p',l',r',1)\Rightarrow F'_{PC}(p,l,r,1)$.
-So,
-according to Equation (\ref{fsat_pc}),
-we have $FSAT_{PC}(p',l',r')\Rightarrow FSAT_{PC}(p,l,r)$.
+For any $p'>p$,$l'>l$ and $r'>l$,
+assume $A:\vec{f}_{p'+l'}\to B$ is a Boolean valuation of the flow control vector 
+at $(p'+l')$-step.
+Further assume that $A$ is covered by $FSAT_{PC}(p',l',r')$.
+
+According to Equation (\ref{fsat_pc}) and Algorithm \ref{alg_craigchar},
+we know that $A$ can make $F'_{PC}(p',l',r',1)$ satisfiable,
+that is,
+there exists another satisfying assignment $A'$ of $F'_{PC}(p',l',r',1)$
+that has the same value for $\vec{f}_{p+l}$.
+
+Intuitively,
+as shown in Figure \ref{fig_pcmap},
+we can map the valuation of the state, input and output vectors in $F'_{PC}(p',l',r',1)$ 
+to that of $F'_{PC}(p,l,r,1)$ by aligning the $(p'+l')$-step to $(p+l)$-step,
+and discard the two prefix and postfix state transition sequences.
+Formally,
+for each $p'+l'-l-p\le n\le p'+l'+r$,
+we map $s_n$ in $F'_{PC}(p',l',r',1)$ to $s_{n-p'-l'+l+p}$ in $F'_{PC}(p,l,r,1)$.
+For $i_n$ and $o_n$, the mapping are similar.
+
+With this mapping, 
+we can transform the satisfying assignment $A'$ of $F'_{PC}(p',l',r',1)$ 
+to yet another satisfying assignment $A''$ of $F'_{PC}(p,l,r,1)$.
+
+By restricting the domain of $A''$ to $\vec{f}_{p+l}$,
+we got the fourth satisfying assignment $A'''$.
+According to the mapping presented above,
+we know that $A'''\equiv A$.
+
+Thus,
+every $A$ covered by $FSAT_{PC}(p',l',r')$ 
+is also covered by $FSAT_{PC}(p,l,r)$.
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{pcmap}
+\end{center}
+\caption{Mapping $F'_{PC}(p',l',r',1)$ to $F'_{PC}(p,l,r,1)$ by aligning }
+  \label{fig_pcmap}
+\end{figure}
+
 Thus,
 $FSAT_{PC}(p,l,r)$ monotonically decreases.
 \end{proof}
@@ -1007,7 +1055,9 @@ $\mathbf{FSAT_{LN}(p,l,r)}$ in Algorithm \ref{algo_pcln} monotonically increases
 \begin{proof}
 According to the definition of $F'_{LN}(p,l,r,t)$ in Equation (\ref{lndef1}),
 with any satisfying assignment of $F'_{LN}(p,l,r,1)$,
-those three loops in $T_{LN}(p,l,r)$ can be unrolled to make $F'_{LN}(p',l',r',1)$ satisfiable for all larger $p'$, $l'$ and $r'$.
+those three loops in $T_{LN}(p,l,r)$ can be unrolled to got a longer state transition sequence.
+With an mapping similar to Figure \ref{fig_pcmap},
+we can prove that $F'_{LN}(p',l',r',1)$ is satisfiable for all larger $p'$, $l'$ and $r'$.
 So,
 according to Equation (\ref{fsat_ln}),
 we have $FSAT_{LN}(p,l,r)\Rightarrow FSAT_{LN}(p',l',r')$,
@@ -1101,7 +1151,7 @@ Thus,
 the decoder's Boolean function that computes $f_{p+l}$ is exactly the Craig interpolant of $\phi_A$ with respect to $\phi_B$:
 
 \begin{equation}\label{fa}
-\phi_A\stackrel{def}{=}
+\phi_A:=
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+l+r}
@@ -1114,7 +1164,7 @@ the decoder's Boolean function that computes $f_{p+l}$ is exactly the Craig inte
 \right\}
 \end{equation}
 \begin{equation}\label{fb}
-\phi_B\stackrel{def}{=}
+\phi_B:=
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+l+r}
@@ -1147,7 +1197,7 @@ is $valid(\vec{f})$.
 Let's define the following two formulas for each data variable $d\in\vec{d}$:
 
 \begin{equation}\label{da}
-\phi_A'\stackrel{def}{=}
+\phi_A':=
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+l+r}
@@ -1162,7 +1212,7 @@ Let's define the following two formulas for each data variable $d\in\vec{d}$:
 \end{equation}
 
 \begin{equation}\label{db}
-\phi_B'\stackrel{def}{=}
+\phi_B':=
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+l+r}

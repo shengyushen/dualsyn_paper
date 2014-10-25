@@ -53,46 +53,31 @@ YAN JIA
 \begin{abstract}
 Complementary synthesis automatically generates an encoder's decoder
 with the assumption that the encoder's all input variables can always 
-be uniquely determined by its output variables.
+be uniquely determined by its output symbol sequence.
 However,
-% to prevent the faster encoder from overwhelming the slower decoder,
 many modern encoders employ flow control mechanism that 
-can not be handled by current complementary synthesis algorithms.
-
-When the encoder's output sequence is too fast to be processed by the decoder,
-to prevent losing data,
-the encoder with flow control mechanism will stop outputting valid data,
+fail this assumption.
+Such encoders,
+when its output symbol sequence is too fast to be processed by the decoder,
+will stop outputting data symbols,
 but instead output an idle symbol that can only uniquely determine a subset of the encoder's input variables.
-And the decoder should recognize this idle symbol and discard it.
-Although this mechanism can prevent the faster encoder from overwhelming the slower decoder,
-
-
-The flow control mechanism classify the encoder's input variables into two sets:
-the data variables $\vec{d}$ to be encoded, 
-and the flow control variables $\vec{f}$ that indicate the validness of $\vec{d}$ with a predicate $valid(\vec{f})$.
-$\vec{f}$ will be set to a value that make $valid(\vec{f})\equiv 0$.
-In this case,
-but instead insert an idle symbol into its output sequence without considering the value of $\vec{d}$.
 And the decoder should recognize and discard this idle symbol.
-Although this mechanism can prevent losing data,
-the idle symbol can only uniquely determine the $\vec{f}$ but not $\vec{d}$.
-This immediately fail the assumption of all current complementary synthesis algorithm.
+Although this mechanism can prevent losing data symbols,
+it fail the assumption of all complementary synthesis algorithm,
+because some input variables can not be uniquely determined by the idle symbol.
 
-This paper propose the first algorithm 
+This paper proposes the first algorithm 
 to handle such encoders with flow control mechanism.
 \textbf{First},
-it identifies all variables that can be uniquely determined,
-and take them as flow control variables $\vec{f}$.
+it identifies all input variables that can be uniquely determined,
+and take them as flow control variables.
 \textbf{Second},
-it infers a predicate $valid(\vec{f})$ 
-that enables all other input data variables $\vec{d}$ to be uniquely determined.
+it infers a predicate over these flow control variables,
+that enables all other input variables to be uniquely determined.
 \textbf{Third},
-it characterizes the decoder's Boolean function for each input variable,
-by first building a conjunction of two formulas that assign conflicting values to this input variable,
-and then generating a Craig interpolant from its unsatisfiability proof.
-In addition,
-for the input data variables,
-the inferred predicate must be enforced before generating Craig interpolant.
+the decoder's Boolean function for flow control variablescan be characterized with Craig interpolant.
+For other input variables,
+the inferred predicate must be enforced before characterzing their Boolean function with Craig interpolant.
 
 Experimental results on several complex encoders indicate that
 our algorithm can always correctly identify the flow control variables,
@@ -155,30 +140,37 @@ complementary synthesis [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,
 can automatically generate the encoders' decoder.}
 
 \textbf{
-As shown in Figure~\ref{fig:nonuniq}a),
-todays high speed communication systems
-% such as Ethernet \cite{WIKIether} and PCI Express \cite{WIKIpcie},
-employ flow control mechanism \cite{WIKIfc} in the encoder and decoder to 
-prevent the faster transmitter from overwhelming the slower receiver.
-% transmit several Gigabits per second.
-% It is physically impossible to 
-% distribute so fast a clock at Gigahertz to both the encoder and decoder.
-% So as shown in Figure~\ref{fig:nonuniq}a),
-% the encoder and decoder must be driven by two clocks with slightly different frequencies.
-% To prevent the faster encoder from overwhelming the slower decoder,
-% flow control mechanism \cite{WIKIfc} is employed in the encoder to 
-% insert some control symbols $C$s into the sequence of data symbols $D_j$s.
-% Such control symbols C are defined by the standard of communication systems,
-% such as the K28.5 symbol defined in clause 36 of IEEE 802.3 standard\cite{IEEE8023_S3}.
-In such systems,
-the encoder inserts some control symbols $C$s 
-into the sequence of data symbols $D_j$s.
-The communication system standards guarantee 
-that $C$ can never be equal to any $D_j$.
-So the decoder can recognize and discard all $C$s.
-In this way,
-the speed difference between transmitter and receiver can be compensated for.
-}
+However, 
+the encoders of many high speed communication systems employ flow control mechanism that 
+fail this assumption.
+Figure~\ref{fig:nonuniq}a) shows the structure of a communication system with flow control mechanism,
+which include a faster transmitter and a slower receiver connected by a pair of encoder and decoder.
+There are two input variables from the transmitter to the encoder:
+the data bit $d$ to be encoded,
+and the flow control bit $f$ indicating the validness of $d$.
+Figure~\ref{fig:nonuniq}b) shows the encoding table of the encoder with flow control mechanism,
+which maps $f$ and $d$ to the output symbol $\vec{o}$.}
+
+\textbf{
+When the receiver can keep up with the transmitter,
+$f$ will be 1, 
+and the decoder can always recover both $f$ and $d$ according to Figure~\ref{fig:nonuniq}b).
+But when the receiver can not keep up with the transmitter,
+the transmitter will drop $f$ to 0 to stop transmitting new $d$,
+which makes the encoder output the idle symbol $I$ to $\vec{o}$ without considering the value of $d$.
+And the decoder should discard this idle symbol $I$,
+and send $f\equiv 0$ to the receiver with whatever value on $d$.}
+
+\textbf{
+Although this mechanism can prevent data from losing,
+it fail the assumption of all current complementary synthesis algorithms,
+because $d$ can not be uniquely by the idle symbol $I$.
+It is obvious that,
+to resolve this problem and generate the decoder,
+we only need to consider the case $f\equiv 1$,
+the predicate that enable $d$ to be uniquely determined.
+For other case $f\equiv 0$,
+$d$ is not need by the receiver and can be any value.}
 
 \begin{figure}
 \centerline{\includegraphics[width=\textwidth]{nonuniq}}
@@ -186,79 +178,25 @@ the speed difference between transmitter and receiver can be compensated for.
 \label{fig:nonuniq}
 \end{figure}
 
-\textbf{
-However,
-such encoder can not be handled by state-of-the-art complementary synthesis algorithms,
-because $C$ can not be used to uniquely determine the value of $i$.
-Figure~\ref{fig:nonuniq}b) shows the pseudo code of such 
-an encoder with flow control mechanism.
-Its input variables $\vec{i}$ are partitioned into two sets:
-the input data variables $\vec{d}$ to be encoded,
-and the flow control variables $\vec{f}$ indicating 
-the validness of $\vec{d}$ with a predicate $valid(\vec{f})$.}
 
-\begin{enumerate}
-\item When $valid(\vec{f}) \equiv 1$, 
-the encoder maps $\vec{d}$ with an encoding function $enc$ 
-to the output variables $\vec{o}:=enc(\vec{d})$.
-In this case $\vec{d}$ and $\vec{f}$ can both be uniquely determined 
-by a bounded sequence of $\vec{o}$.
-
-\item \textbf{However,
-when $valid(\vec{f}) \equiv 0$,
-the encoder send some control symbol $C$ to $\vec{o}$ 
-without considering the value of $\vec{d}$.
-So in this case,
-$\vec{d}$ can not be uniquely determined.
-This prevent all current complementary synthesis algorithms from handling this encoder.
-On the other hand,
-sending $C$ to $\vec{o}$ without considering $\vec{d}$
-means that $\vec{d}$ is meaningless in this case,
-and the encoder actually do not need the decoder to recover $\vec{d}$.
 Thus,
-to handle such an encoder,
-we should exclude the case $valid(\vec{f}) \equiv 0$.}
-\end{enumerate}
-
-%% TODO : clarify what should do and what have do, and their difference
-% This makes the encoder reaching the non-unique state set infinitely often,
-% like path 2 in Figure~\ref{fig:nonuniq}a).
-
-% So,
-% just like the path 2 in Figure~\ref{fig:nonuniq}a),
-% such an encoder with flow control mechanism may visit the non-unique state set infinitely often,
-% that is,
-% its input variables $\vec{i}$ cannot always be uniquely determined by a bounded sequence of $\vec{o}$.
-% Thus,
-% none of the current complementary synthesis algorithms can handle such an encoder.
-% because they all assume that $\vec{i}$ can always be uniquely determined by $\vec{o}$,
-% that is,
-% they all assume that the encoder will eventually reach and never leave the unique state set.
-% They ensure this with manually specified assertion [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11}],
-% or automatically inferred assertions \cite{ShenTCAD12} .
-% Current algorithms avoid such case by manually specifying assertion $valid(\vec{f}) \equiv 1$ 
-% % [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}],
-% \cite{ShenICCAD09}
-% or automatically inferring it \cite{ShenTCAD12}.
-% But such paths must be handled properly to make the complementary synthesis techniques more useful.
-
-For the first time,
-we propose in this paper a novel three-step algorithm to handle such encoders with flow control mechanism.
+according to this insight,
+we propose in this paper the first complementary synthesis algorithm 
+to handle encoders with flow control mechanism in three steps:
 \textbf{First},
 it applies the classical halting complementary synthesis algorithm \cite{ShenTCAD11}
-to identify all the flow control variables $\vec{f}$ that can be uniquely determined.
+to identify all the input variables of the encoder that can be uniquely determined,
+and call them the flow control variables $\vec{f}$.
+Other input variables that can not be uniquely determined is called the data variables $\vec{d}$.
 \textbf{Second},
 it infers a sufficient and necessary predicate $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined
-by a bounded sequence of the encoder's output $\vec{o}$.
+by a bounded sequence of the encoder's output variables $\vec{o}$.
 \textbf{Finally},
 % $\vec{f}$ can be uniquely determined by $\vec{o}$,
 it characterizes the decoder's Boolean function that computes each flow control variable $f\in\vec{f}$ 
-by building two copies of unrolled transition function sequence with common output sequences $\vec{o}$, 
-but different values on $f$.
-The conjunction of these two copies is unsatisfiable.
-So a Craig interpolant\cite{interp_McMillan} can be built and used as the decoder's Boolean function that computes $f$.
+by building a Craig interpolant\cite{interp_McMillan}.
 On the other hand,
-for other input data variables $\vec{d}$,
+for other data variables $\vec{d}$,
 their values are meaningful only when $valid(\vec{f}) \equiv 1$.
 Thus, the decoder's Boolean functions that compute each $d\in\vec{d}$ can be built similarly,
 but only after enforcing $valid(\vec{f}) \equiv 1$.
@@ -266,11 +204,13 @@ but only after enforcing $valid(\vec{f}) \equiv 1$.
 The second step of this algorithm seems somewhat similar to that of \cite{ShenTCAD12} in the sense that 
 both algorithms infer predicates that enable $\vec{d}$ or $\vec{i}$ to be uniquely determined.
 But the essential difference between them is that
-the algorithm of \cite{ShenTCAD12} infers a \textbf{global} assertion that must be enforced at all cycles,
-so that the encoder eventually reaches and never leaves the unique state set,
-whereas our algorithm infers a \textbf{local} predicate that is enforced at the current cycle only when we need to recover the value of $\vec{d}$.
-So,
-our algorithm is the first algorithm that allows the unique and non-unique states to be interleaved freely.
+the algorithm of \cite{ShenTCAD12} infers a global assertion 
+that must be enforced on all the steps along the unrolled transition relation,
+% so that the encoder eventually reaches and never leaves the unique state set,
+while our algorithm infers a local predicate that is only enforced 
+at the current step when we need to recover the value of $\vec{d}$.
+Thus,
+our algorithm can be seen as a generalization of \cite{ShenTCAD12}.
 
 % This new algorithm has been implemented with the OCaml language. 
 % All generated SAT instances are solved with Minisat solver \cite{EXTSAT}. 
@@ -382,7 +322,7 @@ and use McMillan's algorithm \cite{interp_McMillan} to generate it.
 % \label{mealy}
 % \end{figure}
 
-The encoder is modeled by a finite state machine $M=(\vec{s},\vec{i},\vec{o},T)$,
+The encoder is modeled by a finite state machine(FSM) $M=(\vec{s},\vec{i},\vec{o},T)$,
 consisting of a state variable vector $\vec{s}$,
 % an initial state $s_0\in S$,
 an input variable vector $\vec{i}$,
@@ -395,11 +335,12 @@ that computes the next state and output variable vector from the current state a
 % as well as in the remainder of this paper,
 % the state is represented as a gray round corner box,
 % and the transition function $T$ is represented as a white rectangle.
-The state variable $s\in\vec{s}$, input variable $i\in\vec{i}$ and output variable $o\in\vec{o}$ at the $n$-th cycle 
+The behavior of FSM $M$ can be reasoned by unrolling transition function for multiple steps.
+The state variable $s\in\vec{s}$, input variable $i\in\vec{i}$ and output variable $o\in\vec{o}$ at the $n$-th step 
 are respectively denoted as $s_n$, $i_n$ and $o_n$.
 Furthermore,
-the state, the input and the output variable vectors at the $n$-th cycle are respectively denoted as $\vec{s}_n$, $\vec{i}_n$ and $\vec{o}_n$.
-% We further denote the sequence of state, input letter and output letter from the $n$-th to the $m$-th cycle respectively as $s_n^m$, $i_n^m$ and $o_n^m$.
+the state, the input and the output variable vectors at the $n$-th step are respectively denoted as $\vec{s}_n$, $\vec{i}_n$ and $\vec{o}_n$.
+% We further denote the sequence of state, input letter and output letter from the $n$-th to the $m$-th step respectively as $s_n^m$, $i_n^m$ and $o_n^m$.
 A \textbf{path} is a state sequence $<\vec{s}_n,\dots,\vec{s}_m>$ with $\exists \vec{i}_j\vec{o}_j (\vec{s}_{j+1},\vec{o}_j)\equiv T(\vec{s}_j,\vec{i}_j)$ for all $n\le j< m$.
 A \textbf{loop} is a path $<\vec{s}_n,\dots,\vec{s}_m>$ with $\vec{s}_n\equiv \vec{s}_m$.
 
@@ -414,7 +355,8 @@ we need to check each $i\in\vec{i}$ one by one,
 so there may be minor differences between our presentation and that of \cite{ShenICCAD09,LiuICCAD11,TuDAC13}.
 
 As shown in Figure \ref{pcln}a),
-$i\in\vec{i}$ can be uniquely determined,
+on the unrolled transition relations,
+an input variable $i\in\vec{i}$ can be uniquely determined,
 if there exist three integers $p$, $l$ and $r$,
 such that for any particular valuation of the output sequence $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$,
 $i_{p+l}$ cannot take on two different values.
@@ -436,7 +378,9 @@ F_{PC}(p,l,r)\stackrel{def}{=}
 \}
 \\
 \wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
-\wedge& i_{p+l}\ne i'_{p+l} 
+\wedge& i_{p+l}\ne i'_{p+l} \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
 \end{array}
 \right\}
 % \end{split}
@@ -450,9 +394,9 @@ F_{PC}(p,l,r)\stackrel{def}{=}
   \label{pcln}
 \end{figure}
 
+
 Here,
-$p$ is the length of the prefix state transition sequence that leads the encoder into the unique state set,
-in which $i$ can be uniquely determined.
+$p$ is the length of the prefix state transition sequence.
 $l$ and $r$ are the lengths of the two output sequences $<\vec{o}_{p+1},\dots,\vec{o}_{p+l}>$ and $<\vec{o}_{p+l+1},\dots,\vec{o}_{p+l+r}>$
 that are on the left-hand and right-hand sides of $i_{p+l}$,
 which is used to determine $i_{p+l}$.
@@ -460,6 +404,41 @@ Line 1 of Equation (\ref{uniqt1}) corresponds to the path in Figure \ref{pcln}a)
 while Line 2 is a copy of it.
 Line 3 forces these two paths' output sequences to be the same,
 while Line 4 forces their $i_{p+l}$ to be different.
+Line 5 and 6 are the assertion predicates given by the user that constrain the valid valuation on $\vec{i}$.
+
+Thus,
+we have the following proposition:
+
+\begin{proposition}\label{prop_pc1}
+If $F_{PC}(p,l,r)$ is unsatisfiable,
+% then $i_{p+l}$ cannot take on two different values for any particular valuation of the output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$,
+then $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
+\end{proposition}
+
+\textbf{Equation (\ref{uniqt1}) does not include an initial state,
+instead it use the $p$ steps prefix state transition sequence $<\vec{s_0},\dots,\vec{s_p}>$ 
+to propagate the constraints $assertion(\vec{i})$ into the state sequence $\vec{s_{p+1}},\dots,\vec{s_{p+l+r}}$,
+such that some states that can not be reached with $assertion(\vec{i})$
+This leads to two major advantages:
+First,
+it simplify and speedup our algorithm by avoiding the need to compute the reachable state set or inductive invariants.
+Second and more important,
+it improve the decoder's reliability by preventing any corrupted data from affecting the decoder's state,
+that is,
+any corrupted $\vec{o}$ fed to the decoder can only affect the decoder for finite number of steps.}
+
+\textbf{Of course this approach have one drawback that it is a little bit too stronger than necessary.
+That is,
+it requires that $\vec{i}$ must be uniquely determined on a state set $R^p$ that is reachable in $p$ steps from any states,
+instead of on the reachable states $R$.
+It is obvious that $R\subset R^p$.
+Tu and Jiang \citeyear{TuDAC13} propose a breakthrough algorithm that handle this problem by inferring inductive invariants.
+That work is orthogonal to ours,
+so to simplify our discussion,
+we will not integrate their work here.
+At the same time,
+for all the benchmarks we have tried,
+our current approach is sufficient.}
 
 
 % $d$ is the relative delay between $o_{n+d-l}^{n+d-1}$ and $i_n$,
@@ -484,14 +463,7 @@ while Line 4 forces their $i_{p+l}$ to be different.
 % \end{definition11}
 
 %This definition is the same as that of Subsection \ref{subsec_chkextdec} and paper \cite{ShengYuShen:iccad09}.
-Thus,
-we have the following proposition:
 
-\begin{proposition}\label{prop_pc1}
-If $F_{PC}(p,l,r)$ is unsatisfiable,
-% then $i_{p+l}$ cannot take on two different values for any particular valuation of the output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$,
-then $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
-\end{proposition}
 
 % At the same time,
 % the last three lines of Equation (\ref{uniqt1}) correspond to Condition 2 of Definition \ref{def_pcc}.
@@ -600,7 +572,7 @@ Please refer to \cite{ShenTCAD11} for more details.
 
 To facilitate the presentation of our algorithm,
 we partition the input variable vector $\vec{i}$ into two vectors: 
-the flow control vector $\vec{f}$ and the input data vector $\vec{d}$.
+the flow control vector $\vec{f}$ and the data vector $\vec{d}$.
 
 % In this section,
 % we propose a two-step algorithm to 
@@ -666,7 +638,7 @@ when the result of $CheckUniqueness$ is (0,?,?,?) at Line \ref{chkuniq},
 every $j\in\vec{i}$ that has different values for $j_{p+l}$ and $j'_{p+l}$ in the satisfying assignment of $F_{LN}(p,l,r)$ can also be ruled out at Line \ref{ruleout},
 because their own $F_{LN}(p,l,r)$ is also satisfiable.
 
-\section{Inferring predicate that enables the encoder's input data vector to be uniquely determined}\label{sec_infer}
+\section{Inferring predicate that enables the encoder's data vector to be uniquely determined}\label{sec_infer}
 
 % Furthermore,
 % the validness of $\vec{d}$ is indicated by a predicate $valid(\vec{f})$.
@@ -707,6 +679,7 @@ FSAT(\vec{a})\stackrel{def}{=}
 % \end{split}
 \end{equation}
 %% HAHA come to here
+
 Thus,
 a naive algorithm of computing $FSAT(\vec{a})$ is to enumerate all valuations of $\vec{a}$,
 and collect all those valuations that make $R(\vec{a},\vec{b},1)$ satisfiable.
@@ -771,7 +744,7 @@ to remove $\vec{b}$ from them.
 Thus,
 $\phi_A\wedge \phi_B$ in Line \ref{ab} is unsatisfiable,
 and the common variables vector of $\phi_A$ and $\phi_B$ is $\vec{a}$.
-So a Craig interpolant $ITP(\vec{a})$ can be generated with the Mcmillian's algorithm\cite{interp_McMillan}.
+So a Craig interpolant $ITP(\vec{a})$ can be generated with the McMillian's algorithm\cite{interp_McMillan}.
 
 $ITP(\vec{a})$ is added to $FSAT(\vec{a})$ in Line \ref{add} and ruled out in Line \ref{testsat}.
 
@@ -881,7 +854,7 @@ $\vec{f}_{p+l}$ can be uniquely determined,
 so we do not need to consider $\vec{f'}_{p+l}$.
 Thus,
 $\vec{a}\cup\vec{b}$ is the vector that contains all the input variable vectors $<\vec{i}_0,\dots,\vec{i}_{p+l+r}>$ and $<\vec{i'}_0,\dots,\vec{i'}_{p+l+r}>$
-at all cycles for the two sequences of unrolled transition function.
+at all steps for the two sequences of unrolled transition function.
 It also contains the two initial states $\vec{s}_0$ and $\vec{s'}_0$.
 In addition,
 $T$ is a function that computes the next state and the output variable vector from the current state and input variable vector.
@@ -1122,7 +1095,7 @@ This proves the only covering case.
 \section{Characterizing the decoder's Boolean function}\label{sec_char}
 In Section \ref{sec_findfc},
 the encoder's input vector $\vec{i}$ has been partitioned into two vectors:
-the flow control vector $\vec{f}$ and the input data vector $\vec{d}$.
+the flow control vector $\vec{f}$ and the data vector $\vec{d}$.
 The algorithms to characterize the decoder's Boolean functions that compute $\vec{f}$ and $\vec{d}$ are different,
 so they are discussed separately in the following two subsections.
 
@@ -1167,7 +1140,7 @@ It is obvious that $\phi_A\wedge \phi_B$ equals $F_{PC}(p,l,r)$ in Equation (\re
 so it is unsatisfiable.
 The common variable set of $\phi_A$ and $\phi_B$ is $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$.
 So,
-a Craig interpolant $ITP$ can be derived by Mcmillian's algorithm\cite{interp_McMillan} from the unsatisfiability proof of $\phi_A\wedge \phi_B$,
+a Craig interpolant $ITP$ can be derived by McMillian's algorithm\cite{interp_McMillan} from the unsatisfiability proof of $\phi_A\wedge \phi_B$,
 which covers all values of $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$ that make $f_{p+l}\equiv 1$.
 At the same time,
 $ITP\wedge \phi_B$ is unsatisfiable,
@@ -1179,7 +1152,7 @@ $ITP$ is the decoder's Boolean function that computes $f\in\vec{f}$.
 
 Assume that the predicate over $\vec{f}$ inferred by Algorithm \ref{algo_pcln},
 is $valid(\vec{f})$.
-Let's define the following two formulas for each input data variable $d\in\vec{d}$:
+Let's define the following two formulas for each data variable $d\in\vec{d}$:
 
 \begin{equation}\label{da}
 \phi_A'\stackrel{def}{=}
@@ -1220,19 +1193,19 @@ $d_{p+l}$ cannot be 0 and 1 at the same time.
 So,
 $\phi_A'\wedge \phi_B'$ is unsatisfiable.
 Thus,
-a Craig interpolant $ITP$ can be derived by Mcmillian's algorithm\cite{interp_McMillan} from the unsatisfiability proof of $\phi_A'\wedge \phi_B'$,
+a Craig interpolant $ITP$ can be derived by McMillian's algorithm\cite{interp_McMillan} from the unsatisfiability proof of $\phi_A'\wedge \phi_B'$,
 which covers and only covers all valuations of $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$ that make $d_{p+l}\equiv 1$.
 Thus,
 $ITP$ is the decoder's Boolean function that computes $d\in\vec{d}$.
 
 Furthermore,
 when $valid(\vec{f}_{p+l})$ does not hold,
-the input data variable $d\in\vec{d}_{p+l}$ cannot be uniquely determined.
+the data variable $d\in\vec{d}_{p+l}$ cannot be uniquely determined.
 So,
 no function can be used to calculate its value.
 But this is not a problem,
 because the decoder is supposed 
-to recognize the invalid input data vector by computing the value of control flow vector $\vec{f}$,
+to recognize the invalid data vector by computing the value of control flow vector $\vec{f}$,
 and ignore the exact value of $\vec{d}$.
 
 
@@ -1562,10 +1535,10 @@ $TXDATA$ can only be 1C, 3C, 5C, 7C, 9C, BC, DC, FC, F7, FB, FD and FE.
 So,
 we write an assertion to rule out those combinations that are not in this coding table.
 This assertion is embed into the transition function $T$,
-so that it can be enforced at every cycle in the unrolled state sequences.
+so that it can be enforced at every step in the unrolled state sequences.
 
 Algorithm \ref{alg_fofc} costs 0.924754 seconds to identify the flow control variable $CNTL\_TXEnable\_P0$.
-And then Algorithm \ref{algo_pcln} costs 2.067509 seconds to infer the predicate $CNTL\_TXEnable\_P0\equiv 1$ that enables the input data vector to be uniquely determined.
+And then Algorithm \ref{algo_pcln} costs 2.067509 seconds to infer the predicate $CNTL\_TXEnable\_P0\equiv 1$ that enables the data vector to be uniquely determined.
 Finally, 
 with the inferred predicate,
 generating the decoder's Boolean functions for $CNTL\_TXEnable\_P0$, $TXDATA$ and $TXDATAK$ costs 3.121821 seconds.
@@ -1573,9 +1546,9 @@ After being mapped to LSI10K library,
 the decoder contains 614 AND2, 198 OR2 and 22 registers.
 Its total area is 1778.
 
-The major breakthrough of this paper's algorithms is their ability to handle invalid input data vector.
+The major breakthrough of this paper's algorithms is their ability to handle invalid data vector.
 So,
-it should be very interesting to show how the invalid input data vector is mapped to output variable vector $\vec{o}$.
+it should be very interesting to show how the invalid data vector is mapped to output variable vector $\vec{o}$.
 By studying the source code of this encoder,
 we find that,
 when and only when $CNTL\_TXEnable\_P0\equiv 0$ holds,
@@ -1631,14 +1604,14 @@ we write an assertion to exclude those combinations that are not in this table
 and embed it into the the transition function $T$.
 
 Algorithm \ref{alg_fofc} costs 0.619508 seconds to identify the flow control variable $bad\_code$.
-And then Algorithm \ref{algo_pcln} costs 1.443065 seconds to infer the predicate $bad\_code\equiv 0$ that enables the input data vector to be uniquely determined.
+And then Algorithm \ref{algo_pcln} costs 1.443065 seconds to infer the predicate $bad\_code\equiv 0$ that enables the data vector to be uniquely determined.
 Finally, generating the decoder's Boolean functions for $bad\_code$, $encode\_data\_in$ and $konstant$ costs 2.202401 seconds.
 After being mapped to LSI10K library,
 the decoder contains 597 AND2, 174 OR2 and 30 registers.
 Its total area is 1752.
 
 Although this encoder uses the same coding mechanism as does the PCI Express 2.0 encoder mentioned above,
-the way it handle the invalid input data vector is different.
+the way it handle the invalid data vector is different.
 This encoder does not have a separate output variable to indicate the validness of the output data;
 instead,
 the validness and exact value of all input variables are both encoded in $encode\_data\_out$.
@@ -1727,7 +1700,7 @@ The name of action   & The meaning of action\\\hline\hline
 \end{table}%
 
 Algorithm \ref{alg_fofc} costs 11.750317 seconds to identify the flow control variables $tx\_enc\_ctrl\_sel$, $tx\_en$ and $tx\_er$.
-And then Algorithm \ref{algo_pcln} costs 27.456717 seconds to infer the predicate $tx\_enc\_ctrl\_sel\equiv `PCS\_ENC\_DATA$ that enables the input data vector to be uniquely determined.
+And then Algorithm \ref{algo_pcln} costs 27.456717 seconds to infer the predicate $tx\_enc\_ctrl\_sel\equiv `PCS\_ENC\_DATA$ that enables the data vector to be uniquely determined.
 Finally, generating the decoder's Boolean functions for $txd$, $tx\_enc\_ctrl\_sel$, $tx\_en$ and $tx\_er$ costs 22.156704 seconds.
 After being mapped to LSI10K library,
 the decoder contains 2245 AND2, 794 OR2 and 22 registers.
@@ -1761,8 +1734,8 @@ while the runtime overhead problem was addressed in \cite{ShenTCAD12,LiuICCAD11}
 Shen et al.\citeyear{ShenTCAD12} automatically inferred an assertion for configuration pins, 
 which can lead to the decoder's existence.
 It can be seen as a special case of Algorithm \ref{algo_pcln} in Section \ref{sec_infer},
-with the restriction that the inferred assertion must hold on all cycles,
-to prevent the encoder from leaving the unique state set.
+with the restriction that the inferred assertion must hold on all steps.
+% to prevent the encoder from leaving the unique state set.
 Our Algorithm \ref{algo_pcln},
 on the other hand,
 is the first algorithm that allows states with and without the inferred assertion to be interleaved freely with each other,

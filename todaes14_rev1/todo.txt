@@ -2,3 +2,10 @@
 replaceing control character idle symbols.
 input data variables改成data variables
 
+
+
+find source code on github
+
+I have add assertion for lots of formula, 
+there may be some have not add,
+and there may also be some inconsistency in refering to these lines of formula
