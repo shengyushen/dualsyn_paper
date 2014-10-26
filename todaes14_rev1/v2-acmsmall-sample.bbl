@@ -84,6 +84,27 @@
 \url{http://dx.doi.org/10.1007/978-3-642-18275-4_7}}
 
 
+\bibitem[\protect\citeauthoryear{Chauhan, Clarke, and Kroening}{Chauhan
+  et~al\mbox{.}}{2004}]%
+        {REPARAM}
+{Pankaj Chauhan}, {Edmund~M. Clarke}, {and} {Daniel Kroening}. 2004.
+\newblock \showarticletitle{A sat-based algorithm for reparameterization in
+  symbolic simulation}. In {\em Proceedings of the 41th Design Automation
+  Conference, DAC 2004} {\em (DAC '04)}. ACM, 524--529.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Chockler, Ivrii, and Matsliah}{Chockler
+  et~al\mbox{.}}{2012}]%
+        {interpNoProof}
+{Hana Chockler}, {Alexander Ivrii}, {and} {Arie Matsliah}. 2012.
+\newblock \showarticletitle{Computing Interpolants without Proofs}.
+\newblock In {\em 8th International Haifa Verification Conference, HVC 2012},
+  {Tanja E. J.~Vos Armin~Biere, Amir~Nahir} (Ed.). Lecture Notes in Computer
+  Science, Vol. 7857. Springer-Verlag, Berlin Heidelberg, 72--85.
+\newblock
+
+
 \bibitem[\protect\citeauthoryear{Craig}{Craig}{1957}]%
         {Craig}
 {William Craig}. 1957.
@@ -128,9 +149,9 @@
 
 
 \bibitem[\protect\citeauthoryear{Ganai, Gupta, and Ashar}{Ganai
-  et~al\mbox{.}}{2004}]%
+  et~al\mbox{.}}{2004a}]%
         {Cofact}
-{Malay~K. Ganai}, {Aarti Gupta}, {and} {Pranav Ashar}. 2004.
+{Malay~K. Ganai}, {Aarti Gupta}, {and} {Pranav Ashar}. 2004a.
 \newblock \showarticletitle{Efficient sat-based unbounded symbolic model
   checking using circuit cofactoring}. In {\em Proceedings of the 2004 IEEE/ACM
   International conference on Computer-aided design,ICCAD 2004} {\em (ICCAD
@@ -138,6 +159,17 @@
 \newblock
 \showDOI{%
 \url{http://dx.doi.org/10.1109/ICCAD.2004.1382631}}
+
+
+\bibitem[\protect\citeauthoryear{Ganai, Gupta, and Ashar:}{Ganai
+  et~al\mbox{.}}{2004b}]%
+        {EFFSATUSMCCO}
+{Malay~K. Ganai}, {Aarti Gupta}, {and} {Pranav Ashar:}. 2004b.
+\newblock \showarticletitle{Efficient sat-based unbounded symbolic model
+  checking using circuit cofactoring}. In {\em Proceedings of the 2004
+  International Conference on Computer-Aided Design, ICCAD 2004} {\em (ICCAD
+  '04)}. ACM, 510--517.
+\newblock
 
 
 \bibitem[\protect\citeauthoryear{Gl\"uck and Kawabe.}{Gl\"uck and
@@ -152,6 +184,18 @@
 \showISSN{1875-8681}
 \showDOI{%
 \url{http://dx.doi.org/10.1109/TCAD.2012.2191288}}
+
+
+\bibitem[\protect\citeauthoryear{Grumberg, Schuster, and Yadgar}{Grumberg
+  et~al\mbox{.}}{2004}]%
+        {MEMEFFALLSAT}
+{Orna Grumberg}, {Assaf Schuster}, {and} {Avi Yadgar}. 2004.
+\newblock \showarticletitle{Memory efficient all-solutions sat solver and its
+  application for reachability analysis}.
+\newblock In {\em International Conference on Formal Methods in Computer-Aided
+  Design,FMCAD 2011}, {Andrew K.~Martin Alan J.~Hu} (Ed.). Lecture Notes in
+  Computer Science, Vol. 3312. Springer-Verlag, Berlin Heidelberg, 275--289.
+\newblock
 
 
 \bibitem[\protect\citeauthoryear{Gulwani}{Gulwani}{2010}]%
@@ -175,6 +219,60 @@
 \showURL{%
 Retrieved January 25, 2013 from
   \url{http://standards.ieee.org/getieee802/download/802.3-2012_section4.pdf}}
+
+
+\bibitem[\protect\citeauthoryear{Jie-Hong Roland~Jiang}{Jie-Hong
+  Roland~Jiang}{2009}]%
+        {InterpBoolFunction}
+{Wei-Lun~Hung Jie-Hong Roland~Jiang, Hsuan-Po~Lin}. 2009.
+\newblock \showarticletitle{Interpolating functions from large Boolean
+  relations}. In {\em Proceedings of 2009 International Conference on
+  Computer-Aided Design} {\em (ICCAD '09)}. IEEE, 779--784.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Jin, Han, and Somenzi}{Jin
+  et~al\mbox{.}}{2005}]%
+        {EFFCON}
+{HoonSang Jin}, {HyoJung Han}, {and} {Fabio Somenzi}. 2005.
+\newblock \showarticletitle{Efficient conflict analysis for finding all
+  satisfying assignments of a boolean circuit}.
+\newblock In {\em Tools and Algorithms for the Construction and Analysis of
+  Systems, 11th International Conference, TACAS 2005}, {Lenore D.~Zuck
+  Nicolas~Halbwachs} (Ed.). Lecture Notes in Computer Science, Vol. 3440.
+  Springer-Verlag, Berlin Heidelberg, 287--300.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Jin and Somenzi:}{Jin and Somenzi:}{2005}]%
+        {PRIMECLAUSE}
+{HoonSang Jin} {and} {Fabio Somenzi:}. 2005.
+\newblock \showarticletitle{Prime clauses for fast enumeration of satisfying
+  assignments to boolean circuits}. In {\em Proceedings of the 42th Design
+  Automation Conference, DAC 2005} {\em (DAC '05)}. ACM, 750--753.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Lee, Jiang, Huang, and Mishchenko}{Lee
+  et~al\mbox{.}}{2007}]%
+        {scalableFuncDep}
+{Chih-Chun Lee}, {Jie-Hong~Roland Jiang}, {Chung-Yang Huang}, {and} {Alan
+  Mishchenko}. 2007.
+\newblock \showarticletitle{Scalable exploration of functional dependency by
+  interpolation and incremental SAT solving}. In {\em Proceedings of 2007
+  International Conference on Computer-Aided Design} {\em (ICCAD '07)}. IEEE,
+  227--233.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Lee, Jiang, and Hung}{Lee
+  et~al\mbox{.}}{2008}]%
+        {Bidecomp}
+{Ruei-Rung Lee}, {Jie-Hong~Roland Jiang}, {and} {Wei-Lun Hung}. 2008.
+\newblock \showarticletitle{Bi-decomposing large Boolean functions via
+  interpolation and satisfiability solving}. In {\em Proceedings of the 45th
+  Design Automation Conference, DAC 2008} {\em (DAC '08)}. IEEE, 636--641.
+\newblock
 
 
 \bibitem[\protect\citeauthoryear{Liu, Chou, Lin, and Jiang}{Liu
@@ -206,6 +304,17 @@ Retrieved January 25, 2013 from
 \url{http://dx.doi.org/10.1109/TCAD.2012.2191288}}
 
 
+\bibitem[\protect\citeauthoryear{McMillan}{McMillan}{2002}]%
+        {SATUNBMC}
+{K.~L. McMillan}. 2002.
+\newblock \showarticletitle{Applying sat methods in unbounded symbolic model
+  checking}.
+\newblock In {\em International Conference on Computer Aided Verification, CAV
+  2002}, {Kim Guldstrand~Larsen Ed~Brinksma} (Ed.). Lecture Notes in Computer
+  Science, Vol. 2404. Springer-Verlag, Berlin Heidelberg, 250--264.
+\newblock
+
+
 \bibitem[\protect\citeauthoryear{McMillan}{McMillan}{2003}]%
         {interp_McMillan}
 {Kenneth~L. McMillan}. 2003.
@@ -227,6 +336,29 @@ Retrieved January 25, 2013 from
 \showURL{%
 Retrieved January 25, 2013 from
   \url{http://www.pcisig.com/members/downloads/specifications/pciexpress/PCI_Express_Base_r2_1_04Mar09.pdf}}
+
+
+\bibitem[\protect\citeauthoryear{Ravi and Somenzi}{Ravi and Somenzi}{2004}]%
+        {MINASS}
+{Kavita Ravi} {and} {Fabio Somenzi}. 2004.
+\newblock \showarticletitle{Minimal assignments for bounded model checking}.
+\newblock In {\em Tools and Algorithms for the Construction and Analysis of
+  Systems, 10th International Conference, TACAS 2004}, {Andreas~Podelski
+  Kurt~Jensen} (Ed.). Lecture Notes in Computer Science, Vol. 2988.
+  Springer-Verlag, Berlin Heidelberg, 31--45.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Shen, Qin, and Li}{Shen et~al\mbox{.}}{2005}]%
+        {MINCEX}
+{ShengYu Shen}, {Ying Qin}, {and} {Sikun Li}. 2005.
+\newblock \showarticletitle{Minimizing counterexample with unit core extraction
+  and incremental sat}.
+\newblock In {\em Verification, Model Checking, and Abstract Interpretation,
+  6th International Conference, VMCAI 2005}, {Radhia Cousot} (Ed.). Lecture
+  Notes in Computer Science, Vol. 3385. Springer-Verlag, Berlin Heidelberg,
+  298--312.
+\newblock
 
 
 \bibitem[\protect\citeauthoryear{Shen, Qin, Wang, Pang, Zhang, and Li.}{Shen
@@ -347,6 +479,18 @@ Retrieved January 25, 2013 from \url{http://en.wikipedia.org/wiki/Ethernet}}
 \newblock
 \showURL{%
 Retrieved January 25, 2013 from \url{http://en.wikipedia.org/wiki/PCI_Express}}
+
+
+\bibitem[\protect\citeauthoryear{Wu, Yanga, Huang, and Jiang}{Wu
+  et~al\mbox{.}}{2010}]%
+        {ecoInterp}
+{Bo-Han Wu}, {Chun-Ju Yanga}, {Chung-Yang Huang}, {and} {Jie-Hong~Roland
+  Jiang}. 2010.
+\newblock \showarticletitle{A robust functional ECO engine by SAT proof
+  minimization and interpolation techniques}. In {\em Proceedings of 2010
+  International Conference on Computer-Aided Design} {\em (ICCAD '10)}. ACM,
+  729--734.
+\newblock
 
 
 \end{thebibliography}

@@ -4,52 +4,59 @@ The top-level auxiliary file: v2-acmsmall-sample.aux
 The style file: ACM-Reference-Format-Journals.bst
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
-Database file #1: acmsmall-sample-bibfile.bib
-I was expecting a `,' or a `}'---line 1337 of file acmsmall-sample-bibfile.bib
+Database file #1: v2-acmsmall-sample.bib
+I was expecting a `,' or a `}'---line 1337 of file v2-acmsmall-sample.bib
  :   
  :   month =   "",
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
 Reallocated singl_function (elt_size=4) to 100 items from 50.
-You've used 26 entries,
+Warning--empty address in REPARAM
+Warning--empty address in EFFSATUSMCCO
+Warning--empty address in InterpBoolFunction
+Warning--empty address in PRIMECLAUSE
+Warning--empty address in scalableFuncDep
+Warning--empty address in Bidecomp
+Warning--empty address in ecoInterp
+You've used 39 entries,
             5290 wiz_defined-function locations,
-            1648 strings with 23386 characters,
-and the built_in function-call counts, 30770 in all, are:
-= -- 3993
-> -- 1028
-< -- 4
-+ -- 311
-- -- 642
-* -- 2016
-:= -- 3325
-add.period$ -- 137
-call.type$ -- 26
-change.case$ -- 174
-chr.to.int$ -- 24
-cite$ -- 26
-duplicate$ -- 2290
-empty$ -- 1606
-format.name$ -- 417
-if$ -- 6988
-int.to.chr$ -- 3
+            1743 strings with 26421 characters,
+and the built_in function-call counts, 44525 in all, are:
+= -- 5508
+> -- 1558
+< -- 10
++ -- 470
+- -- 812
+* -- 2918
+:= -- 4923
+add.period$ -- 214
+call.type$ -- 39
+change.case$ -- 261
+chr.to.int$ -- 36
+cite$ -- 46
+duplicate$ -- 3564
+empty$ -- 2486
+format.name$ -- 630
+if$ -- 10176
+int.to.chr$ -- 4
 int.to.str$ -- 0
-missing$ -- 81
-newline$ -- 280
-num.names$ -- 212
-pop$ -- 729
+missing$ -- 122
+newline$ -- 377
+num.names$ -- 327
+pop$ -- 1176
 preamble$ -- 1
-purify$ -- 302
+purify$ -- 453
 quote$ -- 0
-skip$ -- 690
+skip$ -- 1052
 stack$ -- 0
-substring$ -- 3468
-swap$ -- 269
-text.length$ -- 587
+substring$ -- 4666
+swap$ -- 414
+text.length$ -- 593
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 364
-warning$ -- 0
-while$ -- 226
+type$ -- 546
+warning$ -- 7
+while$ -- 339
 width$ -- 0
-write$ -- 551
+write$ -- 797
 (There was 1 error message)

@@ -542,6 +542,7 @@ whether $i$ can be uniquely determined by a bounded sequence of output variable 
 \label{alg_pcln}
 \end{algorithm}
 
+
 When $F_{LN}(p,l,r)$ is satisfiable,
 then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
 More importantly,
@@ -567,7 +568,34 @@ which means that there will be three loops in $<\vec{s}_{0},\dots,\vec{s}_{p}>$,
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
 This will make $F_{LN}(p,l,r)$ satisfiable in Line \ref{lnsat}.
 Both cases will lead to this Algorithm's termination.
-Please refer to \cite{ShenTCAD11} for more details.
+
+%\subsection{Removing Redundant Output Letters}\label{sec_rmred}
+
+\begin{algorithm}[t]
+\SetAlgoVlined
+\For{$l'=l \to 0$} {
+  \uIf{$F_{PC}(p,l'-1,r)$ is satisfiable} {
+    break
+  }
+}
+\For{$r'=r \to 0$} {
+  \uIf{$F_{PC}(p,l',r'-1)$ is satisfiable} {
+    break
+  }
+}
+return $<p,d',l'>$
+\caption{$RemoveRedundancy(p,d,l)$}
+\label{algo_remove}
+\end{algorithm}
+
+\textbf{
+Although Algorithm \ref{alg_pcln} is sufficient to determine whether $i$ can be uniquely determined,
+the values of $<p,d,l>$ found by Algorithm \ref{alg_pcln} contain some redundancy,
+which may cause unnecessarily large overheads on the circuit area.
+So,
+Algorithm \ref{algo_remove} is used to minimize $<p,d,l>$ before passing it to other algorithms.
+}
+%Please refer to \cite{ShenTCAD11} for more details.
 
 \section{Identifying flow control variables}\label{sec_findfc}
 
@@ -952,10 +980,12 @@ F'_{LN}(p,l,r,t):=
 \right\}
 \end{equation}
 
-Then $\vec{d}$ cannot be uniquely determined for any larger $p'\ge p$,$l'\ge l$ and $r'\ge r$ if $F'_{LN}(p,l,r,1)$ is satisfiable.
+Then $\vec{d}$ cannot be uniquely determined for any larger $p'\ge p$,$l'\ge l$ and 
+$r'\ge r$ if $F'_{LN}(p,l,r,1)$ is satisfiable.
 Thus,
 for a particular combination of $p$,$l$ and $r$,
-the formula over $\vec{f}_{p+l}$ that makes $F'_{LN}(p,l,r,1)$ satisfiable can be computed by 
+the formula over $\vec{f}_{p+l}$ that makes $F'_{LN}(p,l,r,1)$ satisfiable can be 
+computed by 
 
 \begin{equation}\label{fsat_ln}
 FSAT_{LN}(p,l,r):=CharacterizingFormulaSAT(F'_{LN}(p,l,r,t),\vec{a},\vec{b},t)
@@ -964,7 +994,8 @@ FSAT_{LN}(p,l,r):=CharacterizingFormulaSAT(F'_{LN}(p,l,r,t),\vec{a},\vec{b},t)
 Thus we have the following proposition:
 
 \begin{proposition}\label{prop_ln}
-$FSAT_{LN}(p,l,r)$ is the formula over $\vec{f}_{p+l}$ that makes  $\vec{d}_{p+l}$ to be not uniquely determined for every $p'\ge p$, $l'\ge l$ and $r'\ge r$.
+$FSAT_{LN}(p,l,r)$ is the formula over $\vec{f}_{p+l}$ that makes  $\vec{d}_{p+l}$ 
+to be not uniquely determined for every $p'\ge p$, $l'\ge l$ and $r'\ge r$.
 \end{proposition}
 
 % It is obvious that $FSAT_{LN}(p,l,r)\to FSAT_{PC}(p,l,r)$.
@@ -985,12 +1016,14 @@ $p$:= $p_{max}$;~$l$:= $l_{max}$;~$r$:= $r_{max}$ \;
   $p$ ++ ;~$l$ ++ ;~$r$ ++ \;
 }
 \KwRet {$\neg FSAT_{LN}(p,l,r)$}
-\caption{$InferringUniqueFormula$:inferring the predicate $valid(\vec{f}_{p+l})$ that enables $\vec{d}_{p+l}$ to be uniquely determined}
+\caption{$InferringUniqueFormula$:inferring the predicate $valid(\vec{f}_{p+l})$ 
+that enables $\vec{d}_{p+l}$ to be uniquely determined}
 \label{algo_pcln}
 \end{algorithm}
 
 With Propositions \ref{prop_pc} and \ref{prop_ln},
-the algorithm that infers the predicate $valid(\vec{f}_{p+l})$ is shown in Algorithm \ref{algo_pcln}.
+the algorithm that infers the predicate $valid(\vec{f}_{p+l})$ is shown in 
+Algorithm \ref{algo_pcln}.
 It just iteratively increases the value of $p$, $l$ and $r$, 
 until $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ is unsatisfiable.
 The proofs of its termination and correctness are given in the next subsection.
@@ -1016,13 +1049,13 @@ that has the same value for $\vec{f}_{p+l}$.
 
 Intuitively,
 as shown in Figure \ref{fig_pcmap},
-we can map the valuation of the state, input and output vectors in $F'_{PC}(p',l',r',1)$ 
+we can map the valuations of the state, input and output vectors in $F'_{PC}(p',l',r',1)$ 
 to that of $F'_{PC}(p,l,r,1)$ by aligning the $(p'+l')$-step to $(p+l)$-step,
 and discard the two prefix and postfix state transition sequences.
 Formally,
 for each $p'+l'-l-p\le n\le p'+l'+r$,
 we map $s_n$ in $F'_{PC}(p',l',r',1)$ to $s_{n-p'-l'+l+p}$ in $F'_{PC}(p,l,r,1)$.
-For $i_n$ and $o_n$, the mapping are similar.
+$i_n$ and $o_n$ are also mapped similarly.
 
 With this mapping, 
 we can transform the satisfying assignment $A'$ of $F'_{PC}(p',l',r',1)$ 
@@ -1301,6 +1334,7 @@ and ignore the exact value of $\vec{d}$.
 % We propose a suboptimal distribution to be used by each node, which is
 % easy to compute and does not depend on the number of competing
 % nodes. A natural candidate is an increasing geometric sequence, in
+
 % which
 % % Numbered Equation
 % \begin{equation}
@@ -1881,6 +1915,61 @@ they synthesized a translator by computing the greatest fixed point for the upda
 Latter, 
 they \shortcite{converter_date09} improved their algorithm with a more efficient design space exploration algorithm.
 
+\subsection{Satisfying Assignments Enumeration}\label{subsec_relallsat}
+
+Some algorithms enumerate all satisfying assignments by trying to enlarge the complete satisfying assignments,
+so that a large state set that contains more complete satisfying assignments can be obtained.
+
+The first approach of this kind is proposed by K. L. McMillan \cite{SATUNBMC}.
+He constructs an alternative implication graph in SAT solver,
+which records the reasoning relation that leads to the assignment of a particular object variable.
+All variables outside this graph can be ruled out from the complete assignment.
+Kavita Ravi et al.\cite{MINASS} and P. P. Chauhan et al.\cite{REPARAM} remove those variables whose absence can not make $obj\equiv 0$ satisfiable one by one.
+Shen et al.\cite{MINCEX} and HoonSang Jin et al.\cite{PRIMECLAUSE,EFFCON} use an conflict analysis based approach
+to remove multiple irrelevant variables in one SAT run.
+Orna Grumberg et al.\cite{MEMEFFALLSAT} divides the variable set into an important subset and an unimportant subset.
+Variables in the important subset have higher decision priority than those unimportant ones.
+Thus,
+the important subset forms a search tree,
+with each leaf being another search tree for the unimportant set.
+%Tobias Nopper et al.\cite{CMPMINCEX} propose an counterexample minimization algorithm for incomplete designs that contain black box.
+Cofactoring \cite{EFFSATUSMCCO} qualifies out unimportant variables by setting them to constant value returned by the SAT solver.
+
+Other algorithms tries to construct an Interpolation to cover all satisfying assignments.
+The first such algorithm was proposed by Jiang et al. \cite{InterpBoolFunction}.
+It construct a first formula with another formula that contradicts with it to get an unsatisfiable formula,
+from which an interpolation can be derived and used as an over-approximation of the first formula.
+Hana et al.\cite{interpNoProof} generates interpolation with an framework similar to the iterative enumerating and 
+enlarging approaches mentioned above.
+But there are two enlarging steps, each for the two formulas involving in computing interpolation.
+This make it the first paper that constructs interpolation without proof.
+
+\subsection{Logic synthesis with Craig interpolation}
+Lee et al.\cite{scalableFuncDep,Bidecomp} proposed to solving the functional dependency and logic decomposition problems by formulating the base Boolean functions' output bits as the input bits to an unknown Boolean function, and characterize this unknown function by Craig interpolation.
+This algorithm is also used in our paper \cite{ShenTCAD12} to find out all the possible decoders.
+
+Wu et al.\cite{ecoInterp} proposed to generate ECO with Craig interpolation.
+
+Jiang et al. \cite{InterpBoolFunction} proposed the first algorithm to characterize a Boolean function from a Boolean Relation. It propose two different algorithms:
+The first one handle a general  non-deterministic Boolean relation that can not uniquely determined its output, 
+The second one is a special case of the first one that handles a deterministic relation that can uniquely determine its output by Craig interpolation.
+The second one is used in \cite{ShenTCAD12}.
+
+This paper also need to handle a non-deterministic Boolean relation,
+which seems to be similar to that one handled by the first algorithm of \cite{InterpBoolFunction}.
+But our case is much more complicated, 
+because the Boolean relation to be handled is an unrolled transition relation with unknown length.
+That is, 
+we must first find out the value of $p$, $l$ and $r$.
+But these value must be determine together with finding out the set of flow control variables.
+So the way we handle non-determinism is significantly different from that of \cite{InterpBoolFunction}.
+But after we got the value of $p$, $l$ and $r$, 
+together with the flow control variables $\vec{f}$ and the predicate $valid(\vec{f})$,
+we can characterize the decoder's Boolean function with an algorithm similar to the second one in \cite{InterpBoolFunction}.
+
+
+
+
 
 \section{Conclusions}\label{sec_conclude}
 
@@ -1959,7 +2048,7 @@ The authors would like to thank the anonymous reviewers for their fruitful sugge
 %%% ACM-Reference-Format-Journals [18-Jan-2012].
 
 
-\bibliography{acmsmall-sample-bibfile}
+\bibliography{v2-acmsmall-sample}
                              % Sample .bib file with references that match those in
                              % the 'Specifications Document (V1.5)' as well containing
                              % 'legacy' bibs and bibs with 'alternate codings'.
