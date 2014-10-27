@@ -132,7 +132,7 @@ One of the most difficult jobs in designing communication
 and multimedia chips is to design and verify complex encoder and decoder pairs.
 The encoder maps its input variables $\vec{i}$ to its output variables $\vec{o}$,
 % according to some predefined rules,
-% such as Ethernet \cite{WIKIether} and PCI Express \cite{WIKIpcie},
+% such as Ethernet \cite{IEEE8023_S4} and PCI Express \cite{pcie21},
 while the decoder recovers $\vec{i}$ from $\vec{o}$.
 \textbf{By assuming that $\vec{i}$ can always be
 uniquely determined by a bounded sequence of $\vec{o}$,
@@ -141,7 +141,7 @@ can automatically generate the encoders' decoder.}
 
 \textbf{
 However, 
-the encoders of many high speed communication systems employ flow control mechanism that 
+the encoders of many high speed communication systems employ flow control mechanism \cite{flowcontrol} that 
 fail this assumption.
 Figure~\ref{fig:nonuniq}a) shows the structure of a communication system with flow control mechanism,
 which include a faster transmitter and a slower receiver connected by a pair of encoder and decoder.
@@ -215,7 +215,7 @@ our algorithm can be seen as a generalization of \cite{ShenTCAD12}.
 % This new algorithm has been implemented with the OCaml language. 
 % All generated SAT instances are solved with Minisat solver \cite{EXTSAT}. 
 Experimental results indicate that,
-for several complex encoders from real projects (e.g., Ethernet \cite{WIKIether} and PCI Express \cite{WIKIpcie}),
+for several complex encoders from real projects (e.g., Ethernet \cite{IEEE8023_S4} and PCI Express \cite{pcie21}),
 our algorithms can always correctly identify the flow control variables, infer the predicates and generate the decoders. 
 % All these experimental results and programs can be downloaded from http://www.ssypub.org.
 
@@ -783,64 +783,69 @@ So Algorithm \ref{alg_craigchar} is a halting one.
 
 \subsection{Inferring $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined}\label{subsec_infer}
 This subsection introduces the non-trivial details of how to infer the predicate $valid(\vec{f})$.
-So we first present an intuitive introduction in \ref{subsub_intro}.
+So we first present an intuitive and informal introduction in \ref{subsub_intro}.
 And then present its details in \ref{subsub_nonloop} and \ref{subsub_loop}.
 Finally,
 we present the overall algorithm framework in \ref{subsub_overal}.
 
-\subsubsection{}\label{subsub_intro}\textbf{Intuitive introduction}
+\subsubsection{\textbf{Intuitive introduction}}\label{subsub_intro}.
 
 In this Section,
-what we want is the predicate $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined.
+what we want is the predicate $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined,
+that is,
+the set of all valuations of $valid(\vec{f}_{p+l})$ 
+that can make $F_{PC}(p,l,r)$ unsatisfiable for some $p$,$l$ and $r$.
 
-For every particular valuation of $p$,$l$ and $r$,
-we can use Algorithm \ref{alg_craigchar} to characterize the set of 
-satisfying assignments on $\vec{f}$ that makes $F_{PC}(p,l,r)$ satisfiable.
-We call the predicate that cover and only cover this set of satisfying assignments $FSAT_{PC}(p,l,r)$.
+But what we have is only Algorithm \ref{alg_craigchar} that can find out the set of 
+valuation of $\vec{f}_{p+l}$ that can make $F_{PC}(p,l,r)$ satisfiable.
+We call the predicate that cover and only cover this set $FSAT_{PC}(p,l,r)$.
 And we will present how to infer it in \ref{subsub_nonloop}.
 
 But as shown in Subsection \ref{subsec_chkextdec},
 % from the fact that $\vec{d}$ is uniquely determined for some particular $p$,$l$ and $r$,
 % we can only know that it is also uniquely determined for all larger $p'$,$l'$ and $r'$.
 % On the other hand,
-$\vec{d}$ not uniquely determined for some particular $p$,$l$ and $r$,
-may become uniquely determined for larger $p'$,$l'$ and $r'$.
+$\vec{d}_{p+l}$ not uniquely determined for some particular $p$,$l$ and $r$,
+may become uniquely determined for larger $p$,$l$ and $r$.
+For example,
+an encoder with 3 step latency can not uniquely determine its input $\vec{i}$ with $p$,$l$ and $r$ smaller than 3.
+But it can with $p$,$l$ and $r$ larger than 3.
 That means,
-a particular valuation of $\vec{f}$ that 
+a particular valuation of $\vec{f}_{p+l}$ that 
 makes $F_{PC}(p,l,r)$ satisfiable for some $p$,$l$ and $r$,
-may also make it unsatisfiable for some larger $p'$,$l'$ and $r'$.
+may make it unsatisfiable for some larger $p$,$l$ and $r$.
 
-So $FSAT_{PC}(p,l,r)$ is only an over-approximation of $valid(\vec{f})$.
-We still need an under-approximation to construct a halting algorithm.
+So as shown in Figure \ref{fig_mono}, 
+$\neg FSAT_{PC}(p,l,r)$ is only an under-approximation of $valid(\vec{f})$
+which grow monotonically with respect to the valuation of $p$,$l$ and $r$.
+We still need an over-approximation that shrink monotonically to construct a halting algorithm.
 
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{mono}
+\end{center}
+\caption{The monotonicity of $FSAT_{PC}(p,l,r)$ and $FSAT_{LN}(p,l,r)$}
+  \label{fig_mono}
+\end{figure}
 
+Inspired by the Figure \ref{pcln}b) and $F_{LN}(p,l,r)$,
+we can compute this over-approximation by using Algorithm \ref{alg_craigchar} 
+to find out the set of valuation of $\vec{f}_{p+l}$ that can make $F_{LN}(p,l,r)$ satisfiable.
+We call the predicate that covers and only covers this set $FSAT_{LN}(p,l,r)$.
+With a satisfiable $F_{LN}(p,l,r)$,
+by unrolling the three loops in Figure \ref{pcln}b),
+we can prove that $F_{LN}(p,l,r)$ is still satisfiable for larger $p$,$l$ and $r$.
+That means $FSAT_{LN}(p,l,r)$ is a set of valuation of $\vec{f}_{p+l}$ that makes $F_{LN}(p,l,r)$ satisfiable 
+and grows monotonically with respect to $p$,$l$ and $r$.
+So as shown in Figure \ref{fig_mono},
+$\neg FSAT_{LN}(p,l,r)$ is an over-approximation of $valid(\vec{f})$ that shrinks monotonically.
+We will present how to infer it in \ref{subsub_loop}.
 
+Together with these two inferred predicates,
+an iterative algorithm is presented in \ref{subsub_overal} to infer $valid(\vec{f})$.
 
+\subsubsection{\textbf{Computing $FSAT_{PC}(p,l,r)$}}\label{subsub_nonloop}.
 
-
-Although the general framework is correct,
-there are two problems for this algorithm:
-\begin{enumerate}
- \item It may incorrectly rule out some valuation of $\vec{f}$ that can actually 
- enable $\vec{d}$ to be uniquely determined.
- That is,
- $\vec{d}$ that can not be uniquely determined with smaller $p$,$l$ and $r$,
- may become uniquely determined with larger $p$,$l$ and $r$.
- For example, assume we are handling an encoder with latency of 3 steps.
- Then for any valuation of $p$,$l$ and $r$ that is smaller than 3, 
- $\vec{d}$ can never be uniquely determined.
- But for $p$,$l$ and $r$ that are larger than 3,
- $\vec{d}$ can become uniquely determined.
- \item When to terminate this loop.
-\end{enumerate}
-
-Actually these two problems can be answer with the same mechanism.
-
-
-
-\subsubsection{}\label{subsub_nonloop}\textbf{Inferring the non-looping predicate}
-\\
-\\
 By replacing $i$ in Equation (\ref{uniqt1}) with $\vec{d}$,
 we have:
 
@@ -960,7 +965,7 @@ we have the following proposition:
 $FSAT_{PC}(p,l,r)$ is the Boolean function over $\vec{f}_{p+l}$ that makes $\vec{d}_{p+l}$ to be not uniquely determined for a particular $p$, $l$ and $r$.
 \end{proposition}
 
-\subsubsection{}\label{subsub_loop}\textbf{Inferring the looping predicate}
+\subsubsection{\textbf{Computing $FSAT_{LN}(p,l,r)$}}\label{subsub_loop}.
 
 Similarly,
 by replacing $i$ in Equation (\ref{uniqln}) with $\vec{d}$,
@@ -1065,7 +1070,7 @@ to be not uniquely determined for every $p'\ge p$, $l'\ge l$ and $r'\ge r$.
 % then $\neg FSAT_{LN}(p,l,r)$ is the formula over $\vec{f}_{p+l}$ that makes $\vec{d}_{p+l}$ to be uniquely determined by the encoder's output sequence.
 
 
-\subsubsection{}\label{subsub_overal}\textbf{The overall algorithm framework to characterize the predicate $valid(\vec{f})$.}
+\subsubsection{\textbf{The algorithm to compute $valid(\vec{f})$}}\label{subsub_overal}.
 
 \begin{algorithm}[t]
 \SetAlgoNoLine
@@ -1133,7 +1138,7 @@ Thus,
 every $A$ covered by $FSAT_{PC}(p',l',r')$ 
 is also covered by $FSAT_{PC}(p,l,r)$.
 
-\begin{figure}[b]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=0.7\textwidth]{pcmap}
 \end{center}
@@ -1179,13 +1184,6 @@ let's first prove that Algorithm \ref{algo_pcln} is a halting one.
  Algorithm \ref{algo_pcln} is a halting algorithm.
 \end{theorem}
 
-\begin{figure}[t]
-\begin{center}
-\includegraphics[width=0.5\textwidth]{mono}
-\end{center}
-\caption{The monotonicity of $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$}
-  \label{fig_mono}
-\end{figure}
 
 \begin{proof}
 As the encoder is represented by a finite state machine,
@@ -1666,7 +1664,7 @@ Outputs  & $HSS\_TXD$           & 10    &The encoded data \\\cline{2-4}
 \end{table}%
 
 The list of input and output variables is shown in Table \ref{tab:pcieio}.
-According to the 8b/10b encoding scheme's coding table\cite{WIKI810e},
+According to the 8b/10b encoding scheme's coding table\cite{encode8b10b},
 when $TXDATAK\equiv 0$,
 $TXDATA$ can be of any value.
 But when $TXDATAK\equiv 1$,
@@ -1730,10 +1728,10 @@ Outputs  & $encode\_data\_out$  & 10    &The encoded data \\\hline
 \end{table}%
 
 The list of input and output variables is shown in Table \ref{tab:eth10g}.
-This encoder also employs an 8b/10b encoding scheme\cite{WIKI810e} with two inputs:
+This encoder also employs an 8b/10b encoding scheme\cite{encode8b10b} with two inputs:
 the 8-bit $encode\_data\_in$ to be encoded
 and 1-bit $konstant$ indicating a controlling character.
-According to the coding table in \cite{WIKI810e},
+According to the coding table in \cite{encode8b10b},
 when $konstant\equiv 0$,
 $encode\_data\_in$ can be of any value.
 But when $konstant\equiv 1$,
@@ -1800,7 +1798,7 @@ Outputs  &                      &       &with $tx\_er\equiv 1$ and $txd\equiv 8'
 \end{table}%
 
 The list of input and output variables is shown in Table \ref{tab:t2eth}.
-This encoder also employs an 8b/10b encoding scheme\cite{WIKI810e},
+This encoder also employs an 8b/10b encoding scheme\cite{encode8b10b},
 but with yet another style of flow control mechanism that is significantly different from that of the above two encoders.
 The data to be encoded is the 8-bit $txd$,
 but there is no standalone variable to indicate the control symbol.
@@ -1905,7 +1903,7 @@ by eliminating nondeterminism with LR-based parsing methods.
 But,
 the use of functional languages in that work is incompatible with our complementary synthesis.
 
-{Srivastava et al. \shortcite{prog_inv_rev,program_inversion_11} assumed that an inverse program was typically related to the original program,
+{Srivastava et al. \shortcite{program_inversion_11} assumed that an inverse program was typically related to the original program,
 and so the space of possible inversions can be inferred by automatically
 mining the original program for expressions, predicates, and control flow.
 This algorithm inductively rules out invalid paths that cannot fulfill the requirement of inversion
@@ -2041,7 +2039,7 @@ we propose,
 for the first time,
 a framework to handle flow control mechanism in complementary synthesis problem.
 Experimental results indicate that our framework can always successfully handle many complex encoders from real industrial projects,
-such as PCI Express \cite{WIKIpcie} and Ethernet \cite{WIKIether}.
+such as PCI Express \cite{pcie21} and Ethernet \cite{IEEE8023_S4}.
 
 % In this article, we develop the first multifrequency MAC protocol for
 % WSN applications in which each device adopts a

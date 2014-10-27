@@ -32,6 +32,17 @@
 \ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
 \ifx \showURL      \undefined \def \showURL       #1{#1}          \fi
 
+\bibitem[\protect\citeauthoryear{Abts and Kim}{Abts and Kim}{2011}]%
+        {flowcontrol}
+{Dennis Abts} {and} {John Kim}. 2011.
+\newblock {\em High Performance Datacenter Networks\/} (1st. ed.). Synthesis
+  Lectures on Computer Architecture, Vol.~14.
+\newblock Morgan and Claypool, Chapter 1.6, 7--9.
+\newblock
+\showDOI{%
+\url{http://dx.doi.org/10.2200/S00341ED1V01Y201103CAC014}}
+
+
 \bibitem[\protect\citeauthoryear{Avnit, D'Silva, Sowmya, Ramesh, and
   Parameswaran.}{Avnit et~al\mbox{.}}{2009}]%
         {converter_todeas09}
@@ -55,6 +66,8 @@
   Automation and Test in Europe,DATE 2009} {\em (DATE '09)}. European Design
   and Automation Association, 3001 Leuven, Belgium, Belgium, 129--134.
 \newblock
+\showDOI{%
+\url{http://dx.doi.org/10.1109/DATE.2009.5090645}}
 
 
 \bibitem[\protect\citeauthoryear{Avnit, Sowmya, and Parameswaran}{Avnit
@@ -90,7 +103,7 @@
 {Pankaj Chauhan}, {Edmund~M. Clarke}, {and} {Daniel Kroening}. 2004.
 \newblock \showarticletitle{A sat-based algorithm for reparameterization in
   symbolic simulation}. In {\em Proceedings of the 41th Design Automation
-  Conference, DAC 2004} {\em (DAC '04)}. ACM, 524--529.
+  Conference, DAC 2004} {\em (DAC '04)}. IEEE, 524--529.
 \newblock
 
 
@@ -103,6 +116,8 @@
   {Tanja E. J.~Vos Armin~Biere, Amir~Nahir} (Ed.). Lecture Notes in Computer
   Science, Vol. 7857. Springer-Verlag, Berlin Heidelberg, 72--85.
 \newblock
+\showDOI{%
+\url{http://dx.doi.org/10.1007/978-3-642-39611-3_12}}
 
 
 \bibitem[\protect\citeauthoryear{Craig}{Craig}{1957}]%
@@ -170,6 +185,8 @@
   International Conference on Computer-Aided Design, ICCAD 2004} {\em (ICCAD
   '04)}. ACM, 510--517.
 \newblock
+\showDOI{%
+\url{http://dx.doi.org/10.1109/ICCAD.2004.1382631}}
 
 
 \bibitem[\protect\citeauthoryear{Gl\"uck and Kawabe.}{Gl\"uck and
@@ -196,6 +213,8 @@
   Design,FMCAD 2011}, {Andrew K.~Martin Alan J.~Hu} (Ed.). Lecture Notes in
   Computer Science, Vol. 3312. Springer-Verlag, Berlin Heidelberg, 275--289.
 \newblock
+\showDOI{%
+\url{http://dx.doi.org/10.1007/978-3-540-30494-4_20}}
 
 
 \bibitem[\protect\citeauthoryear{Gulwani}{Gulwani}{2010}]%
@@ -242,6 +261,8 @@ Retrieved January 25, 2013 from
   Nicolas~Halbwachs} (Ed.). Lecture Notes in Computer Science, Vol. 3440.
   Springer-Verlag, Berlin Heidelberg, 287--300.
 \newblock
+\showDOI{%
+\url{http://dx.doi.org/10.1007/978-3-540-31980-1_19}}
 
 
 \bibitem[\protect\citeauthoryear{Jin and Somenzi:}{Jin and Somenzi:}{2005}]%
@@ -249,8 +270,10 @@ Retrieved January 25, 2013 from
 {HoonSang Jin} {and} {Fabio Somenzi:}. 2005.
 \newblock \showarticletitle{Prime clauses for fast enumeration of satisfying
   assignments to boolean circuits}. In {\em Proceedings of the 42th Design
-  Automation Conference, DAC 2005} {\em (DAC '05)}. ACM, 750--753.
+  Automation Conference, DAC 2005} {\em (DAC '05)}. IEEE, 750--753.
 \newblock
+\showDOI{%
+\url{http://dx.doi.org/10.1109/DAC.2005.193911}}
 
 
 \bibitem[\protect\citeauthoryear{Lee, Jiang, Huang, and Mishchenko}{Lee
@@ -273,6 +296,8 @@ Retrieved January 25, 2013 from
   interpolation and satisfiability solving}. In {\em Proceedings of the 45th
   Design Automation Conference, DAC 2008} {\em (DAC '08)}. IEEE, 636--641.
 \newblock
+\showDOI{%
+\url{http://dx.doi.org/10.1145/1391469.1391634}}
 
 
 \bibitem[\protect\citeauthoryear{Liu, Chou, Lin, and Jiang}{Liu
@@ -306,13 +331,15 @@ Retrieved January 25, 2013 from
 
 \bibitem[\protect\citeauthoryear{McMillan}{McMillan}{2002}]%
         {SATUNBMC}
-{K.~L. McMillan}. 2002.
+{Kenneth~L. McMillan}. 2002.
 \newblock \showarticletitle{Applying sat methods in unbounded symbolic model
   checking}.
 \newblock In {\em International Conference on Computer Aided Verification, CAV
   2002}, {Kim Guldstrand~Larsen Ed~Brinksma} (Ed.). Lecture Notes in Computer
   Science, Vol. 2404. Springer-Verlag, Berlin Heidelberg, 250--264.
 \newblock
+\showDOI{%
+\url{http://dx.doi.org/10.1007/3-540-45657-0_19}}
 
 
 \bibitem[\protect\citeauthoryear{McMillan}{McMillan}{2003}]%
@@ -347,6 +374,8 @@ Retrieved January 25, 2013 from
   Kurt~Jensen} (Ed.). Lecture Notes in Computer Science, Vol. 2988.
   Springer-Verlag, Berlin Heidelberg, 31--45.
 \newblock
+\showDOI{%
+\url{http://dx.doi.org/10.1007/978-3-540-24730-2_3}}
 
 
 \bibitem[\protect\citeauthoryear{Shen, Qin, and Li}{Shen et~al\mbox{.}}{2005}]%
@@ -359,6 +388,8 @@ Retrieved January 25, 2013 from
   Notes in Computer Science, Vol. 3385. Springer-Verlag, Berlin Heidelberg,
   298--312.
 \newblock
+\showDOI{%
+\url{http://dx.doi.org/10.1007/978-3-540-30579-8_20}}
 
 
 \bibitem[\protect\citeauthoryear{Shen, Qin, Wang, Pang, Zhang, and Li.}{Shen
@@ -417,15 +448,6 @@ Retrieved January 25, 2013 from
 
 
 \bibitem[\protect\citeauthoryear{Srivastava, Gulwani, Chaudhuri, and
-  Foster}{Srivastava et~al\mbox{.}}{2010}]%
-        {prog_inv_rev}
-{S. Srivastava}, {S. Gulwani}, {S. Chaudhuri}, {and} {J. Foster}. 2010.
-\newblock {\em Program inversion revisited}.
-\newblock Technical Report MSR-TR-2010-34. Microsoft Research.
-\newblock
-
-
-\bibitem[\protect\citeauthoryear{Srivastava, Gulwani, Chaudhuri, and
   Foster}{Srivastava et~al\mbox{.}}{2011}]%
         {program_inversion_11}
 {Saurabh Srivastava}, {Sumit Gulwani}, {Swarat Chaudhuri}, {and} {Jeffrey~S.
@@ -450,35 +472,18 @@ Retrieved January 25, 2013 from
 \url{http://dx.doi.org/10.1145/2463209.2488794}}
 
 
-\bibitem[\protect\citeauthoryear{wikipedia}{wikipedia}{2013a}]%
-        {WIKI810e}
-{wikipedia}. 2013a.
-\newblock 8b/10b encoding.
-\newblock   (25 Jan. 2013).
+\bibitem[\protect\citeauthoryear{Widmer and Franaszek}{Widmer and
+  Franaszek}{1983}]%
+        {encode8b10b}
+{Al~X. Widmer} {and} {Peter~A. Franaszek}. 1983.
+\newblock \showarticletitle{A DC-Balanced, Partitioned-Block, 8B/10B
+  Transmission Code}.
+\newblock {\em IBM Journal of Research and Development\/} {27}, 5 (May 1983),
+  440--451.
 \newblock
-\showURL{%
-Retrieved January 25, 2013 from
-  \url{http://en.wikipedia.org/wiki/8b/10b_encoding}}
-
-
-\bibitem[\protect\citeauthoryear{wikipedia}{wikipedia}{2013b}]%
-        {WIKIether}
-{wikipedia}. 2013b.
-\newblock Ethernet.
-\newblock   (25 Jan. 2013).
-\newblock
-\showURL{%
-Retrieved January 25, 2013 from \url{http://en.wikipedia.org/wiki/Ethernet}}
-
-
-\bibitem[\protect\citeauthoryear{wikipedia}{wikipedia}{2013c}]%
-        {WIKIpcie}
-{wikipedia}. 2013c.
-\newblock PCI Express.
-\newblock   (25 Jan. 2013).
-\newblock
-\showURL{%
-Retrieved January 25, 2013 from \url{http://en.wikipedia.org/wiki/PCI_Express}}
+\showISSN{0018-8646}
+\showDOI{%
+\url{http://dx.doi.org/10.1147/rd.275.0440}}
 
 
 \bibitem[\protect\citeauthoryear{Wu, Yanga, Huang, and Jiang}{Wu
@@ -491,6 +496,8 @@ Retrieved January 25, 2013 from \url{http://en.wikipedia.org/wiki/PCI_Express}}
   International Conference on Computer-Aided Design} {\em (ICCAD '10)}. ACM,
   729--734.
 \newblock
+\showDOI{%
+\url{http://dx.doi.org/10.1109/ICCAD.2010.5654265}}
 
 
 \end{thebibliography}
