@@ -616,7 +616,7 @@ for a properly designed encoder,
 $\vec{f}$ should always be uniquely determined by a bounded sequence of the encoder's output $\vec{o}$,
 or else the decoder cannot recognize the validness of $\vec{d}$.
 
-\begin{algorithm}[b]
+\begin{algorithm}[t]
 \SetAlgoVlined
 \KwIn{The input variable vector $\vec{i}$.}
 \KwOut{$\vec{f}\subset \vec{i}$ is the vector of the encoder's input variables that can be uniquely determined by a bounded sequence of output variable vector $\vec{o}$, 
@@ -720,7 +720,7 @@ Intuitively,
 assume that $R(\vec{a},\vec{b},1)$ is satisfiable with a satisfying assignment $A:\vec{a}\cup\vec{b}\cup\{t\}\to\{0,1\}$,
 the following new formula can be constructed by cofactoring:
 
-\begin{algorithm}[b]
+\begin{algorithm}[t]
 \SetAlgoVlined
 \KwIn{The Boolean formula $R(\vec{a},\vec{b},t)$, 
 its important variable vector $\vec{a}$,
@@ -782,7 +782,65 @@ which means that $FSAT(\vec{a})$ is a Boolean function that covers a bounded and
 So Algorithm \ref{alg_craigchar} is a halting one.
 
 \subsection{Inferring $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined}\label{subsec_infer}
+This subsection introduces the non-trivial details of how to infer the predicate $valid(\vec{f})$.
+So we first present an intuitive introduction in \ref{subsub_intro}.
+And then present its details in \ref{subsub_nonloop} and \ref{subsub_loop}.
+Finally,
+we present the overall algorithm framework in \ref{subsub_overal}.
 
+\subsubsection{}\label{subsub_intro}\textbf{Intuitive introduction}
+
+In this Section,
+what we want is the predicate $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined.
+
+For every particular valuation of $p$,$l$ and $r$,
+we can use Algorithm \ref{alg_craigchar} to characterize the set of 
+satisfying assignments on $\vec{f}$ that makes $F_{PC}(p,l,r)$ satisfiable.
+We call the predicate that cover and only cover this set of satisfying assignments $FSAT_{PC}(p,l,r)$.
+And we will present how to infer it in \ref{subsub_nonloop}.
+
+But as shown in Subsection \ref{subsec_chkextdec},
+% from the fact that $\vec{d}$ is uniquely determined for some particular $p$,$l$ and $r$,
+% we can only know that it is also uniquely determined for all larger $p'$,$l'$ and $r'$.
+% On the other hand,
+$\vec{d}$ not uniquely determined for some particular $p$,$l$ and $r$,
+may become uniquely determined for larger $p'$,$l'$ and $r'$.
+That means,
+a particular valuation of $\vec{f}$ that 
+makes $F_{PC}(p,l,r)$ satisfiable for some $p$,$l$ and $r$,
+may also make it unsatisfiable for some larger $p'$,$l'$ and $r'$.
+
+So $FSAT_{PC}(p,l,r)$ is only an over-approximation of $valid(\vec{f})$.
+We still need an under-approximation to construct a halting algorithm.
+
+
+
+
+
+
+Although the general framework is correct,
+there are two problems for this algorithm:
+\begin{enumerate}
+ \item It may incorrectly rule out some valuation of $\vec{f}$ that can actually 
+ enable $\vec{d}$ to be uniquely determined.
+ That is,
+ $\vec{d}$ that can not be uniquely determined with smaller $p$,$l$ and $r$,
+ may become uniquely determined with larger $p$,$l$ and $r$.
+ For example, assume we are handling an encoder with latency of 3 steps.
+ Then for any valuation of $p$,$l$ and $r$ that is smaller than 3, 
+ $\vec{d}$ can never be uniquely determined.
+ But for $p$,$l$ and $r$ that are larger than 3,
+ $\vec{d}$ can become uniquely determined.
+ \item When to terminate this loop.
+\end{enumerate}
+
+Actually these two problems can be answer with the same mechanism.
+
+
+
+\subsubsection{}\label{subsub_nonloop}\textbf{Inferring the non-looping predicate}
+\\
+\\
 By replacing $i$ in Equation (\ref{uniqt1}) with $\vec{d}$,
 we have:
 
@@ -902,6 +960,8 @@ we have the following proposition:
 $FSAT_{PC}(p,l,r)$ is the Boolean function over $\vec{f}_{p+l}$ that makes $\vec{d}_{p+l}$ to be not uniquely determined for a particular $p$, $l$ and $r$.
 \end{proposition}
 
+\subsubsection{}\label{subsub_loop}\textbf{Inferring the looping predicate}
+
 Similarly,
 by replacing $i$ in Equation (\ref{uniqln}) with $\vec{d}$,
 we have:
@@ -1004,6 +1064,9 @@ to be not uniquely determined for every $p'\ge p$, $l'\ge l$ and $r'\ge r$.
 % if $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ is unsatisfiable,
 % then $\neg FSAT_{LN}(p,l,r)$ is the formula over $\vec{f}_{p+l}$ that makes $\vec{d}_{p+l}$ to be uniquely determined by the encoder's output sequence.
 
+
+\subsubsection{}\label{subsub_overal}\textbf{The overall algorithm framework to characterize the predicate $valid(\vec{f})$.}
+
 \begin{algorithm}[t]
 \SetAlgoNoLine
 % \KwIn{The Boolean formula $R(\vec{a},\vec{b},t)$, 
@@ -1070,7 +1133,7 @@ Thus,
 every $A$ covered by $FSAT_{PC}(p',l',r')$ 
 is also covered by $FSAT_{PC}(p,l,r)$.
 
-\begin{figure}[t]
+\begin{figure}[b]
 \begin{center}
 \includegraphics[width=0.7\textwidth]{pcmap}
 \end{center}
@@ -1687,7 +1750,7 @@ the decoder contains 597 AND2, 174 OR2 and 30 registers.
 Its total area is 1752.
 
 Although this encoder uses the same coding mechanism as does the PCI Express 2.0 encoder mentioned above,
-the way it handle the invalid data vector is different.
+the way it handles the invalid data vector is different.
 This encoder does not have a separate output variable to indicate the validness of the output data;
 instead,
 the validness and exact value of all input variables are both encoded in $encode\_data\_out$.
