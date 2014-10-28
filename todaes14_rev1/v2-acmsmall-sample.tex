@@ -360,14 +360,33 @@ A \textbf{loop} is a path $<\vec{s}_n,\dots,\vec{s}_m>$ with $\vec{s}_n\equiv \v
 \subsection{The halting algorithm to determine 
 if an input variable can be uniquely determined by a bounded sequence of output variable vector}\label{subsec_chkextdec}
 
-All the state-of-the-art complementary synthesis algorithms \cite{ShenICCAD09,LiuICCAD11,TuDAC13} assume that $\vec{i}$ can be uniquely determined,
+All the state-of-the-art complementary synthesis algorithms 
+[\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}] assume that $\vec{i}$ can be uniquely determined,
 so they always take $\vec{i}$ as a whole,
 and never consider individual variables $i\in\vec{i}$.
 But in this paper,
 we need to check each $i\in\vec{i}$ one by one,
-so there may be minor differences between our presentation and that of \cite{ShenICCAD09,LiuICCAD11,TuDAC13}.
+so there may be minor differences between our presentation and that of 
+[\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}].
 
-As shown in Figure \ref{fig_pcln}a),
+% What we describe here is a halting algorithm to determine if an input variable 
+% can be uniquely determined by a bounded sequence of output variable vector.
+The first such halting algorithm is proposed in \cite{ShenTCAD11}.
+Its basic idea is to unroll the transition relation into longer and longer length.
+And for each length,
+we use two approximated approaches to determine the answer,
+the first is a sound one that presented in \ref{subsub_sound},
+while the second is a complete one presented in \ref{subsub_complete}.
+That is,
+when the first says \textbf{YES} then the answer is \textbf{YES},
+and when the second approach says \textbf{NO} then the answer is \textbf{NO}.
+And we will show in \ref{subsub_algo} that 
+these two approach will eventually converge and give conclusive answer 
+at some particular unrolling length.
+
+\subsubsection{\textbf{The sound approach}}\label{subsub_sound}.
+
+As shown in Figure \ref{fig_pc},
 on the unrolled transition relations,
 an input variable $i\in\vec{i}$ can be uniquely determined,
 if there exist three integers $p$, $l$ and $r$,
@@ -401,10 +420,10 @@ F_{PC}(p,l,r):=
 
 \begin{figure}[b]
 \begin{center}
-\includegraphics[width=\textwidth]{pcln}
+\includegraphics[width=\textwidth]{pc}
 \end{center}
-\caption{Checking whether or not the input can be uniquely determined by the output}
-  \label{fig_pcln}
+\caption{The sound approach checking if $i_{p+l}$ can be uniquely determined}
+  \label{fig_pc}
 \end{figure}
 
 
@@ -413,13 +432,22 @@ $p$ is the length of the prefix state transition sequence.
 $l$ and $r$ are the lengths of the two output sequences $<\vec{o}_{p+1},\dots,\vec{o}_{p+l}>$ and $<\vec{o}_{p+l+1},\dots,\vec{o}_{p+l+r}>$
 that are on the left-hand and right-hand sides of $i_{p+l}$,
 which is used to determine $i_{p+l}$.
-Line 1 of Equation (\ref{uniqt1}) corresponds to the path in Figure \ref{fig_pcln}a),
+Line 1 of Equation (\ref{uniqt1}) corresponds to the path in Figure \ref{fig_pc},
 while Line 2 is a copy of it.
 Line 3 forces these two paths' output sequences to be the same,
 while Line 4 forces their $i_{p+l}$ to be different.
 \textbf{Line 5 and 6 are the assertion predicates given by the user that constrain the valid valuation on $\vec{i}$.}
 
-\textbf{According to Figure \ref{fig_pcln},
+\textbf{
+According to Figure \ref{fig_pc},
+it is obvious that the first three lines of Equation (\ref{uniqt1}) are always satisfiable, 
+because they are just two unrolled transition relation sequence with the same output sequence.
+And the last two lines are constraints on input variables.
+We always check their satisfiability before running our algorithm.
+So the unsatisfiability of $F_{PC}(p,l,r)$ always means $i_{p+l}\equiv i'_{p+l}$.
+}
+
+\textbf{According to Figure \ref{fig_pc},
 it is obvious that,
 if $F_{PC}(p,l,r)$ is unsatisfiable,
 then $F_{PC}(p',l',r')$ is also unsatisfiable with $p'\ge p$, $l'\ge l$ and $r'\ge r$.
@@ -465,6 +493,8 @@ At the same time,
 for all the benchmarks we have tried,
 our current approach is sufficient.}
 
+
+
 % $d$ is the relative delay between $o_{n+d-l}^{n+d-1}$ and $i_n$,
 % while $l$ is the length of $o_{n+d-l}^{n+d-1}$,
 % and $p$ is the length of the prefix path used to rule out some unreachable states.
@@ -507,6 +537,7 @@ our current approach is sufficient.}
 %   \label{fig_double_loop}
 % \end{figure}
 
+\subsubsection{\textbf{The complete approach}}\label{subsub_complete}.
 
 We have just learned that,
 if $F_{PC}(p,l,r)$ is unsatisfiable,
@@ -529,11 +560,19 @@ $F_{PC}(p,l,r)$ will eventually become unsatisfiable.
 But if it is the second case,
 then this iterative algorithm will never terminate.
 
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=\textwidth]{ln}
+\end{center}
+\caption{The complete approach checking if $i_{p+l}$ can NOT be uniquely determined}
+  \label{fig_ln}
+\end{figure}
+
 So,
 to obtain a halting algorithm,
-we need to distinguish between these two cases.
-One such solution is shown in Figure \ref{fig_pcln}b),
-which is similar to Figure \ref{fig_pcln}a) but with three additional constraints to detect loops 
+we need to distinguish these two cases.
+One such solution is shown in Figure \ref{fig_ln},
+which is similar to Figure \ref{fig_pc} but with three additional constraints to detect loops 
 on the three state sequences $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
 It is formally defined in Equation (\ref{uniqln}) with the last three lines corresponding to the three constraints used to detect loops.
@@ -581,6 +620,8 @@ we can further prove that:
 If $F_{LN}(p,l,r)$ is satisfiable,
 then $i_{p'+l'}$ cannot be uniquely determined by $<\vec{o}_{p'},\dots,\vec{o}_{p'+l'+r'}>$ for any larger $p'\ge p$, $l'\ge l$ and $r'\ge r$.
 \end{proposition}
+
+\subsubsection{\textbf{The full algorithm}}\label{subsub_algo}.
 
 Thus,
 with Propositions \ref{prop_pc1} and \ref{prop_ln1},
@@ -871,12 +912,12 @@ We still need an over-approximation that shrink monotonically to construct a hal
   \label{fig_mono}
 \end{figure}
 
-Inspired by the Figure \ref{fig_pcln}b) and $F_{LN}(p,l,r)$,
+Inspired by the Figure \ref{fig_ln} and $F_{LN}(p,l,r)$,
 we can compute this over-approximation by using Algorithm \ref{alg_craigchar} 
 to find out the set of valuation of $\vec{f}_{p+l}$ that can make $F_{LN}(p,l,r)$ satisfiable.
 We call the predicate that covers and only covers this set $FSAT_{LN}(p,l,r)$.
 With a satisfiable $F_{LN}(p,l,r)$,
-by unrolling the three loops in Figure \ref{fig_pcln}b),
+by unrolling the three loops in Figure \ref{fig_ln},
 we can prove that $F_{LN}(p,l,r)$ is still satisfiable for larger $p$,$l$ and $r$.
 That means $FSAT_{LN}(p,l,r)$ is a set of valuation of $\vec{f}_{p+l}$ that makes $F_{LN}(p,l,r)$ satisfiable 
 and grows monotonically with respect to $p$,$l$ and $r$.
