@@ -134,36 +134,49 @@ The encoder maps its input variables $\vec{i}$ to its output variables $\vec{o}$
 % according to some predefined rules,
 % such as Ethernet \cite{IEEE8023_S4} and PCI Express \cite{pcie21},
 while the decoder recovers $\vec{i}$ from $\vec{o}$.
-\textbf{By assuming that $\vec{i}$ can always be
-uniquely determined by a bounded sequence of $\vec{o}$,
-complementary synthesis [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}]
-can automatically generate the encoders' decoder.}
+\textbf{
+% Complementary synthesis [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}]
+Complementary synthesis \cite{ShenICCAD09}
+try to ease this job by
+automatically generating a decoder from an encoder's specification,
+with the assumption that $\vec{i}$ can always be
+uniquely determined by a bounded sequence of $\vec{o}$.}
 
 \textbf{
 However, 
 the encoders of many high speed communication systems employ flow control mechanism \cite{flowcontrol} that 
-fail this assumption.
+fails this assumption.
 Figure~\ref{fig:nonuniq}a) shows the structure of a communication system with flow control mechanism,
 which include a faster transmitter and a slower receiver connected by a pair of encoder and decoder.
 There are two input variables from the transmitter to the encoder:
 the data bit $d$ to be encoded,
 and the flow control bit $f$ indicating the validness of $d$.
 Figure~\ref{fig:nonuniq}b) shows the encoding table of the encoder with flow control mechanism,
-which maps $f$ and $d$ to the output symbol $\vec{o}$.}
+which maps $f$ and $d$ to the output symbol $\vec{o}$.
+% It is obvious that,
+% when $f\equiv 1$,
+% by checking whether $o$ is $D_0$ or $D_1$,
+% we can determine whether the $d$ is 0 or 1;
+% But when $f\equiv 0$,
+% we can not determine the the value of $d$,
+% because $o$ is always $I$.
+}
 
 \textbf{
+The flow control mechanism prevent the faster transmitter from overwhelming the slower receiver in the following way.
 When the receiver can keep up with the transmitter,
 $f$ will be 1, 
 and the decoder can always recover both $f$ and $d$ according to Figure~\ref{fig:nonuniq}b).
 But when the receiver can not keep up with the transmitter,
-the transmitter will drop $f$ to 0 to stop transmitting new $d$,
-which makes the encoder output the idle symbol $I$ to $\vec{o}$ without considering the value of $d$.
+the transmitter will drop $f$ to 0 to stop transmitting new $D_i$,
+but instead transmitting the idle symbol $I$ without considering the value of $d$.
 And the decoder should discard this idle symbol $I$,
 and send $f\equiv 0$ to the receiver with whatever value on $d$.}
 
 \textbf{
-Although this mechanism can prevent data from losing,
-it fail the assumption of all current complementary synthesis algorithms,
+This mechanism can prevent the faster transmitter from transmitting to many data 
+that can not be handled by the slower receiver.
+But it fail the assumption of all current complementary synthesis algorithms,
 because $d$ can not be uniquely by the idle symbol $I$.
 It is obvious that,
 to resolve this problem and generate the decoder,
@@ -354,7 +367,7 @@ But in this paper,
 we need to check each $i\in\vec{i}$ one by one,
 so there may be minor differences between our presentation and that of \cite{ShenICCAD09,LiuICCAD11,TuDAC13}.
 
-As shown in Figure \ref{pcln}a),
+As shown in Figure \ref{fig_pcln}a),
 on the unrolled transition relations,
 an input variable $i\in\vec{i}$ can be uniquely determined,
 if there exist three integers $p$, $l$ and $r$,
@@ -391,7 +404,7 @@ F_{PC}(p,l,r):=
 \includegraphics[width=\textwidth]{pcln}
 \end{center}
 \caption{Checking whether or not the input can be uniquely determined by the output}
-  \label{pcln}
+  \label{fig_pcln}
 \end{figure}
 
 
@@ -400,11 +413,30 @@ $p$ is the length of the prefix state transition sequence.
 $l$ and $r$ are the lengths of the two output sequences $<\vec{o}_{p+1},\dots,\vec{o}_{p+l}>$ and $<\vec{o}_{p+l+1},\dots,\vec{o}_{p+l+r}>$
 that are on the left-hand and right-hand sides of $i_{p+l}$,
 which is used to determine $i_{p+l}$.
-Line 1 of Equation (\ref{uniqt1}) corresponds to the path in Figure \ref{pcln}a),
+Line 1 of Equation (\ref{uniqt1}) corresponds to the path in Figure \ref{fig_pcln}a),
 while Line 2 is a copy of it.
 Line 3 forces these two paths' output sequences to be the same,
 while Line 4 forces their $i_{p+l}$ to be different.
 \textbf{Line 5 and 6 are the assertion predicates given by the user that constrain the valid valuation on $\vec{i}$.}
+
+\textbf{According to Figure \ref{fig_pcln},
+it is obvious that,
+if $F_{PC}(p,l,r)$ is unsatisfiable,
+then $F_{PC}(p',l',r')$ is also unsatisfiable with $p'\ge p$, $l'\ge l$ and $r'\ge r$.
+By studying Equation (\ref{uniqt1}),
+we can find that the clause set of $F_{PC}(p',l',r')$ is a super set of $F_{PC}(p,l,r)$.
+This also lead to the same conclusion.
+}
+
+\textbf{This means,
+the bounded proof of $F_{PC}(p,l,r)$'s unsatisfiability
+can be generalized to all cases for larger $p$, $l$ and $r$.}
+
+\begin{proposition}\label{prop_pc1}
+If $F_{PC}(p,l,r)$ is unsatisfiable,
+% then $i_{p+l}$ cannot take on two different values for any particular valuation of the output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$,
+then $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for all larger $p$, $l$ and $r$.
+\end{proposition}
 
 \textbf{Equation (\ref{uniqt1}) does not include an initial state,
 instead it use the $p$ steps prefix state transition sequence $<\vec{s_0},\dots,\vec{s_p}>$ 
@@ -475,18 +507,14 @@ our current approach is sufficient.}
 %   \label{fig_double_loop}
 % \end{figure}
 
-Thus,
-we have the following proposition:
 
-\begin{proposition}\label{prop_pc1}
-If $F_{PC}(p,l,r)$ is unsatisfiable,
-% then $i_{p+l}$ cannot take on two different values for any particular valuation of the output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$,
-then $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
-\end{proposition}
-
+We have just learned that,
+if $F_{PC}(p,l,r)$ is unsatisfiable,
+then $i_{p+l}$ can be uniquely determined.
 \textbf{On the other hand},
 if $F_{PC}(p,l,r)$ is satisfiable,
-then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for this particular combination of $p$, $l$ and $r$.
+then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 
+for this particular combination of $p$, $l$ and $r$.
 There are two possible cases:
 \begin{enumerate}
  \item 
@@ -504,8 +532,8 @@ then this iterative algorithm will never terminate.
 So,
 to obtain a halting algorithm,
 we need to distinguish between these two cases.
-One such solution is shown in Figure \ref{pcln}b),
-which is similar to Figure \ref{pcln}a) but with three additional constraints to detect loops 
+One such solution is shown in Figure \ref{fig_pcln}b),
+which is similar to Figure \ref{fig_pcln}a) but with three additional constraints to detect loops 
 on the three state sequences $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
 It is formally defined in Equation (\ref{uniqln}) with the last three lines corresponding to the three constraints used to detect loops.
@@ -524,7 +552,7 @@ F_{LN}(p,l,r):=\\
 % \end{split}
 \end{equation}
 
-\begin{algorithm}[b]
+\begin{algorithm}[t]
 \SetAlgoVlined
 \KwIn{The input variable $i$.}
 \KwOut{whether $i$ can be uniquely determined by $\vec{o}$, and the value of $p$, $l$ and $r$.}
@@ -571,7 +599,7 @@ Both cases will lead to this Algorithm's termination.
 
 %\subsection{Removing Redundant Output Letters}\label{sec_rmred}
 
-\begin{algorithm}[t]
+\begin{algorithm}[b]
 \SetAlgoVlined
 \For{$l'=l \to 0$} {
   \uIf{$F_{PC}(p,l'-1,r)$ is satisfiable} {
@@ -667,6 +695,21 @@ when the result of $CheckUniqueness$ is (0,?,?,?) at Line \ref{chkuniq},
 every $j\in\vec{i}$ that has different values for $j_{p+l}$ and $j'_{p+l}$ in the satisfying assignment of $F_{LN}(p,l,r)$ can also be ruled out at Line \ref{ruleout},
 because their own $F_{LN}(p,l,r)$ is also satisfiable.
 
+\textbf{In some particular case,
+some data variable $d\in \vec{d}$ can be uniquely determined,
+just like a flow control variable $f\in \vec{f}$.
+In this case,
+$d$ may be identified as a flow control variable by Algorithm \ref{alg_fofc}.
+But this do not harm our overall framework,
+because the decoder's Boolean function can still be correctly characterized in Section \ref{sec_char}.
+}
+
+\textbf{After we have got $\vec{f}$ from Algorithm \ref{alg_fofc},
+we take $\vec{d}:=\vec{i}-\vec{f}$,
+that is,
+all input variables that are not flow control variables.
+}
+
 \section{Inferring predicate that enables the encoder's data vector to be uniquely determined}\label{sec_infer}
 
 % Furthermore,
@@ -730,7 +773,7 @@ and its target variable $t$.}
 \ShowLnLabel{initcondition}
 $FSAT(\vec{a}):= 0$ \;
 \ShowLnLabel{testsat}
-\While { $R(\vec{a},\vec{b},t)\wedge\neg FSAT(\vec{a})$ is satisfiable } {
+\While { $R(\vec{a},\vec{b},1)\wedge\neg FSAT(\vec{a})$ is satisfiable } {
   assume $A:\vec{a}\cup\vec{b}\cup\{t\}\rightarrow \{0,1\}$ is the satisfying assignment \;
 \ShowLnLabel{cofact1}
   $\phi_A(\vec{a}):= R(\vec{a},A(\vec{b}),1)$ \;
@@ -828,12 +871,12 @@ We still need an over-approximation that shrink monotonically to construct a hal
   \label{fig_mono}
 \end{figure}
 
-Inspired by the Figure \ref{pcln}b) and $F_{LN}(p,l,r)$,
+Inspired by the Figure \ref{fig_pcln}b) and $F_{LN}(p,l,r)$,
 we can compute this over-approximation by using Algorithm \ref{alg_craigchar} 
 to find out the set of valuation of $\vec{f}_{p+l}$ that can make $F_{LN}(p,l,r)$ satisfiable.
 We call the predicate that covers and only covers this set $FSAT_{LN}(p,l,r)$.
 With a satisfiable $F_{LN}(p,l,r)$,
-by unrolling the three loops in Figure \ref{pcln}b),
+by unrolling the three loops in Figure \ref{fig_pcln}b),
 we can prove that $F_{LN}(p,l,r)$ is still satisfiable for larger $p$,$l$ and $r$.
 That means $FSAT_{LN}(p,l,r)$ is a set of valuation of $\vec{f}_{p+l}$ that makes $F_{LN}(p,l,r)$ satisfiable 
 and grows monotonically with respect to $p$,$l$ and $r$.
