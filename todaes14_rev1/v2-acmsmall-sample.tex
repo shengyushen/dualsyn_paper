@@ -135,8 +135,7 @@ The encoder maps its input variables $\vec{i}$ to its output variables $\vec{o}$
 % such as Ethernet \cite{IEEE8023_S4} and PCI Express \cite{pcie21},
 while the decoder recovers $\vec{i}$ from $\vec{o}$.
 \textbf{
-% Complementary synthesis [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}]
-Complementary synthesis \cite{ShenICCAD09}
+Complementary synthesis [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}]
 try to ease this job by
 automatically generating a decoder from an encoder's specification,
 with the assumption that $\vec{i}$ can always be
@@ -176,7 +175,7 @@ and send $f\equiv 0$ to the receiver with whatever value on $d$.}
 \textbf{
 This mechanism can prevent the faster transmitter from transmitting to many data 
 that can not be handled by the slower receiver.
-But it fail the assumption of all current complementary synthesis algorithms,
+But it fail the assumption of all current complementary synthesis algorithms [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}],
 because $d$ can not be uniquely by the idle symbol $I$.
 It is obvious that,
 to resolve this problem and generate the decoder,
@@ -418,7 +417,7 @@ F_{PC}(p,l,r):=
 % \end{split}
 \end{equation}
 
-\begin{figure}[b]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=\textwidth]{pc}
 \end{center}
@@ -429,14 +428,19 @@ F_{PC}(p,l,r):=
 
 Here,
 $p$ is the length of the prefix state transition sequence.
-$l$ and $r$ are the lengths of the two output sequences $<\vec{o}_{p+1},\dots,\vec{o}_{p+l}>$ and $<\vec{o}_{p+l+1},\dots,\vec{o}_{p+l+r}>$
+$l$ and $r$ are the lengths of the two output sequences 
+$<\vec{o}_{p+1},\dots,\vec{o}_{p+l}>$ and $<\vec{o}_{p+l+1},\dots,\vec{o}_{p+l+r}>$
 that are on the left-hand and right-hand sides of $i_{p+l}$,
 which is used to determine $i_{p+l}$.
-Line 1 of Equation (\ref{uniqt1}) corresponds to the path in Figure \ref{fig_pc},
-while Line 2 is a copy of it.
+Line 1 of Equation (\ref{uniqt1}) corresponds to the left path in Figure \ref{fig_pc},
+while Line 2 corresponds to the right path in Figure \ref{fig_pc}.
+These two paths are of the same length.
 Line 3 forces these two paths' output sequences to be the same,
 while Line 4 forces their $i_{p+l}$ to be different.
-\textbf{Line 5 and 6 are the assertion predicates given by the user that constrain the valid valuation on $\vec{i}$.}
+\textbf{Line 5 and 6 are the assertion predicates given 
+by the user that constrain the valid valuation on $\vec{i}$.
+PC in Equation \ref{uniqt1} is the abbreviation of "Parameterized complementary",
+which means $F_{PC}(p,l,r)$ is used to check whether the encoder's input can be uniquely determined.}
 
 \textbf{
 According to Figure \ref{fig_pc},
@@ -541,11 +545,11 @@ our current approach is sufficient.}
 
 We have just learned that,
 if $F_{PC}(p,l,r)$ is unsatisfiable,
-then $i_{p+l}$ can be uniquely determined.
+then $i_{p+l}$ can be uniquely determined for larger $p$, $l$ and $r$.
 \textbf{On the other hand},
 if $F_{PC}(p,l,r)$ is satisfiable,
 then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 
-for this particular combination of $p$, $l$ and $r$.
+for this particular valuation of $p$, $l$ and $r$.
 There are two possible cases:
 \begin{enumerate}
  \item 
@@ -591,6 +595,11 @@ F_{LN}(p,l,r):=\\
 % \end{split}
 \end{equation}
 
+\textbf{LN stands for "loop non-complementary",
+which means $F_{LN}(p,l,r)$ with three loops is used to check whether 
+the input variables can NOT be uniquely determined.
+}
+
 \begin{algorithm}[t]
 \SetAlgoVlined
 \KwIn{The input variable $i$.}
@@ -612,9 +621,9 @@ whether $i$ can be uniquely determined by a bounded sequence of output variable 
 
 When $F_{LN}(p,l,r)$ is satisfiable,
 then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
-More importantly,
+\textbf{More importantly,
 by unrolling these three loops,
-we can further prove that:
+we can generalize this conclusion to all larger $p$, $l$ and $r$:}
 
 \begin{proposition}\label{prop_ln1}
 If $F_{LN}(p,l,r)$ is satisfiable,
@@ -623,16 +632,19 @@ then $i_{p'+l'}$ cannot be uniquely determined by $<\vec{o}_{p'},\dots,\vec{o}_{
 
 \subsubsection{\textbf{The full algorithm}}\label{subsub_algo}.
 
+With Propositions \ref{prop_pc1} and \ref{prop_ln1},
+we can generalize the bounded proof to unbounded proof.
 Thus,
-with Propositions \ref{prop_pc1} and \ref{prop_ln1},
-Algorithm \ref{alg_pcln} is a halting algorithm that determines if there exists $p$, $l$ and $r$ that enable
+we can build the halting
+Algorithm \ref{alg_pcln} that determines if there exists $p$, $l$ and $r$ that enable
 an input variable $i_{p+l}$ to be uniquely determined by the encoder's output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
+
 On the one hand, 
 if there actually exists such $p$, $l$ and $r$,
 then eventually $F_{PC}(p,l,r)$ will become unsatisfiable in Line \ref{linepc1};
 on the other hand,
 if there does not exist such $p$, $l$ and $r$,
-then eventually $p$, $l$ and $r$ will be larger than the longest path without loop,
+then eventually $p$, $l$ and $r$ will be larger than the encoder's longest path without loop,
 which means that there will be three loops in $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
 This will make $F_{LN}(p,l,r)$ satisfiable in Line \ref{lnsat}.
