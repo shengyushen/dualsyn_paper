@@ -664,7 +664,12 @@ Both cases will lead to this Algorithm's termination.
     break
   }
 }
-return $<p,d',l'>$
+\For{$p'=p \to 0$} {
+  \uIf{$F_{PC}(p',l',r'-1)$ is satisfiable} {
+    break
+  }
+}
+return $<p',d',l'>$
 \caption{$RemoveRedundancy(p,d,l)$}
 \label{algo_remove}
 \end{algorithm}
@@ -672,9 +677,31 @@ return $<p,d',l'>$
 \textbf{
 Although Algorithm \ref{alg_pcln} is sufficient to determine whether $i$ can be uniquely determined,
 the values of $<p,d,l>$ found by Algorithm \ref{alg_pcln} contain some redundancy,
-which may cause unnecessarily large overheads on the circuit area.
-So,
-Algorithm \ref{algo_remove} is used to minimize $<p,d,l>$ before passing it to other algorithms.
+which may cause unnecessarily large overheads on the circuit area.}
+
+\textbf{
+There are two approaches to resolve this problem.
+The first one is not to increase the valuation of $p$, $l$ and $r$ simultaneously,
+but instead increase them one by one with three nested loops.
+This approach need to call SAT solver for $O(n^3)$ times,
+with $n=max(p,l,r)$.
+We have tried this approach in our previous work \cite{ShenICCAD09,ShenTCAD10}.
+}
+
+\textbf{
+The second one is to follow Algorithm \ref{alg_pcln},
+and then use Algorithm \ref{algo_remove} to minimize $p$,$d$ and $l$ one by one.
+This approach need to call SAT solver for $O(n)$ times,
+much less than the first approach.
+But each formula is larger than that of the first approach.
+}
+
+\textbf{
+In \cite{ShenTCAD11},
+we have found that the second approach is much faster than the first one.
+This means,
+the number of calling SAT solver matter more than the formula size.
+I think this can be explained by the SAT solver's ability in ignoring irrelevant facts.
 }
 %Please refer to \cite{ShenTCAD11} for more details.
 
@@ -697,7 +724,7 @@ for a properly designed encoder,
 $\vec{f}$ should always be uniquely determined by a bounded sequence of the encoder's output $\vec{o}$,
 or else the decoder cannot recognize the validness of $\vec{d}$.
 
-\begin{algorithm}[t]
+\begin{algorithm}[b]
 \SetAlgoVlined
 \KwIn{The input variable vector $\vec{i}$.}
 \KwOut{$\vec{f}\subset \vec{i}$ is the vector of the encoder's input variables that can be uniquely determined by a bounded sequence of output variable vector $\vec{o}$, 
@@ -816,7 +843,7 @@ Intuitively,
 assume that $R(\vec{a},\vec{b},1)$ is satisfiable with a satisfying assignment $A:\vec{a}\cup\vec{b}\cup\{t\}\to\{0,1\}$,
 the following new formula can be constructed by cofactoring:
 
-\begin{algorithm}[t]
+\begin{algorithm}[b]
 \SetAlgoVlined
 \KwIn{The Boolean formula $R(\vec{a},\vec{b},t)$, 
 its important variable vector $\vec{a}$,
@@ -1182,12 +1209,12 @@ $p$:= $p_{max}$;~$l$:= $l_{max}$;~$r$:= $r_{max}$ \;
 \KwRet {$\neg FSAT_{LN}(p,l,r)$}
 \caption{$InferringUniqueFormula$:inferring the predicate $valid(\vec{f}_{p+l})$ 
 that enables $\vec{d}_{p+l}$ to be uniquely determined}
-\label{algo_pcln}
+\label{algo_infer}
 \end{algorithm}
 
 With Propositions \ref{prop_pc} and \ref{prop_ln},
 the algorithm that infers the predicate $valid(\vec{f}_{p+l})$ is shown in 
-Algorithm \ref{algo_pcln}.
+Algorithm \ref{algo_infer}.
 It just iteratively increases the value of $p$, $l$ and $r$, 
 until $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ is unsatisfiable.
 The proofs of its termination and correctness are given in the next subsection.
@@ -1197,7 +1224,7 @@ The proofs of its termination and correctness are given in the next subsection.
 First we need to prove the following three lemmas:
 
 \begin{lemma}\label{lemmapcdec}
-$\mathbf{FSAT_{PC}(p,l,r)}$ in Algorithm \ref{algo_pcln} monotonically decreases.
+$\mathbf{FSAT_{PC}(p,l,r)}$ in Algorithm \ref{algo_infer} monotonically decreases.
 \end{lemma}
 \begin{proof}
 For any $p'>p$,$l'>l$ and $r'>l$,
@@ -1247,7 +1274,7 @@ $FSAT_{PC}(p,l,r)$ monotonically decreases.
 \end{proof}
 
 \begin{lemma}\label{lemmalninc}
-$\mathbf{FSAT_{LN}(p,l,r)}$ in Algorithm \ref{algo_pcln} monotonically increases.
+$\mathbf{FSAT_{LN}(p,l,r)}$ in Algorithm \ref{algo_infer} monotonically increases.
 \end{lemma}
 \begin{proof}
 According to the definition of $F'_{LN}(p,l,r,t)$ in Equation (\ref{lndef1}),
@@ -1272,36 +1299,36 @@ so $FSAT_{LN}(p,l,r)\Rightarrow FSAT_{PC}(p,l,r)$ holds.
 \end{proof}
 
 These three lemmas are depicted intuitively in Figure \ref{fig_mono},
-which makes it obvious that $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ monotonically decreases in Algorithm \ref{algo_pcln}.
+which makes it obvious that $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ monotonically decreases in Algorithm \ref{algo_infer}.
 With these lemmas,
-let's first prove that Algorithm \ref{algo_pcln} is a halting one.
+let's first prove that Algorithm \ref{algo_infer} is a halting one.
 
 \begin{theorem}
- Algorithm \ref{algo_pcln} is a halting algorithm.
+ Algorithm \ref{algo_infer} is a halting algorithm.
 \end{theorem}
 
 
 \begin{proof}
 As the encoder is represented by a finite state machine,
 the length of the longest path without loop is finite.
-If Algorithm \ref{algo_pcln} does not halt,
-then eventually the values of $p$, $l$ and $r$ in Algorithm \ref{algo_pcln} will be larger than the length of the longest path without loop,
+If Algorithm \ref{algo_infer} does not halt,
+then eventually the values of $p$, $l$ and $r$ in Algorithm \ref{algo_infer} will be larger than the length of the longest path without loop,
 which means there will be loops in these three state sequences $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
 Thus,
 every satisfying assignment of $F'_{PC}(p,l,r,1)$ also satisfies $F'_{LN}(p,l,r,1)$,
 which means $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ is unsatisfiable.
-This will lead to the termination of Algorithm \ref{algo_pcln}.
+This will lead to the termination of Algorithm \ref{algo_infer}.
 So,
 it is a halting algorithm.
 \end{proof}
 
 
 
-We will then prove the correctness of Algorithm \ref{algo_pcln}.
+We will then prove the correctness of Algorithm \ref{algo_infer}.
 
 \begin{theorem}
-$\neg FSAT_{LN}(p,l,r)$ returned by Algorithm \ref{algo_pcln} covers and only covers all valuations of $\vec{f}$ that
+$\neg FSAT_{LN}(p,l,r)$ returned by Algorithm \ref{algo_infer} covers and only covers all valuations of $\vec{f}$ that
 enable $\vec{d}$ to be uniquely determined by a bounded sequence of $\vec{o}$.
 \end{theorem}
 \begin{proof}
@@ -1330,6 +1357,52 @@ the encoder's input vector $\vec{i}$ has been partitioned into two vectors:
 the flow control vector $\vec{f}$ and the data vector $\vec{d}$.
 The algorithms to characterize the decoder's Boolean functions that compute $\vec{f}$ and $\vec{d}$ are different,
 so they are discussed separately in the following two subsections.
+
+\subsection{Minimizing the valuation of $l$ and $r$}
+As we have increase the value of $p$,$l$ and $r$ simultaneously in Algorithm \ref{algo_infer},
+there may be some redundancy in the valuation of $p$,$l$ and $r$,
+which may lead to unnecessary overhead in the decoder's circuit area and delay.
+
+For example,
+assume the encoder is a simple inverter whose $o_i:=i_i$.
+With $l\equiv 0$ and $r\equiv 0$,
+we can get the simplest decoder that recover $i_i$ by simply inverting $o_i$.
+In such a decoder,
+there is only one inverted and no registers.
+But with $l\equiv 1$ and $r\equiv 1$,
+we need an additional register to delay $o_{i-1}$ for one step,
+and then recover $i_i$ by inverting the delayed $o_{i-1}$.
+
+The proposed Algorithm \ref{algo_remove2} is similar to Algorithm \ref{algo_remove}.
+There are two differences between them:
+First,
+we add the newly inferred predicate $valid(vec{f})$ 
+into the formula whose satisfiability is to be checked,
+to make sure that the input vector $\vec{i}$ can still be unsatisfiable.
+Second,
+we do not minimize the value of $p$,
+because it does not affect the decoder's area and delay.
+
+\begin{algorithm}[b]
+\SetAlgoVlined
+\For{$l'=l \to 0$} {
+  \uIf{$F_{PC}(p,l'-1,r)\wedge valid(\vec{f}_{p+l'-1})$ is satisfiable} {
+    break
+  }
+}
+\For{$r'=r \to 0$} {
+  \uIf{$F_{PC}(p,l',r'-1)\wedge valid(\vec{f}_{p+l'}$ is satisfiable} {
+    break
+  }
+}
+return $<d',l'>$
+\caption{$RemoveRedundancy(p,d,l)$}
+\label{algo_remove2}
+\end{algorithm}
+
+To simply the presentation,
+we still use $p$, $l$ and $r$ instead of $p'$, $l'$ and $r'$ in the remainder of this paper.
+
 
 \subsection{Characterizing the decoder's Boolean function that computes $\vec{f}$}
 
@@ -1382,7 +1455,7 @@ $ITP$ is the decoder's Boolean function that computes $f\in\vec{f}$.
 
 \subsection{Characterizing the decoder's Boolean function that computes $\vec{d}$}
 
-Assume that the predicate over $\vec{f}$ inferred by Algorithm \ref{algo_pcln},
+Assume that the predicate over $\vec{f}$ inferred by Algorithm \ref{algo_infer},
 is $valid(\vec{f})$.
 Let's define the following two formulas for each data variable $d\in\vec{d}$:
 
@@ -1771,7 +1844,7 @@ This assertion is embed into the transition function $T$,
 so that it can be enforced at every step in the unrolled state sequences.
 
 Algorithm \ref{alg_fofc} costs 0.924754 seconds to identify the flow control variable $CNTL\_TXEnable\_P0$.
-And then Algorithm \ref{algo_pcln} costs 2.067509 seconds to infer the predicate $CNTL\_TXEnable\_P0\equiv 1$ that enables the data vector to be uniquely determined.
+And then Algorithm \ref{algo_infer} costs 2.067509 seconds to infer the predicate $CNTL\_TXEnable\_P0\equiv 1$ that enables the data vector to be uniquely determined.
 Finally, 
 with the inferred predicate,
 generating the decoder's Boolean functions for $CNTL\_TXEnable\_P0$, $TXDATA$ and $TXDATAK$ costs 3.121821 seconds.
@@ -1837,7 +1910,7 @@ we write an assertion to exclude those combinations that are not in this table
 and embed it into the the transition function $T$.
 
 Algorithm \ref{alg_fofc} costs 0.619508 seconds to identify the flow control variable $bad\_code$.
-And then Algorithm \ref{algo_pcln} costs 1.443065 seconds to infer the predicate $bad\_code\equiv 0$ that enables the data vector to be uniquely determined.
+And then Algorithm \ref{algo_infer} costs 1.443065 seconds to infer the predicate $bad\_code\equiv 0$ that enables the data vector to be uniquely determined.
 Finally, generating the decoder's Boolean functions for $bad\_code$, $encode\_data\_in$ and $konstant$ costs 2.202401 seconds.
 After being mapped to LSI10K library,
 the decoder contains 597 AND2, 174 OR2 and 30 registers.
@@ -1933,7 +2006,7 @@ The name of action   & The meaning of action\\\hline\hline
 \end{table}%
 
 Algorithm \ref{alg_fofc} costs 11.750317 seconds to identify the flow control variables $tx\_enc\_ctrl\_sel$, $tx\_en$ and $tx\_er$.
-And then Algorithm \ref{algo_pcln} costs 27.456717 seconds to infer the predicate $tx\_enc\_ctrl\_sel\equiv `PCS\_ENC\_DATA$ that enables the data vector to be uniquely determined.
+And then Algorithm \ref{algo_infer} costs 27.456717 seconds to infer the predicate $tx\_enc\_ctrl\_sel\equiv `PCS\_ENC\_DATA$ that enables the data vector to be uniquely determined.
 Finally, generating the decoder's Boolean functions for $txd$, $tx\_enc\_ctrl\_sel$, $tx\_en$ and $tx\_er$ costs 22.156704 seconds.
 After being mapped to LSI10K library,
 the decoder contains 2245 AND2, 794 OR2 and 22 registers.
@@ -1966,10 +2039,10 @@ while the runtime overhead problem was addressed in \cite{ShenTCAD12,LiuICCAD11}
 
 Shen et al.\citeyear{ShenTCAD12} automatically inferred an assertion for configuration pins, 
 which can lead to the decoder's existence.
-It can be seen as a special case of Algorithm \ref{algo_pcln} in Section \ref{sec_infer},
+It can be seen as a special case of Algorithm \ref{algo_infer} in Section \ref{sec_infer},
 with the restriction that the inferred assertion must hold on all steps.
 % to prevent the encoder from leaving the unique state set.
-Our Algorithm \ref{algo_pcln},
+Our Algorithm \ref{algo_infer},
 on the other hand,
 is the first algorithm that allows states with and without the inferred assertion to be interleaved freely with each other,
 which make it possible to handle encoder with flow control mechanism.
@@ -2016,7 +2089,7 @@ but not the correctness of this solution if its assumptions do not hold.
 % One line of research\cite{bmc_tacas99,RecDiam} tried to find out a bound $b$,
 % which can guarantee the correctness of a specification,
 % if the specification is correct on all paths that are shorter than $b$.
-% Line 8 of Algorithm \ref{algo_pcln} finds out the value of $p$,$d$ and $l$ that can prove the non-existence of the decoder,
+% Line 8 of Algorithm \ref{algo_infer} finds out the value of $p$,$d$ and $l$ that can prove the non-existence of the decoder,
 % which is similar to \cite{bmc_tacas99,RecDiam}.
 % 
 % The other line of research\cite{kind_tacas99} tried to find a bound for induction,
