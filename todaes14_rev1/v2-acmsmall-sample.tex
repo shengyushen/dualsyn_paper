@@ -654,23 +654,35 @@ Both cases will lead to this Algorithm's termination.
 
 \begin{algorithm}[b]
 \SetAlgoVlined
-\For{$l'=l \to 0$} {
-  \uIf{$F_{PC}(p,l'-1,r)$ is satisfiable} {
+\For{$l'=l \to 1$} {
+  \If{$F_{PC}(p,l'-1,r)$ is satisfiable} {
+    break
+  }
+  \ElseIf{$l'\equiv 1$} {
+    $l':=l'-1$\\
     break
   }
 }
-\For{$r'=r \to 0$} {
-  \uIf{$F_{PC}(p,l',r'-1)$ is satisfiable} {
+\For{$r'=r \to 1$} {
+  \If{$F_{PC}(p,l',r'-1)$ is satisfiable} {
+    break
+  }
+  \ElseIf{$r'\equiv 1$} {
+    $r':=r'-1$\\
     break
   }
 }
-\For{$p'=p \to 0$} {
-  \uIf{$F_{PC}(p',l',r'-1)$ is satisfiable} {
+\For{$p'=p \to 1$} {
+  \If{$F_{PC}(p',l',r'-1)$ is satisfiable} {
+    break
+  }
+  \ElseIf{$p'\equiv 1$} {
+    $p':=p'-1$\\
     break
   }
 }
 return $<p',d',l'>$
-\caption{$RemoveRedundancy(p,d,l)$}
+\caption{$RemoveRedundancy(p,l,r)$}
 \label{algo_remove}
 \end{algorithm}
 
@@ -691,6 +703,14 @@ We have tried this approach in our previous work \cite{ShenICCAD09,ShenTCAD10}.
 \textbf{
 The second one is to follow Algorithm \ref{alg_pcln},
 and then use Algorithm \ref{algo_remove} to minimize $p$,$d$ and $l$ one by one.
+This algorithm handle $p$,$d$ and $l$ similarly, 
+so I only explain $l$ here.
+For each $l'$,
+$l'-1$ is used to checked for $F_{PC}$'s satisfiability.
+If it is satisfiable,
+$l'$ is returned.
+If it is unsatisfiable but $l'$ already reach $1$,
+then terminate and return 0.
 This approach need to call SAT solver for $O(n)$ times,
 much less than the first approach.
 But each formula is larger than that of the first approach.
@@ -1383,20 +1403,28 @@ Second,
 we do not minimize the value of $p$,
 because it does not affect the decoder's area and delay.
 
-\begin{algorithm}[b]
+\begin{algorithm}[t]
 \SetAlgoVlined
-\For{$l'=l \to 0$} {
-  \uIf{$F_{PC}(p,l'-1,r)\wedge valid(\vec{f}_{p+l'-1})$ is satisfiable} {
+\For{$l':=l \to 1$} {
+  \If{$F_{PC}(p,l'-1,r)\wedge valid(\vec{f}_{p+l'-1})$ is satisfiable} {
+    break
+  }
+  \ElseIf{$l'\equiv 1$} {
+    $l':=l'-1$\\
     break
   }
 }
-\For{$r'=r \to 0$} {
-  \uIf{$F_{PC}(p,l',r'-1)\wedge valid(\vec{f}_{p+l'}$ is satisfiable} {
+\For{$r':=r \to 1$} {
+  \If{$F_{PC}(p,l',r'-1)\wedge valid(\vec{f}_{p+l'})$ is satisfiable} {
+    break
+  }
+  \ElseIf{$r'\equiv 1$} {
+    $r':=r'-1$\\
     break
   }
 }
-return $<d',l'>$
-\caption{$RemoveRedundancy(p,d,l)$}
+return $<l',r'>$
+\caption{$RemoveRedundancy(p,l,r)$}
 \label{algo_remove2}
 \end{algorithm}
 
@@ -1809,7 +1837,7 @@ it contains 113 AND2 gates, 212 OR2 gates, 68 inverters and 23 registers.
 And its total area is 879.
 
 
-\begin{table}[t]%
+\begin{table}[b]%
 \tbl{The input and output variables of the PCI Express 2.0 encoder\label{tab:pcieio}}{%
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -1843,14 +1871,41 @@ we write an assertion to rule out those combinations that are not in this coding
 This assertion is embed into the transition function $T$,
 so that it can be enforced at every step in the unrolled state sequences.
 
-Algorithm \ref{alg_fofc} costs 0.924754 seconds to identify the flow control variable $CNTL\_TXEnable\_P0$.
-And then Algorithm \ref{algo_infer} costs 2.067509 seconds to infer the predicate $CNTL\_TXEnable\_P0\equiv 1$ that enables the data vector to be uniquely determined.
+Algorithm \ref{alg_fofc} costs 0.9763 seconds to identify the flow control variable $CNTL\_TXEnable\_P0$.
+And then Algorithm \ref{algo_infer} costs 1.7695 seconds to infer the predicate $CNTL\_TXEnable\_P0\equiv 1$ that enables the data vector to be uniquely determined.
 Finally, 
 with the inferred predicate,
-generating the decoder's Boolean functions for $CNTL\_TXEnable\_P0$, $TXDATA$ and $TXDATAK$ costs 3.121821 seconds.
+generating the decoder's Boolean functions for $CNTL\_TXEnable\_P0$, $TXDATA$ and $TXDATAK$ costs 3.8892 seconds.
+The area of decoders with and without Algorithm \ref{algo_remove2} are presented in Table \ref{}.
 After being mapped to LSI10K library,
 the decoder contains 614 AND2, 198 OR2 and 22 registers.
 Its total area is 1778.
+
+\begin{table}[b]%
+\tbl{The summary of experimental results\label{tab:sum}}{%
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+bechmarks& run time  & run time         & \multicolumn{3}{|c|c|c|}{Without Alg. \ref{algo_remove2}} &  With Alg. \ref{algo_remove2}\\
+         & finding   & finding          & run time   & decoder & number                             &                   \\
+         & $\vec{f}$ & $valid(\vec{f})$ & generating & area    & of reg                             &                   \\
+         & $\vec{f}$ & $valid(\vec{f})$ & decoder    &         &                                    &                   \\\hline\hline
+%          & $TXDATA$             & 8     &The data to be encoded \\\cline{2-4}
+%          & $TXDATAK$            & 1     &1 means $TXDATA$ is a controlling character, \\
+%          &                      &       &0 means $TXDATA$ is normal data \\\cline{2-4}
+%          & $CNTL\_TXEnable\_P0$ & 1     &Indicating the validness of $TXDATA$ and $TXDATAK$\\\hline
+% Outputs  & $HSS\_TXD$           & 10    &The encoded data \\\cline{2-4}
+%          & $HSS\_TXELECIDLE$    & 1     &The electrical idle state\\\hline
+\end{tabular}}
+% \begin{tabnote}%
+% \Note{Source:}{This is a table
+% sourcenote. This is a table sourcenote. This is a table
+% sourcenote.}
+% \vskip2pt
+% \Note{Note:}{This is a table footnote.}
+% \tabnoteentry{$^a$}{This is a table footnote. This is a
+% table footnote. This is a table footnote.}
+% \end{tabnote}%
+\end{table}%
 
 The major breakthrough of this paper's algorithms is their ability to handle invalid data vector.
 So,
