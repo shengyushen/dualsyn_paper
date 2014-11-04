@@ -9,3 +9,7 @@ find source code on github
 I have add assertion for lots of formula, 
 there may be some have not add,
 and there may also be some inconsistency in refering to these lines of formula
+
+explain the struct of our decoder
+explain we only compare area because our timing is much faster
+

@@ -477,19 +477,22 @@ such that some states that can not be reached with $assertion(\vec{i})$ can be e
 This leads to two major advantages over considering initial states:
 First,
 it simplify and speedup our algorithm by avoiding the need to compute the reachable state set or inductive invariants.
+A breakthrough algorithm is proposed in \cite{TuDAC13}
+to rule out unreachable states
+by inferring inductive invariants.
+But this algorithm can not handle our most complex XFIPCS benchmark \cite{ShenTCAD11},
+while our algorithms always can.
 Second and more important,
-it improve the decoder's reliability by preventing any corrupted data from affecting the decoder's state,
+ignoring initial states improve the decoder's reliability by preventing any corrupted data from affecting the decoder's state,
 that is,
 any corrupted $\vec{o}$ fed to the decoder can only affect the decoder for finite number of steps.}
 
-\textbf{Of course this approach have one drawback that it is a little bit too stronger than necessary.
+\textbf{Of course ignoring initial states have one drawback that it is a little bit too stronger than necessary.
 That is,
 it requires that $\vec{i}$ must be uniquely determined on a larger state set $R^p$ 
 that is reachable in $p$ steps from any states,
 instead of on the smaller reachable states $R$.
 It is obvious that $R\subset R^p$.
-Tu and Jiang \citeyear{TuDAC13} propose a breakthrough algorithm that overcomes this shortcoming 
-by inferring inductive invariants.
 Their work is orthogonal to ours.
 So to simplify our discussion,
 we will not integrate their work here.
@@ -1820,15 +1823,17 @@ because these benchmarks all come from real industrial projects.
 % Thus,
 % the algorithm presented here is the first one that allows the flow control mechanism to be turned on and off freely.
 % We will discuss these benchmarks one by one in the following subsections.
-We will present the experimental result for them in the following subsections.
+We will present the experimental result for them in Subsections \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.
 
 On the other hand,
-we have also found that the benchmarks used in \cite{TuDAC13} contain no flow control mechanism,
-and hence they will not be discussed here.
+we have also found that the benchmarks used in \cite{TuDAC13} contain no flow control mechanism.
+But our algorithm can also handle them,
+because they will make Algorithm \ref{alg_fofc} to find that there 
 
 
 
-\subsection{PCI Express 2.0 encoder}
+
+\subsection{PCI Express 2.0 encoder}\label{subsec_pcie2}
 This encoder is compliant with the PCI Express 2.0 standard \cite{pcie21}.
 After deleting empty line and comments,
 its source code has 259 lines of verilog.
@@ -1871,41 +1876,16 @@ we write an assertion to rule out those combinations that are not in this coding
 This assertion is embed into the transition function $T$,
 so that it can be enforced at every step in the unrolled state sequences.
 
-Algorithm \ref{alg_fofc} costs 0.9763 seconds to identify the flow control variable $CNTL\_TXEnable\_P0$.
-And then Algorithm \ref{algo_infer} costs 1.7695 seconds to infer the predicate $CNTL\_TXEnable\_P0\equiv 1$ that enables the data vector to be uniquely determined.
-Finally, 
-with the inferred predicate,
-generating the decoder's Boolean functions for $CNTL\_TXEnable\_P0$, $TXDATA$ and $TXDATAK$ costs 3.8892 seconds.
-The area of decoders with and without Algorithm \ref{algo_remove2} are presented in Table \ref{}.
-After being mapped to LSI10K library,
-the decoder contains 614 AND2, 198 OR2 and 22 registers.
-Its total area is 1778.
+Algorithm \ref{alg_fofc} identifies the flow control variable $CNTL\_TXEnable\_P0$.
+And then Algorithm \ref{algo_infer} infers the predicate $CNTL\_TXEnable\_P0\equiv 1$ that enables the data vector to be uniquely determined.
+% Finally, 
+% with the inferred predicate,
+% generating the decoder's Boolean functions for $CNTL\_TXEnable\_P0$, $TXDATA$ and $TXDATAK$ costs 3.8892 seconds.
+% The area of decoders with and without Algorithm \ref{algo_remove2} are presented in Table \ref{}.
+% After being mapped to LSI10K library,
+% the decoder contains 614 AND2, 198 OR2 and 22 registers.
+% Its total area is 1778.
 
-\begin{table}[b]%
-\tbl{The summary of experimental results\label{tab:sum}}{%
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-bechmarks& run time  & run time         & \multicolumn{3}{|c|c|c|}{Without Alg. \ref{algo_remove2}} &  With Alg. \ref{algo_remove2}\\
-         & finding   & finding          & run time   & decoder & number                             &                   \\
-         & $\vec{f}$ & $valid(\vec{f})$ & generating & area    & of reg                             &                   \\
-         & $\vec{f}$ & $valid(\vec{f})$ & decoder    &         &                                    &                   \\\hline\hline
-%          & $TXDATA$             & 8     &The data to be encoded \\\cline{2-4}
-%          & $TXDATAK$            & 1     &1 means $TXDATA$ is a controlling character, \\
-%          &                      &       &0 means $TXDATA$ is normal data \\\cline{2-4}
-%          & $CNTL\_TXEnable\_P0$ & 1     &Indicating the validness of $TXDATA$ and $TXDATAK$\\\hline
-% Outputs  & $HSS\_TXD$           & 10    &The encoded data \\\cline{2-4}
-%          & $HSS\_TXELECIDLE$    & 1     &The electrical idle state\\\hline
-\end{tabular}}
-% \begin{tabnote}%
-% \Note{Source:}{This is a table
-% sourcenote. This is a table sourcenote. This is a table
-% sourcenote.}
-% \vskip2pt
-% \Note{Note:}{This is a table footnote.}
-% \tabnoteentry{$^a$}{This is a table footnote. This is a
-% table footnote. This is a table footnote.}
-% \end{tabnote}%
-\end{table}%
 
 The major breakthrough of this paper's algorithms is their ability to handle invalid data vector.
 So,
@@ -1921,7 +1901,7 @@ the output electrical idle variable $HSS\_TXELECIDLE$ becomes 1.
 So,
 the decoder can use the output variable $HSS\_TXELECIDLE$ to uniquely determine the value of flow control variable $CNTL\_TXEnable\_P0$.
 
-\subsection{10G Ethernet encoder}
+\subsection{10G Ethernet encoder}\label{subsec_10g}
 This encoder is compliant with clause 48 of IEEE 802.3 standard \cite{IEEE8023_S4}.
 After deleting empty line and comments,
 this encoder has 214 lines of verilog.
@@ -1929,7 +1909,7 @@ After being mapped to LSI10K library,
 it contains 65 AND2 gates, 192 OR2 gates, 75 inverters and 17 registers.
 Its total area is 708.
 
-\begin{table}[b]%
+\begin{table}[t]%
 \tbl{The input and output variables of the 10G Ethernet encoder\label{tab:eth10g}}{%
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -1964,12 +1944,12 @@ So,
 we write an assertion to exclude those combinations that are not in this table
 and embed it into the the transition function $T$.
 
-Algorithm \ref{alg_fofc} costs 0.619508 seconds to identify the flow control variable $bad\_code$.
-And then Algorithm \ref{algo_infer} costs 1.443065 seconds to infer the predicate $bad\_code\equiv 0$ that enables the data vector to be uniquely determined.
-Finally, generating the decoder's Boolean functions for $bad\_code$, $encode\_data\_in$ and $konstant$ costs 2.202401 seconds.
-After being mapped to LSI10K library,
-the decoder contains 597 AND2, 174 OR2 and 30 registers.
-Its total area is 1752.
+Algorithm \ref{alg_fofc} identifies the flow control variable $bad\_code$.
+And then Algorithm \ref{algo_infer} infers the predicate $bad\_code\equiv 0$ that enables the data vector to be uniquely determined.
+% Finally, generating the decoder's Boolean functions for $bad\_code$, $encode\_data\_in$ and $konstant$ costs 2.202401 seconds.
+% After being mapped to LSI10K library,
+% the decoder contains 597 AND2, 174 OR2 and 30 registers.
+% Its total area is 1752.
 
 Although this encoder uses the same coding mechanism as does the PCI Express 2.0 encoder mentioned above,
 the way it handles the invalid data vector is different.
@@ -1985,7 +1965,7 @@ So the decoder can use the output variable $encode\_data\_out$ to uniquely deter
 
 
 
-\subsection{UltraSPARC T2 Ethernet encoder}
+\subsection{UltraSPARC T2 Ethernet encoder}\label{subsec_t2e}
 This encoder comes from the UltraSPARC T2 open source processor designed by Sun Microsystems.
 It is compliant with clause 36 of IEEE 802.3 standard \cite{IEEE8023_S4}.
 After deleting empty line and comments,
@@ -1994,7 +1974,7 @@ After being mapped to LSI10K library,
 it contains 344 AND2 gates, 649 OR2 gates, 128 inverters and 53 registers.
 Its total area is 2485.
 
-\begin{table}[t]%
+\begin{table}[b]%
 \tbl{The input and output variables of the UltraSPARC T2 Ethernet encoder\label{tab:t2eth}}{%
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -2033,7 +2013,7 @@ The last four cases in Table \ref{tab:one} can never be uniquely determined,
 because they cannot be distinguished from the case of `PCS\_ENC\_DATA.
 So we write an assertion to rule them out.
 
-\begin{table}[b]%
+\begin{table}[t]%
 \tbl{Actions to be performed in UltraSPARC T2 Ethernet encoder\label{tab:one}}{%
 \begin{tabular}{|l|l|}
 \hline
@@ -2060,16 +2040,65 @@ The name of action   & The meaning of action\\\hline\hline
 % \end{tabnote}%
 \end{table}%
 
-Algorithm \ref{alg_fofc} costs 11.750317 seconds to identify the flow control variables $tx\_enc\_ctrl\_sel$, $tx\_en$ and $tx\_er$.
-And then Algorithm \ref{algo_infer} costs 27.456717 seconds to infer the predicate $tx\_enc\_ctrl\_sel\equiv `PCS\_ENC\_DATA$ that enables the data vector to be uniquely determined.
-Finally, generating the decoder's Boolean functions for $txd$, $tx\_enc\_ctrl\_sel$, $tx\_en$ and $tx\_er$ costs 22.156704 seconds.
-After being mapped to LSI10K library,
-the decoder contains 2245 AND2, 794 OR2 and 22 registers.
-Its total area is 6232.
+Algorithm \ref{alg_fofc} identifies the flow control variables $tx\_enc\_ctrl\_sel$, $tx\_en$ and $tx\_er$.
+And then Algorithm \ref{algo_infer} infers the predicate $tx\_enc\_ctrl\_sel\equiv `PCS\_ENC\_DATA$ that enables the data vector to be uniquely determined.
+% Finally, generating the decoder's Boolean functions for $txd$, $tx\_enc\_ctrl\_sel$, $tx\_en$ and $tx\_er$ costs 22.156704 seconds.
+% After being mapped to LSI10K library,
+% the decoder contains 2245 AND2, 794 OR2 and 22 registers.
+% Its total area is 6232.
 
 As shown in the last column of Table \ref{tab:one},
 the first 5 cases have their own particular control symbol values assigned to $tx\_10bdata$,
 so the decoder can recover the value of the flow control variable $tx\_enc\_ctrl\_sel$ from $tx\_10bdata$.
+
+\subsection{Comparing run times and circuit areas for the two cases with and without Algorithm \ref{algo_remove2}}
+To improve the decoder's circuit area and timing,
+Algorithm \ref{algo_remove2} is invoked to reduce $l$ and $r$ before characterizing the decoder's Boolean function.
+To show its efficiency,
+we present the experimental result in Table \ref{tab:sum}.
+
+The first column is the benchmarks.
+The second and third columns are the run time overhead of 
+finding out the flow control vector $\vec{f}$ and inferring $valid(\vec{f})$.
+When Algorithm \ref{algo_remove2} is not used,
+The fourth to seventh columns give respectively the $p$,$l$ and $r$ valuation,
+the runtime to generate the decoder,
+the decoder area
+and the number of registers in the generated decoder.
+When Algorithm \ref{algo_remove2} is used,
+these experimental result are again presented in the last four columns.
+
+By comparing the 4-7 columns with the 8-11 columns,
+it is obvious that the decoders area and number of registers are significantly reduced,
+with significant runtime overhead in reducing $p$, $l$ and $r$.
+
+\begin{table}[b]%
+\tbl{The summary of experimental results\label{tab:sum}}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+       & run       & run              & \multicolumn{4}{|c|}{Without Alg. \ref{algo_remove2}} &  \multicolumn{4}{|c|}{With Alg. \ref{algo_remove2}} \\\cline{4-11}
+bench- & time      & time             & p,l,r& runtime    & decoder & \#                      & p,l,r& runtime    & decoder & \#               \\
+marks  & find.     & find.            &      & generat.   & area    & of                      &      & generat.   & area    & of               \\
+       & $\vec{f}$ & $valid(\vec{f})$ &      & decoder    &         & reg                     &      & decoder    &         & reg              \\\hline\hline
+PCIE2  & 1.04      & 1.86             & 4,4,4& 2.77       & 1642    & 22                      & 4,0,2&4.05        & 2363    & 0                \\\hline
+Eth10G & 0.45      & 1.39             & 4,4,4& 2.03       & 1538    & 30                      & 4,0,1&3.01        & 1484    & 0                \\\hline
+T2Eth  & 12.37     & 21.58            & 5,5,5& 19.92      & 7146    & 22                      & 5,0,4&34.29       & 5212    & 9                \\\hline
+\end{tabular}}
+\end{table}%
+
+\subsection{Comparing circuit area and timing for the decoders generated by our algorithm and hand written decoders}
+
+\begin{table}[t]%
+\tbl{The summary of experimental results\label{tab:sum}}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+bench- & \multicolumn{2}{|c|}{Decoder generated by us} &  \multicolumn{2}{|c|}{Hand written decoder} \\\cline{2-5}
+marks  & area    & critical path timing    &area    & critical path timing               \\\hline
+PCIE2  & 2363    &&952 &19.03\\\hline
+Eth10G & 1484    &&913 &12.33\\\hline
+T2Eth  & 5212    &&2225&23.36\\\hline
+\end{tabular}}
+\end{table}%
 
 \section{RELATED PUBLICATIONS}\label{sec_relwork}
 %\subsection{Complementary Synthesis}
@@ -2089,8 +2118,8 @@ and generates the decoder's Boolean function by enumerating all satisfying assig
 Its major shortcomings are that it may not halt and that it has large runtime overhead
 in building the decoder.
 
-Shen et al.\citeyear{ShenTCAD11} and Liu et al.\citeyear{LiuICCAD11} tackled the halting problem independently by searching for loops in the state sequence,
-while the runtime overhead problem was addressed in \cite{ShenTCAD12,LiuICCAD11} by Craig interpolant\cite{interp_McMillan}.
+The halting problem was independently tackled in \cite{ShenTCAD11} and \cite{LiuICCAD11} by searching for loops in the state sequence,
+while the runtime overhead problem was addressed in \cite{ShenTCAD12,LiuICCAD11} by Craig interpolant \cite{interp_McMillan}.
 
 Shen et al.\citeyear{ShenTCAD12} automatically inferred an assertion for configuration pins, 
 which can lead to the decoder's existence.
@@ -2102,8 +2131,8 @@ on the other hand,
 is the first algorithm that allows states with and without the inferred assertion to be interleaved freely with each other,
 which make it possible to handle encoder with flow control mechanism.
 
-Tu and Jiang \citeyear{TuDAC13} proposed a break-through algorithm 
-based on property directed reachability analysis\cite{BradleyVMCAI11,EenFMCAD11} 
+A break-through algorithm is proposed by \cite{TuDAC13}  
+based on property directed reachability analysis \cite{BradleyVMCAI11,EenFMCAD11} 
 that can take the encoder's initial state into consideration,
 so that the infinite history of the encoder and the decoder can be used to generate the decoder's output.
 This algorithm can handle some special encoders that cannot be handled by the state-of-the-art algorithms.
@@ -2113,21 +2142,22 @@ and therefore we have not implemented their algorithm in our framework.
 
 
 \subsection{Program inversion}\label{subsec_proinv}
-According to Gulwani\shortcite{dim_syn},
+According to \cite{dim_syn},
 program inversion involves deriving a program $P^{-1}$
 that negates the computation of a given program $P$.
 So,
 the definition of program inversion is very similar to complementary synthesis.
 
-The initial work on deriving program inversion used proof-based approaches\cite{prog_inv},
+The initial work on deriving program inversion used proof-based approaches \cite{prog_inv},
 which could handle only very small programs and very simple syntax structures.
 
-Gl\"{u}ck et al. \shortcite{mtd_autoProginv} inverted first-order functional programs
+Gl\"{u}ck et al. proposed in \cite{mtd_autoProginv} inverted first-order functional programs
 by eliminating nondeterminism with LR-based parsing methods.
 But,
 the use of functional languages in that work is incompatible with our complementary synthesis.
 
-{Srivastava et al. \shortcite{program_inversion_11} assumed that an inverse program was typically related to the original program,
+In \cite{program_inversion_11},
+Srivastava et al. assumed that an inverse program was typically related to the original program,
 and so the space of possible inversions can be inferred by automatically
 mining the original program for expressions, predicates, and control flow.
 This algorithm inductively rules out invalid paths that cannot fulfill the requirement of inversion
@@ -2192,27 +2222,31 @@ Protocol converter synthesis is a process that automatically generates a transla
 This is relevant to our work,
 because both focus on synthesizing communication circuits.
 
-Avnit et al. \shortcite{converter_date08,converter_todeas09} first defined a general model for describing different protocols,
+In \cite{converter_date08,converter_todeas09},
+Avnit et al. first defined a general model for describing different protocols,
 and then provided an algorithm to decide
 whether there is some functionality of a protocol that cannot be translated into another.
 Finally,
 they synthesized a translator by computing the greatest fixed point for the update function of the buffer's control states.
-Latter, 
-they \shortcite{converter_date09} improved their algorithm with a more efficient design space exploration algorithm.
+Latter in \cite{converter_date09}, 
+they improved their algorithm with a more efficient design space exploration algorithm.
 
 \subsection{Satisfying Assignments Enumeration}\label{subsec_relallsat}
 
 Some algorithms enumerate all satisfying assignments by trying to enlarge the complete satisfying assignments,
 so that a large state set that contains more complete satisfying assignments can be obtained.
 
-The first approach of this kind is proposed by K. L. McMillan \cite{SATUNBMC}.
+The first approach of this kind is proposed by \cite{SATUNBMC}.
 He constructs an alternative implication graph in SAT solver,
 which records the reasoning relation that leads to the assignment of a particular object variable.
 All variables outside this graph can be ruled out from the complete assignment.
-Kavita Ravi et al.\cite{MINASS} and P. P. Chauhan et al.\cite{REPARAM} remove those variables whose absence can not make $obj\equiv 0$ satisfiable one by one.
-Shen et al.\cite{MINCEX} and HoonSang Jin et al.\cite{PRIMECLAUSE,EFFCON} use an conflict analysis based approach
+In \cite{MINASS} and \cite{REPARAM},
+those variables whose absence can not make $obj\equiv 0$ satisfiable are removed one by one.
+In \cite{MINCEX} and \cite{PRIMECLAUSE,EFFCON},
+conflict analysis based approaches are used
 to remove multiple irrelevant variables in one SAT run.
-Orna Grumberg et al.\cite{MEMEFFALLSAT} divides the variable set into an important subset and an unimportant subset.
+In \cite{MEMEFFALLSAT},
+the variable set is divided into an important subset and an unimportant subset.
 Variables in the important subset have higher decision priority than those unimportant ones.
 Thus,
 the important subset forms a search tree,
@@ -2221,23 +2255,31 @@ with each leaf being another search tree for the unimportant set.
 Cofactoring \cite{EFFSATUSMCCO} qualifies out unimportant variables by setting them to constant value returned by the SAT solver.
 
 Other algorithms tries to construct an Interpolation to cover all satisfying assignments.
-The first such algorithm was proposed by Jiang et al. \cite{InterpBoolFunction}.
+The first such algorithm was proposed by \cite{InterpBoolFunction}.
 It construct a first formula with another formula that contradicts with it to get an unsatisfiable formula,
 from which an interpolation can be derived and used as an over-approximation of the first formula.
-Hana et al.\cite{interpNoProof} generates interpolation with an framework similar to the iterative enumerating and 
+In \cite{interpNoProof},
+interpolation is generated with a framework similar to the iterative enumerating and 
 enlarging approaches mentioned above.
 But there are two enlarging steps, each for the two formulas involving in computing interpolation.
 This make it the first paper that constructs interpolation without proof.
 
 \subsection{Logic synthesis with Craig interpolation}
-Lee et al.\cite{scalableFuncDep,Bidecomp} proposed to solving the functional dependency and logic decomposition problems by formulating the base Boolean functions' output bits as the input bits to an unknown Boolean function, and characterize this unknown function by Craig interpolation.
+In \cite{scalableFuncDep,Bidecomp},
+the functional dependency and logic decomposition problems are solved 
+by formulating the base Boolean functions' output bits as the input bits to an unknown Boolean function, 
+and characterize this unknown function by Craig interpolation.
 This algorithm is also used in our paper \cite{ShenTCAD12} to find out all the possible decoders.
 
-Wu et al.\cite{ecoInterp} proposed to generate ECO with Craig interpolation.
+In \cite{ecoInterp},
+an ECO is generated with Craig interpolation.
 
-Jiang et al. \cite{InterpBoolFunction} proposed the first algorithm to characterize a Boolean function from a Boolean Relation. It propose two different algorithms:
+In \cite{InterpBoolFunction},
+the first algorithm to characterize a Boolean function from a Boolean Relation was proposed. 
+It includes two different algorithms:
 The first one handle a general  non-deterministic Boolean relation that can not uniquely determined its output, 
-The second one is a special case of the first one that handles a deterministic relation that can uniquely determine its output by Craig interpolation.
+The second one is a special case of the first one 
+that handles a deterministic relation that can uniquely determine its output by Craig interpolation.
 The second one is used in \cite{ShenTCAD12}.
 
 This paper also need to handle a non-deterministic Boolean relation,
@@ -2251,10 +2293,6 @@ So the way we handle non-determinism is significantly different from that of \ci
 But after we got the value of $p$, $l$ and $r$, 
 together with the flow control variables $\vec{f}$ and the predicate $valid(\vec{f})$,
 we can characterize the decoder's Boolean function with an algorithm similar to the second one in \cite{InterpBoolFunction}.
-
-
-
-
 
 \section{Conclusions}\label{sec_conclude}
 

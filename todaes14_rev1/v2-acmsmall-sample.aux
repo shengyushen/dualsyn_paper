@@ -44,6 +44,7 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}\textbf  {The sound approach}}{4}}
 \newlabel{uniqt1}{{1}{4}}
 \citation{TuDAC13}
+\citation{ShenTCAD11}
 \newlabel{fig_pc}{{2}{5}}
 \newlabel{prop_pc1}{{2.1}{5}}
 \newlabel{fig_ln}{{3}{6}}
@@ -59,7 +60,7 @@
 \newlabel{alg_pcln}{{1}{7}}
 \newlabel{subsub_algo}{{2.3.3}{7}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.3}\textbf  {The full algorithm}}{7}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces $RemoveRedundancy(p,d,l)$}}{7}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces $RemoveRedundancy(p,l,r)$}}{7}}
 \newlabel{algo_remove}{{2}{7}}
 \citation{ShenTCAD11}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Identifying flow control variables}{8}}
@@ -76,35 +77,35 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Characterizing a function that makes a Boolean formula satisfiable}{9}}
 \newlabel{subsec_craig}{{4.1}{9}}
 \newlabel{fchar}{{3}{9}}
-\newlabel{initcondition}{{1}{9}}
-\newlabel{testsat}{{2}{9}}
-\newlabel{cofact1}{{4}{9}}
-\newlabel{cofact2}{{5}{9}}
-\newlabel{ab}{{6}{9}}
-\newlabel{add}{{7}{9}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {4}{\ignorespaces $CharacterizingFormulaSAT(R,\mathaccent "017E\relax {a},\mathaccent "017E\relax {b},t)$:Characterizing a Boolean function over $\mathaccent "017E\relax {a}$ that can make $R(\mathaccent "017E\relax {a},\mathaccent "017E\relax {b},1)$ satisfiable}}{9}}
-\newlabel{alg_craigchar}{{4}{9}}
 \citation{interp_McMillan}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Inferring $valid(\mathaccent "017E\relax {f})$ that enables $\mathaccent "017E\relax {d}$ to be uniquely determined}{10}}
 \newlabel{subsec_infer}{{4.2}{10}}
 \newlabel{subsub_intro}{{4.2.1}{10}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}\textbf  {Intuitive introduction}}{10}}
+\newlabel{initcondition}{{1}{10}}
+\newlabel{testsat}{{2}{10}}
+\newlabel{cofact1}{{4}{10}}
+\newlabel{cofact2}{{5}{10}}
+\newlabel{ab}{{6}{10}}
+\newlabel{add}{{7}{10}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {4}{\ignorespaces $CharacterizingFormulaSAT(R,\mathaccent "017E\relax {a},\mathaccent "017E\relax {b},t)$:Characterizing a Boolean function over $\mathaccent "017E\relax {a}$ that can make $R(\mathaccent "017E\relax {a},\mathaccent "017E\relax {b},1)$ satisfiable}}{10}}
+\newlabel{alg_craigchar}{{4}{10}}
 \newlabel{fig_mono}{{4}{11}}
 \newlabel{subsub_nonloop}{{4.2.2}{11}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}\textbf  {Computing $FSAT_{PC}(p,l,r)$}}{11}}
 \newlabel{uniqt1d}{{5}{11}}
 \newlabel{tpc}{{6}{11}}
 \newlabel{fpcq}{{7}{11}}
-\newlabel{pcdef1}{{8}{11}}
+\newlabel{pcdef1}{{8}{12}}
 \newlabel{pcdef2}{{9}{12}}
 \newlabel{fsat_pc}{{10}{12}}
 \newlabel{prop_pc}{{4.1}{12}}
 \newlabel{subsub_loop}{{4.2.3}{12}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}\textbf  {Computing $FSAT_{LN}(p,l,r)$}}{12}}
 \newlabel{uniqlnd}{{11}{12}}
-\newlabel{tln}{{12}{12}}
 \@writefile{loa}{\contentsline {algocf}{\numberline {5}{\ignorespaces $InferringUniqueFormula$:inferring the predicate $valid(\mathaccent "017E\relax {f}_{p+l})$ that enables $\mathaccent "017E\relax {d}_{p+l}$ to be uniquely determined}}{13}}
 \newlabel{algo_infer}{{5}{13}}
+\newlabel{tln}{{12}{13}}
 \newlabel{lndef1}{{13}{13}}
 \newlabel{fsat_ln}{{14}{13}}
 \newlabel{prop_ln}{{4.2}{13}}
@@ -118,35 +119,42 @@
 \@writefile{toc}{\contentsline {section}{\numberline {5}Characterizing the decoder's Boolean function}{15}}
 \newlabel{sec_char}{{5}{15}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Minimizing the valuation of $l$ and $r$}{15}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {6}{\ignorespaces $RemoveRedundancy(p,d,l)$}}{15}}
-\newlabel{algo_remove2}{{6}{15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Characterizing the decoder's Boolean function that computes $\mathaccent "017E\relax {f}$}{15}}
 \citation{interp_McMillan}
 \citation{interp_McMillan}
-\citation{EXTSAT}
-\citation{ShenICCAD09}
-\citation{ShenTCAD10,ShenTCAD11,ShenTCAD12}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Characterizing the decoder's Boolean function that computes $\mathaccent "017E\relax {f}$}{16}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {6}{\ignorespaces $RemoveRedundancy(p,l,r)$}}{16}}
+\newlabel{algo_remove2}{{6}{16}}
 \newlabel{fa}{{15}{16}}
 \newlabel{fb}{{16}{16}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Characterizing the decoder's Boolean function that computes $\mathaccent "017E\relax {d}$}{16}}
 \newlabel{da}{{17}{16}}
 \newlabel{db}{{18}{16}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Experimental Results}{16}}
-\newlabel{sec_exp}{{6}{16}}
+\citation{EXTSAT}
+\citation{ShenICCAD09}
+\citation{ShenTCAD10,ShenTCAD11,ShenTCAD12}
 \citation{TuDAC13}
 \citation{pcie21}
 \citation{encode8b10b}
 \citation{IEEE8023_S4}
-\citation{encode8b10b}
-\citation{encode8b10b}
-\newlabel{tab:pcieio}{{I}{17}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Experimental Results}{17}}
+\newlabel{sec_exp}{{6}{17}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.1}PCI Express 2.0 encoder}{17}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}10G Ethernet encoder}{17}}
+\newlabel{subsec_pcie2}{{6.1}{17}}
+\newlabel{tab:pcieio}{{I}{17}}
+\citation{encode8b10b}
+\citation{encode8b10b}
 \citation{IEEE8023_S4}
 \citation{encode8b10b}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}UltraSPARC T2 Ethernet encoder}{18}}
 \newlabel{tab:eth10g}{{II}{18}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}10G Ethernet encoder}{18}}
+\newlabel{subsec_10g}{{6.2}{18}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}UltraSPARC T2 Ethernet encoder}{18}}
+\newlabel{subsec_t2e}{{6.3}{18}}
+\newlabel{tab:t2eth}{{III}{18}}
 \citation{ShenICCAD09}
+\newlabel{tab:one}{{IV}{19}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Comparing run times and circuit areas for the two cases with and without Algorithm 6\hbox {}}{19}}
+\newlabel{tab:sum}{{V}{19}}
 \citation{ShenTCAD11}
 \citation{LiuICCAD11}
 \citation{ShenTCAD12,LiuICCAD11}
@@ -155,15 +163,17 @@
 \citation{TuDAC13}
 \citation{BradleyVMCAI11,EenFMCAD11}
 \citation{dim_syn}
-\newlabel{tab:t2eth}{{III}{19}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}RELATED PUBLICATIONS}{19}}
-\newlabel{sec_relwork}{{7}{19}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Complementary synthesis}{19}}
-\newlabel{subsec_compsyn_relat}{{7.1}{19}}
-\newlabel{tab:one}{{IV}{19}}
 \citation{prog_inv}
 \citation{mtd_autoProginv}
 \citation{program_inversion_11}
+\newlabel{tab:sum}{{VI}{20}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5}Comparing circuit area and timing for the decoders generated by our algorithm and hand written decoders}{20}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}RELATED PUBLICATIONS}{20}}
+\newlabel{sec_relwork}{{7}{20}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Complementary synthesis}{20}}
+\newlabel{subsec_compsyn_relat}{{7.1}{20}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Program inversion}{20}}
+\newlabel{subsec_proinv}{{7.2}{20}}
 \citation{converter_date08,converter_todeas09}
 \citation{converter_date09}
 \citation{SATUNBMC}
@@ -175,11 +185,6 @@
 \citation{EFFSATUSMCCO}
 \citation{InterpBoolFunction}
 \citation{interpNoProof}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Program inversion}{20}}
-\newlabel{subsec_proinv}{{7.2}{20}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Protocol converter synthesis}{20}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Satisfying Assignments Enumeration}{20}}
-\newlabel{subsec_relallsat}{{7.4}{20}}
 \citation{scalableFuncDep,Bidecomp}
 \citation{ShenTCAD12}
 \citation{ecoInterp}
@@ -188,6 +193,10 @@
 \citation{InterpBoolFunction}
 \citation{InterpBoolFunction}
 \citation{InterpBoolFunction}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Protocol converter synthesis}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Satisfying Assignments Enumeration}{21}}
+\newlabel{subsec_relallsat}{{7.4}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Logic synthesis with Craig interpolation}{21}}
 \citation{pcie21}
 \citation{IEEE8023_S4}
 \bibstyle{ACM-Reference-Format-Journals}
@@ -195,9 +204,6 @@
 \bibcite{flowcontrol}{\citeauthoryear {Abts and Kim}{Abts and Kim}{2011}}
 \bibcite{converter_todeas09}{\citeauthoryear {Avnit, D'Silva, Sowmya, Ramesh, and Parameswaran.}{Avnit et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2009}}
 \bibcite{converter_date09}{\citeauthoryear {Avnit and Sowmya}{Avnit and Sowmya}{2009}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Logic synthesis with Craig interpolation}{21}}
-\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusions}{21}}
-\newlabel{sec_conclude}{{8}{21}}
 \bibcite{converter_date08}{\citeauthoryear {Avnit, Sowmya, and Parameswaran}{Avnit et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2008}}
 \bibcite{BradleyVMCAI11}{\citeauthoryear {Bradley}{Bradley}{2011}}
 \bibcite{REPARAM}{\citeauthoryear {Chauhan, Clarke, and Kroening}{Chauhan et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2004}}
@@ -205,6 +211,8 @@
 \bibcite{Craig}{\citeauthoryear {Craig}{Craig}{1957}}
 \bibcite{prog_inv}{\citeauthoryear {Dijkstra}{Dijkstra}{1979}}
 \bibcite{EenFMCAD11}{\citeauthoryear {E{\'e}n, Mishchenko, and Brayton}{E{\'e}n et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2011}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusions}{22}}
+\newlabel{sec_conclude}{{8}{22}}
 \bibcite{EXTSAT}{\citeauthoryear {E\'en and S{\"o}rensson}{E\'en and S{\"o}rensson}{2003}}
 \bibcite{Cofact}{\citeauthoryear {Ganai, Gupta, and Ashar}{Ganai et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2004a}}
 \bibcite{EFFSATUSMCCO}{\citeauthoryear {Ganai, Gupta, and Ashar:}{Ganai et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2004b}}
@@ -232,4 +240,4 @@
 \bibcite{TuDAC13}{\citeauthoryear {Tu and Jiang}{Tu and Jiang}{2013}}
 \bibcite{encode8b10b}{\citeauthoryear {Widmer and Franaszek}{Widmer and Franaszek}{1983}}
 \bibcite{ecoInterp}{\citeauthoryear {Wu, Yanga, Huang, and Jiang}{Wu et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2010}}
-\lastpage{23}
+\lastpage{24}
