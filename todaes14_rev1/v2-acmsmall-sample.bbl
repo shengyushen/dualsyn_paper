@@ -176,10 +176,10 @@
 \url{http://dx.doi.org/10.1109/ICCAD.2004.1382631}}
 
 
-\bibitem[\protect\citeauthoryear{Ganai, Gupta, and Ashar:}{Ganai
+\bibitem[\protect\citeauthoryear{Ganai, Gupta, and Ashar}{Ganai
   et~al\mbox{.}}{2004b}]%
         {EFFSATUSMCCO}
-{Malay~K. Ganai}, {Aarti Gupta}, {and} {Pranav Ashar:}. 2004b.
+{Malay~K. Ganai}, {Aarti Gupta}, {and} {Pranav Ashar}. 2004b.
 \newblock \showarticletitle{Efficient sat-based unbounded symbolic model
   checking using circuit cofactoring}. In {\em Proceedings of the 2004
   International Conference on Computer-Aided Design, ICCAD 2004} {\em (ICCAD
@@ -498,6 +498,20 @@ Retrieved January 25, 2013 from
 \newblock
 \showDOI{%
 \url{http://dx.doi.org/10.1109/ICCAD.2010.5654265}}
+
+
+\bibitem[\protect\citeauthoryear{Zhang, Madigan, Moskewicz, and Malik}{Zhang
+  et~al\mbox{.}}{2001}]%
+        {CONFLICTLEARN}
+{Lintao Zhang}, {Conor~F. Madigan}, {Matthew~W. Moskewicz}, {and} {Sharad
+  Malik}. 2001.
+\newblock \showarticletitle{Efficient Conflict Driven Learning in Boolean
+  Satisfiability Solver}. In {\em Proceedings of the 2001 International
+  Conference on Computer-Aided Design, ICCAD 2001} {\em (ICCAD '01)}. ACM,
+  279--285.
+\newblock
+\showDOI{%
+\url{http://dx.doi.org/10.1109/ICCAD.2004.1382631}}
 
 
 \end{thebibliography}

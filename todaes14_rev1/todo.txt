@@ -13,3 +13,6 @@ and there may also be some inconsistency in refering to these lines of formula
 explain the struct of our decoder
 explain we only compare area because our timing is much faster
 
+value and valuation unify to valuation
+
+

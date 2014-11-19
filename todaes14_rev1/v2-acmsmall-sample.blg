@@ -15,45 +15,46 @@ Warning--empty address in PRIMECLAUSE
 Warning--empty address in scalableFuncDep
 Warning--empty address in Bidecomp
 Warning--empty address in ecoInterp
-You've used 37 entries,
+Warning--empty address in CONFLICTLEARN
+You've used 38 entries,
             5290 wiz_defined-function locations,
-            1765 strings with 27209 characters,
-and the built_in function-call counts, 42584 in all, are:
-= -- 5338
-> -- 1526
+            1772 strings with 27435 characters,
+and the built_in function-call counts, 43729 in all, are:
+= -- 5457
+> -- 1578
 < -- 11
-+ -- 466
-- -- 685
-* -- 2786
-:= -- 4685
-add.period$ -- 204
-call.type$ -- 37
-change.case$ -- 251
-chr.to.int$ -- 36
-cite$ -- 46
-duplicate$ -- 3507
-empty$ -- 2434
-format.name$ -- 628
-if$ -- 9903
++ -- 482
+- -- 701
+* -- 2870
+:= -- 4815
+add.period$ -- 209
+call.type$ -- 38
+change.case$ -- 259
+chr.to.int$ -- 37
+cite$ -- 48
+duplicate$ -- 3611
+empty$ -- 2505
+format.name$ -- 648
+if$ -- 10167
 int.to.chr$ -- 2
 int.to.str$ -- 0
-missing$ -- 128
-newline$ -- 382
-num.names$ -- 313
-pop$ -- 1114
+missing$ -- 133
+newline$ -- 391
+num.names$ -- 321
+pop$ -- 1155
 preamble$ -- 1
-purify$ -- 434
+purify$ -- 447
 quote$ -- 0
-skip$ -- 1049
+skip$ -- 1077
 stack$ -- 0
-substring$ -- 4211
-swap$ -- 422
+substring$ -- 4306
+swap$ -- 433
 text.length$ -- 349
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 512
-warning$ -- 9
-while$ -- 330
+type$ -- 526
+warning$ -- 10
+while$ -- 337
 width$ -- 0
-write$ -- 785
-(There were 9 warnings)
+write$ -- 805
+(There were 10 warnings)
