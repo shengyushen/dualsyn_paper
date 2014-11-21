@@ -229,7 +229,7 @@ our algorithm can be seen as a generalization of \cite{ShenTCAD12}.
 Experimental results indicate that,
 for several complex encoders from real projects (e.g., Ethernet \cite{IEEE8023_S4} and PCI Express \cite{pcie21}),
 our algorithms can always correctly identify the flow control variables, infer the predicates and generate the decoders. 
-% All these experimental results and programs can be downloaded from http://www.ssypub.org.
+All these experimental results and programs can be downloaded from https://github.com/shengyushen/compsyn.
 
 
 \emph{The remainder of this paper is organized as follows}.
@@ -1968,13 +1968,81 @@ and ignore the exact value of $\vec{d}$.
 \section{Experimental Results}\label{sec_exp}
 
 We have implemented these algorithms in OCaml language,
-and solved the generated CNF formulas with Minisat\cite{EXTSAT}.
-All experiments have been run on a PC with a 2.4GHz Intel Core 2 Q6600 processor, 8 GB memory, and Ubuntu Linux 12.04.
+and solved the generated CNF formulas with Minisat 1.14\cite{EXTSAT}.
+All experiments have been run on a server with 16 Intel Xeon E5648 processors at 2.67GHz, 
+192GB memory, and CentOS 5.4 Linux.
+All these experimental results and programs can be downloaded 
+from https://github.com/shengyushen/compsyn.
 
-By studying the benchmarks used in our previous papers [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12}],
+\subsection{Benchmarks}
+Table \ref{tab:summ} shows all benchmarks used in this paper.
+They come from three sources:
+\begin{enumerate}
+ \item Our previous paper \cite{ShenTCAD12}. 
+ \item Liu et al. \cite{LiuTCAD12}.
+ \item The benchmark package sent to us by Liu, the author of \cite{LiuTCAD12}.
+ So there may be some overlap between (2) and (3).
+\end{enumerate}
+
+Each column of Table \ref{tab:summ} shows respectively the number of input, output and register of each benchmarks.
+The \#gate and area columns show the number of gates and area of the encoder when mapped to mcnc.genlib library with
+ABC synthesis tool \cite{ABC} with script "strash; dsd; strash; dc2; dc2; dch; map".
+In the remainder of this paper, 
+all circuit areas, gate number and delay are obtained in the same setting.
+
+\begin{table}[t]%
+\tbl{Benchmarks\label{tab:summ}}{%
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+                 & Names     &\#in/\#out &\#reg /\#gate& area & description                          & How to handle\\\hline\hline
+Benchm-          & pcie      & 10 / 11   & 22   / 149  & 326  &PCIE 2.0 encoder                      & Subsection \ref{subsec_pcie2}\\\cline{2-7}
+arks in (1)      & xgxs      & 10 / 10   & 17   / 249  & 572  &10G Ethernet encoder in clause        & Subsection \ref{subsec_10g}\\
+with flow        &           &           &             &      & 48 of IEEE-802.3ae\cite{IEEE8023_S4} &  \\\cline{2-7}
+control          & t2ether   & 14 / 14   & 53   / 427  & 947  &Ethernet encoder in                   & Subsection \ref{subsec_t2e}\\
+                 &           &           &             &      &UltraSPARC T2 processor               &\\\hline\hline
+Benchm-          & xfi       & 72 / 66   & 72   / 5086 & 12381&10G Ethernet encoder in clause        &\\
+arks in (1)      &           &           &             &      & 49 of IEEE-802.3ae\cite{IEEE8023_S4} &\\
+without flow     & scrambler & 64 / 64   & 58   / 353  & 1034 & Transforming a bit stream to         &\\
+control          &           &           &             &      & have lots of 01 flipping             &Comparing in \\\cline{1-6}
+Benchm-          & CC\_3     & 1  / 2    & 3    / 5    & 13   &convolution code                      &Subsection \ref{subsec_nonflow}\\
+arks in (2)      &           &           &             &      & with length 3                        &with \cite{LiuTCAD12}\\\cline{2-6}  
+and (3)          & CC\_4     & 1  / 2    & 4    / 7    & 19   &convolution code                      &\\
+                 &           &           &             &      &with length 4                         &\\\hline
+                 & CC\_13    & 1  / 2    & 13   / 36   & 105  &convolution code                      &\\
+                 &           &           &             &      &with length 13                        &\\\cline{2-6}
+Benchmarks       & CC\_14    & 1 / 2     & 14   / 28   & 84   &convolution code                      &\\
+in (3) but       &           &           &             &      &with length 14                        &\\\cline{2-6}
+not in (2)       & & 1  / 1    & 1    / 1    & 1    &The electrical idle state\\\cline{2-6}
+                 & & 1  / 1    & 1    / 1    & 1    &The electrical idle state\\\hline
+\end{tabular}}
+\end{table}%
+
+
+
+The three benchmarks pcie, xgxs and t2ether shown in Row 2-4 of Table \ref{tab:summ} have flow control mechanisms.
+They will be respectively discussed in Subsection \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.
+
+The following two benchmarks xfi and scrambler in Row 5-6 of Table \ref{tab:summ} have no flow control mechanisms.
+We will compare them 
+
+
+By studying the 5 benchmarks used in our previous papers [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12}],
 we found that most of them have built-in flow control mechanisms.
 This is not a surprise to us,
 because these benchmarks all come from real industrial projects.
+
+ There are 5 benchmarks in this set.
+ Three of them,  have flow control mechanism.
+ The other two, xfi and scrambler, do not have.
+ So we will present 
+ about how to handle their flow control mechanism.
+ This is also the major contribution of this paper.
+ 
+For all other benchmarks in Table{tab:summ} without flow control mechanism,
+we will compare them in Subsection \ref{subsec_nonflow},
+between using our algorithm and \cite{LiuTCAD12}.
+
+
 % But these mechanisms were turned off in previous papers by enforcing manually specified assertion[\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11}],
 % or automatically inferred assertions\cite{ShenTCAD12}.
 % Thus,
@@ -1983,11 +2051,14 @@ because these benchmarks all come from real industrial projects.
 We will present the experimental result for them in Subsections \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.
 
 On the other hand,
-we have also found that the benchmarks used in \cite{TuDAC13} contain no flow control mechanism.
+for those benchmarks without flow control mechanism,
+their input variables can always uniquely determined.
+So our algorithm can recognize all their input variables as flow control variables,
+and direct generate their decoder's Boolean functions.
+
+We have also found that the benchmarks used in \cite{TuDAC13} contain no flow control mechanism.
 But our algorithm can also handle them,
 because they will make Algorithm \ref{alg_fofc} to find that there 
-
-
 
 
 \subsection{PCI Express 2.0 encoder}\label{subsec_pcie2}
@@ -1999,7 +2070,7 @@ it contains 113 AND2 gates, 212 OR2 gates, 68 inverters and 23 registers.
 And its total area is 879.
 
 
-\begin{table}[t]%
+\begin{table}[b]%
 \tbl{The input and output variables of the PCI Express 2.0 encoder\label{tab:pcieio}}{%
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -2011,15 +2082,6 @@ Inputs   & $TXDATAK$            & 1     &1 means $TXDATA$ is a controlling chara
 Outputs  & $HSS\_TXD$           & 10    &The encoded data \\\cline{2-4}
          & $HSS\_TXELECIDLE$    & 1     &The electrical idle state\\\hline
 \end{tabular}}
-% \begin{tabnote}%
-% \Note{Source:}{This is a table
-% sourcenote. This is a table sourcenote. This is a table
-% sourcenote.}
-% \vskip2pt
-% \Note{Note:}{This is a table footnote.}
-% \tabnoteentry{$^a$}{This is a table footnote. This is a
-% table footnote. This is a table footnote.}
-% \end{tabnote}%
 \end{table}%
 
 The list of input and output variables is shown in Table \ref{tab:pcieio}.

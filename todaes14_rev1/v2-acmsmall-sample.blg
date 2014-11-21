@@ -19,35 +19,35 @@ Warning--empty address in CONFLICTLEARN
 You've used 38 entries,
             5290 wiz_defined-function locations,
             1772 strings with 27435 characters,
-and the built_in function-call counts, 43729 in all, are:
-= -- 5457
+and the built_in function-call counts, 43723 in all, are:
+= -- 5454
 > -- 1578
 < -- 11
 + -- 482
 - -- 701
-* -- 2870
+* -- 2868
 := -- 4815
 add.period$ -- 209
 call.type$ -- 38
 change.case$ -- 259
 chr.to.int$ -- 37
 cite$ -- 48
-duplicate$ -- 3611
-empty$ -- 2505
+duplicate$ -- 3612
+empty$ -- 2506
 format.name$ -- 648
-if$ -- 10167
+if$ -- 10168
 int.to.chr$ -- 2
 int.to.str$ -- 0
 missing$ -- 133
-newline$ -- 391
+newline$ -- 389
 num.names$ -- 321
-pop$ -- 1155
+pop$ -- 1158
 preamble$ -- 1
 purify$ -- 447
 quote$ -- 0
 skip$ -- 1077
 stack$ -- 0
-substring$ -- 4306
+substring$ -- 4303
 swap$ -- 433
 text.length$ -- 349
 text.prefix$ -- 0
@@ -56,5 +56,5 @@ type$ -- 526
 warning$ -- 10
 while$ -- 337
 width$ -- 0
-write$ -- 805
+write$ -- 803
 (There were 10 warnings)

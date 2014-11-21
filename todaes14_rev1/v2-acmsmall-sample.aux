@@ -28,7 +28,6 @@
 \newlabel{sec_prem}{{2}{3}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Propositional satisfiability}{3}}
 \newlabel{subsec_SAT}{{2.1}{3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Incremental SAT mechanism of MiniSAT solver}{3}}
 \citation{ShenICCAD09}
 \citation{ShenTCAD10,ShenTCAD11,ShenTCAD12}
 \citation{LiuICCAD11}
@@ -40,6 +39,8 @@
 \citation{LiuTCAD12}
 \citation{TuDAC13}
 \citation{ShenTCAD11}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Incremental SAT mechanism of MiniSAT solver}{4}}
+\newlabel{subsec_incsat}{{2.2}{4}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Finite state machine}{4}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.4}The halting algorithm to determine if an input variable can be uniquely determined by a bounded sequence of output variable vector}{4}}
 \newlabel{subsec_chkextdec}{{2.4}{4}}
@@ -92,17 +93,16 @@
 \newlabel{uniqt1_a}{{4}{9}}
 \newlabel{uniqln_f}{{5}{9}}
 \newlabel{uniqln_a}{{6}{9}}
-\citation{ShenICCAD09,ShenTCAD10}
-\citation{ShenTCAD11}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Reducing the value of $p$ $l$ and $r$}{10}}
 \newlabel{reduceing}{{3.3}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}An alternative approach for comparison}{10}}
+\newlabel{alter}{{3.4}{10}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Inferring predicate that enables the encoder's data vector to be uniquely determined}{10}}
+\newlabel{sec_infer}{{4}{10}}
+\newlabel{checkrsat}{{2}{10}}
 \@writefile{loa}{\contentsline {algocf}{\numberline {4}{\ignorespaces $RemoveRedundancy(p,l,r)$}}{10}}
 \newlabel{algo_remove}{{4}{10}}
 \citation{interp_McMillan}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}An alternative approach for comparison}{11}}
-\newlabel{alter}{{3.4}{11}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Inferring predicate that enables the encoder's data vector to be uniquely determined}{11}}
-\newlabel{sec_infer}{{4}{11}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Characterizing a function that makes a Boolean formula satisfiable}{11}}
 \newlabel{subsec_craig}{{4.1}{11}}
 \newlabel{fchar}{{7}{11}}
@@ -115,13 +115,13 @@
 \@writefile{loa}{\contentsline {algocf}{\numberline {5}{\ignorespaces $CharacterizingFormulaSAT(R,\mathaccent "017E\relax {a},\mathaccent "017E\relax {b},t)$:Characterizing a Boolean function over $\mathaccent "017E\relax {a}$ that can make $R(\mathaccent "017E\relax {a},\mathaccent "017E\relax {b},1)$ satisfiable}}{11}}
 \newlabel{alg_craigchar}{{5}{11}}
 \citation{interp_McMillan}
+\newlabel{fig_mono}{{4}{12}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Inferring $valid(\mathaccent "017E\relax {f})$ that enables $\mathaccent "017E\relax {d}$ to be uniquely determined}{12}}
 \newlabel{subsec_infer}{{4.2}{12}}
 \newlabel{subsub_intro}{{4.2.1}{12}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}\textbf  {Intuitive introduction}}{12}}
-\newlabel{subsub_nonloop}{{4.2.2}{12}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}\textbf  {Computing $FSAT_{PC}(p,l,r)$}}{12}}
-\newlabel{fig_mono}{{4}{13}}
+\newlabel{subsub_nonloop}{{4.2.2}{13}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}\textbf  {Computing $FSAT_{PC}(p,l,r)$}}{13}}
 \newlabel{uniqt1d}{{9}{13}}
 \newlabel{tpc}{{10}{13}}
 \newlabel{fpcq}{{11}{13}}
@@ -134,66 +134,78 @@
 \newlabel{uniqlnd}{{15}{14}}
 \newlabel{tln}{{16}{14}}
 \newlabel{lndef1}{{17}{14}}
+\newlabel{fsat_ln}{{18}{14}}
 \@writefile{loa}{\contentsline {algocf}{\numberline {6}{\ignorespaces $InferringUniqueFormula$:inferring the predicate $valid(\mathaccent "017E\relax {f}_{p+l})$ that enables $\mathaccent "017E\relax {d}_{p+l}$ to be uniquely determined}}{15}}
 \newlabel{algo_infer}{{6}{15}}
-\newlabel{fsat_ln}{{18}{15}}
 \newlabel{prop_ln}{{4.2}{15}}
 \newlabel{subsub_overal}{{4.2.4}{15}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.4}\textbf  {The algorithm to compute $valid(\mathaccent "017E\relax {f})$}}{15}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Proofs of termination and correctness}{15}}
 \newlabel{lemmapcdec}{{4.3}{15}}
 \newlabel{lemmalninc}{{4.4}{15}}
+\newlabel{lemmaln2pc}{{4.5}{15}}
 \newlabel{fig_pcmap}{{5}{16}}
-\newlabel{lemmaln2pc}{{4.5}{16}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Characterizing the decoder's Boolean function}{16}}
+\newlabel{sec_char}{{5}{16}}
+\citation{interp_McMillan}
 \@writefile{loa}{\contentsline {algocf}{\numberline {7}{\ignorespaces $RemoveRedundancy(p,l,r)$}}{17}}
 \newlabel{algo_remove2}{{7}{17}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Characterizing the decoder's Boolean function}{17}}
-\newlabel{sec_char}{{5}{17}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Minimizing the valuation of $l$ and $r$}{17}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Characterizing the decoder's Boolean function that computes $\mathaccent "017E\relax {f}$}{17}}
-\citation{interp_McMillan}
+\newlabel{fa}{{19}{17}}
+\newlabel{fb}{{20}{17}}
 \citation{interp_McMillan}
 \citation{EXTSAT}
+\citation{ShenTCAD12}
+\citation{LiuTCAD12}
+\citation{LiuTCAD12}
+\citation{ShenTCAD12}
+\citation{LiuTCAD12}
 \citation{ShenICCAD09}
 \citation{ShenTCAD10,ShenTCAD11,ShenTCAD12}
-\citation{TuDAC13}
-\newlabel{fa}{{19}{18}}
-\newlabel{fb}{{20}{18}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Characterizing the decoder's Boolean function that computes $\mathaccent "017E\relax {d}$}{18}}
 \newlabel{da}{{21}{18}}
 \newlabel{db}{{22}{18}}
 \@writefile{toc}{\contentsline {section}{\numberline {6}Experimental Results}{18}}
 \newlabel{sec_exp}{{6}{18}}
+\citation{TuDAC13}
 \citation{pcie21}
 \citation{encode8b10b}
 \citation{IEEE8023_S4}
-\citation{encode8b10b}
-\citation{encode8b10b}
+\newlabel{tab:summ}{{I}{19}}
+\newlabel{tab:pcieio}{{II}{19}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.1}PCI Express 2.0 encoder}{19}}
 \newlabel{subsec_pcie2}{{6.1}{19}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}10G Ethernet encoder}{19}}
-\newlabel{subsec_10g}{{6.2}{19}}
-\newlabel{tab:pcieio}{{I}{19}}
+\citation{encode8b10b}
+\citation{encode8b10b}
 \citation{IEEE8023_S4}
 \citation{encode8b10b}
-\newlabel{tab:eth10g}{{II}{20}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}10G Ethernet encoder}{20}}
+\newlabel{subsec_10g}{{6.2}{20}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.3}UltraSPARC T2 Ethernet encoder}{20}}
 \newlabel{subsec_t2e}{{6.3}{20}}
-\newlabel{tab:t2eth}{{III}{20}}
+\newlabel{tab:eth10g}{{III}{20}}
+\citation{LiuTCAD12}
+\newlabel{tab:t2eth}{{IV}{21}}
+\newlabel{tab:one}{{V}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Comparing our algorithm with the state-of-the-art algorithm on circuits without flow control mechanism}{21}}
+\newlabel{subsec_nonflow}{{6.4}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5}Comparing run time overhead of increasing $p$, $l$ and $r$ simultaneously and separately}{21}}
+\newlabel{subsec_incr_plr_exp}{{6.5}{21}}
+\newlabel{tab:comparing_simu_sepa}{{VI}{21}}
 \citation{ShenICCAD09}
 \citation{ShenTCAD11}
 \citation{LiuICCAD11}
 \citation{ShenTCAD12,LiuICCAD11}
 \citation{interp_McMillan}
 \citation{ShenTCAD12}
-\newlabel{tab:one}{{IV}{21}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Comparing run times and circuit areas for the two cases with and without Algorithm 7\hbox {}}{21}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.5}Comparing circuit area and timing for the decoders generated by our algorithm and hand written decoders}{21}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}RELATED PUBLICATIONS}{21}}
-\newlabel{sec_relwork}{{7}{21}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Complementary synthesis}{21}}
-\newlabel{subsec_compsyn_relat}{{7.1}{21}}
-\newlabel{tab:sum}{{V}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6}Comparing run times and circuit areas for the two cases with and without Algorithm 7\hbox {}}{22}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.7}Comparing circuit area and timing for the decoders generated by our algorithm and hand written decoders}{22}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}RELATED PUBLICATIONS}{22}}
+\newlabel{sec_relwork}{{7}{22}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Complementary synthesis}{22}}
+\newlabel{subsec_compsyn_relat}{{7.1}{22}}
+\newlabel{tab:sum}{{VII}{22}}
 \citation{TuDAC13}
 \citation{BradleyVMCAI11,EenFMCAD11}
 \citation{dim_syn}
@@ -209,12 +221,12 @@
 \citation{PRIMECLAUSE,EFFCON}
 \citation{MEMEFFALLSAT}
 \citation{EFFSATUSMCCO}
-\newlabel{tab:comparing_hand}{{VI}{22}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Program inversion}{22}}
-\newlabel{subsec_proinv}{{7.2}{22}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Protocol converter synthesis}{22}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Satisfying Assignments Enumeration}{22}}
-\newlabel{subsec_relallsat}{{7.4}{22}}
+\newlabel{tab:comparing_hand}{{VIII}{23}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Program inversion}{23}}
+\newlabel{subsec_proinv}{{7.2}{23}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Protocol converter synthesis}{23}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Satisfying Assignments Enumeration}{23}}
+\newlabel{subsec_relallsat}{{7.4}{23}}
 \citation{InterpBoolFunction}
 \citation{interpNoProof}
 \citation{scalableFuncDep,Bidecomp}
@@ -227,9 +239,9 @@
 \citation{InterpBoolFunction}
 \citation{pcie21}
 \citation{IEEE8023_S4}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Logic synthesis with Craig interpolation}{23}}
-\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusions}{23}}
-\newlabel{sec_conclude}{{8}{23}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Logic synthesis with Craig interpolation}{24}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusions}{24}}
+\newlabel{sec_conclude}{{8}{24}}
 \bibstyle{ACM-Reference-Format-Journals}
 \bibdata{v2-acmsmall-sample}
 \bibcite{flowcontrol}{\citeauthoryear {Abts and Kim}{Abts and Kim}{2011}}
@@ -270,4 +282,4 @@
 \bibcite{encode8b10b}{\citeauthoryear {Widmer and Franaszek}{Widmer and Franaszek}{1983}}
 \bibcite{ecoInterp}{\citeauthoryear {Wu, Yanga, Huang, and Jiang}{Wu et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2010}}
 \bibcite{CONFLICTLEARN}{\citeauthoryear {Zhang, Madigan, Moskewicz, and Malik}{Zhang et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2001}}
-\lastpage{26}
+\lastpage{27}
