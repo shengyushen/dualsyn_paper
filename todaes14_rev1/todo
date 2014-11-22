@@ -16,3 +16,26 @@ lets define -> we further define
 统一称谓 variable/signal/bit
 vector统一为variable vector
 formula/function over?可以
+
+
+
+
+举一个例子说明8b-10b 其中有输入k码 输出10b
+replaceing control character idle symbols.
+input data variables改成data variables
+
+
+
+find source code on github
+
+I have add assertion for lots of formula, 
+there may be some have not add,
+and there may also be some inconsistency in refering to these lines of formula
+
+explain the struct of our decoder
+explain we only compare area because our timing is much faster
+
+value and valuation unify to valuation
+
+it seems cc13/14 is too complex for current SAT, we need to use xorSAT
+

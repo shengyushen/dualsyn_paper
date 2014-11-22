@@ -84,6 +84,17 @@
 \url{http://dx.doi.org/10.1109/DATE.2008.4484695}}
 
 
+\bibitem[\protect\citeauthoryear{Berkeley Logic Synthesis and Verification
+  Group}{Berkeley Logic Synthesis and Verification Group}{2008}]%
+        {ABC}
+Berkeley Logic Synthesis and Verification Group 2008.
+\newblock ABC:A system for sequential synthesis and verification.
+\newblock   (2008).
+\newblock
+\newblock
+\shownote{http://www.eecs.berkeley.edu/∼alanmi/abc/.}
+
+
 \bibitem[\protect\citeauthoryear{Bradley}{Bradley}{2011}]%
         {BradleyVMCAI11}
 {Aaron~R. Bradley}. 2011.

@@ -681,9 +681,6 @@ Both cases will lead to this Algorithm's termination.
 \section{Identifying flow control variables}\label{sec_findfc}
 We will first introduce how to find out the set of flow control variables in Subsection \ref{basic},
 and then introduce how to speed up this algorithm with incremental SAT.
-We will then introduce how to remove the redundancy of $p$, $l$ and $r$ in Subsection \ref{reduceing},
-and finally present another possible structure of our algorithm in Subsection \ref{alter},
-and discuss why we have chose the one in Subsection \ref{basic} instead of the one in Subsection \ref{alter}.
 
 \subsection{Finding out flow control variables}\label{basic}
 
@@ -889,86 +886,60 @@ They are the procedures provided by MiniSAT's incremental SAT mechanism mentione
 
 
 
-
-\subsection{Reducing the value of $p$ $l$ and $r$}\label{reduceing}
-
-
-\begin{algorithm}[b]
-\SetAlgoVlined
-\KwIn{The valuation of $p$, $l$ and $r$.}
-\KwOut{The minmal valuation of $l$ and $r$ that can still make $F_{PC}(p,l,r)$ unsatisfiable.}
-\For{$r'=r \to 1$} {
-\ShowLnLabel{checkrsat}  \If{$F_{PC}(p,l,r'-1)$ is satisfiable} {
-    break
-  }
-  \ElseIf{$r'\equiv 1$} {
-    $r':=r'-1$\\
-    break
-  }
-}
-\For{$l'=l \to 1$} {
-  \If{$F_{PC}(p,l'-1,r')$ is satisfiable} {
-    break
-  }
-  \ElseIf{$l'\equiv 1$} {
-    $l':=l'-1$\\
-    break
-  }
-}
-return $<d',l'>$
-\caption{$RemoveRedundancy(p,l,r)$}
-\label{algo_remove}
-\end{algorithm}
-
-\textbf{
-Although Algorithm \ref{alg_fofc_inc} is sufficient to determine whether $i$ can be uniquely determined,
-there are some redundancy in the valuations of $<p,d,l>$ found by it,
-which may cause unnecessarily large overheads on the circuit area.}
-
-
-\textbf{
-Thus,
-we use Algorithm \ref{algo_remove} to minimize $l$ and $r$ one by one.
-For each $r'$,
-$r'-1$ is used to checked for $F_{PC}$'s satisfiability at Line \ref{checkrsat}.
-If it is satisfiable,
-$l'$ is returned because it is the smallest $l$ that can make $F_{PC}(p,l,r)$ unsatisfiable.
-On the other hand,
-if it is unsatisfiable but $l'$ already reach $1$,
-then terminate and return 0.
-$l$ is handled similarly.
-}
-
-\textbf{According to Figure \ref{fig_pc},
-it is obvious that $p$ does not affect the decoder's logic complexity and circuit area.
-So we do not minimize its valuation here.
-}
+% 
+% \subsection{Reducing the value of $p$ $l$ and $r$}\label{reduceing}
+% 
+% 
+% \begin{algorithm}[b]
+% \SetAlgoVlined
+% \KwIn{The valuation of $p$, $l$ and $r$.}
+% \KwOut{The minmal valuation of $l$ and $r$ that can still make $F_{PC}(p,l,r)$ unsatisfiable.}
+% \For{$r'=r \to 1$} {
+% \ShowLnLabel{checkrsat}  \If{$F_{PC}(p,l,r'-1)$ is satisfiable} {
+%     break
+%   }
+%   \ElseIf{$r'\equiv 1$} {
+%     $r':=r'-1$\\
+%     break
+%   }
+% }
+% \For{$l'=l \to 1$} {
+%   \If{$F_{PC}(p,l'-1,r')$ is satisfiable} {
+%     break
+%   }
+%   \ElseIf{$l'\equiv 1$} {
+%     $l':=l'-1$\\
+%     break
+%   }
+% }
+% return $<d',l'>$
+% \caption{$RemoveRedundancy(p,l,r)$}
+% \label{algo_remove}
+% \end{algorithm}
+% 
+% \textbf{
+% Although Algorithm \ref{alg_fofc_inc} is sufficient to determine whether $i$ can be uniquely determined,
+% there are some redundancy in the valuations of $<p,d,l>$ found by it,
+% which may cause unnecessarily large overheads on the circuit area.}
+% 
+% 
+% \textbf{
+% Thus,
+% we use Algorithm \ref{algo_remove} to minimize $l$ and $r$ one by one.
+% For each $r'$,
+% $r'-1$ is used to checked for $F_{PC}$'s satisfiability at Line \ref{checkrsat}.
+% If it is satisfiable,
+% $l'$ is returned because it is the smallest $l$ that can make $F_{PC}(p,l,r)$ unsatisfiable.
+% On the other hand,
+% if it is unsatisfiable but $l'$ already reach $1$,
+% then terminate and return 0.
+% $l$ is handled similarly.
+% }
+% 
 
 %Please refer to \cite{ShenTCAD11} for more details.
 
 
-\subsection{An alternative approach for comparison}\label{alter}
-
-In this section,
-we first find out the flow control variables by increasing $p$, $l$ and $r$ simultaneously in Algorithm \ref{alg_fofc_inc},
-and then minimize their valuations with Algorithm \ref{algo_remove}.
-This approach need to call SAT solver for $O(n)$ times,
-with $n=max(p,l,r)$.
-
-\textbf{
-There is another possible way to do this job,
-that is,
-increasing $p$, $l$ and $r$ one by one with three nested loops,
-instead of simultaneously.
-This approach need to call SAT solver for $O(n^3)$ times,
-}
-
-
-\textbf{
-We will show in Subsection \ref{subsec_incr_plr_exp} that,
-increasing $p$, $l$ and $r$ simultaneously is much faster than increasing them separately.
-We will also explain the reason there.
-}
 
 \section{Inferring predicate that enables the encoder's data vector to be uniquely determined}\label{sec_infer}
 
@@ -1531,14 +1502,13 @@ So $\neg FSAT_{LN}(p,l,r)$ covers no valuation of $\vec{f}$ that makes $\vec{d}$
 This proves the only covering case.
 \end{proof}
 
-\section{Characterizing the decoder's Boolean function}\label{sec_char}
-In Section \ref{sec_findfc},
-the encoder's input vector $\vec{i}$ has been partitioned into two vectors:
-the flow control vector $\vec{f}$ and the data vector $\vec{d}$.
-The algorithms to characterize the decoder's Boolean functions that compute $\vec{f}$ and $\vec{d}$ are different,
-so they are discussed separately in the following two subsections.
 
-\subsection{Minimizing the valuation of $l$ and $r$}
+\section{Minimizing the valuation of $l$ and $r$}
+We will first introduce how to remove the redundancy of $l$ and $r$ in Subsection \ref{reduceing},
+and then present another possible structure of our algorithm in Subsection \ref{alter},
+and discuss why we have chose the one in Subsection \ref{reduceing} instead of the one in Subsection \ref{alter}.
+
+\subsection{Minimizing the valuation of $l$ and $r$}\label{reduceing}
 As we have increase the value of $p$,$l$ and $r$ simultaneously in Algorithm \ref{algo_infer},
 there may be some redundancy in the valuation of $p$,$l$ and $r$,
 which may lead to unnecessary overhead in the decoder's circuit area and delay.
@@ -1553,15 +1523,15 @@ But with $l\equiv 1$ and $r\equiv 1$,
 we need an additional register to delay $o_{i-1}$ for one step,
 and then recover $i_i$ by inverting the delayed $o_{i-1}$.
 
-The proposed Algorithm \ref{algo_remove2} is similar to Algorithm \ref{algo_remove}.
-There are two differences between them:
-First,
-we add the newly inferred predicate $valid(vec{f})$ 
-into the formula whose satisfiability is to be checked,
-to make sure that the input vector $\vec{i}$ can still be unsatisfiable.
-Second,
-we do not minimize the value of $p$,
-because it does not affect the decoder's area and delay.
+According to Figure \ref{fig_pc},
+it is obvious that,
+$r$ affect both the decoder's latency and circuit area,
+$l$ affect only the decoder's circuit area,
+while $p$ does not affect the decoder.
+
+So as shown in Algorithm \ref{algo_remove2}
+we chose to first minimize $r$, 
+then minimize $l$.
 
 \begin{algorithm}[t]
 \SetAlgoVlined
@@ -1591,6 +1561,35 @@ return $<l',r'>$
 To simply the presentation,
 we still use $p$, $l$ and $r$ instead of $p'$, $l'$ and $r'$ in the remainder of this paper.
 
+\subsection{An alternative approach for comparison}\label{alter}
+
+In above discussion,
+we first find out the flow control variables by increasing $p$, $l$ and $r$ simultaneously in Algorithm \ref{alg_fofc_inc},
+and then minimize their valuations with Algorithm \ref{algo_remove2}.
+This approach need to call SAT solver for $O(n)$ times,
+with $n=max(p,l,r)$.
+
+\textbf{
+There is another possible way to do this job,
+that is,
+increasing $p$, $l$ and $r$ one by one with three nested loops,
+instead of simultaneously.
+This approach need to call SAT solver for $O(n^3)$ times,
+}
+
+
+\textbf{
+We will show in Subsection \ref{subsec_incr_plr_exp} that,
+increasing $p$, $l$ and $r$ simultaneously is much faster than increasing them separately.
+We will also explain the reason there.
+}
+
+\section{Characterizing the decoder's Boolean function}\label{sec_char}
+In Section \ref{sec_findfc},
+the encoder's input vector $\vec{i}$ has been partitioned into two vectors:
+the flow control vector $\vec{f}$ and the data vector $\vec{d}$.
+The algorithms to characterize the decoder's Boolean functions that compute $\vec{f}$ and $\vec{d}$ are different,
+so they are discussed separately in the following two subsections.
 
 \subsection{Characterizing the decoder's Boolean function that computes $\vec{f}$}
 
@@ -1985,7 +1984,7 @@ They come from three sources:
 \end{enumerate}
 
 Each column of Table \ref{tab:summ} shows respectively the number of input, output and register of each benchmarks.
-The \#gate and area columns show the number of gates and area of the encoder when mapped to mcnc.genlib library with
+The \#gate and area columns show the number of gates and area of the encoder when mapped to mcnc.genlib library by
 ABC synthesis tool \cite{ABC} with script "strash; dsd; strash; dc2; dc2; dch; map".
 In the remainder of this paper, 
 all circuit areas, gate number and delay are obtained in the same setting.
@@ -1994,83 +1993,70 @@ all circuit areas, gate number and delay are obtained in the same setting.
 \tbl{Benchmarks\label{tab:summ}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-                 & Names     &\#in/\#out &\#reg /\#gate& area & description                          & How to handle\\\hline\hline
-Benchm-          & pcie      & 10 / 11   & 22   / 149  & 326  &PCIE 2.0 encoder                      & Subsection \ref{subsec_pcie2}\\\cline{2-7}
-arks in (1)      & xgxs      & 10 / 10   & 17   / 249  & 572  &10G Ethernet encoder in clause        & Subsection \ref{subsec_10g}\\
-with flow        &           &           &             &      & 48 of IEEE-802.3ae\cite{IEEE8023_S4} &  \\\cline{2-7}
-control          & t2ether   & 14 / 14   & 53   / 427  & 947  &Ethernet encoder in                   & Subsection \ref{subsec_t2e}\\
-                 &           &           &             &      &UltraSPARC T2 processor               &\\\hline\hline
-Benchm-          & xfi       & 72 / 66   & 72   / 5086 & 12381&10G Ethernet encoder in clause        &\\
-arks in (1)      &           &           &             &      & 49 of IEEE-802.3ae\cite{IEEE8023_S4} &\\
-without flow     & scrambler & 64 / 64   & 58   / 353  & 1034 & Transforming a bit stream to         &\\
-control          &           &           &             &      & have lots of 01 flipping             &Comparing in \\\cline{1-6}
-Benchm-          & CC\_3     & 1  / 2    & 3    / 5    & 13   &convolution code                      &Subsection \ref{subsec_nonflow}\\
-arks in (2)      &           &           &             &      & with length 3                        &with \cite{LiuTCAD12}\\\cline{2-6}  
-and (3)          & CC\_4     & 1  / 2    & 4    / 7    & 19   &convolution code                      &\\
-                 &           &           &             &      &with length 4                         &\\\hline
+                 & Names     &    \#     &      \#     &Circuit& Description                         & How to \\
+                 &           & in/out    &  reg/gate   &area  &   of Encoders                        & handle\\\hline\hline
+                 & PCIE2     & 10 / 11   & 22   / 149  & 326  &PCIE 2.0                              & Subsection\\
+Benchmarks       &           &           &             &      &\cite{pcie21}                    & \ref{subsec_pcie2}\\\cline{2-7}
+ in Shen         & XGXS      & 10 / 10   & 17   / 249  & 572  &10Gb Ethernet in clause               & Subsection \\
+\citeyear{ShenTCAD12} with&  &           &             &      & 48 of \cite{IEEE8023_S4}             & \ref{subsec_10g} \\\cline{2-7}
+flow control     & T2Eth     & 14 / 14   & 53   / 427  & 947  &Ethernet encoder of                   & Subsection \\
+                 &           &           &             &      &UltraSPARC T2 processor               &\ref{subsec_t2e}\\\hline\hline
+Benchmarks       & XFI       & 72 / 66   & 72   / 5086 & 12381&10Gb Ethernet in clause               &\\
+ in Shen         &           &           &             &      & 49 of \cite{IEEE8023_S4}             &Comparing\\\cline{2-6}
+\citeyear{ShenTCAD12} without&SCRAMBLER&64/64&58/353   & 1034 & Making a bit stream to               &our \\
+flow control     &           &           &             &      & have lots of 01 flipping             & algorithm \\\cline{1-6}
+Benchmarks       & CC\_3     & 1  / 2    & 3    / 5    & 13   &convolution code                      &to Liu\citeyear{LiuTCAD12} \\
+in Liu \citeyear{LiuTCAD12}& &           &             &      & with length 3                        &in \\\cline{2-6}  
+and Liu's        & CC\_4     & 1  / 2    & 4    / 7    & 19   &convolution code                      &Subsection\\
+package          &           &           &             &      &with length 4                         &\ref{subsec_nonflow}\\\hline\hline
                  & CC\_13    & 1  / 2    & 13   / 36   & 105  &convolution code                      &\\
                  &           &           &             &      &with length 13                        &\\\cline{2-6}
-Benchmarks       & CC\_14    & 1 / 2     & 14   / 28   & 84   &convolution code                      &\\
-in (3) but       &           &           &             &      &with length 14                        &\\\cline{2-6}
-not in (2)       & & 1  / 1    & 1    / 1    & 1    &The electrical idle state\\\cline{2-6}
-                 & & 1  / 1    & 1    / 1    & 1    &The electrical idle state\\\hline
+                 & CC\_14    & 1 / 2     & 14   / 28   & 84   &convolution code                      &\\
+                 &           &           &             &      &with length 14                        &\\\cline{2-6}
+                 &HfmAlp5    & 5  / 2    & 9/164       & 389  &                                      &Presented\\\cline{2-5}
+Benchmarks       &HfmSkw5    & 5  / 2    & 10/203      & 482  &                                      & in \\\cline{2-5}
+in Liu's         &HfmSkw6    & 6  / 2    & 12/421      & 1007 & Huffman encoders                     &Subsection\\\cline{2-5}
+package          &HfmJpg8    & 8  / 2    & 12/606      & 1430 & of different size                    &\ref{subsec_nonflow} without \\\cline{2-5}
+but not in       &HfmRnd8    & 8  / 2    & 13/1163     & 2742 &                                      &compared\\\cline{2-5}
+Liu \citeyear{LiuTCAD12}&HfmRnd9& 9  / 2 & 14/2326     & 5606 &                                      &to\\\cline{2-6}
+                 &lfsr12\_6\_4& 1  / 1   & 12/15       & 31   & Linear feedback                      &Liu\citeyear{LiuTCAD12}\\\cline{2-5}
+                 &lfsr26\_6\_2& 1  / 1   & 26/29       & 45   & shift register                       &\\\cline{2-5}
+                 &lfsr32\_7\_6& 1  / 1   & 32/35       & 51   & of different size                    &\\\hline\hline
+Benchmarks       &HM(7,4)    &           &  3/50       &      &                                      &No source\\
+in Liu\citeyear{LiuTCAD12}&  &           &             &      & Hamming encoder                      &code, so not\\\cline{2-5}
+but not in       &HM(15,11)  &           &  4/144      &      & of different size                    &discussed in\\
+package          &           &           &             &      &                                      &this paper\\\hline
 \end{tabular}}
 \end{table}%
 
-
-
-The three benchmarks pcie, xgxs and t2ether shown in Row 2-4 of Table \ref{tab:summ} have flow control mechanisms.
-They will be respectively discussed in Subsection \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.
-
-The following two benchmarks xfi and scrambler in Row 5-6 of Table \ref{tab:summ} have no flow control mechanisms.
-We will compare them 
-
-
-By studying the 5 benchmarks used in our previous papers [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12}],
+The last column of Table \ref{tab:summ} also shows 
+how will we present the experimental result of these benchmarks:
+\begin{enumerate}
+ \item 
+By studying the 5 benchmarks used in our previous papers \cite{ShenTCAD12},
 we found that most of them have built-in flow control mechanisms.
 This is not a surprise to us,
 because these benchmarks all come from real industrial projects.
-
- There are 5 benchmarks in this set.
- Three of them,  have flow control mechanism.
- The other two, xfi and scrambler, do not have.
- So we will present 
- about how to handle their flow control mechanism.
- This is also the major contribution of this paper.
- 
-For all other benchmarks in Table{tab:summ} without flow control mechanism,
-we will compare them in Subsection \ref{subsec_nonflow},
-between using our algorithm and \cite{LiuTCAD12}.
-
-
-% But these mechanisms were turned off in previous papers by enforcing manually specified assertion[\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11}],
-% or automatically inferred assertions\cite{ShenTCAD12}.
-% Thus,
-% the algorithm presented here is the first one that allows the flow control mechanism to be turned on and off freely.
-% We will discuss these benchmarks one by one in the following subsections.
-We will present the experimental result for them in Subsections \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.
-
-On the other hand,
-for those benchmarks without flow control mechanism,
-their input variables can always uniquely determined.
-So our algorithm can recognize all their input variables as flow control variables,
+These three benchmarks will be presented in Subsection 
+\ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.
+ \item 
+For all other benchmarks in Table \ref{tab:summ} without flow control mechanism,
+if their input variables can always uniquely determined,
+our algorithm can recognize all their input variables as flow control variables,
 and direct generate their decoder's Boolean functions.
-
-We have also found that the benchmarks used in \cite{TuDAC13} contain no flow control mechanism.
-But our algorithm can also handle them,
-because they will make Algorithm \ref{alg_fofc} to find that there 
-
+Their experimental results will be presented in Subsection \ref{subsec_nonflow}.
+ \item 
+The last two benchmarks in Table \ref{tab:summ} only exist in \cite{LiuTCAD12}.
+We can not find their source code in the benchmark package sent to us by Liu.
+So we will not discuss them here.
+\end{enumerate}
 
 \subsection{PCI Express 2.0 encoder}\label{subsec_pcie2}
 This encoder is compliant with the PCI Express 2.0 standard \cite{pcie21}.
 After deleting empty line and comments,
 its source code has 259 lines of verilog.
-After being mapped to LSI10K library,
-it contains 113 AND2 gates, 212 OR2 gates, 68 inverters and 23 registers.
-And its total area is 879.
 
-
-\begin{table}[b]%
+\begin{table}[t]%
 \tbl{The input and output variables of the PCI Express 2.0 encoder\label{tab:pcieio}}{%
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -2095,15 +2081,14 @@ we write an assertion to rule out those combinations that are not in this coding
 This assertion is embed into the transition function $T$,
 so that it can be enforced at every step in the unrolled state sequences.
 
-Algorithm \ref{alg_fofc} identifies the flow control variable $CNTL\_TXEnable\_P0$.
-And then Algorithm \ref{algo_infer} infers the predicate $CNTL\_TXEnable\_P0\equiv 1$ that enables the data vector to be uniquely determined.
-% Finally, 
-% with the inferred predicate,
-% generating the decoder's Boolean functions for $CNTL\_TXEnable\_P0$, $TXDATA$ and $TXDATAK$ costs 3.8892 seconds.
-% The area of decoders with and without Algorithm \ref{algo_remove2} are presented in Table \ref{}.
-% After being mapped to LSI10K library,
-% the decoder contains 614 AND2, 198 OR2 and 22 registers.
-% Its total area is 1778.
+Algorithm \ref{alg_fofc} identifies the flow control variable $\vec{f}:=CNTL\_TXEnable\_P0$ in 0.475 seconds.
+And then Algorithm \ref{algo_infer} infers the predicate $valid(\vec{f}):=CNTL\_TXEnable\_P0$ 
+that enables the data vector to be uniquely determined in 1.22 seconds.
+And then Algorithm \ref{algo_remove2} obtains the minimized $p:=3$, $l:=0$ and $r:=2$ in 0.69 seconds.
+Finally, 
+with the inferred $valid(\vec{f})$,
+generating the decoder's Boolean functions for $CNTL\_TXEnable\_P0$, $TXDATA$ and $TXDATAK$ costs 0.26 seconds.
+The decoder contains 159 gates and 0 registers with area 374 and delay 9.1.
 
 
 The major breakthrough of this paper's algorithms is their ability to handle invalid data vector.
@@ -2164,12 +2149,12 @@ So,
 we write an assertion to exclude those combinations that are not in this table
 and embed it into the the transition function $T$.
 
-Algorithm \ref{alg_fofc} identifies the flow control variable $bad\_code$.
-And then Algorithm \ref{algo_infer} infers the predicate $bad\_code\equiv 0$ that enables the data vector to be uniquely determined.
-% Finally, generating the decoder's Boolean functions for $bad\_code$, $encode\_data\_in$ and $konstant$ costs 2.202401 seconds.
-% After being mapped to LSI10K library,
-% the decoder contains 597 AND2, 174 OR2 and 30 registers.
-% Its total area is 1752.
+Algorithm \ref{alg_fofc} identifies the flow control variable $\vec{f}:=bad\_code$ in 0.31 seconds.
+And then Algorithm \ref{algo_infer} infers the predicate $valid(\vec{f}):=\!bad\_code$ 
+that enables the data vector to be uniquely determined in 0.95 seconds.
+And then Algorithm \ref{algo_remove2} obtains the minimized $p:=3$, $l:=0$ and $r:=1$ in 0.52 seconds.
+Finally, generating the decoder's Boolean functions for $bad\_code$, $encode\_data\_in$ and $konstant$ costs 0.17 seconds.
+The decoder contains 138 gates and 0 registers with area 322 and delay 7.0.
 
 Although this encoder uses the same coding mechanism as does the PCI Express 2.0 encoder mentioned above,
 the way it handles the invalid data vector is different.
@@ -2233,7 +2218,7 @@ The last four cases in Table \ref{tab:one} can never be uniquely determined,
 because they cannot be distinguished from the case of `PCS\_ENC\_DATA.
 So we write an assertion to rule them out.
 
-\begin{table}[t]%
+\begin{table}[b]%
 \tbl{Actions to be performed in UltraSPARC T2 Ethernet encoder\label{tab:one}}{%
 \begin{tabular}{|l|l|}
 \hline
@@ -2260,25 +2245,94 @@ The name of action   & The meaning of action\\\hline\hline
 % \end{tabnote}%
 \end{table}%
 
-Algorithm \ref{alg_fofc} identifies the flow control variables $tx\_enc\_ctrl\_sel$, $tx\_en$ and $tx\_er$.
-And then Algorithm \ref{algo_infer} infers the predicate $tx\_enc\_ctrl\_sel\equiv `PCS\_ENC\_DATA$ that enables the data vector to be uniquely determined.
-% Finally, generating the decoder's Boolean functions for $txd$, $tx\_enc\_ctrl\_sel$, $tx\_en$ and $tx\_er$ costs 22.156704 seconds.
-% After being mapped to LSI10K library,
-% the decoder contains 2245 AND2, 794 OR2 and 22 registers.
-% Its total area is 6232.
+Algorithm \ref{alg_fofc} identifies the flow control variables $\vec{f}:=\{tx\_enc\_ctrl\_sel,tx\_en, tx\_er\}$ in 3.76 seconds.
+And then Algorithm \ref{algo_infer} infers the predicate $valid(\vec{f}):=tx\_enc\_ctrl\_sel\equiv `PCS\_ENC\_DATA$ 
+that enables the data vector to be uniquely determined in 21.53 seconds.
+And then Algorithm \ref{algo_remove2} obtains the minimized $p:=4$,$l:=0$ and $r:=4$ in 6.15 seconds.
+Finally, generating the decoder's Boolean functions for $txd$, $tx\_enc\_ctrl\_sel$, $tx\_en$ and $tx\_er$ costs 3.40 seconds.
+The decoder contains 433 gates and 9 registers with area 1020 and delay 11.5.
 
 As shown in the last column of Table \ref{tab:one},
 the first 5 cases have their own particular control symbol values assigned to $tx\_10bdata$,
 so the decoder can recover the value of the flow control variable $tx\_enc\_ctrl\_sel$ from $tx\_10bdata$.
 
 \subsection{Comparing our algorithm with the state-of-the-art algorithm on circuits without flow control mechanism}\label{subsec_nonflow}
-\cite{LiuTCAD12}
+
+Table \ref{tab:comp_nocf} compare our algorithm and \cite{LiuTCAD12} 
+on those benchmarks without flow control mechanism.
+
+The first 3 have flow control mechanism and have benn discussed in Subsection \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.
+So they are not discussed in this subsection.
+
+The 2 benchmarks from XFI and SCRAMBLER have experimental result in \cite{LiuTCAD12},
+and also have source code in the package sent to us by its author.
+So we can compare the result of our algorithm to that of \cite{LiuTCAD12}.
+By comparing the sum of the 2nd and 3rd columns to the 6th column,
+we can find that \cite{LiuTCAD12} is much faster than our algorithm,
+especially for the 2nd column.
+I think this is caused by the fact that our algorithm need to spend lots of time 
+to check whether each input variables $i\in \vec{i}$ can be uniquely determined,
+while \cite{LiuTCAD12} can check all input variables with one SAT solving.
+The other issue is that our decoder is much more larger and slower than that of \cite{LiuTCAD12},
+I think this may caused by the immature implementation of our Craig interpolant generating algorithm,
+which  manipulate the complex proof structure generated from MiniSAT in OCaml.
+This can be significantly improved by porting similar codes from other formal tools, such as ABC \cite{ABC}.
+
+The 2 benchmarks CC\_3 and CC\_4 have experimental result in \cite{LiuTCAD12},
+and also have source code in the package sent to us by its author.
+So we can also compare the result of our algorithm to that of \cite{LiuTCAD12}.
+But by comparing the 4th and 5th column to the 7th and 8th column,
+we find that our decoder area and delay is one magnitude order smaller than \cite{LiuTCAD12}.
+So I think the CC\_3 and CC\_4 in the package sent by Liu is not the one he used in \cite{LiuTCAD12}.
+This is further witnessed by referring to Table II of \cite{LiuTCAD12},
+which says that CC\_3 and CC\_4 respectively contain 6 and 7 registers,
+while our CC\_3 and CC\_4 contain respectively 3 and 4 registers.
+We have contacted Liu but still have not get any reply on this.
+
+
+The last 11 benchmarks from CC\_13 to lfsr32\_7\_6 have no result given in \cite{LiuTCAD12}.
+So we can only show the result of our algorithms.
+We have also show in Table \ref{tab:comp_nocf} that 
+these benchmarks fail in checking their decoders' existence.
+So I think this is the reason that Liu have not include them in his paper \cite{LiuTCAD12}.
+
+
+
+\begin{table}[t]%
+\tbl{Comparing our algorithm with \cite{LiuTCAD12}\label{tab:comp_nocf}}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+            &\multicolumn{4}{|c|}{Our algorithm}                    &\multicolumn{3}{|c|}{\cite{LiuTCAD12}}\\\cline{2-8}
+            &time check.& time    & decoder & decoder               &time check. decoder & decoder & decoder               \\
+Names       & decoder.  & gen.    & area    & delay                 & exist. and gen.    & area    & delay                 \\
+            & exist.    & decoder &         &                       & decoder            &         &                       \\\hline
+ PCIE2      &\multicolumn{7}{|c|}{} \\\cline{1-1}
+ XGXS       &\multicolumn{7}{|c|}{Already presented in Subsection \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.} \\\cline{1-1}
+ T2Eth      &\multicolumn{7}{|c|}{} \\\hline
+XFI         & 13.24     &6.13     & 7520    & 16.4                  & 8.59               &   3913  & 12.5\\\hline
+SCRAMBLER   & 1.80      &0.55     & 476     & 5.7                   & 0.42               &   640   & 3.8 \\\hline
+ CC\_3      & 0.01      &0.01     &6        & 2.0                   & 0.21               & 104     &9.1  \\\hline
+ CC\_4      & 0.03      &0.04     &12       & 3.0                   & 0.20               & 129     &9.0 \\\hline
+ CC\_13     &           &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
+ CC\_14     &           &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
+HfmAlp5     &           &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
+HfmSkw5     &           &\multicolumn{3}{|c|}{Algorithm}            &\multicolumn{3}{|c|}{no result} \\\cline{1-2}
+HfmSkw6     &           &\multicolumn{3}{|c|}{\ref{alg_fofc_inc} found}&\multicolumn{3}{|c|}{given in} \\\cline{1-2}
+HfmJpg8     &           &\multicolumn{3}{|c|}{nothing to be}        &\multicolumn{3}{|c|}{\cite{LiuTCAD12}.} \\\cline{1-2}
+HfmRnd8     &           &\multicolumn{3}{|c|}{uniquely determined.} &\multicolumn{3}{|c|}{So can not} \\\cline{1-2}
+HfmRnd9     &           &\multicolumn{3}{|c|}{Decoder do}           &\multicolumn{3}{|c|}{be compared} \\\cline{1-2}
+lfsr12\_6\_4&           &\multicolumn{3}{|c|}{not exist.}           &\multicolumn{3}{|c|}{here.} \\\cline{1-2}
+lfsr26\_6\_2&           &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
+lfsr32\_7\_6&           &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\hline
+\end{tabular}}
+\end{table}%
+
 
 \subsection{Comparing run time overhead of increasing $p$, $l$ and $r$ simultaneously and separately}\label{subsec_incr_plr_exp}
 
 In Algorithm \ref{alg_fofc_inc},
 we increase $p$, $l$ and $r$ simultaneously,
-and then reduce them with Algorithm \ref{algo_remove}.
+and then reduce them with Algorithm \ref{algo_remove2}.
 We call it A1 in this subsection.
 
 Subsection \ref{alter} shows another possible way to do this.
@@ -2289,21 +2343,32 @@ We compare these two approaches in Table \ref{tab:comparing_simu_sepa}.
 The first three benchmarks are those three circuits with flow control mechanism,
 and the last two benchmarks are those without flow control mechanism.
 
-\begin{table}[b]%
+\begin{table}[t]%
 \tbl{Comparing run time overhead of increasing $p$, $l$ and $r$ simultaneously and separately\label{tab:comparing_simu_sepa}}{%
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
-\multicolumn{2}{|c|}{}          & \multicolumn{5}{|c|}{A1:Increasing simultaneously   }      &  \multicolumn{5}{|c|}{A2:Increasing separately} \\\cline{3-12}
-\multicolumn{2}{|c|}{benchmarks}& p,l,r& time       & time            & time       &  total  & p,l,r& time       & time            & time       & total  \\
-\multicolumn{2}{|c|}{}          &      & find.      & infer.          & minimiz.   &  run    &      & find.      & infer.          & minimiz.   & run \\
-\multicolumn{2}{|c|}{}          &      & $\vec{f}$  & $valid(\vec{f})$& $p$,$l$,$r$&  time   &      & $\vec{f}$  & $valid(\vec{f})$& $p$,$l$,$r$& time \\\hline\hline
-Flow    &PCIE2                  & 3,0,2& 0.49       & 1.21            & 0.68       &  2.38   & 3,0,2& 0.38       & 0.80            & 0.38       & 1.60 \\\cline{2-12}
-Con-    &Eth10G                 & 3,0,1& 0.31       & 0.88            & 0.52       &  1.71   & 3,0,1& 0.23       & 0.58            & 0.30       & 1.11 \\\cline{2-12}
-trol    &T2Eth                  & 4,0,4& 4.28       & 15.17           & 6.25       &  25.70  & 4,0,4& 15.47      & 13.85           & 6.19       & 35.51 \\\hline\hline
-Non-    &XFI                    & 2,1,0& 4.59       & 3.60            & 9.55       & 17.74   & 2,1,0& 3.52       & 2.75            & 10.05      & 16.32 \\\cline{2-12}
-Flow    &Scrambler              & 2,1,0& 0.64       & 0.58            & 1.33       & 2.55    & 2,1,0& 0.48       & 0.43            & 1.47       & 2.38 \\\cline{2-12}
-Con-    &CC\_3                  &      &            & 7146            & 7146       &         & 5,0,4& 19.92      & 7146            & 7146       &  \\\cline{2-12}
-trol    &CC\_4                  &      &            & 7146            & 7146       &         & 5,0,4& 19.92      & 7146            & 7146       &  \\\hline
+                   & \multicolumn{5}{|c|}{A1:Increasing simultaneously   }      &  \multicolumn{5}{|c|}{A2:Increasing separately}           \\\cline{2-11}
+benchmarks         & p,l,r& time       & time            & time       &  total  & p,l,r& time       & time            & time       & total  \\
+                   &      & find.      & infer.          & minimiz.   &  run    &      & find.      & infer.          & minimiz.   & run    \\
+                   &      & $\vec{f}$  & $valid(\vec{f})$& $p$,$l$,$r$&  time   &      & $\vec{f}$  & $valid(\vec{f})$& $p$,$l$,$r$& time   \\\hline\hline
+PCIE2              & 3,0,2& 0.49       & 1.21            & 0.68       &  2.38   & 3,0,2& 0.38       & 0.80            & 0.38       & 1.60   \\\hline
+XGXS               & 3,0,1& 0.31       & 0.88            & 0.52       &  1.71   & 3,0,1& 0.23       & 0.58            & 0.30       & 1.11   \\\hline
+T2Eth              & 4,0,4& 4.28       & 15.17           & 6.25       &  25.70  & 4,0,4& 15.47      & 13.85           & 6.19       & 35.51  \\\hline
+XFI                & 2,1,0& 4.59       & 3.60            & 9.55       & 17.74   & 2,1,0& 3.52       & 2.75            & 10.05      & 16.32  \\\hline
+SCRAMBLER          & 2,1,0& 0.64       & 0.58            & 1.33       & 2.55    & 2,1,0& 0.48       & 0.43            & 1.47       & 2.38   \\\hline
+CC\_3              & 2,0,1& 0.003      & 0.003           & 0.007      &  0.01   & 3,0,1& 0.001      & 0.001           & 0.006      & 0.01   \\\hline
+CC\_4              & 2,1,1& 0.005      & 0.004           & 0.011      &  0.02   & 3,1,1& 0.003      & 0.003           & 0.011      & 0.02       \\\hline
+ CC\_13            & 6,6,6& 3177       &\multicolumn{3}{|c|}{}                  & 6,5,6&2848.07     &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
+ CC\_14            & 6,6,6& 827        &\multicolumn{3}{|c|}{}                  & 6,5,6& 838.56     &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
+HfmAlp5            & 3,3,3&0.26        &\multicolumn{3}{|c|}{Decoder does}      & 3,2,2&0.15        &\multicolumn{3}{|c|}{Decoder does}      \\\cline{1-3}\cline{7-8}
+HfmSkw5            & 3,3,3&0.48        &\multicolumn{3}{|c|}{not exist. So}     & 3,3,3&0.42        &\multicolumn{3}{|c|}{not exist. So}     \\\cline{1-3}\cline{7-8}
+HfmSkw6            & 3,3,3&1.04        &\multicolumn{3}{|c|}{no these value}    & 3,3,3&1.02        &\multicolumn{3}{|c|}{no these value}    \\\cline{1-3}\cline{7-8}
+HfmJpg8            & 3,3,3&1.6         &\multicolumn{3}{|c|}{}                  & 3,2,2&1.09        &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
+HfmRnd8            & 4,4,4&9.12        &\multicolumn{3}{|c|}{}                  & 4,4,4&21.25       &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
+HfmRnd9            & 5,5,5&56.92       &\multicolumn{3}{|c|}{}                  & 5,5,4&85.36       &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
+lfsr12\_6\_4       &32,32,32&670.79    &\multicolumn{3}{|c|}{}                  &32,32,32&2058.65   &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
+lfsr26\_6\_2       &      &            &\multicolumn{3}{|c|}{}                  &      &            &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
+lfsr32\_7\_6       &16,16,16&  55.47   &\multicolumn{3}{|c|}{}                  &16,16,16&138.80    &\multicolumn{3}{|c|}{}                  \\\hline
 \end{tabular}}
 \end{table}%
 
@@ -2336,11 +2401,43 @@ Algorithm \ref{alg_fofc_inc} instead of A2.
 
 
 
-\subsection{Comparing run times and circuit areas for the two cases with and without Algorithm \ref{algo_remove2}}
+\subsection{Comparing run times, circuit areas and delay between the two approaches 
+with and without minimizing $p$,$l$ and $r$ by Algorithm \ref{algo_remove2}}
+
+\begin{table}[t]%
+\tbl{Comparing run times, circuit areas and delay between the two approaches 
+with and without minimizing $p$,$l$ and $r$ by Algorithm \ref{algo_remove2}\label{tab:compare_min}}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+       & run       & run              & \multicolumn{5}{|c|}{Not minimizing $l$ and $r$ with Alg. \ref{algo_remove2}} &  \multicolumn{5}{|c|}{Minimizing $l$ and $r$ with Alg. \ref{algo_remove2}} \\\cline{4-13}
+bench- & time      & time             & p,l,r& runtime    & decoder & \#  & max                  & p,l,r& runtime    & decoder & \#  & max             \\
+marks  & find.     & find.            &      & generat.   & area    & of  &  logic               &      & generat.   & area    & of  &logic            \\
+       & $\vec{f}$ & $valid(\vec{f})$ &      & decoder    &         & reg &delay                 &      & decoder    &         & reg & delay           \\\hline\hline
+PCIE2  &   0.49    & 1.21             & 3,3,3& 0.44       &  382    & 11  & 7.5                  & 3,0,2& 0.28       &  374    & 0   & 9.1             \\\hline
+XGXS   &   0.31    & 0.88             & 3,3,3& 0.35       &  351    &20   &8.2                   & 3,0,1& 0.18       &  322    & 0   & 7.0             \\\hline
+T2Eth  &   4.28    & 15.17            & 4,4,4& 4.76       &  1178   & 9   & 10.9                 & 4,0,4& 3.41       &  1557   & 9   & 11.8            \\\hline
+XFI    &   4.59    & 3.60             & 2,2,2& 10.67      & 5079    &190  & 16.50                & 2,1,0& 6.05       &  6023   & 58  & 15.5                \\\hline
+SCRAMBLER& 0.64    & 0.58             & 2,2,2& 1.27       & 826     &186  &  3.8                 & 2,1,0& 0.55       &  698    & 58  & 3.8                \\\hline
+ CC\_3 & \multicolumn{12}{|c|}{}                          \\\cline{1-1}
+ CC\_4 & \multicolumn{12}{|c|}{}                          \\\cline{1-1}
+ CC\_13& \multicolumn{12}{|c|}{}                          \\\cline{1-1}
+ CC\_14& \multicolumn{12}{|c|}{}                          \\\cline{1-1}
+HfmAlp5& \multicolumn{12}{|c|}{}                          \\\cline{1-1}
+HfmSkw5& \multicolumn{12}{|c|}{Decoder do not }           \\\cline{1-1}
+HfmSkw6& \multicolumn{12}{|c|}{exist. no result here}     \\\cline{1-1}
+HfmJpg8& \multicolumn{12}{|c|}{}                          \\\cline{1-1}
+HfmRnd8& \multicolumn{12}{|c|}{}                          \\\cline{1-1}
+HfmRnd9& \multicolumn{12}{|c|}{}                          \\\cline{1-1}
+lfsr12\_6\_4&\multicolumn{12}{|c|}{}                      \\\cline{1-1}
+lfsr26\_6\_2&\multicolumn{12}{|c|}{}                      \\\cline{1-1}
+lfsr32\_7\_6&\multicolumn{12}{|c|}{}                      \\\hline
+\end{tabular}}
+\end{table}%
+
 To improve the decoder's circuit area and timing,
 Algorithm \ref{algo_remove2} is invoked to reduce $l$ and $r$ before characterizing the decoder's Boolean function.
 To show its efficiency,
-we present the experimental result in Table \ref{tab:sum}.
+we present the experimental result in Table \ref{tab:compare_min}.
 
 The first column is the benchmarks.
 The second and third columns are the run time overhead of 
@@ -2357,33 +2454,39 @@ By comparing the 4-7 columns with the 8-11 columns,
 it is obvious that the decoders area and number of registers are significantly reduced,
 with significant runtime overhead in reducing $p$, $l$ and $r$.
 
-\begin{table}[b]%
-\tbl{The summary of experimental results\label{tab:sum}}{%
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
-\hline
-       & run       & run              & \multicolumn{4}{|c|}{Without Alg. \ref{algo_remove2}} &  \multicolumn{4}{|c|}{With Alg. \ref{algo_remove2}} \\\cline{4-11}
-bench- & time      & time             & p,l,r& runtime    & decoder & \#                      & p,l,r& runtime    & decoder & \#               \\
-marks  & find.     & find.            &      & generat.   & area    & of                      &      & generat.   & area    & of               \\
-       & $\vec{f}$ & $valid(\vec{f})$ &      & decoder    &         & reg                     &      & decoder    &         & reg              \\\hline\hline
-PCIE2  & 1.04      & 1.86             & 4,4,4& 2.77       & 1642    & 22                      & 4,0,2&4.05        & 2363    & 0                \\\hline
-Eth10G & 0.45      & 1.39             & 4,4,4& 2.03       & 1538    & 30                      & 4,0,1&3.01        & 1484    & 0                \\\hline
-T2Eth  & 12.37     & 21.58            & 5,5,5& 19.92      & 7146    & 22                      & 5,0,4&34.29       & 5212    & 9                \\\hline
-\end{tabular}}
-\end{table}%
 
 \subsection{Comparing circuit area and timing for the decoders generated by our algorithm and hand written decoders}
 
-\begin{table}[t]%
-\tbl{The summary of experimental results\label{tab:comparing_hand}}{%
+\begin{table}[b]%
+\tbl{Comparing circuit area and timing for the decoders generated by our algorithm and hand written decoders\label{tab:comparing_hand}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
 bench- & \multicolumn{2}{|c|}{Decoder generated by us} &  \multicolumn{2}{|c|}{Hand written decoder} \\\cline{2-5}
 marks  & area    & critical path timing    &area    & critical path timing               \\\hline
 PCIE2  & 2363    &&952 &19.03\\\hline
-Eth10G & 1484    &&913 &12.33\\\hline
+XGXS   & 1484    &&913 &12.33\\\hline
 T2Eth  & 5212    &&2225&23.36\\\hline
+XFI    & 5212    &&2225&23.36\\\hline
+SCRAMBLER& 5212  &&2225&23.36\\\hline
+ CC\_3 &     \multicolumn{4}{|c|}{}\\\cline{1-1}
+ CC\_4 &     \multicolumn{4}{|c|}{}\\\cline{1-1}
+ CC\_13&     \multicolumn{4}{|c|}{}\\\cline{1-1}
+ CC\_14&     \multicolumn{4}{|c|}{}\\\cline{1-1}
+HfmAlp5&     \multicolumn{4}{|c|}{}\\\cline{1-1}
+HfmSkw5&     \multicolumn{4}{|c|}{}\\\cline{1-1}
+HfmSkw6&     \multicolumn{4}{|c|}{Decoder do not exist.}\\\cline{1-1}
+HfmJpg8&     \multicolumn{4}{|c|}{No result here}\\\cline{1-1}
+HfmRnd8&     \multicolumn{4}{|c|}{}\\\cline{1-1}
+HfmRnd9&     \multicolumn{4}{|c|}{}\\\cline{1-1}
+lfsr12\_6\_4&\multicolumn{4}{|c|}{}\\\cline{1-1}
+lfsr26\_6\_2&\multicolumn{4}{|c|}{}\\\cline{1-1}
+lfsr32\_7\_6&\multicolumn{4}{|c|}{}\\\hline
 \end{tabular}}
 \end{table}%
+
+Table \ref{tab:comparing_hand} compares the circuit area and timing of 
+the decoders generated by our algorithm and hand written decoders.
+
 
 \section{RELATED PUBLICATIONS}\label{sec_relwork}
 %\subsection{Complementary Synthesis}

@@ -16,45 +16,45 @@ Warning--empty address in scalableFuncDep
 Warning--empty address in Bidecomp
 Warning--empty address in ecoInterp
 Warning--empty address in CONFLICTLEARN
-You've used 38 entries,
+You've used 39 entries,
             5290 wiz_defined-function locations,
-            1772 strings with 27435 characters,
-and the built_in function-call counts, 43723 in all, are:
-= -- 5454
+            1777 strings with 27585 characters,
+and the built_in function-call counts, 44253 in all, are:
+= -- 5510
 > -- 1578
 < -- 11
 + -- 482
 - -- 701
-* -- 2868
-:= -- 4815
-add.period$ -- 209
-call.type$ -- 38
-change.case$ -- 259
-chr.to.int$ -- 37
-cite$ -- 48
-duplicate$ -- 3612
-empty$ -- 2506
+* -- 2895
+:= -- 4851
+add.period$ -- 214
+call.type$ -- 39
+change.case$ -- 264
+chr.to.int$ -- 38
+cite$ -- 49
+duplicate$ -- 3677
+empty$ -- 2558
 format.name$ -- 648
-if$ -- 10168
+if$ -- 10305
 int.to.chr$ -- 2
 int.to.str$ -- 0
 missing$ -- 133
-newline$ -- 389
+newline$ -- 399
 num.names$ -- 321
-pop$ -- 1158
+pop$ -- 1189
 preamble$ -- 1
-purify$ -- 447
+purify$ -- 457
 quote$ -- 0
-skip$ -- 1077
+skip$ -- 1092
 stack$ -- 0
-substring$ -- 4303
-swap$ -- 433
+substring$ -- 4345
+swap$ -- 436
 text.length$ -- 349
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 526
+type$ -- 540
 warning$ -- 10
 while$ -- 337
 width$ -- 0
-write$ -- 803
+write$ -- 822
 (There were 10 warnings)
