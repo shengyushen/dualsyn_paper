@@ -175,22 +175,9 @@ Berkeley Logic Synthesis and Verification Group 2008.
 
 
 \bibitem[\protect\citeauthoryear{Ganai, Gupta, and Ashar}{Ganai
-  et~al\mbox{.}}{2004a}]%
-        {Cofact}
-{Malay~K. Ganai}, {Aarti Gupta}, {and} {Pranav Ashar}. 2004a.
-\newblock \showarticletitle{Efficient sat-based unbounded symbolic model
-  checking using circuit cofactoring}. In {\em Proceedings of the 2004 IEEE/ACM
-  International conference on Computer-aided design,ICCAD 2004} {\em (ICCAD
-  '04)}. IEEE Computer Society, San Jose, CA, USA, 510--517.
-\newblock
-\showDOI{%
-\url{http://dx.doi.org/10.1109/ICCAD.2004.1382631}}
-
-
-\bibitem[\protect\citeauthoryear{Ganai, Gupta, and Ashar}{Ganai
-  et~al\mbox{.}}{2004b}]%
+  et~al\mbox{.}}{2004}]%
         {EFFSATUSMCCO}
-{Malay~K. Ganai}, {Aarti Gupta}, {and} {Pranav Ashar}. 2004b.
+{Malay~K. Ganai}, {Aarti Gupta}, {and} {Pranav Ashar}. 2004.
 \newblock \showarticletitle{Efficient sat-based unbounded symbolic model
   checking using circuit cofactoring}. In {\em Proceedings of the 2004
   International Conference on Computer-Aided Design, ICCAD 2004} {\em (ICCAD

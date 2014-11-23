@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.10.26)  21 NOV 2014 23:35
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.10.26)  23 NOV 2014 23:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -267,9 +267,6 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 LaTeX Font Info:    Font shape `OT1/pnc/bx/n' in size <10> not available
 (Font)              Font shape `OT1/pnc/b/n' tried instead on input line 142.
 
-Underfull \vbox (badness 4927) has occurred while \output is active []
-
-
 Overfull \vbox (72.27pt too high) has occurred while \output is active []
 
  [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
@@ -279,21 +276,12 @@ Non-PDF special ignored!
 File: nonuniq.pdf Graphic file (type pdf)
 
 <use nonuniq.pdf>
-Package pdftex.def Info: nonuniq.pdf used on input line 188.
+Package pdftex.def Info: nonuniq.pdf used on input line 195.
 (pdftex.def)             Requested size: 396.0pt x 137.54922pt.
  [2 <./nonuniq.pdf>]
-Underfull \hbox (badness 3199) in paragraph at lines 301--308
-[]\OT1/pnc/m/n/10 According to [Ganai et al[] 2004a], the pos-i-tive and neg-a-
-tive co-fac-tors of
- []
-
-
-Underfull \hbox (badness 1142) in paragraph at lines 301--308
-\OML/cmm/m/it/10 f\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 v[] [] v [] v[]\OT1/cmr/m/n
-/10 )$ \OT1/pnc/m/n/10 with re-spect to vari-able $\OML/cmm/m/it/10 v$ \OT1/pnc
-/m/n/10 are $\OML/cmm/m/it/10 f[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 f\OT1/cmr/
-m/n/10 (\OML/cmm/m/it/10 v[] [] \OT1/cmr/m/n/10 1 [] \OML/cmm/m/it/10 v[]\OT1/c
-mr/m/n/10 )$ \OT1/pnc/m/n/10 and $\OML/cmm/m/it/10 f[] \OT1/cmr/m/n/10 =
+Underfull \hbox (badness 2326) in paragraph at lines 236--242
+[]\OT1/pnc/m/n/10 Experimental re-sults in-di-cate that, for sev-eral com-plex 
+en-coders from real
  []
 
 
@@ -301,72 +289,66 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [3]
 LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <9> not available
-(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 409.
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 421.
 LaTeX Font Info:    Font shape `OT1/phv/bx/it' in size <9> not available
-(Font)              Font shape `OT1/phv/b/it' tried instead on input line 409.
+(Font)              Font shape `OT1/phv/b/it' tried instead on input line 421.
 LaTeX Font Info:    Font shape `OT1/phv/b/it' in size <9> not available
-(Font)              Font shape `OT1/phv/b/sl' tried instead on input line 409.
+(Font)              Font shape `OT1/phv/b/sl' tried instead on input line 421.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [4]
-<pc.pdf, id=41, 445.20729pt x 204.495pt>
+[4] <pc.pdf, id=41, 445.20729pt x 173.04349pt>
 File: pc.pdf Graphic file (type pdf)
  <use pc.pdf>
-Package pdftex.def Info: pc.pdf used on input line 445.
-(pdftex.def)             Requested size: 396.0pt x 181.9001pt.
+Package pdftex.def Info: pc.pdf used on input line 457.
+(pdftex.def)             Requested size: 396.0pt x 153.92372pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [5 <./pc.pdf>] <ln.pdf, id=72, 534.93448pt x 205.63326pt>
+ [5 <./pc.pdf>] <ln.pdf, id=72, 534.93448pt x 168.3921pt>
 File: ln.pdf Graphic file (type pdf)
  <use ln.pdf>
-Package pdftex.def Info: ln.pdf used on input line 595.
-(pdftex.def)             Requested size: 396.0pt x 152.2321pt.
+Package pdftex.def Info: ln.pdf used on input line 613.
+(pdftex.def)             Requested size: 396.0pt x 124.66216pt.
  [6 <./ln.pdf>]
 LaTeX Font Info:    Font shape `OT1/pnc/bx/n' in size <9> not available
-(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 631.
+(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 664.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 631.
+(Font)              <9> on input line 664.
 LaTeX Font Info:    Font shape `OT1/pnc/bx/n' in size <7> not available
-(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 633.
+(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 666.
 LaTeX Font Info:    Font shape `OT1/pnc/bx/n' in size <6.25002> not available
-(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 633.
+(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 666.
 
-Underfull \vbox (badness 3954) has occurred while \output is active []
+Underfull \vbox (badness 7558) has occurred while \output is active []
 
  [7]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+[8] [9] [10]
+Underfull \hbox (badness 1796) in paragraph at lines 1184--1187
+[]\OT1/pnc/m/n/10 If $\OML/cmm/m/it/10 F[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 p; 
+l; r\OT1/cmr/m/n/10 )$ \OT1/pnc/m/n/10 is sat-is-fi-able, then $[]$ can-not be 
+uniquely de-ter-mined by $\OML/cmm/m/it/10 <
+ []
 
- [8]
-[9]
-Underfull \vbox (badness 1297) has occurred while \output is active []
 
- [10]
-<mono.pdf, id=118, 246.44571pt x 143.7089pt>
+Underfull \vbox (badness 1194) has occurred while \output is active []
+
+ [11]
+<mono.pdf, id=120, 246.44571pt x 143.7089pt>
 File: mono.pdf Graphic file (type pdf)
  <use mono.pdf>
-Package pdftex.def Info: mono.pdf used on input line 1099.
+Package pdftex.def Info: mono.pdf used on input line 1292.
 (pdftex.def)             Requested size: 198.0pt x 115.46063pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [11]
-Underfull \hbox (badness 1796) in paragraph at lines 1150--1153
+ [12]
+Underfull \hbox (badness 1776) in paragraph at lines 1335--1342
 []\OT1/pnc/m/n/10 If $\OML/cmm/m/it/10 F[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 p; 
 l; r\OT1/cmr/m/n/10 )$ \OT1/pnc/m/n/10 is sat-is-fi-able, then $[]$ can-not be 
 uniquely de-ter-mined by $\OML/cmm/m/it/10 <
  []
 
-[12 <./mono.pdf>]
-Underfull \hbox (badness 1776) in paragraph at lines 1275--1281
-[]\OT1/pnc/m/n/10 If $\OML/cmm/m/it/10 F[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 p; 
-l; r\OT1/cmr/m/n/10 )$ \OT1/pnc/m/n/10 is sat-is-fi-able, then $[]$ can-not be 
-uniquely de-ter-mined by $\OML/cmm/m/it/10 <
- []
-
-[13]
-Underfull \hbox (badness 2521) in paragraph at lines 1386--1391
+[13 <./mono.pdf>]
+Underfull \hbox (badness 2521) in paragraph at lines 1457--1461
 []\OT1/pnc/m/n/10 According to Equa-tion (14[]) and Al-go-rithm 4[], we know th
 at $\OML/cmm/m/it/10 A$ \OT1/pnc/m/n/10 can make
  []
@@ -374,21 +356,80 @@ at $\OML/cmm/m/it/10 A$ \OT1/pnc/m/n/10 can make
 [14] <pcmap.pdf, id=140, 410.56487pt x 245.2111pt>
 File: pcmap.pdf Graphic file (type pdf)
  <use pcmap.pdf>
-Package pdftex.def Info: pcmap.pdf used on input line 1417.
+Package pdftex.def Info: pcmap.pdf used on input line 1492.
 (pdftex.def)             Requested size: 277.19879pt x 165.55524pt.
- [15 <./pcmap.pdf>] [16] [17] [18]
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [19]
-[20] [21]
+<lnmap.pdf, id=141, 359.94978pt x 186.15749pt>
+File: lnmap.pdf Graphic file (type pdf)
+ <use lnmap.pdf>
+Package pdftex.def Info: lnmap.pdf used on input line 1500.
+(pdftex.def)             Requested size: 277.19879pt x 143.36443pt.
+ [15 <./pcmap.pdf> <./lnmap.pdf>]
+Underfull \hbox (badness 1490) in paragraph at lines 1537--1540
+[] \OT1/pnc/m/n/10 It is ob-vi-ous that the clause set of $\OML/cmm/m/it/10 F[]
+\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 p; l; r; \OT1/cmr/m/n/10 1)$ \OT1/pnc/m/n/10 
+is a su-per set of
+ []
+
+
+Underfull \hbox (badness 2538) in paragraph at lines 1537--1540
+\OML/cmm/m/it/10 F[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 p; l; r; \OT1/cmr/m/n/10 
+1)$\OT1/pnc/m/n/10 . So ev-ery sat-is-fy-ing as-sign-ment of $\OML/cmm/m/it/10 
+F[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 p; l; r; \OT1/cmr/m/n/10 1)$ \OT1/pnc/m/n/
+10 can also sat-isfy
+ []
+
+
+Underfull \hbox (badness 1097) in paragraph at lines 1582--1585
+[]\OT1/pnc/m/n/10 We then prove the only cov-er-ing case. If $\OML/cmm/m/it/10 
+A$ \OT1/pnc/m/n/10 is a val-u-a-tion of $[]$ cov-ered by
+ []
+
+
+Underfull \hbox (badness 3375) in paragraph at lines 1587--1591
+[]$\OML/cmm/m/it/10 FSAT[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 p[]; l[]; r[]\OT1/c
+mr/m/n/10 )$ \OT1/pnc/m/n/10 also cov-ers $\OML/cmm/m/it/10 A$\OT1/pnc/m/n/10 .
+ Ac-cord-ing to Lemma 4.4[], for all $\OML/cmm/m/it/10 p[] >
+ []
+
+
+Underfull \hbox (badness 1057) in paragraph at lines 1591--1597
+\OML/cmm/m/it/10 r[] > max\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 r[]; r\OT1/cmr/m/n/
+10 )$\OT1/pnc/m/n/10 , $\OML/cmm/m/it/10 FSAT[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/1
+0 p[]; l[]; r[]\OT1/cmr/m/n/10 )$ \OT1/pnc/m/n/10 must be equal to $\OML/cmm/m/
+it/10 FSAT[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 p; l; r\OT1/cmr/m/n/10 )$\OT1/pnc
+/m/n/10 . Thus
+ []
+
+
+Underfull \hbox (badness 1158) in paragraph at lines 1599--1602
+[]\OT1/pnc/m/n/10 These two cases con-flit with each other. So there is no such
+ $\OML/cmm/m/it/10 A$ \OT1/pnc/m/n/10 cov-ered by
+ []
+
+[16]
 Underfull \vbox (badness 1292) has occurred while \output is active []
 
- [22]
-[23]
-Underfull \vbox (badness 7379) has occurred while \output is active []
+ [17]
+[18] [19] [20]
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [24]
-[25] (./v2-acmsmall-sample.bbl
+ [21]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [22]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [23]
+[24]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [25]
+[26]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [27]
+(./v2-acmsmall-sample.bbl
 Underfull \hbox (badness 4391) in paragraph at lines 37--44
 []\OT1/pnc/m/n/8 Dennis Abts and John Kim. 2011. \OT1/pnc/m/it/8 High Per-for-m
 ance Dat-a-cen-ter Net-works \OT1/pnc/m/n/8 (1st. ed.). Syn-the-
@@ -415,143 +456,122 @@ Underfull \hbox (badness 2173) in paragraph at lines 49--59
 Missing character: There is no â in font pncr7t!
 Missing character: There is no ˆ in font pncr7t!
 Missing character: There is no ¼ in font pncr7t!
-
-Underfull \vbox (badness 2512) has occurred while \output is active []
-
- [26]
-Underfull \hbox (badness 10000) in paragraph at lines 193--201
-[]\OT1/pnc/m/n/8 Malay K. Ganai, Aarti Gupta, and Pranav Ashar. 2004b. Ef-fi-ci
-ent sat-based un-bounded
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 193--201
-\OT1/pnc/m/n/8 sym-bolic model check-ing us-ing cir-cuit co-fac-tor-ing. In \OT
-1/pnc/m/it/8 Pro-ceed-ings of the 2004 In-ter-na-
- []
-
-
-Underfull \hbox (badness 7486) in paragraph at lines 193--201
-\OT1/pnc/m/it/8 tional Con-fer-ence on Computer-Aided De-sign, IC-CAD 2004 (IC-
-CAD '04)\OT1/pnc/m/n/8 . ACM, 510--517.
- []
-
-
-Underfull \hbox (badness 3601) in paragraph at lines 206--215
+[28]
+Underfull \hbox (badness 3601) in paragraph at lines 193--202
 []\OT1/pnc/m/n/8 Robert Gl[]uck and Masahiko Kawabe. 2005. A method for au-to-m
 atic pro-gram in-ver-sion based
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 206--215
+Underfull \hbox (badness 10000) in paragraph at lines 193--202
 \OT1/pnc/m/n/8 on LR(0) pars-ing. \OT1/pnc/m/it/8 Jour-nal Fun-da-menta In-for-
 mat-i-cae \OT1/pnc/m/n/8 66, 4 (Jan-uary 2005), 367--395.
  []
 
 
-Underfull \hbox (badness 1596) in paragraph at lines 317--326
+Underfull \hbox (badness 1596) in paragraph at lines 304--313
 []\OT1/pnc/m/n/8 Hsiou-Yuan Liu, Yen-Cheng Chou, Chen-Hsuan Lin, and Jie-Hong R
 . Jiang. 2011. To-wards com-
  []
 
 
-Underfull \hbox (badness 2452) in paragraph at lines 317--326
+Underfull \hbox (badness 2452) in paragraph at lines 304--313
 \OT1/pnc/m/n/8 pletely au-to-matic de-coder syn-the-sis. In \OT1/pnc/m/it/8 Pro
 -ceed-ings of the 2011 In-ter-na-tional Con-fer-ence on
  []
 
 
-Underfull \hbox (badness 1048) in paragraph at lines 317--326
+Underfull \hbox (badness 1048) in paragraph at lines 304--313
 \OT1/pnc/m/it/8 Computer-Aided De-sign, IC-CAD 2011 (IC-CAD '11)\OT1/pnc/m/n/8 
 . IEEE Press, San Jose, CA, USA, 389--395.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 331--341
+Underfull \hbox (badness 10000) in paragraph at lines 318--328
 []\OT1/pnc/m/n/8 Hsiou-Yuan Liu, Yen-Cheng Chou, Chen-Hsuan Lin, and Jie-Hong R
 . Jiang. 2012. Au-to-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 331--341
+Underfull \hbox (badness 10000) in paragraph at lines 318--328
 \OT1/pnc/m/n/8 matic De-coder Syn-the-sis: Meth-ods and Case Stud-ies. \OT1/pnc
 /m/it/8 IEEE Trans-ac-tions on Computer-
  []
 
 
-Underfull \hbox (badness 2884) in paragraph at lines 331--341
+Underfull \hbox (badness 2884) in paragraph at lines 318--328
 \OT1/pnc/m/it/8 Aided De-sign of In-te-grated Cir-cuits and Sys-tems \OT1/pnc/m
 /n/8 31, 9 (Septem-ber 2012), 31:1319--31:1331.
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [27]
-Underfull \hbox (badness 4913) in paragraph at lines 358--366
+Underfull \hbox (badness 4913) in paragraph at lines 345--353
 []\OT1/pnc/m/n/8 Kenneth L. McMil-lan. 2003. In-ter-po-la-tion and sat-based mo
 del check-ing. In \OT1/pnc/m/it/8 Com-puter Aided
  []
 
 
-Underfull \hbox (badness 4168) in paragraph at lines 358--366
+Underfull \hbox (badness 4168) in paragraph at lines 345--353
 \OT1/pnc/m/it/8 Ver-i-fi-ca-tion, 15th In-ter-na-tional Con-fer-ence, CAV 2003\
 OT1/pnc/m/n/8 , Fabio Somenzi War-ren A. Hunt Jr.
  []
 
 
-Underfull \hbox (badness 2088) in paragraph at lines 437--447
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [29]
+Underfull \hbox (badness 2088) in paragraph at lines 424--434
 \OT1/pnc/m/n/8 ing Al-go-rithm to De-ter-mine the Ex-is-tence of the De-coder. 
 \OT1/pnc/m/it/8 IEEE Trans-ac-tions on Computer-
  []
 
 
-Underfull \hbox (badness 4341) in paragraph at lines 437--447
+Underfull \hbox (badness 4341) in paragraph at lines 424--434
 \OT1/pnc/m/it/8 Aided De-sign of In-te-grated Cir-cuits and Sys-tems \OT1/pnc/m
 /n/8 30, 10 (Oc-to-ber 2011), 30:1556--30:1563.
  []
 
 
-Underfull \hbox (badness 2269) in paragraph at lines 489--498
+Underfull \hbox (badness 2269) in paragraph at lines 476--485
 []\OT1/pnc/m/n/8 Al X. Wid-mer and Pe-ter A. Franaszek. 1983. A DC-Balanced, Pa
 rtitioned-Block, 8B/10B Trans-
  []
 
 
-Underfull \hbox (badness 7433) in paragraph at lines 489--498
+Underfull \hbox (badness 7433) in paragraph at lines 476--485
 \OT1/pnc/m/n/8 mis-sion Code. \OT1/pnc/m/it/8 IBM Jour-nal of Re-search and De-
 vel-op-ment \OT1/pnc/m/n/8 27, 5 (May 1983), 440--451.
  []
 
 
-Underfull \hbox (badness 3039) in paragraph at lines 503--512
+Underfull \hbox (badness 3039) in paragraph at lines 490--499
 []\OT1/pnc/m/n/8 Bo-Han Wu, Chun-Ju Yanga, Chung-Yang Huang, and Jie-Hong Rolan
 d Jiang. 2010. A ro-bust
  []
 
 
-Underfull \hbox (badness 1953) in paragraph at lines 503--512
+Underfull \hbox (badness 1953) in paragraph at lines 490--499
 \OT1/pnc/m/n/8 func-tional ECO en-gine by SAT proof min-i-miza-tion and in-ter-
 po-la-tion tech-niques. In \OT1/pnc/m/it/8 Pro-ceed-
  []
 
 
-Underfull \hbox (badness 1158) in paragraph at lines 503--512
+Underfull \hbox (badness 1158) in paragraph at lines 490--499
 \OT1/pnc/m/it/8 ings of 2010 In-ter-na-tional Con-fer-ence on Computer-Aided De
 -sign (IC-CAD '10)\OT1/pnc/m/n/8 . ACM, 729--734.
  []
 
-) [28] [1
+) [30] [1
 
 ] (./v2-acmsmall-sample.aux) ) 
 Here is how much of TeX's memory you used:
- 3557 strings out of 494985
- 46576 string characters out of 6180355
- 159645 words of memory out of 5000000
- 6709 multiletter control sequences out of 15000+600000
+ 3565 strings out of 494985
+ 46691 string characters out of 6180355
+ 153628 words of memory out of 5000000
+ 6716 multiletter control sequences out of 15000+600000
  37948 words of font info for 76 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 38i,21n,30p,369b,539s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,24n,28p,369b,588s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/ba
 se/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.
 pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></u
@@ -578,10 +598,10 @@ hare/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb></usr/share/texliv
 e/texmf-dist/fonts/type1/urw/ncntrsbk/uncb8a.pfb></usr/share/texlive/texmf-dist
 /fonts/type1/urw/ncntrsbk/uncr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1
 /urw/ncntrsbk/uncri8a.pfb>
-Output written on v2-acmsmall-sample.pdf (29 pages, 505277 bytes).
+Output written on v2-acmsmall-sample.pdf (31 pages, 517513 bytes).
 PDF statistics:
- 282 PDF objects out of 1000 (max. 8388607)
- 198 compressed objects within 2 object streams
+ 297 PDF objects out of 1000 (max. 8388607)
+ 208 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
- 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -55,19 +55,19 @@ Complementary synthesis automatically generates an encoder's decoder
 with the assumption that the encoder's all input variables can always 
 be uniquely determined by its output symbol sequence.
 However,
-many modern encoders employ flow control mechanism that 
-fail this assumption.
+to prevent the faster encoder from overwhelming the slower decoder,
+many encoder employ flow control mechanism that fail this assumption.
 Such encoders,
 when its output symbol sequence is too fast to be processed by the decoder,
-will stop outputting data symbols,
-but instead output an idle symbol that can only uniquely determine a subset of the encoder's input variables.
+will stop transmitting data symbols,
+but instead transmitting an idle symbol that can only uniquely determine a subset of the encoder's input variables.
 And the decoder should recognize and discard this idle symbol.
 Although this mechanism can prevent losing data symbols,
-it fail the assumption of all complementary synthesis algorithm,
+it fail the assumption of all complementary synthesis algorithms,
 because some input variables can not be uniquely determined by the idle symbol.
 
 This paper proposes the first algorithm 
-to handle such encoders with flow control mechanism.
+to handle such encoders.
 \textbf{First},
 it identifies all input variables that can be uniquely determined,
 and take them as flow control variables.
@@ -75,9 +75,9 @@ and take them as flow control variables.
 it infers a predicate over these flow control variables,
 that enables all other input variables to be uniquely determined.
 \textbf{Third},
-the decoder's Boolean function for flow control variablescan be characterized with Craig interpolant.
+the decoder's Boolean function for flow control variables can be characterized with Craig interpolant.
 For other input variables,
-the inferred predicate must be enforced before characterzing their Boolean function with Craig interpolant.
+their decoder's Boolean function can also be characterized similarly but the inferred predicate must be enforced first.
 
 Experimental results on several complex encoders indicate that
 our algorithm can always correctly identify the flow control variables,
@@ -145,43 +145,50 @@ uniquely determined by a bounded sequence of $\vec{o}$.}
 However, 
 the encoders of many high speed communication systems employ flow control mechanism \cite{flowcontrol} that 
 fails this assumption.
-Figure~\ref{fig:nonuniq}a) shows the structure of a communication system with flow control mechanism,
+Figure~\ref{fig:nonuniq}a) shows such a communication system with flow control mechanism,
 which include a faster transmitter and a slower receiver connected by a pair of encoder and decoder.
 There are two input variables from the transmitter to the encoder:
 the data bit $d$ to be encoded,
 and the flow control bit $f$ indicating the validness of $d$.
-Figure~\ref{fig:nonuniq}b) shows the encoding table of the encoder with flow control mechanism,
-which maps $f$ and $d$ to the output symbol $\vec{o}$.
+Figure~\ref{fig:nonuniq}b) shows the mapping table of the encoder
+that maps $f$ and $d$ to the output symbol $\vec{o}$.
 % It is obvious that,
 % when $f\equiv 1$,
 % by checking whether $o$ is $D_0$ or $D_1$,
 % we can determine whether the $d$ is 0 or 1;
 % But when $f\equiv 0$,
-% we can not determine the the value of $d$,
+% we can not determine the value of $d$,
 % because $o$ is always $I$.
 }
 
 \textbf{
-The flow control mechanism prevent the faster transmitter from overwhelming the slower receiver in the following way.
+The flow control mechanism prevent the faster transmitter from overwhelming the slower receiver in the following way:
+\begin{enumerate}
+\item
 When the receiver can keep up with the transmitter,
-$f$ will be 1, 
-and the decoder can always recover both $f$ and $d$ according to Figure~\ref{fig:nonuniq}b).
+the transmitter will rise $f$ to 1, 
+which makes the encoder to transmit $D_d$ according to the value of $d$.
+And the decoder can always recover both $f$ and $d$ from $D_d$ according to Figure~\ref{fig:nonuniq}b).
+\item
 But when the receiver can not keep up with the transmitter,
-the transmitter will drop $f$ to 0 to stop transmitting new $D_i$,
+the transmitter will drop $f$ to 0 to stop the encoder transmitting new $D_d$,
 but instead transmitting the idle symbol $I$ without considering the value of $d$.
 And the decoder should discard this idle symbol $I$,
-and send $f\equiv 0$ to the receiver with whatever value on $d$.}
+and send $f\equiv 0$ to the receiver with whatever value on $d$.
+\end{enumerate}
+}
 
 \textbf{
-This mechanism can prevent the faster transmitter from transmitting to many data 
+This mechanism can prevent the faster transmitter from transmitting too much data 
 that can not be handled by the slower receiver.
-But it fail the assumption of all current complementary synthesis algorithms [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}],
+But it fails the assumption of all current complementary synthesis algorithms 
+[\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}],
 because $d$ can not be uniquely by the idle symbol $I$.
 It is obvious that,
 to resolve this problem and generate the decoder,
 we only need to consider the case $f\equiv 1$,
-the predicate that enable $d$ to be uniquely determined.
-For other case $f\equiv 0$,
+in which $d$ can be uniquely determined.
+For other cases in which $f\equiv 0$,
 $d$ is not need by the receiver and can be any value.}
 
 \begin{figure}
@@ -210,14 +217,14 @@ by building a Craig interpolant\cite{interp_McMillan}.
 On the other hand,
 for other data variables $\vec{d}$,
 their values are meaningful only when $valid(\vec{f}) \equiv 1$.
-Thus, the decoder's Boolean functions that compute each $d\in\vec{d}$ can be built similarly,
+Thus, the decoder's Boolean function of each $d\in\vec{d}$ can be built similarly with Craig interpolant,
 but only after enforcing $valid(\vec{f}) \equiv 1$.
 
 The second step of this algorithm seems somewhat similar to that of \cite{ShenTCAD12} in the sense that 
 both algorithms infer predicates that enable $\vec{d}$ or $\vec{i}$ to be uniquely determined.
 But the essential difference between them is that
 the algorithm of \cite{ShenTCAD12} infers a global assertion 
-that must be enforced on all the steps along the unrolled transition relation,
+that must be enforced on all the steps along the unrolled state transition sequence,
 % so that the encoder eventually reaches and never leaves the unique state set,
 while our algorithm infers a local predicate that is only enforced 
 at the current step when we need to recover the value of $\vec{d}$.
@@ -229,6 +236,8 @@ our algorithm can be seen as a generalization of \cite{ShenTCAD12}.
 Experimental results indicate that,
 for several complex encoders from real projects (e.g., Ethernet \cite{IEEE8023_S4} and PCI Express \cite{pcie21}),
 our algorithms can always correctly identify the flow control variables, infer the predicates and generate the decoders. 
+In addition,
+we also conduct other experiments to compare our algorithms with the state-of-the-art complementary synthesis algorithms.
 All these experimental results and programs can be downloaded from https://github.com/shengyushen/compsyn.
 
 
@@ -284,7 +293,7 @@ it is unsatisfiable.
 %  such as Zchaff\cite{CHAFF},
 %  Grasp\cite{grasp},
 %  Berkmin\cite{BERKMIN},
-%  and MiniSAT\cite{EXTSAT}.
+%  and MiniSat\cite{EXTSAT}.
  
 % Normally,
 % a SAT solver requires the formula to be represented in the conjunctive normal form(CNF),
@@ -298,13 +307,13 @@ it is unsatisfiable.
 
 % For a Boolean function $f:B^n\to B$,
 % we use $supp(f)$ to denote its support set $\{v_1\dots v_n\}$.
-According to \cite{Cofact},
+According to \cite{EFFSATUSMCCO},
 the positive and negative cofactors of $f(v_1\dots v\dots v_n)$ with respect to variable
-$v$ are $f_v=f(v_1\dots 1\dots v_n)$ and $f_{\overline{v}}=f(v_1\dots 0\dots v_n)$,
+$v$ are $f_{v\equiv 1}=f(v_1\dots 1\dots v_n)$ and $f_{v\equiv 0}=f(v_1\dots 0\dots v_n)$,
 respectively.
 % Existential quantification of $f(v_1\dots v\dots v_n)$ with respect to a
 % variable $v$ is $\exists v f=f_v+f_v’$.
-\textbf{Cofactoring} is the action that applies 1 or 0 to $v$ to get $f_v$ or $f_{\overline{v}}$.
+\textbf{Cofactoring} is the action that applies 1 or 0 to $v$ to get $f_{v\equiv 1}$ or $f_{v\equiv 0}$.
 
 % \subsection{Craig interpolation}\label{subsec_pre_interp}
 % Craig\cite{Craig} had proved the following theorem:
@@ -323,29 +332,32 @@ and use McMillan's algorithm \cite{interp_McMillan} to generate it.
 % There are many approaches to generate interpolants for propositional logic,
 % so please refer to Krajicek\cite{interp_Krajicek},
 % Pudlak\cite{interp_Pudlak} and McMillan\cite{interp_McMillan} for more details.
-% which is generated by MiniSAT\cite{EXTSAT}.
+% which is generated by MiniSat\cite{EXTSAT}.
 
 
-\subsection{Incremental SAT mechanism of MiniSAT solver}\label{subsec_incsat}
+\subsection{Incremental SAT mechanism of MiniSat solver}\label{subsec_incsat}
 
 In this paper,
-we use the MiniSAT solver \cite{EXTSAT} to solve the generated CNF formulas.
+we use the MiniSat solver \cite{EXTSAT} to solve the generated CNF formulas.
 Like many other SAT solver based on conflict driven learning \cite{CONFLICTLEARN},
-MiniSAT generates learned clauses from conflicts in searching,
+MiniSat generates learned clauses from conflicts in searching,
 and records them to prevent the same conflict from rising again.
-This mechanism can significantly speedup the search in a particular SAT solving.
+This mechanism can significantly speedup a particular SAT solving.
 
 In many applications,
 there often exists a serial of CNF formulas tightly related to each other.
 If the learned clauses can be shared between them,
 then these formulas can be solved much faster.
 
-MiniSAT provides an incremental SAT mechanism to reuse these learned clause.
-This mechanism includes two procedures.
-The first is $addClause(F)$ used to add a CNF formula $F$ to the clause database of MiniSAT.
-The second is $solve(A)$ that receives a list of clauses $A$ as assumptions,
-each of which contains only one literal,
+MiniSat provides an incremental SAT mechanism to reuse these learned clauses.
+This mechanism includes two procedures:
+\begin{enumerate}
+\item
+$addClause(F)$ used to add a CNF formula $F$ to the clause database of MiniSat.
+\item
+$solve(A)$ that takes a set of literals $A$ as assumptions,
 and solves the CNF formula $F\wedge \bigwedge_{a\in A} a$.
+\end{enumerate}
 
 
 \subsection{Finite state machine}
@@ -388,33 +400,33 @@ so they always take $\vec{i}$ as a whole,
 and never consider individual variables $i\in\vec{i}$.
 But in this paper,
 we need to check each $i\in\vec{i}$ one by one,
-so there may be minor differences between our presentation and that of 
+so there may be minor differences between our presentation here and that of 
 [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}].
 
 % What we describe here is a halting algorithm to determine if an input variable 
 % can be uniquely determined by a bounded sequence of output variable vector.
 The first such halting algorithm is proposed in \cite{ShenTCAD11}.
-Its basic idea is to unroll the transition relation into longer and longer length.
+Its basic idea is to unroll the transition function into longer and longer length.
 And for each length,
-we use two approximated approaches to determine the answer,
-the first is a sound one that presented in \ref{subsub_sound},
-while the second is a complete one presented in \ref{subsub_complete}.
+it use two approximated approaches to determine the answer,
+the first one is an underestimate one that presented in \ref{subsub_sound},
+while the second one is an overestimate one presented in \ref{subsub_complete}.
 That is,
-when the first says \textbf{YES} then the answer is \textbf{YES},
-and when the second approach says \textbf{NO} then the answer is \textbf{NO}.
+when the first one says \textbf{YES} then the final answer is \textbf{YES},
+and when the second approach says \textbf{NO} then the final answer is \textbf{NO}.
 And we will show in \ref{subsub_algo} that 
-these two approach will eventually converge and give conclusive answer 
+these two approaches will eventually converge and give conclusive answer 
 at some particular unrolling length.
 
-\subsubsection{\textbf{The sound approach}}\label{subsub_sound}.
+\subsubsection{\textbf{The underestimate approach}}\label{subsub_sound}.
 
 As shown in Figure \ref{fig_pc},
-on the unrolled transition relations,
+on the unrolled transition functions,
 an input variable $i\in\vec{i}$ can be uniquely determined,
 if there exist three integers $p$, $l$ and $r$,
 such that for any particular valuation of the output sequence $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$,
-$i_{p+l}$ cannot take on two different values.
-This can be checked by solving $F_{PC}(p,l,r)$ in Equation (\ref{uniqt1}).
+$i_{p+l}$ cannot be 0 and 1 at the same time.
+This is equal to the unsatisfiability of $F_{PC}(p,l,r)$ in Equation (\ref{uniqt1}).
 
 \begin{equation}\label{uniqt1}
 % \begin{split}
@@ -440,11 +452,11 @@ F_{PC}(p,l,r):=
 % \end{split}
 \end{equation}
 
-\begin{figure}[t]
+\begin{figure}[b]
 \begin{center}
 \includegraphics[width=\textwidth]{pc}
 \end{center}
-\caption{The sound approach checking if $i_{p+l}$ can be uniquely determined}
+\caption{The underestimate  approach checking if $i_{p+l}$ can be uniquely determined}
   \label{fig_pc}
 \end{figure}
 
@@ -462,14 +474,15 @@ Line 3 forces these two paths' output sequences to be the same,
 while Line 4 forces their $i_{p+l}$ to be different.
 \textbf{Line 5 and 6 are the assertion predicates given 
 by the user that constrain the valid valuation on $\vec{i}$.
-PC in Equation \ref{uniqt1} is the abbreviation of "Parameterized complementary",
-which means $F_{PC}(p,l,r)$ is used to check whether the encoder's input can be uniquely determined.}
+PC in $F_{PC}$ is the abbreviation of "parameterized complementary",
+which means $F_{PC}(p,l,r)$ is used to check whether the encoder's input can be uniquely determined with the three parameters $p$,$l$ and $r$.
+}
 
 \textbf{
 According to Figure \ref{fig_pc},
-it is obvious that the first three lines of Equation (\ref{uniqt1}) are always satisfiable, 
-because they are just two unrolled transition relation sequence with the same output sequence.
-And the last two lines are constraints on input variables.
+the first three lines of Equation (\ref{uniqt1}) are two unrolled transition function sequences with the same output sequences.
+They can always be satisfiable with the same input variable vectors and initial state vector.
+And the last two lines are constraints on input variable vectors.
 We always check their satisfiability before running our algorithm.
 So the unsatisfiability of $F_{PC}(p,l,r)$ always means $i_{p+l}\equiv i'_{p+l}$.
 }
@@ -494,35 +507,39 @@ then $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}
 \end{proposition}
 
 \textbf{Equation (\ref{uniqt1}) does not include an initial state,
-instead it use the $p$ steps prefix state transition sequence $<\vec{s_0},\dots,\vec{s_p}>$ 
-to propagate the constraints $assertion(\vec{i})$ into the state sequence $\vec{s_{p+1}},\dots,\vec{s_{p+l+r}}$,
+instead it use the $p$ steps prefix state transition sequence $<\vec{s_0},\dots,\vec{s_{p-1}}>$ 
+to propagate the constraints $assertion(\vec{i})$ into the state sequence $<\vec{s_p},\dots,\vec{s_{p+l+r}}>$,
 such that some states that can not be reached with $assertion(\vec{i})$ can be eliminated.
 This leads to two major advantages over considering initial states:
 First,
 it simplify and speedup our algorithm by avoiding the need to compute the reachable state set or inductive invariants.
-A breakthrough algorithm is proposed in \cite{TuDAC13}
+A breakthrough algorithm was proposed in \cite{TuDAC13}
 to rule out unreachable states
 by inferring inductive invariants.
-But this algorithm can not handle our most complex XFIPCS benchmark \cite{ShenTCAD11},
+But this algorithm can not handle our most complex XFI benchmark \cite{ShenTCAD11},
 while our algorithms always can.
 Second and more important,
-ignoring initial states improve the decoder's reliability by preventing any corrupted data from affecting the decoder's state,
-that is,
-any corrupted $\vec{o}$ fed to the decoder can only affect the decoder for finite number of steps.}
+ignoring initial states improve the decoder's reliability by 
+making the decoder's output depend on only bounded history of its input.
+Thus any corrupted $\vec{o}$ fed to the decoder can only affect the decoder for finite number of steps.}
 
-\textbf{Of course ignoring initial states have one drawback that it is a little bit too stronger than necessary.
+\textbf{Of course ignoring initial states has one drawback that it is a little bit too stronger than necessary.
 That is,
 it requires that $\vec{i}$ must be uniquely determined on a larger state set $R^p$ 
 that is reachable in $p$ steps from any states,
-instead of on the smaller reachable states $R$.
-It is obvious that $R\subset R^p$.
-Their work is orthogonal to ours.
-So to simplify our discussion,
-we will not integrate their work here.
-At the same time,
-for all the benchmarks we have tried,
-our current approach is sufficient.}
-
+instead of on the smaller state set $R$ that is reachable from initial states.
+In some cases,
+our algorithm may fail to handle properly designed encoders.
+% It is obvious that $R\subset R^p$.
+But this has not happen on all our benchmarks from industrial applications.
+% 
+% Their work is orthogonal to ours.
+% So to simplify our discussion,
+% we will not integrate their work here.
+% At the same time,
+% for all the benchmarks we have tried,
+% our current approach is sufficient.
+}
 
 
 % $d$ is the relative delay between $o_{n+d-l}^{n+d-1}$ and $i_n$,
@@ -567,11 +584,12 @@ our current approach is sufficient.}
 %   \label{fig_double_loop}
 % \end{figure}
 
-\subsubsection{\textbf{The complete approach}}\label{subsub_complete}.
+\subsubsection{\textbf{The overestimate approach}}\label{subsub_complete}.
 
-We have just learned that,
+In the last subsection,
+we have just learned that,
 if $F_{PC}(p,l,r)$ is unsatisfiable,
-then $i_{p+l}$ can be uniquely determined for larger $p$, $l$ and $r$.
+then $i_{p+l}$ can be uniquely determined for all larger $p$, $l$ and $r$.
 \textbf{On the other hand},
 if $F_{PC}(p,l,r)$ is satisfiable,
 then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 
@@ -585,16 +603,16 @@ $i_{p+l}$ can not be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>
 \end{enumerate}
 
 If it is the first case,
-then by iteratively increasing the value of $p$, $l$ and $r$,
+then by iteratively increasing  $p$, $l$ and $r$,
 $F_{PC}(p,l,r)$ will eventually become unsatisfiable.
 But if it is the second case,
 then this iterative algorithm will never terminate.
 
-\begin{figure}[t]
+\begin{figure}[b]
 \begin{center}
 \includegraphics[width=\textwidth]{ln}
 \end{center}
-\caption{The complete approach checking if $i_{p+l}$ can NOT be uniquely determined}
+\caption{The overestimate  approach checking if $i_{p+l}$ can NOT be uniquely determined}
   \label{fig_ln}
 \end{figure}
 
@@ -605,7 +623,7 @@ One such solution is shown in Figure \ref{fig_ln},
 which is similar to Figure \ref{fig_pc} but with three additional constraints to detect loops 
 on the three state sequences $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
-It is formally defined in Equation (\ref{uniqln}) with the last three lines corresponding to the three constraints used to detect loops.
+It is formally defined in Equation (\ref{uniqln}) with the last three lines corresponding to the three new constraints used to detect loops.
 
 \begin{equation}\label{uniqln}
 % \begin{split}
@@ -621,16 +639,31 @@ F_{LN}(p,l,r):=\\
 % \end{split}
 \end{equation}
 
-\textbf{LN stands for "loop non-complementary",
+\textbf{LN in $F_{LN}$ stands for "loop non-complementary",
 which means $F_{LN}(p,l,r)$ with three loops is used to check whether 
 the input variables can NOT be uniquely determined.
 }
 
-\begin{algorithm}[t]
+When $F_{LN}(p,l,r)$ is satisfiable,
+then $i_{p+l}$ can \textbf{NOT} be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
+\textbf{More importantly,
+by unrolling these three loops,
+we can also make $F_{LN}(p,l,r)$ satisfiable for all larger $p$, $l$ and $r$.
+This means:
+}
+
+\begin{proposition}\label{prop_ln1}
+If $F_{LN}(p,l,r)$ is satisfiable,
+then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for any larger $p$, $l$ and $r$.
+\end{proposition}
+
+\subsubsection{\textbf{The full algorithm}}\label{subsub_algo}.
+
+\begin{algorithm}[b]
 \SetAlgoVlined
-\KwIn{The input variable $i$.}
-\KwOut{whether $i$ can be uniquely determined by $\vec{o}$, and the value of $p$, $l$ and $r$.}
-$p$:= 1; ~$l$:= 1;~$r$:= 1\;
+\KwIn{The input variable $i\in\vec{i}$.}
+\KwOut{whether $i\in\vec{i}$ can be uniquely determined by $\vec{o}$, and the value of $p$, $l$ and $r$.}
+$p$:= 0; ~$l$:= 0;~$r$:= 0\;
 \While{$1$}{
    $p$++;~$l$++;~$r$++\;\ShowLnLabel{linepc1}
    \uIf{$F_{PC}(p,l,r)$ is unsatisfiable}{
@@ -640,53 +673,46 @@ $p$:= 1; ~$l$:= 1;~$r$:= 1\;
    }
 }
 \caption{$CheckUniqueness(i)$:The halting algorithm to determine 
-whether $i$ can be uniquely determined by a bounded sequence of output variable vector $\vec{o}$}
+whether $i\in\vec{i}$ can be uniquely determined by a bounded sequence of output variable vector $\vec{o}$}
 \label{alg_pcln}
 \end{algorithm}
 
 
-When $F_{LN}(p,l,r)$ is satisfiable,
-then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
-\textbf{More importantly,
-by unrolling these three loops,
-we can generalize this conclusion to all larger $p$, $l$ and $r$:}
-
-\begin{proposition}\label{prop_ln1}
-If $F_{LN}(p,l,r)$ is satisfiable,
-then $i_{p'+l'}$ cannot be uniquely determined by $<\vec{o}_{p'},\dots,\vec{o}_{p'+l'+r'}>$ for any larger $p'\ge p$, $l'\ge l$ and $r'\ge r$.
-\end{proposition}
-
-\subsubsection{\textbf{The full algorithm}}\label{subsub_algo}.
-
 With Propositions \ref{prop_pc1} and \ref{prop_ln1},
-we can generalize the bounded proof to unbounded proof.
+we can generalize their bounded proof to unbounded cases.
 Thus,
 we can build the halting
 Algorithm \ref{alg_pcln} that determines if there exists $p$, $l$ and $r$ that enable
-an input variable $i_{p+l}$ to be uniquely determined by the encoder's output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
-
+an input variable $i_{p+l}$ to be uniquely determined by the encoder's output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$:
+\begin{enumerate}
+ \item 
 On the one hand, 
 if there actually exists such $p$, $l$ and $r$,
 then eventually $F_{PC}(p,l,r)$ will become unsatisfiable in Line \ref{linepc1};
-on the other hand,
+ \item
+On the other hand,
 if there does not exist such $p$, $l$ and $r$,
 then eventually $p$, $l$ and $r$ will be larger than the encoder's longest path without loop,
 which means that there will be three loops in $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
 This will make $F_{LN}(p,l,r)$ satisfiable in Line \ref{lnsat}.
+\end{enumerate}
+
+
 Both cases will lead to this Algorithm's termination.
 
 %\subsection{Removing Redundant Output Letters}\label{sec_rmred}
 
 \section{Identifying flow control variables}\label{sec_findfc}
 We will first introduce how to find out the set of flow control variables in Subsection \ref{basic},
-and then introduce how to speed up this algorithm with incremental SAT.
+and then introduce how to speed up this algorithm with incremental SAT in Subsection \ref{incSAT}.
 
 \subsection{Finding out flow control variables}\label{basic}
 
 To facilitate the presentation of our algorithm,
-we partition the input variable vector $\vec{i}$ into two vectors: 
+we assume that the input variable vector $\vec{i}$ can be partitioned into two vectors: 
 the flow control vector $\vec{f}$ and the data vector $\vec{d}$.
+And the algorithm to find out this partition will be presented in this Subsection.
 
 % In this section,
 % we propose a two-step algorithm to 
@@ -695,40 +721,38 @@ the flow control vector $\vec{f}$ and the data vector $\vec{d}$.
 % 
 % \subsection{}
 
-The flow control variables $\vec{f}$ are used to represent the validness of $\vec{d}$.
+The flow control vector $\vec{f}$ are used to represent the validness of $\vec{d}$.
 So,
 for a properly designed encoder,
-$\vec{f}$ should always be uniquely determined by a bounded sequence of the encoder's output $\vec{o}$,
+$\vec{f}$ should always be uniquely determined by a bounded sequence of the encoder's output variable vector $\vec{o}$,
 or else the decoder cannot recognize the validness of $\vec{d}$.
 
 \begin{algorithm}[t]
 \SetAlgoVlined
 \KwIn{The input variable vector $\vec{i}$.}
-\KwOut{$\vec{f}\subset \vec{i}$ and $\vec{d}\subset \vec{i}$ 
-are respectively the vector of the encoder's input variables that can and can not 
-be uniquely determined by a bounded sequence of output variable vector $\vec{o}$,
-and the maximal value of $p$, $l$ and $r$ .}
+\KwOut{$\vec{f}\subset \vec{i}$ and $\vec{d}\subset \vec{i}$  that can and can not 
+be uniquely determined ,and the maximal $p$, $l$ and $r$ .}
 \ShowLnLabel{initfd}$\vec{f}: = \{\}$;$\vec{d}:= \{\}$\;
 \ShowLnLabel{initplr}$p$:= 0 ;~$l$:= 0 ;~$r$:= 0 \;
 \ShowLnLabel{while}\While{$\vec{i}\ne \{\}$}{
   $p++$; ~ $l++$; ~ $r++$\;
   assume $i\in\vec{i}$\;
-  $\vec{i}:=\vec{i}-i$\;
-  \eIf {$F_{PC}(p,l,r)$ is unsatisfiable for $i$} {
+  \uIf {$F_{PC}(p,l,r)$ is unsatisfiable for $i$} {
     \ShowLnLabel{adduniq}
     $\vec{f}:= i\cup\vec{f}$\;
-  }{
-\ShowLnLabel{nonuniqres}    Solve $F_{LN}(p,l,r)$ and assume its satisfying assignment is $A$\;
+    $\vec{i}:=\vec{i}-i$\;
+  }\ShowLnLabel{nonuniqres}
+  \uElseIf {$F_{LN}(p,l,r)$ is satisfiable for  $i$ and assume its satisfying assignment is $A$}{
     \ForEach{$j\in\vec{i}$} {
-\ShowLnLabel{ruleout}      \lIf {$A(j_{p+l})\neq A(j'_{p+l})$} {
-	$\vec{i}:=\vec{i}-j$
-	$\vec{d}:=i\cup\vec{d}$
+\ShowLnLabel{ruleout}      \If {$A(j_{p+l})\neq A(j'_{p+l})$} {
+	$\vec{i}:=\vec{i}-j$\;
+	$\vec{d}:=j\cup\vec{d}$
       }
     }
   }
 }
 \KwRet ($\vec{f}$,$p_{max}$,$l_{max}$,$r_{max}$)
-\caption{$FindFlowControl(\vec{i})$:Identifying the flow control variables}
+\caption{$FindFlow(\vec{i})$:Identifying the flow control vector}
 \label{alg_fofc}
 \end{algorithm}
 
@@ -752,7 +776,7 @@ the run time overhead of testing each $i\in\vec{i}$ one by one would also be ver
 To speed up this testing procedure,
 when $F_{LN}(p,l,r)$ is satisfiable at Line \ref{nonuniqres},
 every $j\in\vec{i}$ that has different values for $j_{p+l}$ and $j'_{p+l}$ 
-in the satisfying assignment of $F_{LN}(p,l,r)$ can also be ruled out at Line \ref{ruleout},
+in the satisfying assignment of $F_{LN}(p,l,r)$ can also be moved to $\vec{d}$ at Line \ref{ruleout},
 because their own $F_{LN}(p,l,r)$ is also satisfiable.
 
 \textbf{In some particular case,
@@ -767,7 +791,9 @@ because the decoder's Boolean function can still be correctly characterized in S
 
 \subsection{Speeding up with incremental SAT}\label{incSAT}
 
-We can partition $F_{PC}(p,l,r)$ in Equation \ref{uniqt1} into the following two equations:
+We can further speedup Algorithm \ref{alg_fofc} by employing the MiniSat's incremental SAT mechanism mentioned in Subsection \ref{subsec_incsat}.
+
+$F_{PC}(p,l,r)$ in Equation \ref{uniqt1} can be partitioned into the following two equations:
 \begin{equation}\label{uniqt1_f}
 % \begin{split}
 C_{PC}(p,l,r):=
@@ -802,6 +828,41 @@ A_{PC}(p,l,r):=
 % \end{split}
 \end{equation}
 
+\begin{algorithm}[b]
+\SetAlgoVlined
+\KwIn{The input variable vector $\vec{i}$.}
+\KwOut{$\vec{f}\subset \vec{i}$ and $\vec{d}\subset \vec{i}$ that can and can not 
+be uniquely determined,
+and the maximal $p$, $l$ and $r$ .}
+\ShowLnLabel{initfd2}$\vec{f}: = \{\}$;$\vec{d}:= \{\}$\;
+\ShowLnLabel{initplr2}$p$:= 0 ;~$l$:= 0 ;~$r$:= 0 \;
+\ShowLnLabel{while2}\While{$\vec{i}\ne \{\}$}{
+  $p++$; ~ $l++$; ~ $r++$\;
+\ShowLnLabel{addcls21}  $addClause(C_{PC}(p,l,r))$\;
+  \ForEach{$i\in\vec{i}$} {
+\ShowLnLabel{solve21}    \If {$solve(A_{PC}(p,l,r))$ is unsatisfiable for $i$} {
+      \ShowLnLabel{adduniq2}
+      $\vec{i}:= \vec{i}-i$\;
+      $\vec{f}:= i\cup\vec{f}$\;
+    }
+  }
+\ShowLnLabel{addcls22}  $addClause(C_{LN}(p,l,r))$\;
+  \ForEach{$i\in\vec{i}$} {
+\ShowLnLabel{solve22}    \If {$solve(A_{LN}(p,l,r))$ is satisfiable for $i$ and satisfying assignment is $A$} {
+      \ShowLnLabel{adduniq3}
+      \ForEach{$j\in\vec{i}$} {
+\ShowLnLabel{ruleout2}      \If {$A(j_{p+l})\neq A(j'_{p+l})$} {
+	  $\vec{i}:=\vec{i}-j$\;
+	  $\vec{d}:=j\cup\vec{d}$
+	}
+      }
+    }
+  }
+}
+\KwRet ($\vec{f}$,$p$,$l$,$r$)
+\caption{$FindFlowIncSAT(\vec{i})$:Identifying the flow control vector with incremental SAT}
+\label{alg_fofc_inc}
+\end{algorithm}
 
 Similarly we can partition $F_{LN}(p,l,r)$ in Equation \ref{uniqln} into the following two equations:
 
@@ -831,56 +892,19 @@ A_{LN}(p,l,r):=
 \end{equation}
 
 
-\begin{algorithm}[t]
-\SetAlgoVlined
-\KwIn{The input variable vector $\vec{i}$.}
-\KwOut{$\vec{f}\subset \vec{i}$ and $\vec{d}\subset \vec{i}$ 
-are respectively the vector of the encoder's input variables that can and can not 
-be uniquely determined by a bounded sequence of output variable vector $\vec{o}$,
-and the maximal value of $p$, $l$ and $r$ .}
-\ShowLnLabel{initfd2}$\vec{f}: = \{\}$;$\vec{d}:= \{\}$\;
-\ShowLnLabel{initplr2}$p$:= 0 ;~$l$:= 0 ;~$r$:= 0 \;
-\ShowLnLabel{while2}\While{$\vec{i}\ne \{\}$}{
-  $p++$; ~ $l++$; ~ $r++$\;
-\ShowLnLabel{addcls21}  $addClause(C_{PC}(p,l,r))$\;
-  \ForEach{$i\in\vec{i}$} {
-\ShowLnLabel{solve21}    \If {$solve(A_{PC}(p,l,r))$ is unsatisfiable for $i$} {
-      \ShowLnLabel{adduniq2}
-      $\vec{i}:= \vec{i}-i$\;
-      $\vec{f}:= i\cup\vec{f}$\;
-    }
-  }
-\ShowLnLabel{addcls22}  $addClause(C_{LN}(p,l,r))$\;
-  \ForEach{$i\in\vec{i}$} {
-\ShowLnLabel{solve22}    \If {$solve(A_{LN}(p,l,r))$ is satisfiable for $i$} {
-      \ShowLnLabel{adduniq3}
-      assume $F_{LN}(p,l,r)$'s satisfying assignment is $A$\;
-      \ForEach{$j\in\vec{i}$} {
-\ShowLnLabel{ruleout2}      \lIf {$A(j_{p+l})\neq A(j'_{p+l})$} {
-	  $\vec{i}:=\vec{i}-j$
-	  $\vec{d}:=i\cup\vec{d}$
-	}
-      }
-    }
-  }
-}
-\KwRet ($\vec{f}$,$p_{max}$,$l_{max}$,$r_{max}$)
-\caption{$FindFlowControlIncSAT(\vec{i})$:Identifying the flow control variables with incremental SAT}
-\label{alg_fofc_inc}
-\end{algorithm}
 
 It is obvious that $C_{PC}$ and $C_{LN}$ are independent of any particular $i\in \vec{i}$,
-so they can be added into the clause database on MiniSAT solver.
+so they can be added into the clause database of MiniSat solver by calling $addClause(C_{PC})$ or $addClause(C_{LN})$.
 At the same time, 
 all clauses in $A_{PC}$ and $A_{LN}$ contain only one literal,
-so they can be used as the assumptions in calling $solve$ procedure of MiniSAT solver.
+so they can be used as the assumptions in calling $solve$ procedure of MiniSat solver.
 
 Thus,
 with these new equations,
 we can change Algorithm \ref{alg_fofc} to Algorithm \ref{alg_fofc_inc} with incremental SAT.
 The major changes are the two new $addClause$ in Line \ref{addcls21} and \ref{addcls22},
 and the two new $solve$ in Line \ref{solve21} and \ref{solve22}.
-They are the procedures provided by MiniSAT's incremental SAT mechanism mentioned in Subsection \ref{subsec_incsat}.
+They are the procedures provided by MiniSat's incremental SAT mechanism mentioned in Subsection \ref{subsec_incsat}.
 
 
 
@@ -948,11 +972,10 @@ They are the procedures provided by MiniSAT's incremental SAT mechanism mentione
 % So for a properly designed encoder,
 % $valid(\vec{f})$ should make $\vec{d}$ to be uniquely determined by the encoder's output.
 
-In subsection \ref{subsec_craig},
+In Subsection \ref{subsec_craig},
 we propose  an algorithm 
-% based on Craig interpolant \cite{interp_McMillan} and Cofactoring\cite{Cofact}
 to characterize a Boolean function that makes a Boolean formula satisfiable.
-In subsection \ref{subsec_infer},
+In Subsection \ref{subsec_infer},
 we apply this algorithm to infer $valid(\vec{f})$,
 the predicate that enable $\vec{d}$ to be uniquely determined by a bounded sequence of $\vec{o}$.
 
@@ -965,14 +988,14 @@ Assume that $R(\vec{a},\vec{b},t)$ is a Boolean formula with $R(\vec{a},\vec{b},
 $\vec{a}$ and $\vec{b}$ are respectively called the important and the non-important variable vectors,
 while $t$ is the target variable.
 
-We need to characterize a Boolean function $FSAT(\vec{a})$,
+We need to characterize a Boolean function $FSAT_R(\vec{a})$,
 which covers and only covers all the valuations of $\vec{a}$ 
 that can make $R(\vec{a},\vec{b},1)$ satisfiable.
 It is formally defined below:
 
 \begin{equation}\label{fchar}
 % \begin{split}
-FSAT(\vec{a}):=
+FSAT_R(\vec{a}):=
 \left\{
 \begin{array}{rcl}
 1 & & \exists\vec{b}.R(\vec{a},\vec{b},1) \\
@@ -984,27 +1007,27 @@ FSAT(\vec{a}):=
 %% HAHA come to here
 
 Thus,
-a naive algorithm of computing $FSAT(\vec{a})$ is to enumerate all valuations of $\vec{a}$,
+a naive algorithm of computing $FSAT_R(\vec{a})$ is to enumerate all valuations of $\vec{a}$,
 and collect all those valuations that make $R(\vec{a},\vec{b},1)$ satisfiable.
 But the number of valuations to be enumerated is $2^{|\vec{a}|}$,
-which will prevent this algorithm from terminating within reasonable time for a long $\vec{a}$.
+which will prevent this algorithm from terminating within reasonable time for a large $\vec{a}$.
 
-We can speed up this naive algorithm by expanding each valuation of $\vec{a}$ to a larger set with Craig interpolant\cite{interp_McMillan}.
+We can speed up this naive algorithm by expanding each valuation of $\vec{a}$ to a larger set with cofactoring \cite{EFFSATUSMCCO} and Craig interpolant\cite{interp_McMillan}.
 Intuitively,
 assume that $R(\vec{a},\vec{b},1)$ is satisfiable with a satisfying assignment $A:\vec{a}\cup\vec{b}\cup\{t\}\to\{0,1\}$,
-the following new formula can be constructed by cofactoring:
+the following new formula can be constructed by cofactoring\cite{EFFSATUSMCCO}:
 
-\begin{algorithm}[b]
+\begin{algorithm}[t]
 \SetAlgoVlined
 \KwIn{The Boolean formula $R(\vec{a},\vec{b},t)$, 
 its important variable vector $\vec{a}$,
 its non-important variable vector $\vec{b}$,
 and its target variable $t$.}
-\KwOut{$FSAT(\vec{a})$ that makes $R(\vec{a},\vec{b},1)$ satisfiable.}
+\KwOut{$FSAT_R(\vec{a})$ that makes $R(\vec{a},\vec{b},1)$ satisfiable.}
 \ShowLnLabel{initcondition}
-$FSAT(\vec{a}):= 0$ \;
+$FSAT_R(\vec{a}):= 0$ \;
 \ShowLnLabel{testsat}
-\While { $R(\vec{a},\vec{b},1)\wedge\neg FSAT(\vec{a})$ is satisfiable } {
+\While { $R(\vec{a},\vec{b},1)\wedge\neg FSAT_R(\vec{a})$ is satisfiable } {
   assume $A:\vec{a}\cup\vec{b}\cup\{t\}\rightarrow \{0,1\}$ is the satisfying assignment \;
 \ShowLnLabel{cofact1}
   $\phi_A(\vec{a}):= R(\vec{a},A(\vec{b}),1)$ \;
@@ -1013,16 +1036,16 @@ $FSAT(\vec{a}):= 0$ \;
 \ShowLnLabel{ab}
   assume $ITP(\vec{a})$ is the Craig interpolant of $\phi_A$ with respect to $\phi_B$ \;
 \ShowLnLabel{add}
-  $FSAT(\vec{a}):= ITP(\vec{a}) \vee FSAT(\vec{a})$ \;
+  $FSAT_R(\vec{a}):= ITP(\vec{a}) \vee FSAT_R(\vec{a})$ \;
 }
-\KwRet $FSAT(\vec{a})$
+\KwRet $FSAT_R(\vec{a})$
 \caption{$CharacterizingFormulaSAT(R,\vec{a},\vec{b},t)$:Characterizing a Boolean function over $\vec{a}$ that can make $R(\vec{a},\vec{b},1)$ satisfiable}
 \label{alg_craigchar}
 \end{algorithm}
 
 \begin{equation}
 % \begin{split}
-R(\vec{a},A(\vec{b}),1)
+R(\vec{a},A(\vec{b}),1):=R(\vec{a},\vec{b},1)_{b\equiv A(b)}
 % \end{split}
 \end{equation}
 
@@ -1036,10 +1059,9 @@ Thus,$ITP(\vec{a})$ covers exactly the set of valuations of $\vec{a}$ that can m
 
 
 Based on the foregoing discussion,
-Algorithm \ref{alg_craigchar} is proposed to characterize $FSAT(\vec{a})$.
-% Line \ref{initcondition} initializes $FSAT$ to an empty formula.
+Algorithm \ref{alg_craigchar} is proposed to characterize $FSAT_R(\vec{a})$ in Equation (\ref{fchar}).
 Line \ref{testsat} checks whether there is still some new valuation of $\vec{a}$ that can make $R(\vec{a},\vec{b},1)$ satisfiable,
-but has not been covered by $FSAT(\vec{a})$.
+but has not been covered by $FSAT_R(\vec{a})$.
 Lines \ref{cofact1} and \ref{cofact2} assign the value of $\vec{b}$ 
 from the satisfying assignment to $R(\vec{a},\vec{b},1)$ and $R(\vec{a},\vec{b},0)$ respectively, 
 to remove $\vec{b}$ from them.
@@ -1049,76 +1071,88 @@ $\phi_A\wedge \phi_B$ in Line \ref{ab} is unsatisfiable,
 and the common variables vector of $\phi_A$ and $\phi_B$ is $\vec{a}$.
 So a Craig interpolant $ITP(\vec{a})$ can be generated with the McMillian's algorithm\cite{interp_McMillan}.
 
-$ITP(\vec{a})$ is added to $FSAT(\vec{a})$ in Line \ref{add} and ruled out in Line \ref{testsat}.
+$ITP(\vec{a})$ is added to $FSAT_R(\vec{a})$ in Line \ref{add} and ruled out in Line \ref{testsat} again.
 
-Each iteration of the while loop in Algorithm \ref{alg_craigchar} adds at least a valuation of $\vec{a}$ to $FSAT(\vec{a})$,
-which means that $FSAT(\vec{a})$ is a Boolean function that covers a bounded and strictly increasing set of valuations of $\vec{a}$.
+Each iteration of the while loop in Algorithm \ref{alg_craigchar} adds at least a valuation of $\vec{a}$ to $FSAT_R(\vec{a})$,
+which means that $FSAT_R(\vec{a})$ is a Boolean function that covers a bounded and strictly increasing set of valuations of $\vec{a}$.
 So Algorithm \ref{alg_craigchar} is a halting one.
 
 \subsection{Inferring $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined}\label{subsec_infer}
-This subsection introduces the non-trivial details of how to infer the predicate $valid(\vec{f})$.
-So we first present an intuitive and informal introduction in \ref{subsub_intro}.
-And then present its details in \ref{subsub_nonloop} and \ref{subsub_loop}.
-Finally,
-we present the overall algorithm framework in \ref{subsub_overal}.
+% This subsection introduces the non-trivial details of how to infer the predicate $valid(\vec{f})$.
+% So we first present an intuitive and informal introduction in \ref{subsub_intro}.
+% And then present its details in \ref{subsub_nonloop}, \ref{subsub_loop} and \ref{subsub_overal}.
 
-\subsubsection{\textbf{Intuitive introduction}}\label{subsub_intro}.
+% \subsubsection{\textbf{Intuitive introduction}}\label{subsub_intro}.
 
 In this Section,
-what we want is the predicate $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined,
-that is,
-the set of all valuations of $valid(\vec{f}_{p+l})$ 
-that can make $F_{PC}(p,l,r)$ unsatisfiable for some $p$,$l$ and $r$.
+we will present how to compute the predicate $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined.
+Similar to the halting algorithm presented in Subsection \ref{subsec_chkextdec},
+we will first present how to compute a monotonically growing under-approximation of $valid(\vec{f})$ in \ref{subsub_nonloop},
+and them present how to compute a monotonically shrinking over-approximation of $valid(\vec{f})$ in \ref{subsub_loop},
+and finally show that they will converge to $valid(\vec{f})$ in \ref{subsub_overal}.
 
-But what we have is only Algorithm \ref{alg_craigchar} that can find out the set of 
-valuation of $\vec{f}_{p+l}$ that can make $F_{PC}(p,l,r)$ satisfiable.
-We call the predicate that cover and only cover this set $FSAT_{PC}(p,l,r)$.
-And we will present how to infer it in \ref{subsub_nonloop}.
 
-But as shown in Subsection \ref{subsec_chkextdec},
-% from the fact that $\vec{d}$ is uniquely determined for some particular $p$,$l$ and $r$,
-% we can only know that it is also uniquely determined for all larger $p'$,$l'$ and $r'$.
-% On the other hand,
-$\vec{d}_{p+l}$ not uniquely determined for some particular $p$,$l$ and $r$,
-may become uniquely determined for larger $p$,$l$ and $r$.
-For example,
-an encoder with 3 step latency can not uniquely determine its input $\vec{i}$ with $p$,$l$ and $r$ smaller than 3.
-But it can with $p$,$l$ and $r$ larger than 3.
-That means,
-a particular valuation of $\vec{f}_{p+l}$ that 
-makes $F_{PC}(p,l,r)$ satisfiable for some $p$,$l$ and $r$,
-may make it unsatisfiable for some larger $p$,$l$ and $r$.
+% 
+% With Algorithm \ref{alg_craigchar} we can find out $FSAT_{F_{PC}}(\vec{f}_{p+l})$, 
+% the set of 
+% valuation of $\vec{f}_{p+l}$ that can make $F_{PC}(p,l,r)$ satisfiable for a particular $p$,$l$ and $r$.
+% So its negation $\neg FSAT_{F_{PC}}(\vec{f}_{p+l})$ seems to be what we want.
+% 
+% As shown intuitively in Figure \ref{fig_mono},
+% $\neg FSAT_{F_{PC}}(\vec{f}_{p+l})$ is an under-approximation of $valid(\vec{f})$
+% that grow monotonically with respect to $p$,$l$ and $r$.
+% We will prove this in \ref{subsub_nonloop}.
+% So we still need an over-approximation of $valid(\vec{f})$ 
+% that shrinks monotonically with respect to $p$,$l$ and $r$ to construct a halting algorithm,
+% which will be presented in \ref{subsub_loop}.
 
-So as shown in Figure \ref{fig_mono}, 
-$\neg FSAT_{PC}(p,l,r)$ is only an under-approximation of $valid(\vec{f})$
-which grow monotonically with respect to the valuation of $p$,$l$ and $r$.
-We still need an over-approximation that shrink monotonically to construct a halting algorithm.
 
-\begin{figure}[t]
-\begin{center}
-\includegraphics[width=0.5\textwidth]{mono}
-\end{center}
-\caption{The monotonicity of $FSAT_{PC}(p,l,r)$ and $FSAT_{LN}(p,l,r)$}
-  \label{fig_mono}
-\end{figure}
 
-Inspired by the Figure \ref{fig_ln} and $F_{LN}(p,l,r)$,
-we can compute this over-approximation by using Algorithm \ref{alg_craigchar} 
-to find out the set of valuation of $\vec{f}_{p+l}$ that can make $F_{LN}(p,l,r)$ satisfiable.
-We call the predicate that covers and only covers this set $FSAT_{LN}(p,l,r)$.
-With a satisfiable $F_{LN}(p,l,r)$,
-by unrolling the three loops in Figure \ref{fig_ln},
-we can prove that $F_{LN}(p,l,r)$ is still satisfiable for larger $p$,$l$ and $r$.
-That means $FSAT_{LN}(p,l,r)$ is a set of valuation of $\vec{f}_{p+l}$ that makes $F_{LN}(p,l,r)$ satisfiable 
-and grows monotonically with respect to $p$,$l$ and $r$.
-So as shown in Figure \ref{fig_mono},
-$\neg FSAT_{LN}(p,l,r)$ is an over-approximation of $valid(\vec{f})$ that shrinks monotonically.
-We will present how to infer it in \ref{subsub_loop}.
+% % We call the predicate that cover and only cover this set $FSAT_{PC}(p,l,r)$.
+% % And we will present how to infer it in \ref{subsub_nonloop}.
+% 
+% % But as shown in Subsection \ref{subsec_chkextdec},
+% % from the fact that $\vec{d}$ is uniquely determined for some particular $p$,$l$ and $r$,
+% % we can only know that it is also uniquely determined for all larger $p'$,$l'$ and $r'$.
+% % On the other hand,
+% But according to Figure \ref{fig_pc} and Proposition \ref{prop_pc1},
+% only the unsatisfiability of $F_{PC}(p,l,r)$ can be generalized to larger $p$,$l$ and $r$,
+% while its satisfiability can not.
+% % $\vec{d}_{p+l}$ not uniquely determined for some particular $p$,$l$ and $r$,
+% % may become uniquely determined for larger $p$,$l$ and $r$.
+% % For example,
+% % an encoder with 3 step latency can not uniquely determine its input $\vec{i}$ with $p$,$l$ and $r$ smaller than 3.
+% % But it can with $p$,$l$ and $r$ larger than 3.
+% % That means,
+% This means,
+% a particular valuation of $\vec{f}_{p+l}$ that 
+% makes $F_{PC}(p,l,r)$ satisfiable for some $p$,$l$ and $r$,
+% may make it unsatisfiable for some larger $p$,$l$ and $r$.
+% 
+% So as shown in Figure \ref{fig_mono}, 
+% $FSAT_{F_{PC}}(\vec{f}_{p+l})$ is a set monotonically shrinking with respect to $p$,$l$ and $r$,
+% which make its negation $\neg FSAT_{PC}(p,l,r)$ an under-approximation of $valid(\vec{f})$
+% that grow monotonically with respect to $p$,$l$ and $r$.
+% We still need an over-approximation that shrink monotonically to construct a halting algorithm.
 
-Together with these two inferred predicates,
-an iterative algorithm is presented in \ref{subsub_overal} to infer $valid(\vec{f})$.
 
-\subsubsection{\textbf{Computing $FSAT_{PC}(p,l,r)$}}\label{subsub_nonloop}.
+% Inspired by the Figure \ref{fig_ln} and $F_{LN}(p,l,r)$,
+% we can compute this over-approximation by using Algorithm \ref{alg_craigchar} 
+% to find out the set of valuation of $\vec{f}_{p+l}$ that can make $F_{LN}(p,l,r)$ satisfiable.
+% We call the predicate that covers and only covers this set $FSAT_{LN}(p,l,r)$.
+% With a satisfiable $F_{LN}(p,l,r)$,
+% by unrolling the three loops in Figure \ref{fig_ln},
+% we can prove that $F_{LN}(p,l,r)$ is still satisfiable for larger $p$,$l$ and $r$.
+% That means $FSAT_{LN}(p,l,r)$ is a set of valuation of $\vec{f}_{p+l}$ that makes $F_{LN}(p,l,r)$ satisfiable 
+% and grows monotonically with respect to $p$,$l$ and $r$.
+% So as shown in Figure \ref{fig_mono},
+% $\neg FSAT_{LN}(p,l,r)$ is an over-approximation of $valid(\vec{f})$ that shrinks monotonically.
+% We will present how to infer it in \ref{subsub_loop}.
+% 
+% Together with these two inferred predicates,
+% an iterative algorithm is presented in \ref{subsub_overal} to infer $valid(\vec{f})$.
+
+\subsubsection{\textbf{Computing monotonically growing under-approximation of $valid(\vec{f})$}}\label{subsub_nonloop}.
 
 By replacing $i$ in Equation (\ref{uniqt1}) with $\vec{d}$,
 we have:
@@ -1166,7 +1200,7 @@ By substituting $T_{PC}(p,l,r)$ back into $F^d_{PC}(p,l,r)$,
 we have a new formula:
 \begin{equation}\label{fpcq}
 % \begin{split}
-F'_{PC}(p,l,r,t):=
+F'^d_{PC}(p,l,r,t):=
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+l+r}
@@ -1179,8 +1213,8 @@ F'_{PC}(p,l,r,t):=
 (\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
 \}
 \\
-\wedge& \vec{d}_{p+l}\ne \vec{d'}_{p+l} \\
 \wedge& t\equiv T_{PC}(p,l,r)\\
+\wedge& \vec{d}_{p+l}\ne \vec{d'}_{p+l} \\
 \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
 \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
 \end{array}
@@ -1188,7 +1222,9 @@ F'_{PC}(p,l,r,t):=
 % \end{split}
 \end{equation}
 
-It is obvious that $\vec{d}$ cannot be uniquely determined for a particular valuation of $p$, $l$ and $r$ if $F'_{PC}(p,l,r,1)$ is satisfiable.
+
+Obviously $F^d_{PC}(p,l,r)$ and $F'^d_{PC}(p,l,r,1)$ are equivalent.
+% $\vec{d}$ cannot be uniquely determined for a particular valuation of $p$, $l$ and $r$ if $F'_{PC}(p,l,r,1)$ is satisfiable.
 We further define:
 
 % By comparing Equation (\ref{fpcq}),
@@ -1215,34 +1251,58 @@ We further define:
 \vec{b}:=\vec{d}_{p+l}\cup \vec{d'}_{p+l}\cup \vec{s}_0\cup \vec{s'}_0\cup\bigcup_{0\le x\le p+l+r,x\neq (p+l)}(\vec{i}_{x}\cup\vec{i'}_{x})
 \end{equation}
 
-$\vec{f}_{p+l}$ can be uniquely determined, 
-so we do not need to consider $\vec{f'}_{p+l}$.
+% $\vec{f}_{p+l}$ can be uniquely determined, 
+% so we do not need to consider $\vec{f'}_{p+l}$.
 Thus,
 $\vec{a}\cup\vec{b}$ is the vector that contains all the input variable vectors $<\vec{i}_0,\dots,\vec{i}_{p+l+r}>$ and $<\vec{i'}_0,\dots,\vec{i'}_{p+l+r}>$
 at all steps for the two sequences of unrolled transition function.
 It also contains the two initial states $\vec{s}_0$ and $\vec{s'}_0$.
 In addition,
-$T$ is a function that computes the next state and the output variable vector from the current state and input variable vector.
-So $\vec{a}$ and $\vec{b}$ can uniquely determine the value of $t$ in $F'_{PC}(p,l,r,t)$.
+the transition function $T$ in the first two lines of Equation (\ref{fpcq})
+is a function that computes the next state and the output variable vector from the current state and input variable vector.
+So $\vec{a}$ and $\vec{b}$ can uniquely determine the value of $t$ in $F'^d_{PC}(p,l,r,t)$.
 Thus,
 for a particular combination of $p$,$l$ and $r$,
-the Boolean function over $\vec{f}_{p+l}$ that makes $F'_{PC}(p,l,r,1)$ satisfiable can be computed 
-by calling Algorithm \ref{alg_craigchar} with $F'_{PC}(p,l,r,t)$, $\vec{a}$ and $\vec{b}$ defined above:
+the Boolean function over $\vec{f}_{p+l}$ that makes $F'^d_{PC}(p,l,r,1)$ satisfiable can be computed 
+by calling Algorithm \ref{alg_craigchar} with $F'^d_{PC}(p,l,r,t)$, $\vec{a}$ and $\vec{b}$ defined above:
 
 \begin{equation}\label{fsat_pc}
-FSAT_{PC}(p,l,r):=CharacterizingFormulaSAT(F'_{PC}(p,l,r,t),\vec{a},\vec{b},t)
+FSAT_{PC}(p,l,r):=CharacterizingFormulaSAT(F'^d_{PC}(p,l,r,t),\vec{a},\vec{b},t)
 \end{equation}
 
+So $FSAT_{PC}(p,l,r)$ is the set of $\vec{f}_{p+l}$ 
+that makes $F^d_{PC}(p,l,r)$ satisfiable.
 Thus,
-we have the following proposition:
+its negation $\neg FSAT_{PC}(p,l,r)$ is the set of $\vec{f}_{p+l}$ 
+that makes $F^d_{PC}(p,l,r)$ unsatisfiable.
+
+Again according to Proposition \ref{prop_pc1},
+the unsatisfiable proof of $F^d_{PC}(p,l,r)$ can be generalized to all larger $p$,$l$ and $r$.
+So every valuation of $\vec{f}$ covered by $\neg FSAT_{PC}(p,l,r)$ can also make $F^d_{PC}(p,l,r)$ unsatisfiable for all larger $p$,$l$ and $r$.
+
+So we have:
+
 \begin{proposition}\label{prop_pc}
-$FSAT_{PC}(p,l,r)$ is the Boolean function over $\vec{f}_{p+l}$ that makes $\vec{d}_{p+l}$ to be not uniquely determined for a particular $p$, $l$ and $r$.
+$\neg FSAT_{PC}(p,l,r)$ is an under-approximation of $valid(\vec{f})$ that grow monotonically with respect to $p$,$l$ and $r$.
 \end{proposition}
 
-\subsubsection{\textbf{Computing $FSAT_{LN}(p,l,r)$}}\label{subsub_loop}.
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{mono}
+\end{center}
+\caption{The monotonicity of $FSAT_{PC}(p,l,r)$ and $FSAT_{LN}(p,l,r)$}
+  \label{fig_mono}
+\end{figure}
+
+
+
+This is shown intuitively in Figure \ref{fig_mono}..
+
+\subsubsection{\textbf{Computing monotonically shrinking over-approximation of $valid(\vec{f})$}}\label{subsub_loop}.
 
 Similarly,
-by replacing $i$ in Equation (\ref{uniqln}) with $\vec{d}$,
+by replacing $i$ in $F_{LN}(p,l,r)$ of Equation (\ref{uniqln}) with $\vec{d}$,
 we have:
 
 \begin{equation}\label{uniqlnd}
@@ -1275,9 +1335,10 @@ F^d_{LN}(p,l,r):=\\
 If $F^d_{LN}(p,l,r)$ is satisfiable,
 then $\vec{d}_{p+l}$ cannot be uniquely determined by $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$.
 Furthermore,
+similar to Proposition \ref{prop_ln1},
 by unrolling those three loops in the last three lines of Equation (\ref{uniqlnd}),
-we can prove that $\vec{d}$ cannot be uniquely determined for any larger $p'\ge p$,$l'\ge l$ and $r'\ge r$.
-We further define a new formula $T_{PC}(p,l,r)$ by collecting the 3rd line and the last three lines of Equation (\ref{uniqlnd}):
+we can prove that $\vec{d}_{p+l}$ cannot be uniquely determined for any larger $p$,$l$ and $r$.
+We further define a new formula $T_{LN}(p,l,r)$ by collecting the 3rd line and the last three lines of Equation (\ref{uniqlnd}):
 
 \begin{equation}\label{tln}
 % \begin{split}
@@ -1297,7 +1358,7 @@ By replacing the 3rd line and the last three lines of Equation (\ref{uniqlnd}) w
 we got:
 
 \begin{equation}\label{lndef1}
-F'_{LN}(p,l,r,t):=
+F'^d_{LN}(p,l,r,t):=
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+l+r}
@@ -1311,31 +1372,37 @@ F'_{LN}(p,l,r,t):=
 \}
 \\
 % \wedge& \vec{f}_{p+l}\equiv \vec{f'}_{p+l}\\
-\wedge& \vec{d}_{p+l}\ne \vec{d'}_{p+l} \\
 \wedge& t\equiv T_{LN}(p,l,r)\\
+\wedge& \vec{d}_{p+l}\ne \vec{d'}_{p+l} \\
 \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
 \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
 \end{array}
 \right\}
 \end{equation}
 
-Then $\vec{d}$ cannot be uniquely determined for any larger $p'\ge p$,$l'\ge l$ and 
-$r'\ge r$ if $F'_{LN}(p,l,r,1)$ is satisfiable.
+Obviously $F^d_{LN}(p,l,r)$ and $F'^d_{LN}(p,l,r,1)$ are equivalent.
 Thus,
-for a particular combination of $p$,$l$ and $r$,
-the formula over $\vec{f}_{p+l}$ that makes $F'_{LN}(p,l,r,1)$ satisfiable can be 
+for a particular valuation of $p$,$l$ and $r$,
+the function over $\vec{f}_{p+l}$ that makes $F^d_{LN}(p,l,r)$ satisfiable can be 
 computed by 
 
 \begin{equation}\label{fsat_ln}
-FSAT_{LN}(p,l,r):=CharacterizingFormulaSAT(F'_{LN}(p,l,r,t),\vec{a},\vec{b},t)
+FSAT_{LN}(p,l,r):=CharacterizingFormulaSAT(F'^d_{LN}(p,l,r,t),\vec{a},\vec{b},t)
 \end{equation}
+
+Again according to Proposition \ref{prop_ln1},
+the satisfiable proof of $F^d_{LN}(p,l,r)$ can be generalized to all larger $p$,$l$ and $r$.
+So every valuation of $\vec{f}$ covered by $FSAT_{LN}(p,l,r)$ can also make $F^d_{LN}(p,l,r)$ satisfiable for all larger $p$,$l$ and $r$.
+So $FSAT_{LN}(p,l,r)$ grow monotonically,
+and is a subset of $\neg valid(\vec{f})$.
 
 Thus we have the following proposition:
 
 \begin{proposition}\label{prop_ln}
-$FSAT_{LN}(p,l,r)$ is the formula over $\vec{f}_{p+l}$ that makes  $\vec{d}_{p+l}$ 
-to be not uniquely determined for every $p'\ge p$, $l'\ge l$ and $r'\ge r$.
+$\neg FSAT_{LN}(p,l,r)$ is an over-approximation of $valid(\vec(f))$ that shrinks monotonically.
 \end{proposition}
+
+This is shown intuitively in Figure \ref{fig_mono}.
 
 % It is obvious that $FSAT_{LN}(p,l,r)\to FSAT_{PC}(p,l,r)$.
 % Thus,
@@ -1367,15 +1434,19 @@ With Propositions \ref{prop_pc} and \ref{prop_ln},
 the algorithm that infers the predicate $valid(\vec{f}_{p+l})$ is shown in 
 Algorithm \ref{algo_infer}.
 It just iteratively increases the value of $p$, $l$ and $r$, 
-until $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ is unsatisfiable.
+until $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ is unsatisfiable,
+which means that $FSAT_{PC}(p,l,r)$ and $FSAT_{LN}(p,l,r)$ are equal to each other.
+In this case,
+$\neg FSAT_{PC}(p,l,r)$ is return as $valid(\vec{f})$.
+
 The proofs of its termination and correctness are given in the next subsection.
 
-\subsection{Proofs of termination and correctness}
+\subsection{Proofs of termination and correctness}\label{subset_proofterm}
 
 First we need to prove the following three lemmas:
 
 \begin{lemma}\label{lemmapcdec}
-$\mathbf{FSAT_{PC}(p,l,r)}$ in Algorithm \ref{algo_infer} monotonically decreases.
+$\mathbf{FSAT_{PC}(p,l,r)}$ in Algorithm \ref{algo_infer} monotonically decreases with respect to $p$, $l$ and $r$.
 \end{lemma}
 \begin{proof}
 For any $p'>p$,$l'>l$ and $r'>l$,
@@ -1384,27 +1455,26 @@ at $(p'+l')$-step.
 Further assume that $A$ is covered by $FSAT_{PC}(p',l',r')$.
 
 According to Equation (\ref{fsat_pc}) and Algorithm \ref{alg_craigchar},
-we know that $A$ can make $F'_{PC}(p',l',r',1)$ satisfiable,
-that is,
-there exists another satisfying assignment $A'$ of $F'_{PC}(p',l',r',1)$
-that has the same value for $\vec{f}_{p+l}$.
+we know that $A$ can make $F'^d_{PC}(p',l',r',1)$ satisfiable.
+Assume this satisfying assignment of $F'^d_{PC}(p',l',r',1)$ is $A'$.
+Then we know that $A(\vec{f}_{p'+l'})\equiv A'(\vec{f}_{p'+l'})$.
 
 Intuitively,
 as shown in Figure \ref{fig_pcmap},
-we can map the valuations of the state, input and output vectors in $F'_{PC}(p',l',r',1)$ 
-to that of $F'_{PC}(p,l,r,1)$ by aligning the $(p'+l')$-step to $(p+l)$-step,
+we can map the valuations of the state, input and output vectors in $F'^d_{PC}(p',l',r',1)$ 
+to that of $F'^d_{PC}(p,l,r,1)$ by aligning the $(p'+l')$-step to $(p+l)$-step,
 and discard the two prefix and postfix state transition sequences.
 Formally,
 for each $p'+l'-l-p\le n\le p'+l'+r$,
-we map $s_n$ in $F'_{PC}(p',l',r',1)$ to $s_{n-p'-l'+l+p}$ in $F'_{PC}(p,l,r,1)$.
+we map $s_n$ in $F'^d_{PC}(p',l',r',1)$ to $s_{n-p'-l'+l+p}$ in $F'^d_{PC}(p,l,r,1)$.
 $i_n$ and $o_n$ are also mapped similarly.
 
 With this mapping, 
-we can transform the satisfying assignment $A'$ of $F'_{PC}(p',l',r',1)$ 
-to yet another satisfying assignment $A''$ of $F'_{PC}(p,l,r,1)$.
+we can transform the satisfying assignment $A'$ of $F'^d_{PC}(p',l',r',1)$ 
+to yet another satisfying assignment $A''$ of $F'^d_{PC}(p,l,r,1)$.
 
 By restricting the domain of $A''$ to $\vec{f}_{p+l}$,
-we got the fourth satisfying assignment $A'''$.
+we got the fourth satisfying assignment $A''':\vec{f}_{p+l}\to B$.
 According to the mapping presented above,
 we know that $A'''\equiv A$.
 
@@ -1412,32 +1482,51 @@ Thus,
 every $A$ covered by $FSAT_{PC}(p',l',r')$ 
 is also covered by $FSAT_{PC}(p,l,r)$.
 
+
+Thus,
+$FSAT_{PC}(p,l,r)$ monotonically decreases  with respect to $p$, $l$ and $r$.
+\end{proof}
+
 \begin{figure}[t]
 \begin{center}
 \includegraphics[width=0.7\textwidth]{pcmap}
 \end{center}
-\caption{Mapping $F'_{PC}(p',l',r',1)$ to $F'_{PC}(p,l,r,1)$ by aligning }
+\caption{Mapping $F'^d_{PC}(p',l',r',1)$ to $F'^d_{PC}(p,l,r,1)$ by aligning $(p'+l')$-step to $(p+l)$-step.}
   \label{fig_pcmap}
 \end{figure}
 
-Thus,
-$FSAT_{PC}(p,l,r)$ monotonically decreases.
-\end{proof}
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{lnmap}
+\end{center}
+\caption{Mapping $F'^d_{LN}(p,l,r,1)$ to $F'^d_{LN}(p',l',r',1)$ by aligning $(p+l)$-step to $(p'+l')$-step.}
+  \label{fig_lnmap}
+\end{figure}
 
 \begin{lemma}\label{lemmalninc}
-$\mathbf{FSAT_{LN}(p,l,r)}$ in Algorithm \ref{algo_infer} monotonically increases.
+$\mathbf{FSAT_{LN}(p,l,r)}$ in Algorithm \ref{algo_infer} monotonically increases  with respect to $p$, $l$ and $r$.
 \end{lemma}
 \begin{proof}
-According to the definition of $F'_{LN}(p,l,r,t)$ in Equation (\ref{lndef1}),
-with any satisfying assignment of $F'_{LN}(p,l,r,1)$,
-those three loops in $T_{LN}(p,l,r)$ can be unrolled to got a longer state transition sequence.
-With an mapping similar to Figure \ref{fig_pcmap},
-we can prove that $F'_{LN}(p',l',r',1)$ is satisfiable for all larger $p'$, $l'$ and $r'$.
-So,
-according to Equation (\ref{fsat_ln}),
-we have $FSAT_{LN}(p,l,r)\Rightarrow FSAT_{LN}(p',l',r')$,
-that is,
-$FSAT_{LN}(p,l,r)$ monotonically increases.
+For any $p'>p$,$l'>l$ and $r'>l$,
+assume $A:\vec{f}_{p+l}\to B$ is a Boolean valuation of the flow control vector 
+at $(p+l)$-step.
+Further assume that $A$ is covered by $FSAT_{LN}(p,l,r)$.
+
+So $A$ can make $F'^d_{LN}(p,l,r,1)$ satisfiable.
+Assume this satisfying assignment of $F'^d_{LN}(p,l,r,1)$ is $A'$.
+We know that $A(\vec{f}_{p+l})\equiv A'(\vec{f}_{p+l})$.
+
+As shown in Figure \ref{fig_lnmap},
+we can map $F'^d_{LN}(p,l,r,1)$ to $F'^d_{LN}(p',l',r',1)$ by aligning $(p+l)$-step to $(p'+l')$-step,
+and unrolling those three loops.
+In this way we can get another satisfying assignment $A''$ of $F'^d_{LN}(p',l',r',1)$.
+
+By restricting the domain of $A''$ to $vec{f}_{p'+l'}$,
+we can get the fourth satisfying assignment $A''':\vec{f}_{p'+l'}\to B$.
+It is obvious that $A\equiv A'''$.
+
+This means that every valuation covered by $FSAT_{LN}(p,l,r)$ is also covered by $FSAT_{LN}(p',l',r')$.
+So $FSAT_{LN}(p,l,r)$ grow monotonically with respect to $p$, $l$ and $r$.
 \end{proof}
 
 
@@ -1445,7 +1534,8 @@ $FSAT_{LN}(p,l,r)$ monotonically increases.
 $FSAT_{LN}(p,l,r)\Rightarrow FSAT_{PC}(p,l,r)$
 \end{lemma}
 \begin{proof}
-It is obvious that $F'_{LN}(p,l,r,1)\Rightarrow F'_{PC}(p,l,r,1)$,
+It is obvious that the clause set of $F'^d_{LN}(p,l,r,1)$ is a super set of $F'^d_{PC}(p,l,r,1)$.
+So every satisfying assignment of $F'^d_{LN}(p,l,r,1)$ can also satisfy $F'^d_{PC}(p,l,r,1)$.
 so $FSAT_{LN}(p,l,r)\Rightarrow FSAT_{PC}(p,l,r)$ holds.
 \end{proof}
 
@@ -1467,7 +1557,7 @@ then eventually the values of $p$, $l$ and $r$ in Algorithm \ref{algo_infer} wil
 which means there will be loops in these three state sequences $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
 Thus,
-every satisfying assignment of $F'_{PC}(p,l,r,1)$ also satisfies $F'_{LN}(p,l,r,1)$,
+every satisfying assignment of $F'^d_{PC}(p,l,r,1)$ also satisfies $F'^d_{LN}(p,l,r,1)$,
 which means $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ is unsatisfiable.
 This will lead to the termination of Algorithm \ref{algo_infer}.
 So,
@@ -1490,23 +1580,32 @@ So $\neg FSAT_{LN}(p,l,r)$ rules them out and covers all  valuations of $\vec{f}
 enable $\vec{d}$ to be uniquely determined.
 
 We then prove the only covering case.
-If $\neg FSAT_{LN}(p,l,r)$ covers a valuation of $\vec{f}$ that makes $\vec{d}$ to be \textbf{NOT} uniquely determined for some particular $p'$, $l'$ and $r'$,
-then $FSAT_{LN}(p',l',r')$ also covers this valuation but $FSAT_{LN}(p,l,r)$ does not.
-% According to Figure \ref{fig_mono},
-% the terminating condition of the while loop is actually $FSAT_{LN}(p,l,r)\equiv FSAT_{PC}(p,l,r)$.
-% So $FSAT_{PC}(p,l,r)$ also does not cover it.
-But according to Lemmas \ref{lemmapcdec}, \ref{lemmalninc} and \ref{lemmaln2pc},
-this is impossible,
-because $FSAT_{LN}(p,l,r)$ is the maximal $FSAT_{LN}(p',l',r')$ for all possible $p'$, $l'$ and $r'$.
-So $\neg FSAT_{LN}(p,l,r)$ covers no valuation of $\vec{f}$ that makes $\vec{d}$ to be \textbf{NOT} uniquely determined.
-This proves the only covering case.
+If $A$ is a valuation of $\vec{f}$ covered by $\neg FSAT_{LN}(p,l,r)$ that makes $\vec{d}$ to be \textbf{NOT} uniquely determined for some particular $p'$, $l'$ and $r'$,
+then we have:
+
+\begin{enumerate}
+ \item $FSAT_{LN}(p',l',r')$ also covers $A$.
+ According to Lemma \ref{lemmalninc},
+ for all $p''>max(p',p)$,$l''>max(l',l)$ and $r''>max(r',r)$,
+ $FSAT_{LN}(p'',l'',r'')$ also covers $A$.
+ \item $FSAT_{LN}(p,l,r)$ does not cover $A$.
+ It is the last $FSAT_{LN}(p,l,r)$ computed by Algorithm \ref{algo_infer}.
+ Which means that the $valid(\vec{f})$'s under-approximation and over-approximation have converge.
+ So for all $p''>max(p',p)$,$l''>max(l',l)$ and $r''>max(r',r)$,
+ $FSAT_{LN}(p'',l'',r'')$ must be equal to $FSAT_{LN}(p,l,r)$.
+ Thus $FSAT_{LN}(p'',l'',r'')$ also does not cover $A$.
+\end{enumerate}
+
+These two cases conflit with each other.
+So there is no such $A$ covered by $\neg FSAT_{LN}(p,l,r)$ that makes $\vec{d}$ to be \textbf{NOT} uniquely determined for some particular $p'$, $l'$ and $r'$.
+So the only covering case is proved.
 \end{proof}
 
 
 \section{Minimizing the valuation of $l$ and $r$}
-We will first introduce how to remove the redundancy of $l$ and $r$ in Subsection \ref{reduceing},
+We will first introduce why and how to remove the redundancy of $l$ and $r$ in Subsection \ref{reduceing},
 and then present another possible structure of our algorithm in Subsection \ref{alter},
-and discuss why we have chose the one in Subsection \ref{reduceing} instead of the one in Subsection \ref{alter}.
+and discuss why we have chosen the one in Subsection \ref{reduceing} instead of the one in Subsection \ref{alter}.
 
 \subsection{Minimizing the valuation of $l$ and $r$}\label{reduceing}
 As we have increase the value of $p$,$l$ and $r$ simultaneously in Algorithm \ref{algo_infer},
@@ -1514,14 +1613,14 @@ there may be some redundancy in the valuation of $p$,$l$ and $r$,
 which may lead to unnecessary overhead in the decoder's circuit area and delay.
 
 For example,
-assume the encoder is a simple inverter whose $o_i:=i_i$.
-With $l\equiv 0$ and $r\equiv 0$,
-we can get the simplest decoder that recover $i_i$ by simply inverting $o_i$.
+assume the encoder is a simple buffer whose $o:=i$.
+With $p\equiv 0$,$l\equiv 0$ and $r\equiv 0$,
+we can get the simplest decoder $i:=o$.
 In such a decoder,
-there is only one inverted and no registers.
-But with $l\equiv 1$ and $r\equiv 1$,
-we need an additional register to delay $o_{i-1}$ for one step,
-and then recover $i_i$ by inverting the delayed $o_{i-1}$.
+there is only one buffer and no registers.
+But with $p\equiv 0$,$l\equiv 0$ and $r\equiv 1$,
+we need an additional register to delay $o$ for one step,
+and then recover $i_i$ from the delayed $o$.
 
 According to Figure \ref{fig_pc},
 it is obvious that,
@@ -1535,21 +1634,21 @@ then minimize $l$.
 
 \begin{algorithm}[t]
 \SetAlgoVlined
-\For{$l':=l \to 1$} {
-  \If{$F_{PC}(p,l'-1,r)\wedge valid(\vec{f}_{p+l'-1})$ is satisfiable} {
-    break
-  }
-  \ElseIf{$l'\equiv 1$} {
-    $l':=l'-1$\\
-    break
-  }
-}
 \For{$r':=r \to 1$} {
-  \If{$F_{PC}(p,l',r'-1)\wedge valid(\vec{f}_{p+l'})$ is satisfiable} {
+  \If{$F_{PC}(p,l,r'-1)\wedge valid(\vec{f}_{p+l})$ is satisfiable} {
     break
   }
   \ElseIf{$r'\equiv 1$} {
     $r':=r'-1$\\
+    break
+  }
+}
+\For{$l':=l \to 1$} {
+  \If{$F_{PC}(p,l'-1,r')\wedge valid(\vec{f}_{p+l'-1})$ is satisfiable} {
+    break
+  }
+  \ElseIf{$l'\equiv 1$} {
+    $l':=l'-1$\\
     break
   }
 }
@@ -1558,8 +1657,8 @@ return $<l',r'>$
 \label{algo_remove2}
 \end{algorithm}
 
-To simply the presentation,
-we still use $p$, $l$ and $r$ instead of $p'$, $l'$ and $r'$ in the remainder of this paper.
+% To simply the presentation,
+% we still use $p$, $l$ and $r$ instead of $p'$, $l'$ and $r'$ in the remainder of this paper.
 
 \subsection{An alternative approach for comparison}\label{alter}
 
@@ -1570,7 +1669,7 @@ This approach need to call SAT solver for $O(n)$ times,
 with $n=max(p,l,r)$.
 
 \textbf{
-There is another possible way to do this job,
+There is another possible way to do this job in Algorithm \ref{alg_fofc_inc},
 that is,
 increasing $p$, $l$ and $r$ one by one with three nested loops,
 instead of simultaneously.
@@ -1580,7 +1679,7 @@ This approach need to call SAT solver for $O(n^3)$ times,
 
 \textbf{
 We will show in Subsection \ref{subsec_incr_plr_exp} that,
-increasing $p$, $l$ and $r$ simultaneously is much faster than increasing them separately.
+increasing $p$, $l$ and $r$ simultaneously and then minimized them with Algorithm \ref{algo_remove2} is much faster than increasing them separately.
 We will also explain the reason there.
 }
 
@@ -1591,7 +1690,7 @@ the flow control vector $\vec{f}$ and the data vector $\vec{d}$.
 The algorithms to characterize the decoder's Boolean functions that compute $\vec{f}$ and $\vec{d}$ are different,
 so they are discussed separately in the following two subsections.
 
-\subsection{Characterizing the decoder's Boolean function that computes $\vec{f}$}
+\subsection{Characterizing the decoder's Boolean function that computes $\vec{f}$}\label{subsec_fdec}
 
 Each variable $f\in \vec{f}$ can be uniquely determined by a bounded sequence of the encoder's output.
 So,
@@ -1609,10 +1708,12 @@ the decoder's Boolean function that computes $f_{p+l}$ is exactly the Craig inte
 (\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
 \}
 \\
-\wedge& f_{p+l}\equiv 1 
+\wedge& f_{p+l}\equiv 1 \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) 
 \end{array}
 \right\}
 \end{equation}
+
 \begin{equation}\label{fb}
 \phi_B:=
 \left\{
@@ -1623,7 +1724,8 @@ the decoder's Boolean function that computes $f_{p+l}$ is exactly the Craig inte
 \}
 \\
 \wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
-\wedge& f'_{p+l}\equiv 0
+\wedge& f'_{p+l}\equiv 0 \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
 \end{array}
 \right\}
 \end{equation}
@@ -1636,9 +1738,21 @@ a Craig interpolant $ITP$ can be derived by McMillian's algorithm\cite{interp_Mc
 which covers all values of $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$ that make $f_{p+l}\equiv 1$.
 At the same time,
 $ITP\wedge \phi_B$ is unsatisfiable,
-so $ITP$ covers nothing that can make $f_{p+l}$ 0.
+so $ITP$ covers nothing that can make $f_{p+l}\equiv 0$.
 Thus,
 $ITP$ is the decoder's Boolean function that computes $f\in\vec{f}$.
+
+To speedup characterizing the decoder's Boolean function for all $f\in\vec{f}$,
+we can employ the incremental SAT mechanism in MiniSat again by:
+\begin{enumerate}
+ \item 
+ Removing $f_{p+l}\equiv 1$ from $\phi_A$ and $f'_{p+l}\equiv 0$ from $\phi_B$.
+ \item 
+ Adding $\phi_A\wedge \phi_B$ into the MiniSat's clause database.
+ \item 
+ Solving with assumptions $f_{p+l}\equiv 1$ and $f'_{p+l}\equiv 0$ for each $f\in\vec{f}$.
+ And generating Craig interpolants separately.
+\end{enumerate}
 
 \subsection{Characterizing the decoder's Boolean function that computes $\vec{d}$}
 
@@ -1656,7 +1770,8 @@ Let's define the following two formulas for each data variable $d\in\vec{d}$:
 \}
 \\
 \wedge& d_{p+l}\equiv 1 \\
-\wedge& valid(\vec{f}_{p+l})
+\wedge& valid(\vec{f}_{p+l}) \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) 
 \end{array}
 \right\}
 \end{equation}
@@ -1672,7 +1787,8 @@ Let's define the following two formulas for each data variable $d\in\vec{d}$:
 \\
 \wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
 \wedge& d'_{p+l}\equiv 0\\
-\wedge& valid(\vec{f'}_{p+l})
+\wedge& valid(\vec{f'}_{p+l})\\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
 \end{array}
 \right\}
 \end{equation}
@@ -1697,10 +1813,11 @@ So,
 no function can be used to calculate its value.
 But this is not a problem,
 because the decoder is supposed 
-to recognize the invalid data vector by computing the value of control flow vector $\vec{f}$,
-and ignore the exact value of $\vec{d}$.
+to only recover the value of control flow vector $\vec{f}$,
+and ignore the exact value of $\vec{d}$ in this case.
 
-
+Similarly,
+we can also use the incremental SAT approach in Subsection \ref{subsec_fdec} to speedup characterizing the decoder's Boolean function for all $d\in\vec{d}$.
 
 
 % 
@@ -1967,7 +2084,7 @@ and ignore the exact value of $\vec{d}$.
 \section{Experimental Results}\label{sec_exp}
 
 We have implemented these algorithms in OCaml language,
-and solved the generated CNF formulas with Minisat 1.14\cite{EXTSAT}.
+and solved the generated CNF formulas with MiniSat 1.14\cite{EXTSAT}.
 All experiments have been run on a server with 16 Intel Xeon E5648 processors at 2.67GHz, 
 192GB memory, and CentOS 5.4 Linux.
 All these experimental results and programs can be downloaded 
@@ -1987,45 +2104,45 @@ Each column of Table \ref{tab:summ} shows respectively the number of input, outp
 The \#gate and area columns show the number of gates and area of the encoder when mapped to mcnc.genlib library by
 ABC synthesis tool \cite{ABC} with script "strash; dsd; strash; dc2; dc2; dch; map".
 In the remainder of this paper, 
-all circuit areas, gate number and delay are obtained in the same setting.
+all circuit areas, gate number and delay are obtained in the same setting such that we can compare them to that of \cite{LiuTCAD12}.
 
 \begin{table}[t]%
 \tbl{Benchmarks\label{tab:summ}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-                 & Names     &    \#     &      \#     &Circuit& Description                         & How to \\
-                 &           & in/out    &  reg/gate   &area  &   of Encoders                        & handle\\\hline\hline
-                 & PCIE2     & 10 / 11   & 22   / 149  & 326  &PCIE 2.0                              & Subsection\\
-Benchmarks       &           &           &             &      &\cite{pcie21}                    & \ref{subsec_pcie2}\\\cline{2-7}
- in Shen         & XGXS      & 10 / 10   & 17   / 249  & 572  &10Gb Ethernet in clause               & Subsection \\
-\citeyear{ShenTCAD12} with&  &           &             &      & 48 of \cite{IEEE8023_S4}             & \ref{subsec_10g} \\\cline{2-7}
-flow control     & T2Eth     & 14 / 14   & 53   / 427  & 947  &Ethernet encoder of                   & Subsection \\
-                 &           &           &             &      &UltraSPARC T2 processor               &\ref{subsec_t2e}\\\hline\hline
-Benchmarks       & XFI       & 72 / 66   & 72   / 5086 & 12381&10Gb Ethernet in clause               &\\
- in Shen         &           &           &             &      & 49 of \cite{IEEE8023_S4}             &Comparing\\\cline{2-6}
-\citeyear{ShenTCAD12} without&SCRAMBLER&64/64&58/353   & 1034 & Making a bit stream to               &our \\
-flow control     &           &           &             &      & have lots of 01 flipping             & algorithm \\\cline{1-6}
-Benchmarks       & CC\_3     & 1  / 2    & 3    / 5    & 13   &convolution code                      &to Liu\citeyear{LiuTCAD12} \\
-in Liu \citeyear{LiuTCAD12}& &           &             &      & with length 3                        &in \\\cline{2-6}  
-and Liu's        & CC\_4     & 1  / 2    & 4    / 7    & 19   &convolution code                      &Subsection\\
-package          &           &           &             &      &with length 4                         &\ref{subsec_nonflow}\\\hline\hline
-                 & CC\_13    & 1  / 2    & 13   / 36   & 105  &convolution code                      &\\
-                 &           &           &             &      &with length 13                        &\\\cline{2-6}
-                 & CC\_14    & 1 / 2     & 14   / 28   & 84   &convolution code                      &\\
-                 &           &           &             &      &with length 14                        &\\\cline{2-6}
-                 &HfmAlp5    & 5  / 2    & 9/164       & 389  &                                      &Presented\\\cline{2-5}
-Benchmarks       &HfmSkw5    & 5  / 2    & 10/203      & 482  &                                      & in \\\cline{2-5}
-in Liu's         &HfmSkw6    & 6  / 2    & 12/421      & 1007 & Huffman encoders                     &Subsection\\\cline{2-5}
-package          &HfmJpg8    & 8  / 2    & 12/606      & 1430 & of different size                    &\ref{subsec_nonflow} without \\\cline{2-5}
-but not in       &HfmRnd8    & 8  / 2    & 13/1163     & 2742 &                                      &compared\\\cline{2-5}
-Liu \citeyear{LiuTCAD12}&HfmRnd9& 9  / 2 & 14/2326     & 5606 &                                      &to\\\cline{2-6}
-                 &lfsr12\_6\_4& 1  / 1   & 12/15       & 31   & Linear feedback                      &Liu\citeyear{LiuTCAD12}\\\cline{2-5}
-                 &lfsr26\_6\_2& 1  / 1   & 26/29       & 45   & shift register                       &\\\cline{2-5}
-                 &lfsr32\_7\_6& 1  / 1   & 32/35       & 51   & of different size                    &\\\hline\hline
-Benchmarks       &HM(7,4)    &           &  3/50       &      &                                      &No source\\
-in Liu\citeyear{LiuTCAD12}&  &           &             &      & Hamming encoder                      &code, so not\\\cline{2-5}
-but not in       &HM(15,11)  &           &  4/144      &      & of different size                    &discussed in\\
-package          &           &           &             &      &                                      &this paper\\\hline
+                 & Names     &    \#     &      \#     &Circuit& Description                         & How to                     \\
+                 &           & in/out    &  reg/gate   &area  &   of Encoders                        & handle                     \\\hline\hline
+                 & PCIE2     & 10 / 11   & 22   / 149  & 326  &PCIE 2.0                              & Subsection                 \\
+Benchmarks       &           &           &             &      &\cite{pcie21}                         & \ref{subsec_pcie2}         \\\cline{2-7}
+ in Shen         & XGXS      & 10 / 10   & 17   / 249  & 572  &10Gb Ethernet in clause               & Subsection                 \\
+\citeyear{ShenTCAD12} with&  &           &             &      & 48 of \cite{IEEE8023_S4}             & \ref{subsec_10g}           \\\cline{2-7}
+flow control     & T2Eth     & 14 / 14   & 53   / 427  & 947  &Ethernet encoder of                   & Subsection                 \\
+                 &           &           &             &      &UltraSPARC T2 processor               &\ref{subsec_t2e}            \\\hline\hline
+Benchmarks       & XFI       & 72 / 66   & 72   / 5086 & 12381&10Gb Ethernet in clause               &                            \\
+ in Shen         &           &           &             &      & 49 of \cite{IEEE8023_S4}             &Comparing                   \\\cline{2-6}
+\citeyear{ShenTCAD12} without&SCRAMBLER&64/64&58/353   & 1034 & Making a bit stream to               &our                         \\
+flow control     &           &           &             &      & have lots of 01 flipping             & algorithm                  \\\cline{1-6}
+Benchmarks       & CC\_3     & 1  / 2    & 3    / 5    & 13   &convolution code                      &to Liu\citeyear{LiuTCAD12}  \\
+in Liu \citeyear{LiuTCAD12}& &           &             &      & with length 3                        &in                          \\\cline{2-6}  
+and Liu's        & CC\_4     & 1  / 2    & 4    / 7    & 19   &convolution code                      &Subsection                  \\
+package          &           &           &             &      &with length 4                         &\ref{subsec_nonflow}        \\\hline\hline
+                 & CC\_13    & 1  / 2    & 13   / 36   & 105  &convolution code                      &                            \\
+                 &           &           &             &      &with length 13                        &                            \\\cline{2-6}
+                 & CC\_14    & 1 / 2     & 14   / 28   & 84   &convolution code                      &                            \\
+                 &           &           &             &      &with length 14                        &                            \\\cline{2-6}
+                 &HfmAlp5    & 5  / 2    & 9/164       & 389  &                                      &Presented                   \\\cline{2-5}
+Benchmarks       &HfmSkw5    & 5  / 2    & 10/203      & 482  &                                      & in                         \\\cline{2-5}
+in Liu's         &HfmSkw6    & 6  / 2    & 12/421      & 1007 & Huffman encoders                     &Subsection                  \\\cline{2-5}
+package          &HfmJpg8    & 8  / 2    & 12/606      & 1430 & of different size                    &\ref{subsec_nonflow} but    \\\cline{2-5}
+but not in       &HfmRnd8    & 8  / 2    & 13/1163     & 2742 &                                      &no data from                \\\cline{2-5}
+Liu \citeyear{LiuTCAD12}&HfmRnd9& 9  / 2 & 14/2326     & 5606 &                                      &Liu\citeyear{LiuTCAD12}     \\\cline{2-6}
+                 &lfsr12\_6\_4& 1  / 1   & 12/15       & 31   & Linear feedback                      &to be compared              \\\cline{2-5}
+                 &lfsr26\_6\_2& 1  / 1   & 26/29       & 45   & shift register                       &                            \\\cline{2-5}
+                 &lfsr32\_7\_6& 1  / 1   & 32/35       & 51   & of different size                    &                            \\\hline\hline
+Benchmarks       &HM(7,4)    &           &  3/50       &      &                                      &No source                   \\
+in Liu\citeyear{LiuTCAD12}&  &           &             &      & Hamming encoder                      &code, so not                \\\cline{2-5}
+but not in       &HM(15,11)  &           &  4/144      &      & of different size                    &discussed in                \\
+his package      &           &           &             &      &                                      &this paper                  \\\hline
 \end{tabular}}
 \end{table}%
 
@@ -2051,16 +2168,33 @@ We can not find their source code in the benchmark package sent to us by Liu.
 So we will not discuss them here.
 \end{enumerate}
 
+We have also conducted other experiments:
+
+In Subsection \ref{subsec_incr_plr_exp}, we will compare run time overhead of two different approaches:
+\begin{enumerate}
+ \item Increasing $p$, $l$ and $r$ simultaneously in Algorithm \ref{algo_infer} 
+ and then minimize them in Algorithm \ref{algo_remove2}.
+ \item Increasing $p$, $l$ and $r$ separately with three nested loops in Algorithm \ref{algo_infer}.
+\end{enumerate}
+
+In Subsection \ref{subsec_min},
+we will compare run times, circuit areas and delay between the two approaches 
+that do and do not minimize $p$,$l$ and $r$ by Algorithm \ref{algo_remove2}.
+
+Finally in Subsection \ref{subsec_compareman},
+we will compare the circuit area and delay between the decoder generated by our algorithm with the decoder written manually.
+
+
 \subsection{PCI Express 2.0 encoder}\label{subsec_pcie2}
 This encoder is compliant with the PCI Express 2.0 standard \cite{pcie21}.
 After deleting empty line and comments,
 its source code has 259 lines of verilog.
 
-\begin{table}[t]%
+\begin{table}[b]%
 \tbl{The input and output variables of the PCI Express 2.0 encoder\label{tab:pcieio}}{%
 \begin{tabular}{|c|c|c|c|}
 \hline
-         & variable name          & width & description\\\hline\hline
+         & variable name        & width & description\\\hline\hline
          & $TXDATA$             & 8     &The data to be encoded \\\cline{2-4}
 Inputs   & $TXDATAK$            & 1     &1 means $TXDATA$ is a controlling character, \\
          &                      &       &0 means $TXDATA$ is normal data \\\cline{2-4}
@@ -2106,7 +2240,7 @@ So,
 the decoder can use the output variable $HSS\_TXELECIDLE$ to uniquely determine the value of flow control variable $CNTL\_TXEnable\_P0$.
 
 \begin{table}[b]%
-\tbl{The input and output variables of the 10G Ethernet encoder\label{tab:eth10g}}{%
+\tbl{The input and output variables of the 10G Ethernet encoder XGXS\label{tab:eth10g}}{%
 \begin{tabular}{|c|c|c|c|}
 \hline
          & variable name          & width & description\\\hline\hline
@@ -2127,14 +2261,10 @@ Outputs  & $encode\_data\_out$  & 10    &The encoded data \\\hline
 % \end{tabnote}%
 \end{table}%
 
-\subsection{10G Ethernet encoder}\label{subsec_10g}
-This encoder is compliant with clause 48 of IEEE 802.3 standard \cite{IEEE8023_S4}.
+\subsection{10G Ethernet encoder XGXS}\label{subsec_10g}
+This encoder XGXS is compliant with clause 48 of IEEE 802.3 standard \cite{IEEE8023_S4}.
 After deleting empty line and comments,
 this encoder has 214 lines of verilog.
-After being mapped to LSI10K library,
-it contains 65 AND2 gates, 192 OR2 gates, 75 inverters and 17 registers.
-Its total area is 708.
-
 
 The list of input and output variables is shown in Table \ref{tab:eth10g}.
 This encoder also employs an 8b/10b encoding scheme\cite{encode8b10b} with two inputs:
@@ -2175,9 +2305,7 @@ This encoder comes from the UltraSPARC T2 open source processor designed by Sun 
 It is compliant with clause 36 of IEEE 802.3 standard \cite{IEEE8023_S4}.
 After deleting empty line and comments,
 this encoder's source code has 864 lines of verilog.
-After being mapped to LSI10K library,
-it contains 344 AND2 gates, 649 OR2 gates, 128 inverters and 53 registers.
-Its total area is 2485.
+
 
 \begin{table}[t]%
 \tbl{The input and output variables of the UltraSPARC T2 Ethernet encoder\label{tab:t2eth}}{%
@@ -2258,14 +2386,44 @@ so the decoder can recover the value of the flow control variable $tx\_enc\_ctrl
 
 \subsection{Comparing our algorithm with the state-of-the-art algorithm on circuits without flow control mechanism}\label{subsec_nonflow}
 
-Table \ref{tab:comp_nocf} compare our algorithm and \cite{LiuTCAD12} 
+\begin{table}[t]%
+\tbl{Comparing our algorithm with \cite{LiuTCAD12}\label{tab:comp_nocf}}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+            &\multicolumn{4}{|c|}{Our algorithm}                    &\multicolumn{3}{|c|}{\cite{LiuTCAD12}}\\\cline{2-8}
+            &time check.& time    & decoder & decoder               &time check. decoder & decoder & decoder               \\
+Names       & decoder.  & gen.    & area    & delay                 & exist. and gen.    & area    & delay                 \\
+            & exist.    & decoder &         &                       & decoder            &         &                       \\\hline
+ PCIE2      &\multicolumn{7}{|c|}{} \\\cline{1-1}
+ XGXS       &\multicolumn{7}{|c|}{Already presented in Subsection \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.} \\\cline{1-1}
+ T2Eth      &\multicolumn{7}{|c|}{} \\\hline
+XFI         & 13.24     &6.13     & 7520    & 16.4                  & 8.59               &   3913  & 12.5\\\hline
+SCRAMBLER   & 1.80      &0.55     & 476     & 5.7                   & 0.42               &   640   & 3.8 \\\hline
+ CC\_3      & 0.01      &0.01     &6        & 2.0                   & 0.21               & 104     &9.1  \\\hline
+ CC\_4      & 0.03      &0.04     &12       & 3.0                   & 0.20               & 129     &9.0 \\\hline
+ CC\_13     & 3177      &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
+ CC\_14     & 827       &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
+HfmAlp5     &0.26       &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
+HfmSkw5     &0.48       &\multicolumn{3}{|c|}{Algorithm}            &\multicolumn{3}{|c|}{no result} \\\cline{1-2}
+HfmSkw6     &1.04       &\multicolumn{3}{|c|}{\ref{alg_fofc_inc} found}&\multicolumn{3}{|c|}{given in} \\\cline{1-2}
+HfmJpg8     &1.6        &\multicolumn{3}{|c|}{nothing to be}        &\multicolumn{3}{|c|}{\cite{LiuTCAD12}.} \\\cline{1-2}
+HfmRnd8     &9.12       &\multicolumn{3}{|c|}{uniquely determined.} &\multicolumn{3}{|c|}{So can not} \\\cline{1-2}
+HfmRnd9     &56.92      &\multicolumn{3}{|c|}{Decoder do}           &\multicolumn{3}{|c|}{be compared} \\\cline{1-2}
+lfsr12\_6\_4&670.79     &\multicolumn{3}{|c|}{not exist.}           &\multicolumn{3}{|c|}{here.} \\\cline{1-2}
+lfsr26\_6\_2&           &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
+lfsr32\_7\_6&  55.47    &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\hline
+\end{tabular}}
+\end{table}%
+
+Table \ref{tab:comp_nocf} compares our algorithm to \cite{LiuTCAD12} 
 on those benchmarks without flow control mechanism.
 
-The first 3 have flow control mechanism and have benn discussed in Subsection \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.
+The first 3 benchmarks have flow control mechanism and have been discussed in Subsection \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.
 So they are not discussed in this subsection.
 
-The 2 benchmarks from XFI and SCRAMBLER have experimental result in \cite{LiuTCAD12},
-and also have source code in the package sent to us by its author.
+For the 2 benchmarks XFI and SCRAMBLER,
+we have their source code.
+And \cite{LiuTCAD12} have its experimental result.
 So we can compare the result of our algorithm to that of \cite{LiuTCAD12}.
 By comparing the sum of the 2nd and 3rd columns to the 6th column,
 we can find that \cite{LiuTCAD12} is much faster than our algorithm,
@@ -2275,7 +2433,7 @@ to check whether each input variables $i\in \vec{i}$ can be uniquely determined,
 while \cite{LiuTCAD12} can check all input variables with one SAT solving.
 The other issue is that our decoder is much more larger and slower than that of \cite{LiuTCAD12},
 I think this may caused by the immature implementation of our Craig interpolant generating algorithm,
-which  manipulate the complex proof structure generated from MiniSAT in OCaml.
+which  manipulate the complex proof structure generated from MiniSat in OCaml.
 This can be significantly improved by porting similar codes from other formal tools, such as ABC \cite{ABC}.
 
 The 2 benchmarks CC\_3 and CC\_4 have experimental result in \cite{LiuTCAD12},
@@ -2298,34 +2456,6 @@ So I think this is the reason that Liu have not include them in his paper \cite{
 
 
 
-\begin{table}[t]%
-\tbl{Comparing our algorithm with \cite{LiuTCAD12}\label{tab:comp_nocf}}{%
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
-\hline
-            &\multicolumn{4}{|c|}{Our algorithm}                    &\multicolumn{3}{|c|}{\cite{LiuTCAD12}}\\\cline{2-8}
-            &time check.& time    & decoder & decoder               &time check. decoder & decoder & decoder               \\
-Names       & decoder.  & gen.    & area    & delay                 & exist. and gen.    & area    & delay                 \\
-            & exist.    & decoder &         &                       & decoder            &         &                       \\\hline
- PCIE2      &\multicolumn{7}{|c|}{} \\\cline{1-1}
- XGXS       &\multicolumn{7}{|c|}{Already presented in Subsection \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.} \\\cline{1-1}
- T2Eth      &\multicolumn{7}{|c|}{} \\\hline
-XFI         & 13.24     &6.13     & 7520    & 16.4                  & 8.59               &   3913  & 12.5\\\hline
-SCRAMBLER   & 1.80      &0.55     & 476     & 5.7                   & 0.42               &   640   & 3.8 \\\hline
- CC\_3      & 0.01      &0.01     &6        & 2.0                   & 0.21               & 104     &9.1  \\\hline
- CC\_4      & 0.03      &0.04     &12       & 3.0                   & 0.20               & 129     &9.0 \\\hline
- CC\_13     &           &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
- CC\_14     &           &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
-HfmAlp5     &           &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
-HfmSkw5     &           &\multicolumn{3}{|c|}{Algorithm}            &\multicolumn{3}{|c|}{no result} \\\cline{1-2}
-HfmSkw6     &           &\multicolumn{3}{|c|}{\ref{alg_fofc_inc} found}&\multicolumn{3}{|c|}{given in} \\\cline{1-2}
-HfmJpg8     &           &\multicolumn{3}{|c|}{nothing to be}        &\multicolumn{3}{|c|}{\cite{LiuTCAD12}.} \\\cline{1-2}
-HfmRnd8     &           &\multicolumn{3}{|c|}{uniquely determined.} &\multicolumn{3}{|c|}{So can not} \\\cline{1-2}
-HfmRnd9     &           &\multicolumn{3}{|c|}{Decoder do}           &\multicolumn{3}{|c|}{be compared} \\\cline{1-2}
-lfsr12\_6\_4&           &\multicolumn{3}{|c|}{not exist.}           &\multicolumn{3}{|c|}{here.} \\\cline{1-2}
-lfsr26\_6\_2&           &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
-lfsr32\_7\_6&           &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\hline
-\end{tabular}}
-\end{table}%
 
 
 \subsection{Comparing run time overhead of increasing $p$, $l$ and $r$ simultaneously and separately}\label{subsec_incr_plr_exp}
@@ -2340,8 +2470,8 @@ It use three nested loops to increase $p$, $l$ and $r$ separately.
 We call it A2 in this subsection.
 
 We compare these two approaches in Table \ref{tab:comparing_simu_sepa}.
-The first three benchmarks are those three circuits with flow control mechanism,
-and the last two benchmarks are those without flow control mechanism.
+% The first three benchmarks are those three circuits with flow control mechanism,
+% and the last two benchmarks are those without flow control mechanism.
 
 \begin{table}[t]%
 \tbl{Comparing run time overhead of increasing $p$, $l$ and $r$ simultaneously and separately\label{tab:comparing_simu_sepa}}{%
@@ -2358,30 +2488,29 @@ XFI                & 2,1,0& 4.59       & 3.60            & 9.55       & 17.74   
 SCRAMBLER          & 2,1,0& 0.64       & 0.58            & 1.33       & 2.55    & 2,1,0& 0.48       & 0.43            & 1.47       & 2.38   \\\hline
 CC\_3              & 2,0,1& 0.003      & 0.003           & 0.007      &  0.01   & 3,0,1& 0.001      & 0.001           & 0.006      & 0.01   \\\hline
 CC\_4              & 2,1,1& 0.005      & 0.004           & 0.011      &  0.02   & 3,1,1& 0.003      & 0.003           & 0.011      & 0.02       \\\hline
- CC\_13            & 6,6,6& 3177       &\multicolumn{3}{|c|}{}                  & 6,5,6&2848.07     &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
- CC\_14            & 6,6,6& 827        &\multicolumn{3}{|c|}{}                  & 6,5,6& 838.56     &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
-HfmAlp5            & 3,3,3&0.26        &\multicolumn{3}{|c|}{Decoder does}      & 3,2,2&0.15        &\multicolumn{3}{|c|}{Decoder does}      \\\cline{1-3}\cline{7-8}
-HfmSkw5            & 3,3,3&0.48        &\multicolumn{3}{|c|}{not exist. So}     & 3,3,3&0.42        &\multicolumn{3}{|c|}{not exist. So}     \\\cline{1-3}\cline{7-8}
-HfmSkw6            & 3,3,3&1.04        &\multicolumn{3}{|c|}{no these value}    & 3,3,3&1.02        &\multicolumn{3}{|c|}{no these value}    \\\cline{1-3}\cline{7-8}
-HfmJpg8            & 3,3,3&1.6         &\multicolumn{3}{|c|}{}                  & 3,2,2&1.09        &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
-HfmRnd8            & 4,4,4&9.12        &\multicolumn{3}{|c|}{}                  & 4,4,4&21.25       &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
-HfmRnd9            & 5,5,5&56.92       &\multicolumn{3}{|c|}{}                  & 5,5,4&85.36       &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
+ CC\_13            & 6,6,6  & 3177     &\multicolumn{3}{|c|}{}                  & 6,5,6&2848.07     &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
+ CC\_14            & 6,6,6  & 827      &\multicolumn{3}{|c|}{}                  & 6,5,6& 838.56     &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
+HfmAlp5            & 3,3,3  &0.26      &\multicolumn{3}{|c|}{Decoder does}      & 3,2,2&0.15        &\multicolumn{3}{|c|}{Decoder does}      \\\cline{1-3}\cline{7-8}
+HfmSkw5            & 3,3,3  &0.48      &\multicolumn{3}{|c|}{not exist. So}     & 3,3,3&0.42        &\multicolumn{3}{|c|}{not exist. So}     \\\cline{1-3}\cline{7-8}
+HfmSkw6            & 3,3,3  &1.04      &\multicolumn{3}{|c|}{no these value}    & 3,3,3&1.02        &\multicolumn{3}{|c|}{no these value}    \\\cline{1-3}\cline{7-8}
+HfmJpg8            & 3,3,3  &1.6       &\multicolumn{3}{|c|}{}                  & 3,2,2&1.09        &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
+HfmRnd8            & 4,4,4  &9.12      &\multicolumn{3}{|c|}{}                  & 4,4,4&21.25       &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
+HfmRnd9            & 5,5,5  &56.92     &\multicolumn{3}{|c|}{}                  & 5,5,4&85.36       &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
 lfsr12\_6\_4       &32,32,32&670.79    &\multicolumn{3}{|c|}{}                  &32,32,32&2058.65   &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
-lfsr26\_6\_2       &      &            &\multicolumn{3}{|c|}{}                  &      &            &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
+lfsr26\_6\_2       &        &          &\multicolumn{3}{|c|}{}                  &      &            &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
 lfsr32\_7\_6       &16,16,16&  55.47   &\multicolumn{3}{|c|}{}                  &16,16,16&138.80    &\multicolumn{3}{|c|}{}                  \\\hline
 \end{tabular}}
 \end{table}%
 
-By comparing the total run time in column 7 and 12
-it is obvious that,
+By comparing the total run time in column 6 and 11,
+it is obvious that
 A2 is faster than A1 in most of the case.
-The only exception is the T2Eth,
-for which A1 is faster than A2.
+The only exception is the T2Eth.
 
 So does this means that we should use A2 instead of A1?
-The answer is no.
+The answer is NO.
 
-according to Subsection \ref{alter},
+According to Subsection \ref{alter},
 A1 needs to call SAT solver for $O(n)$ times,
 with $n=max(p,l,r)$.
 And A2 need to call SAT solver for $O(n^3)$ times.
@@ -2390,47 +2519,47 @@ these two approaches do not have too much difference on this overhead.
 But for benchmarks with larger $n$,
 such as T2Eth,
 their difference is significant.
-This can be witnessed by comparing column 4 and 9,
+This can be witnessed by comparing column 3 and 8,
 especially the row of T2Eth.
 
 So A2 beats A1 in smaller circuits,
 while A1 win on larger ones.
 So we chose A1,
 that is,
-Algorithm \ref{alg_fofc_inc} instead of A2.
-
+first increase $p$, $l$ and $r$ simultaneously,
+and then reduce them with Algorithm \ref{algo_remove2}.
 
 
 \subsection{Comparing run times, circuit areas and delay between the two approaches 
-with and without minimizing $p$,$l$ and $r$ by Algorithm \ref{algo_remove2}}
+with and without minimizing $l$ and $r$ by Algorithm \ref{algo_remove2}}\label{subsec_min}
 
 \begin{table}[t]%
 \tbl{Comparing run times, circuit areas and delay between the two approaches 
 with and without minimizing $p$,$l$ and $r$ by Algorithm \ref{algo_remove2}\label{tab:compare_min}}{%
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
-       & run       & run              & \multicolumn{5}{|c|}{Not minimizing $l$ and $r$ with Alg. \ref{algo_remove2}} &  \multicolumn{5}{|c|}{Minimizing $l$ and $r$ with Alg. \ref{algo_remove2}} \\\cline{4-13}
-bench- & time      & time             & p,l,r& runtime    & decoder & \#  & max                  & p,l,r& runtime    & decoder & \#  & max             \\
-marks  & find.     & find.            &      & generat.   & area    & of  &  logic               &      & generat.   & area    & of  &logic            \\
-       & $\vec{f}$ & $valid(\vec{f})$ &      & decoder    &         & reg &delay                 &      & decoder    &         & reg & delay           \\\hline\hline
-PCIE2  &   0.49    & 1.21             & 3,3,3& 0.44       &  382    & 11  & 7.5                  & 3,0,2& 0.28       &  374    & 0   & 9.1             \\\hline
-XGXS   &   0.31    & 0.88             & 3,3,3& 0.35       &  351    &20   &8.2                   & 3,0,1& 0.18       &  322    & 0   & 7.0             \\\hline
-T2Eth  &   4.28    & 15.17            & 4,4,4& 4.76       &  1178   & 9   & 10.9                 & 4,0,4& 3.41       &  1557   & 9   & 11.8            \\\hline
-XFI    &   4.59    & 3.60             & 2,2,2& 10.67      & 5079    &190  & 16.50                & 2,1,0& 6.05       &  6023   & 58  & 15.5                \\\hline
-SCRAMBLER& 0.64    & 0.58             & 2,2,2& 1.27       & 826     &186  &  3.8                 & 2,1,0& 0.55       &  698    & 58  & 3.8                \\\hline
- CC\_3 & \multicolumn{12}{|c|}{}                          \\\cline{1-1}
- CC\_4 & \multicolumn{12}{|c|}{}                          \\\cline{1-1}
- CC\_13& \multicolumn{12}{|c|}{}                          \\\cline{1-1}
- CC\_14& \multicolumn{12}{|c|}{}                          \\\cline{1-1}
-HfmAlp5& \multicolumn{12}{|c|}{}                          \\\cline{1-1}
-HfmSkw5& \multicolumn{12}{|c|}{Decoder do not }           \\\cline{1-1}
-HfmSkw6& \multicolumn{12}{|c|}{exist. no result here}     \\\cline{1-1}
-HfmJpg8& \multicolumn{12}{|c|}{}                          \\\cline{1-1}
-HfmRnd8& \multicolumn{12}{|c|}{}                          \\\cline{1-1}
-HfmRnd9& \multicolumn{12}{|c|}{}                          \\\cline{1-1}
-lfsr12\_6\_4&\multicolumn{12}{|c|}{}                      \\\cline{1-1}
-lfsr26\_6\_2&\multicolumn{12}{|c|}{}                      \\\cline{1-1}
-lfsr32\_7\_6&\multicolumn{12}{|c|}{}                      \\\hline
+            & \multicolumn{5}{|c|}{Not minimizing $l$ and $r$ with Alg. \ref{algo_remove2}} &  \multicolumn{6}{|c|}{Minimizing $l$ and $r$ with Alg. \ref{algo_remove2}} \\\cline{2-12}
+bench-      & p,l,r& runtime    & decoder & \#  & max                                       &time        & p,l,r& runtime    & decoder & \#  & max             \\
+marks       &      & generat.   & area    & of  &  logic                                    &minimiz.    &      & generat.   & area    & of  &logic            \\
+            &      & decoder    &         & reg &delay                                      &$p$,$l$,$r$ &      & decoder    &         & reg & delay           \\\hline\hline
+PCIE2       & 3,3,3& 0.44       &  382    & 11  & 7.5                                       &0.68        & 3,0,2& 0.28       &  374    & 0   & 9.1             \\\hline
+XGXS        & 3,3,3& 0.35       &  351    &20   &8.2                                        &0.52        & 3,0,1& 0.18       &  322    & 0   & 7.0             \\\hline
+T2Eth       & 4,4,4& 4.76       &  1178   & 9   & 10.9                                      &6.25        & 4,0,4& 3.41       &  1557   & 9   & 11.8            \\\hline
+XFI         & 2,2,2& 10.67      & 5079    &190  & 16.50                                     &9.55        & 2,1,0& 6.05       &  6023   & 58  & 15.5                \\\hline
+SCRAMBLER   & 2,2,2& 1.27       & 826     &186  &  3.8                                      &1.33        & 2,1,0& 0.55       &  698    & 58  & 3.8                \\\hline
+ CC\_3      & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
+ CC\_4      & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
+ CC\_13     & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
+ CC\_14     & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
+HfmAlp5     & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
+HfmSkw5     & \multicolumn{11}{|c|}{Decoder do not }           \\\cline{1-1}
+HfmSkw6     & \multicolumn{11}{|c|}{exist. no result here}     \\\cline{1-1}
+HfmJpg8     & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
+HfmRnd8     & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
+HfmRnd9     & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
+lfsr12\_6\_4& \multicolumn{11}{|c|}{}                      \\\cline{1-1}
+lfsr26\_6\_2& \multicolumn{11}{|c|}{}                      \\\cline{1-1}
+lfsr32\_7\_6& \multicolumn{11}{|c|}{}                      \\\hline
 \end{tabular}}
 \end{table}%
 
@@ -2440,34 +2569,36 @@ To show its efficiency,
 we present the experimental result in Table \ref{tab:compare_min}.
 
 The first column is the benchmarks.
-The second and third columns are the run time overhead of 
-finding out the flow control vector $\vec{f}$ and inferring $valid(\vec{f})$.
+% The second and third columns are the run time overhead of 
+% finding out the flow control vector $\vec{f}$ and inferring $valid(\vec{f})$.
 When Algorithm \ref{algo_remove2} is not used,
-The fourth to seventh columns give respectively the $p$,$l$ and $r$ valuation,
+The 2nd to 6th columns give respectively the $p$,$l$ and $r$ valuation,
 the runtime to generate the decoder,
-the decoder area
-and the number of registers in the generated decoder.
+the decoder area,
+the number of registers in the generated decoder,
+and the maximal logic delay of the decoder.
 When Algorithm \ref{algo_remove2} is used,
-these experimental result are again presented in the last four columns.
+these experimental result are again presented in the last 5 columns.
+While the 7th column presents the time used to minimize $l$ and $r$.
 
-By comparing the 4-7 columns with the 8-11 columns,
+By comparing the 2-6 columns with the 8-12 columns,
 it is obvious that the decoders area and number of registers are significantly reduced,
-with significant runtime overhead in reducing $p$, $l$ and $r$.
+with significant runtime overhead in reducing $l$ and $r$ shown in the 7th column.
 
 
-\subsection{Comparing circuit area and timing for the decoders generated by our algorithm and hand written decoders}
+\subsection{Comparing circuit area and timing for the decoders generated by our algorithm and hand written decoders}\label{subsec_compareman}
 
 \begin{table}[b]%
 \tbl{Comparing circuit area and timing for the decoders generated by our algorithm and hand written decoders\label{tab:comparing_hand}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
 bench- & \multicolumn{2}{|c|}{Decoder generated by us} &  \multicolumn{2}{|c|}{Hand written decoder} \\\cline{2-5}
-marks  & area    & critical path timing    &area    & critical path timing               \\\hline
-PCIE2  & 2363    &&952 &19.03\\\hline
-XGXS   & 1484    &&913 &12.33\\\hline
-T2Eth  & 5212    &&2225&23.36\\\hline
-XFI    & 5212    &&2225&23.36\\\hline
-SCRAMBLER& 5212  &&2225&23.36\\\hline
+marks  & area    & max logic delay    &area    & max logic delay               \\\hline
+PCIE2    & 374   &9.1                 &    &\\\hline
+XGXS     & 322   &7.0                 &    &\\\hline
+T2Eth    & 1557  &11.8                &    &\\\hline
+XFI      & 6023  &15.5                &    &\\\hline
+SCRAMBLER& 698   &3.8                 &    &\\\hline
  CC\_3 &     \multicolumn{4}{|c|}{}\\\cline{1-1}
  CC\_4 &     \multicolumn{4}{|c|}{}\\\cline{1-1}
  CC\_13&     \multicolumn{4}{|c|}{}\\\cline{1-1}
@@ -2524,10 +2655,7 @@ based on property directed reachability analysis \cite{BradleyVMCAI11,EenFMCAD11
 that can take the encoder's initial state into consideration,
 so that the infinite history of the encoder and the decoder can be used to generate the decoder's output.
 This algorithm can handle some special encoders that cannot be handled by the state-of-the-art algorithms.
-But for the encoders with flow control mechanism used in our experiments,
-our algorithm is enough, 
-and therefore we have not implemented their algorithm in our framework.
-
+Their work is orthogonal to ours.
 
 \subsection{Program inversion}\label{subsec_proinv}
 According to \cite{dim_syn},
@@ -2644,7 +2772,7 @@ Cofactoring \cite{EFFSATUSMCCO} qualifies out unimportant variables by setting t
 
 Other algorithms tries to construct an Interpolation to cover all satisfying assignments.
 The first such algorithm was proposed by \cite{InterpBoolFunction}.
-It construct a first formula with another formula that contradicts with it to get an unsatisfiable formula,
+It construct a first formula that contradicts with another formula to get an unsatisfiable formula,
 from which an interpolation can be derived and used as an over-approximation of the first formula.
 In \cite{interpNoProof},
 interpolation is generated with a framework similar to the iterative enumerating and 
@@ -2673,7 +2801,7 @@ The second one is used in \cite{ShenTCAD12}.
 This paper also need to handle a non-deterministic Boolean relation,
 which seems to be similar to that one handled by the first algorithm of \cite{InterpBoolFunction}.
 But our case is much more complicated, 
-because the Boolean relation to be handled is an unrolled transition relation with unknown length.
+because the Boolean relation to be handled is an unrolled transition function with unknown length.
 That is, 
 we must first find out the value of $p$, $l$ and $r$.
 But these value must be determine together with finding out the set of flow control variables.
