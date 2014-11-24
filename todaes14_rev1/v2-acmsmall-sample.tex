@@ -2092,12 +2092,12 @@ from https://github.com/shengyushen/compsyn.
 
 \subsection{Benchmarks}
 Table \ref{tab:summ} shows all benchmarks used in this paper.
-They come from three sources:
+They come from two sources:
 \begin{enumerate}
  \item Our previous paper \cite{ShenTCAD12}. 
- \item Liu et al. \cite{LiuTCAD12}.
- \item The benchmark package sent to us by Liu, the author of \cite{LiuTCAD12}.
- So there may be some overlap between (2) and (3).
+ \item \cite{LiuTCAD12}.
+%  \item The benchmark package sent to us by Liu, the author of \cite{LiuTCAD12}.
+%  So there may be some overlap between (2) and (3).
 \end{enumerate}
 
 Each column of Table \ref{tab:summ} shows respectively the number of input, output and register of each benchmarks.
@@ -2122,27 +2122,14 @@ Benchmarks       & XFI       & 72 / 66   & 72   / 5086 & 12381&10Gb Ethernet in 
  in Shen         &           &           &             &      & 49 of \cite{IEEE8023_S4}             &Comparing                   \\\cline{2-6}
 \citeyear{ShenTCAD12} without&SCRAMBLER&64/64&58/353   & 1034 & Making a bit stream to               &our                         \\
 flow control     &           &           &             &      & have lots of 01 flipping             & algorithm                  \\\cline{1-6}
-Benchmarks       & CC\_3     & 1  / 2    & 3    / 5    & 13   &convolution code                      &to Liu\citeyear{LiuTCAD12}  \\
-in Liu \citeyear{LiuTCAD12}& &           &             &      & with length 3                        &in                          \\\cline{2-6}  
-and Liu's        & CC\_4     & 1  / 2    & 4    / 7    & 19   &convolution code                      &Subsection                  \\
-package          &           &           &             &      &with length 4                         &\ref{subsec_nonflow}        \\\hline\hline
-                 & CC\_13    & 1  / 2    & 13   / 36   & 105  &convolution code                      &                            \\
-                 &           &           &             &      &with length 13                        &                            \\\cline{2-6}
-                 & CC\_14    & 1 / 2     & 14   / 28   & 84   &convolution code                      &                            \\
-                 &           &           &             &      &with length 14                        &                            \\\cline{2-6}
-                 &HfmAlp5    & 5  / 2    & 9/164       & 389  &                                      &Presented                   \\\cline{2-5}
-Benchmarks       &HfmSkw5    & 5  / 2    & 10/203      & 482  &                                      & in                         \\\cline{2-5}
-in Liu's         &HfmSkw6    & 6  / 2    & 12/421      & 1007 & Huffman encoders                     &Subsection                  \\\cline{2-5}
-package          &HfmJpg8    & 8  / 2    & 12/606      & 1430 & of different size                    &\ref{subsec_nonflow} but    \\\cline{2-5}
-but not in       &HfmRnd8    & 8  / 2    & 13/1163     & 2742 &                                      &no data from                \\\cline{2-5}
-Liu \citeyear{LiuTCAD12}&HfmRnd9& 9  / 2 & 14/2326     & 5606 &                                      &Liu\citeyear{LiuTCAD12}     \\\cline{2-6}
-                 &lfsr12\_6\_4& 1  / 1   & 12/15       & 31   & Linear feedback                      &to be compared              \\\cline{2-5}
-                 &lfsr26\_6\_2& 1  / 1   & 26/29       & 45   & shift register                       &                            \\\cline{2-5}
-                 &lfsr32\_7\_6& 1  / 1   & 32/35       & 51   & of different size                    &                            \\\hline\hline
-Benchmarks       &HM(7,4)    &           &  3/50       &      &                                      &No source                   \\
-in Liu\citeyear{LiuTCAD12}&  &           &             &      & Hamming encoder                      &code, so not                \\\cline{2-5}
-but not in       &HM(15,11)  &           &  4/144      &      & of different size                    &discussed in                \\
-his package      &           &           &             &      &                                      &this paper                  \\\hline
+                 & CC\_3     & 1  / 2    & 3    / 5    & 13   &convolution code                      &to Liu\citeyear{LiuTCAD12}  \\
+                 &           &           &             &      & with length 3                        &in                          \\\cline{2-6}  
+                 & CC\_4     & 1  / 2    & 4    / 7    & 19   &convolution code                      &Subsection                  \\
+Benchmarks       &           &           &             &      &with length 4                         &\ref{subsec_nonflow}        \\\cline{2-6}
+in \cite{LiuTCAD12}&HM(7,4)  & 4/7       &  6/42       & 107  & Hamming encoder                      &                            \\
+                 &           &           &             &      & with 4 inputs and 7 outputs          &                            \\\cline{2-6}
+                 &HM(15,11)  &  11/15    &  7/88       & 253  & Hamming encoder                      &                            \\
+                 &           &           &             &      & with 11 inputs and 15 outputs        &                            \\\hline
 \end{tabular}}
 \end{table}%
 
@@ -2162,10 +2149,10 @@ if their input variables can always uniquely determined,
 our algorithm can recognize all their input variables as flow control variables,
 and direct generate their decoder's Boolean functions.
 Their experimental results will be presented in Subsection \ref{subsec_nonflow}.
- \item 
-The last two benchmarks in Table \ref{tab:summ} only exist in \cite{LiuTCAD12}.
-We can not find their source code in the benchmark package sent to us by Liu.
-So we will not discuss them here.
+%  \item 
+% The last two benchmarks in Table \ref{tab:summ} only exist in \cite{LiuTCAD12}.
+% We can not find their source code in the benchmark package sent to us by Liu.
+% So we will not discuss them here.
 \end{enumerate}
 
 We have also conducted other experiments:
@@ -2239,7 +2226,7 @@ the output electrical idle variable $HSS\_TXELECIDLE$ becomes 1.
 So,
 the decoder can use the output variable $HSS\_TXELECIDLE$ to uniquely determine the value of flow control variable $CNTL\_TXEnable\_P0$.
 
-\begin{table}[b]%
+\begin{table}[t]%
 \tbl{The input and output variables of the 10G Ethernet encoder XGXS\label{tab:eth10g}}{%
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -2307,7 +2294,7 @@ After deleting empty line and comments,
 this encoder's source code has 864 lines of verilog.
 
 
-\begin{table}[t]%
+\begin{table}[b]%
 \tbl{The input and output variables of the UltraSPARC T2 Ethernet encoder\label{tab:t2eth}}{%
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -2346,7 +2333,7 @@ The last four cases in Table \ref{tab:one} can never be uniquely determined,
 because they cannot be distinguished from the case of `PCS\_ENC\_DATA.
 So we write an assertion to rule them out.
 
-\begin{table}[b]%
+\begin{table}[t]%
 \tbl{Actions to be performed in UltraSPARC T2 Ethernet encoder\label{tab:one}}{%
 \begin{tabular}{|l|l|}
 \hline
@@ -2386,7 +2373,7 @@ so the decoder can recover the value of the flow control variable $tx\_enc\_ctrl
 
 \subsection{Comparing our algorithm with the state-of-the-art algorithm on circuits without flow control mechanism}\label{subsec_nonflow}
 
-\begin{table}[t]%
+\begin{table}[b]%
 \tbl{Comparing our algorithm with \cite{LiuTCAD12}\label{tab:comp_nocf}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
 \hline
@@ -2401,17 +2388,8 @@ XFI         & 13.24     &6.13     & 7520    & 16.4                  & 8.59      
 SCRAMBLER   & 1.80      &0.55     & 476     & 5.7                   & 0.42               &   640   & 3.8 \\\hline
  CC\_3      & 0.01      &0.01     &6        & 2.0                   & 0.21               & 104     &9.1  \\\hline
  CC\_4      & 0.03      &0.04     &12       & 3.0                   & 0.20               & 129     &9.0 \\\hline
- CC\_13     & 3177      &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
- CC\_14     & 827       &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
-HfmAlp5     &0.26       &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
-HfmSkw5     &0.48       &\multicolumn{3}{|c|}{Algorithm}            &\multicolumn{3}{|c|}{no result} \\\cline{1-2}
-HfmSkw6     &1.04       &\multicolumn{3}{|c|}{\ref{alg_fofc_inc} found}&\multicolumn{3}{|c|}{given in} \\\cline{1-2}
-HfmJpg8     &1.6        &\multicolumn{3}{|c|}{nothing to be}        &\multicolumn{3}{|c|}{\cite{LiuTCAD12}.} \\\cline{1-2}
-HfmRnd8     &9.12       &\multicolumn{3}{|c|}{uniquely determined.} &\multicolumn{3}{|c|}{So can not} \\\cline{1-2}
-HfmRnd9     &56.92      &\multicolumn{3}{|c|}{Decoder do}           &\multicolumn{3}{|c|}{be compared} \\\cline{1-2}
-lfsr12\_6\_4&670.79     &\multicolumn{3}{|c|}{not exist.}           &\multicolumn{3}{|c|}{here.} \\\cline{1-2}
-lfsr26\_6\_2&           &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\cline{1-2}
-lfsr32\_7\_6&  55.47    &\multicolumn{3}{|c|}{}                     &\multicolumn{3}{|c|}{} \\\hline
+ HM(7,4)    &           &         &         &                       &                    &         &     \\\hline
+ HM(15,11)  &           &         &         &                       &                    &         &    \\\hline
 \end{tabular}}
 \end{table}%
 
@@ -2421,38 +2399,40 @@ on those benchmarks without flow control mechanism.
 The first 3 benchmarks have flow control mechanism and have been discussed in Subsection \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.
 So they are not discussed in this subsection.
 
-For the 2 benchmarks XFI and SCRAMBLER,
+For the 6 benchmarks from  XFI to HM(15,11),
 we have their source code.
 And \cite{LiuTCAD12} have its experimental result.
 So we can compare the result of our algorithm to that of \cite{LiuTCAD12}.
+
 By comparing the sum of the 2nd and 3rd columns to the 6th column,
 we can find that \cite{LiuTCAD12} is much faster than our algorithm,
 especially for the 2nd column.
 I think this is caused by the fact that our algorithm need to spend lots of time 
 to check whether each input variables $i\in \vec{i}$ can be uniquely determined,
 while \cite{LiuTCAD12} can check all input variables with one SAT solving.
+
 The other issue is that our decoder is much more larger and slower than that of \cite{LiuTCAD12},
 I think this may caused by the immature implementation of our Craig interpolant generating algorithm,
 which  manipulate the complex proof structure generated from MiniSat in OCaml.
 This can be significantly improved by porting similar codes from other formal tools, such as ABC \cite{ABC}.
 
-The 2 benchmarks CC\_3 and CC\_4 have experimental result in \cite{LiuTCAD12},
-and also have source code in the package sent to us by its author.
-So we can also compare the result of our algorithm to that of \cite{LiuTCAD12}.
-But by comparing the 4th and 5th column to the 7th and 8th column,
-we find that our decoder area and delay is one magnitude order smaller than \cite{LiuTCAD12}.
-So I think the CC\_3 and CC\_4 in the package sent by Liu is not the one he used in \cite{LiuTCAD12}.
-This is further witnessed by referring to Table II of \cite{LiuTCAD12},
-which says that CC\_3 and CC\_4 respectively contain 6 and 7 registers,
-while our CC\_3 and CC\_4 contain respectively 3 and 4 registers.
-We have contacted Liu but still have not get any reply on this.
+% The 2 benchmarks CC\_3 and CC\_4 have experimental result in \cite{LiuTCAD12},
+% and also have source code in the package sent to us by its author.
+% So we can also compare the result of our algorithm to that of \cite{LiuTCAD12}.
+% But by comparing the 4th and 5th column to the 7th and 8th column,
+% we find that our decoder area and delay is one magnitude order smaller than \cite{LiuTCAD12}.
+% So I think the CC\_3 and CC\_4 in the package sent by Liu is not the one he used in \cite{LiuTCAD12}.
+% This is further witnessed by referring to Table II of \cite{LiuTCAD12},
+% which says that CC\_3 and CC\_4 respectively contain 6 and 7 registers,
+% while our CC\_3 and CC\_4 contain respectively 3 and 4 registers.
+% We have contacted Liu but still have not get any reply on this.
 
-
-The last 11 benchmarks from CC\_13 to lfsr32\_7\_6 have no result given in \cite{LiuTCAD12}.
-So we can only show the result of our algorithms.
-We have also show in Table \ref{tab:comp_nocf} that 
-these benchmarks fail in checking their decoders' existence.
-So I think this is the reason that Liu have not include them in his paper \cite{LiuTCAD12}.
+% 
+% The last 11 benchmarks from CC\_13 to lfsr32\_7\_6 have no result given in \cite{LiuTCAD12}.
+% So we can only show the result of our algorithms.
+% We have also show in Table \ref{tab:comp_nocf} that 
+% these benchmarks fail in checking their decoders' existence.
+% So I think this is the reason that Liu have not include them in his paper \cite{LiuTCAD12}.
 
 
 
@@ -2487,18 +2467,9 @@ T2Eth              & 4,0,4& 4.28       & 15.17           & 6.25       &  25.70  
 XFI                & 2,1,0& 4.59       & 3.60            & 9.55       & 17.74   & 2,1,0& 3.52       & 2.75            & 10.05      & 16.32  \\\hline
 SCRAMBLER          & 2,1,0& 0.64       & 0.58            & 1.33       & 2.55    & 2,1,0& 0.48       & 0.43            & 1.47       & 2.38   \\\hline
 CC\_3              & 2,0,1& 0.003      & 0.003           & 0.007      &  0.01   & 3,0,1& 0.001      & 0.001           & 0.006      & 0.01   \\\hline
-CC\_4              & 2,1,1& 0.005      & 0.004           & 0.011      &  0.02   & 3,1,1& 0.003      & 0.003           & 0.011      & 0.02       \\\hline
- CC\_13            & 6,6,6  & 3177     &\multicolumn{3}{|c|}{}                  & 6,5,6&2848.07     &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
- CC\_14            & 6,6,6  & 827      &\multicolumn{3}{|c|}{}                  & 6,5,6& 838.56     &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
-HfmAlp5            & 3,3,3  &0.26      &\multicolumn{3}{|c|}{Decoder does}      & 3,2,2&0.15        &\multicolumn{3}{|c|}{Decoder does}      \\\cline{1-3}\cline{7-8}
-HfmSkw5            & 3,3,3  &0.48      &\multicolumn{3}{|c|}{not exist. So}     & 3,3,3&0.42        &\multicolumn{3}{|c|}{not exist. So}     \\\cline{1-3}\cline{7-8}
-HfmSkw6            & 3,3,3  &1.04      &\multicolumn{3}{|c|}{no these value}    & 3,3,3&1.02        &\multicolumn{3}{|c|}{no these value}    \\\cline{1-3}\cline{7-8}
-HfmJpg8            & 3,3,3  &1.6       &\multicolumn{3}{|c|}{}                  & 3,2,2&1.09        &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
-HfmRnd8            & 4,4,4  &9.12      &\multicolumn{3}{|c|}{}                  & 4,4,4&21.25       &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
-HfmRnd9            & 5,5,5  &56.92     &\multicolumn{3}{|c|}{}                  & 5,5,4&85.36       &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
-lfsr12\_6\_4       &32,32,32&670.79    &\multicolumn{3}{|c|}{}                  &32,32,32&2058.65   &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
-lfsr26\_6\_2       &        &          &\multicolumn{3}{|c|}{}                  &      &            &\multicolumn{3}{|c|}{}                  \\\cline{1-3}\cline{7-8}
-lfsr32\_7\_6       &16,16,16&  55.47   &\multicolumn{3}{|c|}{}                  &16,16,16&138.80    &\multicolumn{3}{|c|}{}                  \\\hline
+CC\_4              & 2,1,1& 0.005      & 0.004           & 0.011      &  0.02   & 3,1,1& 0.003      & 0.003           & 0.011      & 0.02   \\\hline
+HM(7,4)            &      &            &                 &            &         &      &            &                 &            &        \\\hline
+HM(15,11)          &      &            &                 &            &         &      &            &                 &            &        \\\hline
 \end{tabular}}
 \end{table}%
 
@@ -2545,21 +2516,12 @@ marks       &      & generat.   & area    & of  &  logic                        
 PCIE2       & 3,3,3& 0.44       &  382    & 11  & 7.5                                       &0.68        & 3,0,2& 0.28       &  374    & 0   & 9.1             \\\hline
 XGXS        & 3,3,3& 0.35       &  351    &20   &8.2                                        &0.52        & 3,0,1& 0.18       &  322    & 0   & 7.0             \\\hline
 T2Eth       & 4,4,4& 4.76       &  1178   & 9   & 10.9                                      &6.25        & 4,0,4& 3.41       &  1557   & 9   & 11.8            \\\hline
-XFI         & 2,2,2& 10.67      & 5079    &190  & 16.50                                     &9.55        & 2,1,0& 6.05       &  6023   & 58  & 15.5                \\\hline
-SCRAMBLER   & 2,2,2& 1.27       & 826     &186  &  3.8                                      &1.33        & 2,1,0& 0.55       &  698    & 58  & 3.8                \\\hline
- CC\_3      & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
- CC\_4      & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
- CC\_13     & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
- CC\_14     & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
-HfmAlp5     & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
-HfmSkw5     & \multicolumn{11}{|c|}{Decoder do not }           \\\cline{1-1}
-HfmSkw6     & \multicolumn{11}{|c|}{exist. no result here}     \\\cline{1-1}
-HfmJpg8     & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
-HfmRnd8     & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
-HfmRnd9     & \multicolumn{11}{|c|}{}                          \\\cline{1-1}
-lfsr12\_6\_4& \multicolumn{11}{|c|}{}                      \\\cline{1-1}
-lfsr26\_6\_2& \multicolumn{11}{|c|}{}                      \\\cline{1-1}
-lfsr32\_7\_6& \multicolumn{11}{|c|}{}                      \\\hline
+XFI         & 2,2,2& 10.67      & 5079    &190  & 16.50                                     &9.55        & 2,1,0& 6.05       &  6023   & 58  & 15.5            \\\hline
+SCRAMBLER   & 2,2,2& 1.27       & 826     &186  &  3.8                                      &1.33        & 2,1,0& 0.55       &  698    & 58  & 3.8             \\\hline
+CC\_3       &      &            &         &     &                                           &            &      &            &         &     &                 \\\hline
+CC\_4       &      &            &         &     &                                           &            &      &            &         &     &                 \\\hline
+HM(7,4)     &      &            &         &     &                                           &            &      &            &         &     &                 \\\hline
+HM(15,11)   &      &            &         &     &                                           &            &      &            &         &     &                 \\\hline
 \end{tabular}}
 \end{table}%
 
@@ -2592,26 +2554,17 @@ with significant runtime overhead in reducing $l$ and $r$ shown in the 7th colum
 \tbl{Comparing circuit area and timing for the decoders generated by our algorithm and hand written decoders\label{tab:comparing_hand}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
-bench- & \multicolumn{2}{|c|}{Decoder generated by us} &  \multicolumn{2}{|c|}{Hand written decoder} \\\cline{2-5}
-marks  & area    & max logic delay    &area    & max logic delay               \\\hline
+bench-   & \multicolumn{2}{|c|}{Decoder generated by us} &  \multicolumn{2}{|c|}{Hand written decoder} \\\cline{2-5}
+marks    & area    & max logic delay    &area    & max logic delay               \\\hline
 PCIE2    & 374   &9.1                 &    &\\\hline
 XGXS     & 322   &7.0                 &    &\\\hline
 T2Eth    & 1557  &11.8                &    &\\\hline
 XFI      & 6023  &15.5                &    &\\\hline
 SCRAMBLER& 698   &3.8                 &    &\\\hline
- CC\_3 &     \multicolumn{4}{|c|}{}\\\cline{1-1}
- CC\_4 &     \multicolumn{4}{|c|}{}\\\cline{1-1}
- CC\_13&     \multicolumn{4}{|c|}{}\\\cline{1-1}
- CC\_14&     \multicolumn{4}{|c|}{}\\\cline{1-1}
-HfmAlp5&     \multicolumn{4}{|c|}{}\\\cline{1-1}
-HfmSkw5&     \multicolumn{4}{|c|}{}\\\cline{1-1}
-HfmSkw6&     \multicolumn{4}{|c|}{Decoder do not exist.}\\\cline{1-1}
-HfmJpg8&     \multicolumn{4}{|c|}{No result here}\\\cline{1-1}
-HfmRnd8&     \multicolumn{4}{|c|}{}\\\cline{1-1}
-HfmRnd9&     \multicolumn{4}{|c|}{}\\\cline{1-1}
-lfsr12\_6\_4&\multicolumn{4}{|c|}{}\\\cline{1-1}
-lfsr26\_6\_2&\multicolumn{4}{|c|}{}\\\cline{1-1}
-lfsr32\_7\_6&\multicolumn{4}{|c|}{}\\\hline
+ CC\_3   &       &                    &\multicolumn{2}{|c|}{}\\\cline{1-3}
+ CC\_4   &       &                    &\multicolumn{2}{|c|}{Decoder do not exist.}\\\cline{1-3}
+HM(7,4)  &       &                    &\multicolumn{2}{|c|}{No result here       }\\\cline{1-3}
+HM(15,11)&       &                    &\multicolumn{2}{|c|}{}\\\hline
 \end{tabular}}
 \end{table}%
 
