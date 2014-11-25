@@ -45,14 +45,14 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.4}The halting algorithm to determine if an input variable can be uniquely determined by a bounded sequence of output variable vector}{4}}
 \newlabel{subsec_chkextdec}{{2.4}{4}}
 \newlabel{subsub_sound}{{2.4.1}{4}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.1}\textbf  {The underestimate approach}}{4}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.1}\textbf  {The under-approximative approach}}{4}}
 \newlabel{uniqt1}{{1}{5}}
 \newlabel{fig_pc}{{2}{5}}
 \citation{TuDAC13}
 \citation{ShenTCAD11}
 \newlabel{prop_pc1}{{2.1}{6}}
 \newlabel{subsub_complete}{{2.4.2}{6}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.2}\textbf  {The overestimate approach}}{6}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.2}\textbf  {The over-approximative approach}}{6}}
 \newlabel{fig_ln}{{3}{6}}
 \newlabel{uniqln}{{2}{7}}
 \newlabel{prop_ln1}{{2.2}{7}}
@@ -63,6 +63,10 @@
 \newlabel{lnsat}{{6}{7}}
 \@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces $CheckUniqueness(i)$:The halting algorithm to determine whether $i\in \mathaccent "017E\relax {i}$ can be uniquely determined by a bounded sequence of output variable vector $\mathaccent "017E\relax {o}$}}{7}}
 \newlabel{alg_pcln}{{1}{7}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Identifying flow control variables}{8}}
+\newlabel{sec_findfc}{{3}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Finding out flow control variables}{8}}
+\newlabel{basic}{{3.1}{8}}
 \newlabel{initfd}{{1}{8}}
 \newlabel{initplr}{{2}{8}}
 \newlabel{while}{{3}{8}}
@@ -71,10 +75,6 @@
 \newlabel{ruleout}{{11}{8}}
 \@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces $FindFlow(\mathaccent "017E\relax {i})$:Identifying the flow control vector}}{8}}
 \newlabel{alg_fofc}{{2}{8}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Identifying flow control variables}{8}}
-\newlabel{sec_findfc}{{3}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Finding out flow control variables}{8}}
-\newlabel{basic}{{3.1}{8}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Speeding up with incremental SAT}{9}}
 \newlabel{incSAT}{{3.2}{9}}
 \newlabel{uniqt1_f}{{3}{9}}
@@ -141,6 +141,7 @@
 \newlabel{fig_lnmap}{{6}{15}}
 \newlabel{lemmaln2pc}{{4.5}{16}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Minimizing the valuation of $l$ and $r$}{16}}
+\newlabel{sec_min}{{5}{16}}
 \@writefile{loa}{\contentsline {algocf}{\numberline {6}{\ignorespaces $RemoveRedundancy(p,l,r)$}}{17}}
 \newlabel{algo_remove2}{{6}{17}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Minimizing the valuation of $l$ and $r$}{17}}
@@ -161,7 +162,6 @@
 \citation{EXTSAT}
 \citation{ShenTCAD12}
 \citation{LiuTCAD12}
-\citation{LiuTCAD12}
 \citation{ABC}
 \citation{LiuTCAD12}
 \citation{pcie21}
@@ -171,63 +171,54 @@
 \citation{ShenTCAD12}
 \citation{LiuTCAD12}
 \citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
 \citation{ShenTCAD12}
-\citation{LiuTCAD12}
 \@writefile{toc}{\contentsline {section}{\numberline {7}Experimental Results}{19}}
 \newlabel{sec_exp}{{7}{19}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Benchmarks}{19}}
+\newlabel{tab:summ}{{I}{19}}
 \citation{pcie21}
 \citation{encode8b10b}
-\newlabel{tab:summ}{{I}{20}}
+\citation{IEEE8023_S4}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.2}PCI Express 2.0 encoder}{20}}
 \newlabel{subsec_pcie2}{{7.2}{20}}
 \newlabel{tab:pcieio}{{II}{20}}
-\citation{IEEE8023_S4}
 \citation{encode8b10b}
 \citation{encode8b10b}
 \citation{IEEE8023_S4}
+\citation{encode8b10b}
+\newlabel{tab:eth10g}{{III}{21}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.3}10G Ethernet encoder XGXS}{21}}
 \newlabel{subsec_10g}{{7.3}{21}}
-\newlabel{tab:eth10g}{{III}{21}}
-\citation{encode8b10b}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}UltraSPARC T2 Ethernet encoder}{21}}
+\newlabel{subsec_t2e}{{7.4}{21}}
+\newlabel{tab:t2eth}{{IV}{21}}
 \citation{LiuTCAD12}
 \citation{LiuTCAD12}
 \citation{LiuTCAD12}
 \citation{LiuTCAD12}
 \citation{LiuTCAD12}
-\newlabel{tab:t2eth}{{IV}{22}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}UltraSPARC T2 Ethernet encoder}{22}}
-\newlabel{subsec_t2e}{{7.4}{22}}
+\citation{LiuTCAD12}
 \newlabel{tab:one}{{V}{22}}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Comparing our algorithm with the state-of-the-art algorithm on circuits without flow control mechanism}{22}}
+\newlabel{subsec_nonflow}{{7.5}{22}}
+\newlabel{tab:comp_nocf}{{VI}{22}}
 \citation{LiuTCAD12}
 \citation{LiuTCAD12}
 \citation{LiuTCAD12}
 \citation{ABC}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\newlabel{tab:comp_nocf}{{VI}{23}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Comparing our algorithm with the state-of-the-art algorithm on circuits without flow control mechanism}{23}}
-\newlabel{subsec_nonflow}{{7.5}{23}}
-\newlabel{tab:comparing_simu_sepa}{{VII}{24}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.6}Comparing run time overhead of increasing $p$, $l$ and $r$ simultaneously and separately}{24}}
-\newlabel{subsec_incr_plr_exp}{{7.6}{24}}
+\newlabel{tab:comparing_simu_sepa}{{VII}{23}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.6}Comparing run time overhead of increasing $p$, $l$ and $r$ simultaneously and separately}{23}}
+\newlabel{subsec_incr_plr_exp}{{7.6}{23}}
+\citation{ShenICCAD09}
+\newlabel{tab:compare_min}{{VIII}{24}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.7}Comparing run times, circuit areas and delay between the two approaches with and without minimizing $l$ and $r$ by Algorithm 6\hbox {}}{24}}
 \newlabel{subsec_min}{{7.7}{24}}
-\citation{ShenICCAD09}
-\newlabel{tab:compare_min}{{VIII}{25}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.8}Comparing circuit area and timing for the decoders generated by our algorithm and hand written decoders}{25}}
-\newlabel{subsec_compareman}{{7.8}{25}}
-\newlabel{tab:comparing_hand}{{IX}{25}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.8}Comparing circuit area and timing for the decoders generated by our algorithm and manually written decoders}{24}}
+\newlabel{subsec_compareman}{{7.8}{24}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}RELATED PUBLICATIONS}{24}}
+\newlabel{sec_relwork}{{8}{24}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Complementary synthesis}{24}}
+\newlabel{subsec_compsyn_relat}{{8.1}{24}}
 \citation{ShenTCAD11}
 \citation{LiuICCAD11}
 \citation{ShenTCAD12,LiuICCAD11}
@@ -239,15 +230,11 @@
 \citation{prog_inv}
 \citation{mtd_autoProginv}
 \citation{program_inversion_11}
+\newlabel{tab:comparing_hand}{{IX}{25}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Program inversion}{25}}
+\newlabel{subsec_proinv}{{8.2}{25}}
 \citation{converter_date08,converter_todeas09}
 \citation{converter_date09}
-\@writefile{toc}{\contentsline {section}{\numberline {8}RELATED PUBLICATIONS}{26}}
-\newlabel{sec_relwork}{{8}{26}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Complementary synthesis}{26}}
-\newlabel{subsec_compsyn_relat}{{8.1}{26}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Program inversion}{26}}
-\newlabel{subsec_proinv}{{8.2}{26}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Protocol converter synthesis}{26}}
 \citation{SATUNBMC}
 \citation{MINASS}
 \citation{REPARAM}
@@ -265,9 +252,10 @@
 \citation{InterpBoolFunction}
 \citation{InterpBoolFunction}
 \citation{InterpBoolFunction}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.4}Satisfying Assignments Enumeration}{27}}
-\newlabel{subsec_relallsat}{{8.4}{27}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.5}Logic synthesis with Craig interpolation}{27}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Protocol converter synthesis}{26}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.4}Satisfying Assignments Enumeration}{26}}
+\newlabel{subsec_relallsat}{{8.4}{26}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.5}Logic synthesis with Craig interpolation}{26}}
 \citation{pcie21}
 \citation{IEEE8023_S4}
 \bibstyle{ACM-Reference-Format-Journals}
@@ -282,11 +270,11 @@
 \bibcite{interpNoProof}{\citeauthoryear {Chockler, Ivrii, and Matsliah}{Chockler et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2012}}
 \bibcite{Craig}{\citeauthoryear {Craig}{Craig}{1957}}
 \bibcite{prog_inv}{\citeauthoryear {Dijkstra}{Dijkstra}{1979}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusions}{27}}
+\newlabel{sec_conclude}{{9}{27}}
 \bibcite{EenFMCAD11}{\citeauthoryear {E{\'e}n, Mishchenko, and Brayton}{E{\'e}n et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2011}}
 \bibcite{EXTSAT}{\citeauthoryear {E\'en and S{\"o}rensson}{E\'en and S{\"o}rensson}{2003}}
 \bibcite{EFFSATUSMCCO}{\citeauthoryear {Ganai, Gupta, and Ashar}{Ganai et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2004}}
-\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusions}{28}}
-\newlabel{sec_conclude}{{9}{28}}
 \bibcite{mtd_autoProginv}{\citeauthoryear {Gl\"uck and Kawabe.}{Gl\"uck and Kawabe.}{2005}}
 \bibcite{MEMEFFALLSAT}{\citeauthoryear {Grumberg, Schuster, and Yadgar}{Grumberg et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2004}}
 \bibcite{dim_syn}{\citeauthoryear {Gulwani}{Gulwani}{2010}}
@@ -312,4 +300,4 @@
 \bibcite{encode8b10b}{\citeauthoryear {Widmer and Franaszek}{Widmer and Franaszek}{1983}}
 \bibcite{ecoInterp}{\citeauthoryear {Wu, Yanga, Huang, and Jiang}{Wu et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2010}}
 \bibcite{CONFLICTLEARN}{\citeauthoryear {Zhang, Madigan, Moskewicz, and Malik}{Zhang et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2001}}
-\lastpage{30}
+\lastpage{29}

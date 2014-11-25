@@ -56,14 +56,14 @@ with the assumption that the encoder's all input variables can always
 be uniquely determined by its output symbol sequence.
 However,
 to prevent the faster encoder from overwhelming the slower decoder,
-many encoder employ flow control mechanism that fail this assumption.
+many encoder employ flow control mechanism that fails this assumption.
 Such encoders,
 when its output symbol sequence is too fast to be processed by the decoder,
 will stop transmitting data symbols,
 but instead transmitting an idle symbol that can only uniquely determine a subset of the encoder's input variables.
 And the decoder should recognize and discard this idle symbol.
 Although this mechanism can prevent losing data symbols,
-it fail the assumption of all complementary synthesis algorithms,
+it fails the assumption of all complementary synthesis algorithms,
 because some input variables can not be uniquely determined by the idle symbol.
 
 This paper proposes the first algorithm 
@@ -185,7 +185,7 @@ But it fails the assumption of all current complementary synthesis algorithms
 [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}],
 because $d$ can not be uniquely by the idle symbol $I$.
 It is obvious that,
-to resolve this problem and generate the decoder,
+to resolve this issue and generate the decoder,
 we only need to consider the case $f\equiv 1$,
 in which $d$ can be uniquely determined.
 For other cases in which $f\equiv 0$,
@@ -224,7 +224,7 @@ The second step of this algorithm seems somewhat similar to that of \cite{ShenTC
 both algorithms infer predicates that enable $\vec{d}$ or $\vec{i}$ to be uniquely determined.
 But the essential difference between them is that
 the algorithm of \cite{ShenTCAD12} infers a global assertion 
-that must be enforced on all the steps along the unrolled state transition sequence,
+that must be enforced on all steps along the unrolled state transition sequence,
 % so that the encoder eventually reaches and never leaves the unique state set,
 while our algorithm infers a local predicate that is only enforced 
 at the current step when we need to recover the value of $\vec{d}$.
@@ -246,7 +246,8 @@ All these experimental results and programs can be downloaded from https://githu
 Section \ref{sec_prem} introduces the background material;
 Section \ref{sec_findfc} presents the algorithm that identifies the flow control variables,
 while Section \ref{sec_infer} infers the predicate that enables $\vec{d}$ to be uniquely determined by a bounded sequence of $\vec{o}$;
-Section \ref{sec_char} presents the algorithm to characterize the decoder's Boolean function;
+Section \ref{sec_min} minimizes the length of unrolled state sequence,
+while Section \ref{sec_char} presents the algorithm to characterize the decoder's Boolean function;
 Sections \ref{sec_exp} and \ref{sec_relwork} present the experimental results and related works;
 Finally,
 Section \ref{sec_conclude} sums up the conclusion.
@@ -263,7 +264,7 @@ The Boolean value set is denoted as $B=\{0,1\}$.
 A vector of variables is represented as $\vec{v}=(v,\dots)$.
 The number of variables in $\vec{v}$ is denoted as $|\vec{v}|$.
 If a variable $v$ is a member of $\vec{v}$,
-that is $\vec{v}=(\dots,v,\dots)$,
+% that is $\vec{v}=(\dots,v,\dots)$,
 then we say $v\in\vec{v}$;
 otherwise we say $v\notin\vec{v}$.
 For a variable $v$ and a vector $\vec{v}$,
@@ -408,17 +409,16 @@ so there may be minor differences between our presentation here and that of
 The first such halting algorithm is proposed in \cite{ShenTCAD11}.
 Its basic idea is to unroll the transition function into longer and longer length.
 And for each length,
-it use two approximated approaches to determine the answer,
-the first one is an underestimate one that presented in \ref{subsub_sound},
-while the second one is an overestimate one presented in \ref{subsub_complete}.
+it use two approximative approaches to determine the answer.
+The first one is an under-approximative one that presented in \ref{subsub_sound},
+while the second one is an over-approximative one presented in \ref{subsub_complete}.
 That is,
 when the first one says \textbf{YES} then the final answer is \textbf{YES},
 and when the second approach says \textbf{NO} then the final answer is \textbf{NO}.
 And we will show in \ref{subsub_algo} that 
-these two approaches will eventually converge and give conclusive answer 
-at some particular unrolling length.
+these two approaches will eventually converge and give conclusive answer.
 
-\subsubsection{\textbf{The underestimate approach}}\label{subsub_sound}.
+\subsubsection{\textbf{The under-approximative approach}}\label{subsub_sound}.
 
 As shown in Figure \ref{fig_pc},
 on the unrolled transition functions,
@@ -456,7 +456,7 @@ F_{PC}(p,l,r):=
 \begin{center}
 \includegraphics[width=\textwidth]{pc}
 \end{center}
-\caption{The underestimate  approach checking if $i_{p+l}$ can be uniquely determined}
+\caption{The under-approximative approach checking if $i_{p+l}$ can be uniquely determined}
   \label{fig_pc}
 \end{figure}
 
@@ -465,8 +465,7 @@ Here,
 $p$ is the length of the prefix state transition sequence.
 $l$ and $r$ are the lengths of the two output sequences 
 $<\vec{o}_{p+1},\dots,\vec{o}_{p+l}>$ and $<\vec{o}_{p+l+1},\dots,\vec{o}_{p+l+r}>$
-that are on the left-hand and right-hand sides of $i_{p+l}$,
-which is used to determine $i_{p+l}$.
+used to determine $i_{p+l}$.
 Line 1 of Equation (\ref{uniqt1}) corresponds to the left path in Figure \ref{fig_pc},
 while Line 2 corresponds to the right path in Figure \ref{fig_pc}.
 These two paths are of the same length.
@@ -490,7 +489,7 @@ So the unsatisfiability of $F_{PC}(p,l,r)$ always means $i_{p+l}\equiv i'_{p+l}$
 \textbf{According to Figure \ref{fig_pc},
 it is obvious that,
 if $F_{PC}(p,l,r)$ is unsatisfiable,
-then $F_{PC}(p',l',r')$ is also unsatisfiable with $p'\ge p$, $l'\ge l$ and $r'\ge r$.
+then $F_{PC}(p',l',r')$ is also unsatisfiable for $p'\ge p$, $l'\ge l$ and $r'\ge r$.
 By studying Equation (\ref{uniqt1}),
 we can find that the clause set of $F_{PC}(p',l',r')$ is a super set of $F_{PC}(p,l,r)$.
 This also lead to the same conclusion.
@@ -498,7 +497,7 @@ This also lead to the same conclusion.
 
 \textbf{This means,
 the bounded proof of $F_{PC}(p,l,r)$'s unsatisfiability
-can be generalized to all cases for larger $p$, $l$ and $r$.}
+can be generalized to larger $p$, $l$ and $r$.}
 
 \begin{proposition}\label{prop_pc1}
 If $F_{PC}(p,l,r)$ is unsatisfiable,
@@ -584,7 +583,7 @@ But this has not happen on all our benchmarks from industrial applications.
 %   \label{fig_double_loop}
 % \end{figure}
 
-\subsubsection{\textbf{The overestimate approach}}\label{subsub_complete}.
+\subsubsection{\textbf{The over-approximative approach}}\label{subsub_complete}.
 
 In the last subsection,
 we have just learned that,
@@ -612,7 +611,7 @@ then this iterative algorithm will never terminate.
 \begin{center}
 \includegraphics[width=\textwidth]{ln}
 \end{center}
-\caption{The overestimate  approach checking if $i_{p+l}$ can NOT be uniquely determined}
+\caption{The over-approximative  approach checking if $i_{p+l}$ can NOT be uniquely determined}
   \label{fig_ln}
 \end{figure}
 
@@ -620,7 +619,7 @@ So,
 to obtain a halting algorithm,
 we need to distinguish these two cases.
 One such solution is shown in Figure \ref{fig_ln},
-which is similar to Figure \ref{fig_pc} but with three additional constraints to detect loops 
+which is similar to Figure \ref{fig_pc} but with three additional constraints used to detect loops 
 on the three state sequences $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
 It is formally defined in Equation (\ref{uniqln}) with the last three lines corresponding to the three new constraints used to detect loops.
@@ -648,13 +647,13 @@ When $F_{LN}(p,l,r)$ is satisfiable,
 then $i_{p+l}$ can \textbf{NOT} be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
 \textbf{More importantly,
 by unrolling these three loops,
-we can also make $F_{LN}(p,l,r)$ satisfiable for all larger $p$, $l$ and $r$.
+we can generalize the satisfiability of $F_{LN}(p,l,r)$ to all larger $p$, $l$ and $r$.
 This means:
 }
 
 \begin{proposition}\label{prop_ln1}
 If $F_{LN}(p,l,r)$ is satisfiable,
-then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for any larger $p$, $l$ and $r$.
+then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for all larger $p$, $l$ and $r$.
 \end{proposition}
 
 \subsubsection{\textbf{The full algorithm}}\label{subsub_algo}.
@@ -688,7 +687,10 @@ an input variable $i_{p+l}$ to be uniquely determined by the encoder's output se
  \item 
 On the one hand, 
 if there actually exists such $p$, $l$ and $r$,
-then eventually $F_{PC}(p,l,r)$ will become unsatisfiable in Line \ref{linepc1};
+then let $p':=max(p,l,r)$,$l':=max(p,l,r)$ and $r':=max(p,l,r)$.
+From Propositions \ref{prop_pc1},
+we know that $F_{PC}(p',l',r')$ is unsatisfiable.
+So eventually $F_{PC}(p,l,r)$ will become unsatisfiable in Line \ref{linepc1};
  \item
 On the other hand,
 if there does not exist such $p$, $l$ and $r$,
@@ -708,7 +710,7 @@ We will first introduce how to find out the set of flow control variables in Sub
 and then introduce how to speed up this algorithm with incremental SAT in Subsection \ref{incSAT}.
 
 \subsection{Finding out flow control variables}\label{basic}
-
+%TODO here
 To facilitate the presentation of our algorithm,
 we assume that the input variable vector $\vec{i}$ can be partitioned into two vectors: 
 the flow control vector $\vec{f}$ and the data vector $\vec{d}$.
@@ -727,7 +729,7 @@ for a properly designed encoder,
 $\vec{f}$ should always be uniquely determined by a bounded sequence of the encoder's output variable vector $\vec{o}$,
 or else the decoder cannot recognize the validness of $\vec{d}$.
 
-\begin{algorithm}[t]
+\begin{algorithm}[b]
 \SetAlgoVlined
 \KwIn{The input variable vector $\vec{i}$.}
 \KwOut{$\vec{f}\subset \vec{i}$ and $\vec{d}\subset \vec{i}$  that can and can not 
@@ -1602,7 +1604,7 @@ So the only covering case is proved.
 \end{proof}
 
 
-\section{Minimizing the valuation of $l$ and $r$}
+\section{Minimizing the valuation of $l$ and $r$}\label{sec_min}
 We will first introduce why and how to remove the redundancy of $l$ and $r$ in Subsection \ref{reduceing},
 and then present another possible structure of our algorithm in Subsection \ref{alter},
 and discuss why we have chosen the one in Subsection \ref{reduceing} instead of the one in Subsection \ref{alter}.
@@ -2106,7 +2108,7 @@ ABC synthesis tool \cite{ABC} with script "strash; dsd; strash; dc2; dc2; dch; m
 In the remainder of this paper, 
 all circuit areas, gate number and delay are obtained in the same setting such that we can compare them to that of \cite{LiuTCAD12}.
 
-\begin{table}[t]%
+\begin{table}[b]%
 \tbl{Benchmarks\label{tab:summ}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
@@ -2122,13 +2124,13 @@ Benchmarks       & XFI       & 72 / 66   & 72   / 5086 & 12381&10Gb Ethernet in 
  in Shen         &           &           &             &      & 49 of \cite{IEEE8023_S4}             &Comparing                   \\\cline{2-6}
 \citeyear{ShenTCAD12} without&SCRAMBLER&64/64&58/353   & 1034 & Making a bit stream to               &our                         \\
 flow control     &           &           &             &      & have lots of 01 flipping             & algorithm                  \\\cline{1-6}
-                 & CC\_3     & 1  / 2    & 3    / 5    & 13   &convolution code                      &to Liu\citeyear{LiuTCAD12}  \\
+                 & CC\_3     &   1/3     &   6/22      & 54   &convolution code                      &to Liu\citeyear{LiuTCAD12}  \\
                  &           &           &             &      & with length 3                        &in                          \\\cline{2-6}  
-                 & CC\_4     & 1  / 2    & 4    / 7    & 19   &convolution code                      &Subsection                  \\
+                 & CC\_4     &   1/3     &   7/26      & 63   &convolution code                      &Subsection                  \\
 Benchmarks       &           &           &             &      &with length 4                         &\ref{subsec_nonflow}        \\\cline{2-6}
-in \cite{LiuTCAD12}&HM(7,4)  & 4/7       &  6/42       & 107  & Hamming encoder                      &                            \\
+in \cite{LiuTCAD12}&HM(7,4)  &   4/7     &   3/38      &  103 & Hamming encoder                      &                            \\
                  &           &           &             &      & with 4 inputs and 7 outputs          &                            \\\cline{2-6}
-                 &HM(15,11)  &  11/15    &  7/88       & 253  & Hamming encoder                      &                            \\
+                 &HM(15,11)  &   11/15   &   4/102     & 317  & Hamming encoder                      &                            \\
                  &           &           &             &      & with 11 inputs and 15 outputs        &                            \\\hline
 \end{tabular}}
 \end{table}%
@@ -2205,11 +2207,11 @@ so that it can be enforced at every step in the unrolled state sequences.
 Algorithm \ref{alg_fofc} identifies the flow control variable $\vec{f}:=CNTL\_TXEnable\_P0$ in 0.475 seconds.
 And then Algorithm \ref{algo_infer} infers the predicate $valid(\vec{f}):=CNTL\_TXEnable\_P0$ 
 that enables the data vector to be uniquely determined in 1.22 seconds.
-And then Algorithm \ref{algo_remove2} obtains the minimized $p:=3$, $l:=0$ and $r:=2$ in 0.69 seconds.
+And then Algorithm \ref{algo_remove2} obtains the minimized $p:=4$, $l:=0$ and $r:=2$ in 0.69 seconds.
 Finally, 
 with the inferred $valid(\vec{f})$,
 generating the decoder's Boolean functions for $CNTL\_TXEnable\_P0$, $TXDATA$ and $TXDATAK$ costs 0.26 seconds.
-The decoder contains 159 gates and 0 registers with area 374 and delay 9.1.
+The decoder contains 156 gates and 0 registers with area 366 and delay 7.6.
 
 
 The major breakthrough of this paper's algorithms is their ability to handle invalid data vector.
@@ -2269,9 +2271,9 @@ and embed it into the the transition function $T$.
 Algorithm \ref{alg_fofc} identifies the flow control variable $\vec{f}:=bad\_code$ in 0.31 seconds.
 And then Algorithm \ref{algo_infer} infers the predicate $valid(\vec{f}):=\!bad\_code$ 
 that enables the data vector to be uniquely determined in 0.95 seconds.
-And then Algorithm \ref{algo_remove2} obtains the minimized $p:=3$, $l:=0$ and $r:=1$ in 0.52 seconds.
+And then Algorithm \ref{algo_remove2} obtains the minimized $p:=4$, $l:=0$ and $r:=1$ in 0.52 seconds.
 Finally, generating the decoder's Boolean functions for $bad\_code$, $encode\_data\_in$ and $konstant$ costs 0.17 seconds.
-The decoder contains 138 gates and 0 registers with area 322 and delay 7.0.
+The decoder contains 163 gates and 0 registers with area 370 and delay 8.1.
 
 Although this encoder uses the same coding mechanism as does the PCI Express 2.0 encoder mentioned above,
 the way it handles the invalid data vector is different.
@@ -2363,9 +2365,9 @@ The name of action   & The meaning of action\\\hline\hline
 Algorithm \ref{alg_fofc} identifies the flow control variables $\vec{f}:=\{tx\_enc\_ctrl\_sel,tx\_en, tx\_er\}$ in 3.76 seconds.
 And then Algorithm \ref{algo_infer} infers the predicate $valid(\vec{f}):=tx\_enc\_ctrl\_sel\equiv `PCS\_ENC\_DATA$ 
 that enables the data vector to be uniquely determined in 21.53 seconds.
-And then Algorithm \ref{algo_remove2} obtains the minimized $p:=4$,$l:=0$ and $r:=4$ in 6.15 seconds.
+And then Algorithm \ref{algo_remove2} obtains the minimized $p:=5$,$l:=0$ and $r:=4$ in 6.15 seconds.
 Finally, generating the decoder's Boolean functions for $txd$, $tx\_enc\_ctrl\_sel$, $tx\_en$ and $tx\_er$ costs 3.40 seconds.
-The decoder contains 433 gates and 9 registers with area 1020 and delay 11.5.
+The decoder contains 401 gates and 9 registers with area 920 and delay 10.2.
 
 As shown in the last column of Table \ref{tab:one},
 the first 5 cases have their own particular control symbol values assigned to $tx\_10bdata$,
@@ -2384,12 +2386,12 @@ Names       & decoder.  & gen.    & area    & delay                 & exist. and
  PCIE2      &\multicolumn{7}{|c|}{} \\\cline{1-1}
  XGXS       &\multicolumn{7}{|c|}{Already presented in Subsection \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.} \\\cline{1-1}
  T2Eth      &\multicolumn{7}{|c|}{} \\\hline
-XFI         & 13.24     &6.13     & 7520    & 16.4                  & 8.59               &   3913  & 12.5\\\hline
-SCRAMBLER   & 1.80      &0.55     & 476     & 5.7                   & 0.42               &   640   & 3.8 \\\hline
- CC\_3      & 0.01      &0.01     &6        & 2.0                   & 0.21               & 104     &9.1  \\\hline
- CC\_4      & 0.03      &0.04     &12       & 3.0                   & 0.20               & 129     &9.0 \\\hline
- HM(7,4)    &           &         &         &                       &                    &         &     \\\hline
- HM(15,11)  &           &         &         &                       &                    &         &    \\\hline
+XFI         & 13.24     &6.13     & 3878    & 13.8                  & 8.59               &   3913  & 12.5\\\hline
+SCRAMBLER   & 1.80      &0.55     & 698     & 3.8                   & 0.42               &   640   & 3.8 \\\hline
+ CC\_3      &           &         & 128     & 8.5                   & 0.21               &   104   & 9.1 \\\hline
+ CC\_4      &           &         & 490     & 13.3                  & 0.20               &   129   & 9.0 \\\hline
+ HM(7,4)    & 0.09      &  0.03   & 258     & 8.1                   &   0.05             &   255   & 7.3 \\\hline
+ HM(15,11)  &           &         & 5277    & 13.7                  &   2.02             &   3279  & 13.2\\\hline
 \end{tabular}}
 \end{table}%
 
@@ -2466,10 +2468,10 @@ XGXS               & 3,0,1& 0.31       & 0.88            & 0.52       &  1.71   
 T2Eth              & 4,0,4& 4.28       & 15.17           & 6.25       &  25.70  & 4,0,4& 15.47      & 13.85           & 6.19       & 35.51  \\\hline
 XFI                & 2,1,0& 4.59       & 3.60            & 9.55       & 17.74   & 2,1,0& 3.52       & 2.75            & 10.05      & 16.32  \\\hline
 SCRAMBLER          & 2,1,0& 0.64       & 0.58            & 1.33       & 2.55    & 2,1,0& 0.48       & 0.43            & 1.47       & 2.38   \\\hline
-CC\_3              & 2,0,1& 0.003      & 0.003           & 0.007      &  0.01   & 3,0,1& 0.001      & 0.001           & 0.006      & 0.01   \\\hline
-CC\_4              & 2,1,1& 0.005      & 0.004           & 0.011      &  0.02   & 3,1,1& 0.003      & 0.003           & 0.011      & 0.02   \\\hline
-HM(7,4)            &      &            &                 &            &         &      &            &                 &            &        \\\hline
-HM(15,11)          &      &            &                 &            &         &      &            &                 &            &        \\\hline
+CC\_3              & 3,2,2&            &                 &            &         & 3,2,2&            &                 &            &        \\\hline
+CC\_4              & 4,4,3&            &                 &            &         & 4,1,4&            &                 &            &        \\\hline
+HM(7,4)            & 3,0,0& 0.02       & 0.01            & 0.05       & 0.08    & 3,0,0&            &                 &            &        \\\hline
+HM(15,11)          & 3,0,0&            &                 &            &         & 3,0,0&            &                 &            &        \\\hline
 \end{tabular}}
 \end{table}%
 
@@ -2500,6 +2502,15 @@ that is,
 first increase $p$, $l$ and $r$ simultaneously,
 and then reduce them with Algorithm \ref{algo_remove2}.
 
+CC\_4 is the only benchmark with different $p$,$l$ and $r$ on the 2nd and 7th column.
+This is caused by the different orders in expanding $l$ and $r$.
+For the A1 case,
+its decoder contains 14 registers, 206 gates, 490 area and 13.3 delay.
+For the A2 case,
+its decoder contains 10 registers, 61 gates, 154 area and 9.6 delay.
+So A2 case is much better than A1.
+But this still does not mean we need to increasing separately.
+We will talk about this in the next Subsection again and explain why.
 
 \subsection{Comparing run times, circuit areas and delay between the two approaches 
 with and without minimizing $l$ and $r$ by Algorithm \ref{algo_remove2}}\label{subsec_min}
@@ -2518,10 +2529,10 @@ XGXS        & 3,3,3& 0.35       &  351    &20   &8.2                            
 T2Eth       & 4,4,4& 4.76       &  1178   & 9   & 10.9                                      &6.25        & 4,0,4& 3.41       &  1557   & 9   & 11.8            \\\hline
 XFI         & 2,2,2& 10.67      & 5079    &190  & 16.50                                     &9.55        & 2,1,0& 6.05       &  6023   & 58  & 15.5            \\\hline
 SCRAMBLER   & 2,2,2& 1.27       & 826     &186  &  3.8                                      &1.33        & 2,1,0& 0.55       &  698    & 58  & 3.8             \\\hline
-CC\_3       &      &            &         &     &                                           &            &      &            &         &     &                 \\\hline
-CC\_4       &      &            &         &     &                                           &            &      &            &         &     &                 \\\hline
-HM(7,4)     &      &            &         &     &                                           &            &      &            &         &     &                 \\\hline
-HM(15,11)   &      &            &         &     &                                           &            &      &            &         &     &                 \\\hline
+CC\_3       & 3,3,3&            &  165    & 11  & 8.9                                       &            & 3,2,2&            &  128    & 9   & 8.5             \\\hline
+CC\_4       & 4,4,4&            & 154     & 10  & 9.6                                       &            & 4,4,3&            &  490    & 14  & 13.3            \\\hline
+HM(7,4)     & 3,3,3&            & 262     & 21  & 7.2                                       &            & 3,0,0&            &  258    & 0   & 8.1             \\\hline
+HM(15,11)   & 3,3,3&            & 5611    & 45  & 13.5                                      &            & 3,0,0&            &  5277   & 0   & 13.7            \\\hline
 \end{tabular}}
 \end{table}%
 
@@ -2547,30 +2558,43 @@ By comparing the 2-6 columns with the 8-12 columns,
 it is obvious that the decoders area and number of registers are significantly reduced,
 with significant runtime overhead in reducing $l$ and $r$ shown in the 7th column.
 
+Please notice the CC\_4 benchmark again, 
+from the 4th to 6th column, we can find that the circuit area and delay is similar to A2 case in the previous subsection, 
+but its value of $p$,$l$ and $r$ is similar to the A1 case.
+So this means that the decoder of CC\_4 has at least two significantly different implementations.
+And which implementation is selected is determined by some instable implementation detail in the SAT solver and the Craig interpolant algorithm.
+So this answer the confusion in the previous subsection that,
+the circuit quality degradation in the A1 case is not caused by increasing $p$,$l$ and $r$ simultaneously.
+We should still increase them simultaneously and then minimize them with Algorithm \ref{algo_remove2}.
 
-\subsection{Comparing circuit area and timing for the decoders generated by our algorithm and hand written decoders}\label{subsec_compareman}
 
-\begin{table}[b]%
-\tbl{Comparing circuit area and timing for the decoders generated by our algorithm and hand written decoders\label{tab:comparing_hand}}{%
+\subsection{Comparing circuit area and timing for the decoders generated by our algorithm and manually written decoders}\label{subsec_compareman}
+
+\begin{table}[t]%
+\tbl{Comparing circuit area and timing for the decoders generated by our algorithm and manually written decoders\label{tab:comparing_hand}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
-bench-   & \multicolumn{2}{|c|}{Decoder generated by us} &  \multicolumn{2}{|c|}{Hand written decoder} \\\cline{2-5}
-marks    & area    & max logic delay    &area    & max logic delay               \\\hline
-PCIE2    & 374   &9.1                 &    &\\\hline
-XGXS     & 322   &7.0                 &    &\\\hline
-T2Eth    & 1557  &11.8                &    &\\\hline
-XFI      & 6023  &15.5                &    &\\\hline
-SCRAMBLER& 698   &3.8                 &    &\\\hline
- CC\_3   &       &                    &\multicolumn{2}{|c|}{}\\\cline{1-3}
- CC\_4   &       &                    &\multicolumn{2}{|c|}{Decoder do not exist.}\\\cline{1-3}
-HM(7,4)  &       &                    &\multicolumn{2}{|c|}{No result here       }\\\cline{1-3}
-HM(15,11)&       &                    &\multicolumn{2}{|c|}{}\\\hline
+bench-   & \multicolumn{2}{|c|}{Decoder generated by us} &  \multicolumn{2}{|c|}{Manually written decoder} \\\cline{2-5}
+marks    & area    & max logic delay    &area    & max logic delay                  \\\hline
+PCIE2    & 366     &7.6                 & 594    & 9.7                              \\\hline
+XGXS     & 322     &7.0                 & 593    & 11.0                             \\\hline
+T2Eth    & 920     &10.2                & 764    & 11.7                             \\\hline
+XFI      & 3878    & 13.8               &        &                                  \\\hline
+SCRAMBLER& 698     & 3.8                & 1035   & 6.4                              \\\hline
+ CC\_3   & \multicolumn{4}{|c|}{}\\\cline{1-1}
+ CC\_4   & \multicolumn{4}{|c|}{No manually written Decoder to be compared with.}\\\cline{1-1}
+HM(7,4)  & \multicolumn{4}{|c|}{}\\\cline{1-1}
+HM(15,11)& \multicolumn{4}{|c|}{}\\\hline
 \end{tabular}}
 \end{table}%
 
 Table \ref{tab:comparing_hand} compares the circuit area and timing of 
-the decoders generated by our algorithm and hand written decoders.
+the decoders generated by our algorithm and manually written decoders.
 
+
+It is obvious that our decoder are smaller and faster than the manually written decoder in most cases.
+The only exception is the T2Eth benchmark, 
+the generated decoder is a little bit larger than the manually written one.
 
 \section{RELATED PUBLICATIONS}\label{sec_relwork}
 %\subsection{Complementary Synthesis}
