@@ -793,9 +793,11 @@ because the decoder's Boolean function of $d$ can still be correctly characteriz
 
 \subsection{Speeding up with incremental SAT}\label{incSAT}
 
-We can further speedup Algorithm \ref{alg_fofc} by employing the MiniSat's incremental SAT mechanism mentioned in Subsection \ref{subsec_incsat}.
+We can further speedup Algorithm \ref{alg_fofc} by employing the MiniSat's 
+incremental SAT mechanism mentioned in Subsection \ref{subsec_incsat}.
 
-$F_{PC}(p,l,r)$ in Equation (\ref{uniqt1}) can be partitioned into the following two equations by moving the third line of it into Equation (\ref{uniqt1_a}):
+$F_{PC}(p,l,r)$ in Equation (\ref{uniqt1}) can be partitioned into the 
+following two equations by moving the third line of it into Equation (\ref{uniqt1_a}):
 \begin{equation}\label{uniqt1_f}
 % \begin{split}
 C_{PC}(p,l,r):=
@@ -989,6 +991,7 @@ Assume that $R(\vec{a},\vec{b},t)$ is a Boolean formula with $R(\vec{a},\vec{b},
 % $\vec{a}$ and $\vec{b}$ uniquely determine $t$.
 $\vec{a}$ and $\vec{b}$ are respectively called the important and the non-important variable vectors,
 while $t$ is the target variable.
+We further assume that $R(\vec{a},\vec{b},t)$ is satisfiable.
 
 We need to characterize a Boolean function $FSAT_R(\vec{a})$,
 which covers and only covers all the valuations of $\vec{a}$ 
@@ -1088,12 +1091,15 @@ So Algorithm \ref{alg_craigchar} is a halting one.
 
 In this section,
 we will present how to compute the predicate $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined.
-Similar to the halting algorithm presented in Subsection \ref{subsec_chkextdec},
-we will first present how to compute a monotonically growing under-approximation of $valid(\vec{f})$ in \ref{subsub_nonloop},
-and them present how to compute a monotonically shrinking over-approximation of $valid(\vec{f})$ in \ref{subsub_loop},
-and finally show that they will converge to $valid(\vec{f})$ in \ref{subsub_overal}.
-Its correctness will be proved in Subsection \ref{subsec_proofterm}.
 
+
+As shown in Figure \ref{fig_mono},
+we will first define $\neg FSAT_{PC}(p,l,r)$,
+a monotonically growing under-approximation of $valid(\vec{f})$ in \ref{subsub_nonloop}.
+And then we define $\neg FSAT_{LN}(p,l,r)$,
+a monotonically shrinking over-approximation of $valid(\vec{f})$ in \ref{subsub_loop}.
+And finally we show that they will converge to $valid(\vec{f})$ in \ref{subsub_overal}.
+Its correctness will be proved in Subsection \ref{subsec_proofterm}.
 
 % 
 % With Algorithm \ref{alg_craigchar} we can find out $FSAT_{F_{PC}}(\vec{f}_{p+l})$, 
@@ -1156,6 +1162,14 @@ Its correctness will be proved in Subsection \ref{subsec_proofterm}.
 % an iterative algorithm is presented in \ref{subsub_overal} to infer $valid(\vec{f})$.
 
 \subsubsection{\textbf{Computing monotonically growing under-approximation of $valid(\vec{f})$}}\label{subsub_nonloop}.
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{mono}
+\end{center}
+\caption{The monotonicity of $FSAT_{PC}(p,l,r)$ and $FSAT_{LN}(p,l,r)$}
+  \label{fig_mono}
+\end{figure}
 
 By replacing $i$ in Equation (\ref{uniqt1}) with $\vec{d}$,
 we have:
@@ -1290,13 +1304,6 @@ $\neg FSAT_{PC}(p,l,r)$ is an under-approximation of $valid(\vec{f})$ that grows
 \end{proposition}
 
 
-\begin{figure}[t]
-\begin{center}
-\includegraphics[width=0.5\textwidth]{mono}
-\end{center}
-\caption{The monotonicity of $FSAT_{PC}(p,l,r)$ and $FSAT_{LN}(p,l,r)$}
-  \label{fig_mono}
-\end{figure}
 
 
 
@@ -1567,7 +1574,6 @@ So,
 it is a halting algorithm.
 \end{proof}
 
-% TODO here
 
 We will then prove the correctness of Algorithm \ref{algo_infer}.
 
@@ -1582,17 +1588,18 @@ $\vec{d}$ to be not uniquely determined for some particular $p$, $l$ and $r$.
 So $\neg FSAT_{LN}(p,l,r)$ rules them out and covers all  valuations of $\vec{f}$ that
 enable $\vec{d}$ to be uniquely determined.
 
-We then prove the only covering case.
-If $A$ is a valuation of $\vec{f}$ covered by $\neg FSAT_{LN}(p,l,r)$ that makes $\vec{d}$ to be \textbf{NOT} uniquely determined for some particular $p'$, $l'$ and $r'$,
+We then prove the only covering case by contradiction.
+If $A$ is a valuation of $\vec{f}$ covered by $\neg FSAT_{LN}(p,l,r)$ 
+that makes $\vec{d}$ to be \textbf{NOT} uniquely determined for some particular $p'$, $l'$ and $r'$,
 then we have:
 
 \begin{enumerate}
  \item $FSAT_{LN}(p',l',r')$ also covers $A$.
- According to Lemma \ref{lemmalninc},
+ Then according to Lemma \ref{lemmalninc},
  for all $p''>max(p',p)$,$l''>max(l',l)$ and $r''>max(r',r)$,
  $FSAT_{LN}(p'',l'',r'')$ also covers $A$.
  \item $FSAT_{LN}(p,l,r)$ does not cover $A$.
- It is the last $FSAT_{LN}(p,l,r)$ computed by Algorithm \ref{algo_infer}.
+ $FSAT_{LN}(p,l,r)$ is the last one computed by Algorithm \ref{algo_infer} before it terminates.
  Which means that the $valid(\vec{f})$'s under-approximation and over-approximation have converge.
  So for all $p''>max(p',p)$,$l''>max(l',l)$ and $r''>max(r',r)$,
  $FSAT_{LN}(p'',l'',r'')$ must be equal to $FSAT_{LN}(p,l,r)$.
@@ -1605,7 +1612,7 @@ So the only covering case is proved.
 \end{proof}
 
 
-\section{Minimizing the valuation of $l$ and $r$}\label{sec_min}
+\section{Minimizing the length of unrolled transition function}\label{sec_min}
 We will first introduce why and how to remove the redundancy of $l$ and $r$ in Subsection \ref{reduceing},
 and then present another possible structure of our algorithm in Subsection \ref{alter},
 and discuss why we have chosen the one in Subsection \ref{reduceing} instead of the one in Subsection \ref{alter}.
@@ -1638,9 +1645,11 @@ then minimize $l$.
 \begin{algorithm}[t]
 \SetAlgoVlined
 \For{$r':=r \to 1$} {
+\ShowLnLabel{testr_1}
   \If{$F_{PC}(p,l,r'-1)\wedge valid(\vec{f}_{p+l})$ is satisfiable} {
     break
   }
+\ShowLnLabel{testr0}
   \ElseIf{$r'\equiv 1$} {
     $r':=r'-1$\\
     break
@@ -1660,8 +1669,15 @@ return $<l',r'>$
 \label{algo_remove2}
 \end{algorithm}
 
-% To simply the presentation,
-% we still use $p$, $l$ and $r$ instead of $p'$, $l'$ and $r'$ in the remainder of this paper.
+To simplify the presentation,
+we will only introduce the $r$ case.
+In Line \ref{testr_1},
+when $F_{PC}(p,l,r'-1)\wedge valid(\vec{f}_{p+l})$ is satisfiable,
+then $r'$ is the last one that makes it unsatisfiable,
+we return it directly.
+On the other hand,
+if $r'\equiv 0$ can still make $F_{PC}(p,l,r')\wedge valid(\vec{f}_{p+l})$ unsatisfiable at Line \ref{testr0},
+we directly return 0.
 
 \subsection{An alternative approach for comparison}\label{alter}
 
@@ -1759,7 +1775,7 @@ we can employ the incremental SAT mechanism in MiniSat again by:
 
 \subsection{Characterizing the decoder's Boolean function that computes $\vec{d}$}
 
-Assume that the predicate over $\vec{f}$ inferred by Algorithm \ref{algo_infer},
+Assume that the predicate over $\vec{f}$ inferred by Algorithm \ref{algo_infer}
 is $valid(\vec{f})$.
 Let's define the following two formulas for each data variable $d\in\vec{d}$:
 
@@ -2103,13 +2119,13 @@ They come from two sources:
 %  So there may be some overlap between (2) and (3).
 \end{enumerate}
 
-Each column of Table \ref{tab:summ} shows respectively the number of input, output and register of each benchmarks.
-The \#gate and area columns show the number of gates and area of the encoder when mapped to mcnc.genlib library by
+Each column of Table \ref{tab:summ} shows respectively the number of inputs, outputs, registers and gates of each benchmarks.
+The area column shows the circuit area of the encoder when mapped to mcnc.genlib library by
 ABC synthesis tool \cite{ABC} with script "strash; dsd; strash; dc2; dc2; dch; map".
 In the remainder of this paper, 
 all circuit areas, gate number and delay are obtained in the same setting such that we can compare them to that of \cite{LiuTCAD12}.
 
-\begin{table}[b]%
+\begin{table}[t]%
 \tbl{Benchmarks\label{tab:summ}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
@@ -2172,7 +2188,7 @@ we will compare run times, circuit areas and delay between the two approaches
 that do and do not minimize $p$,$l$ and $r$ by Algorithm \ref{algo_remove2}.
 
 Finally in Subsection \ref{subsec_compareman},
-we will compare the circuit area and delay between the decoder generated by our algorithm with the decoder written manually.
+we will compare the circuit area and delay between the decoders generated by our algorithm and the decoders written manually.
 
 
 \subsection{PCI Express 2.0 encoder}\label{subsec_pcie2}
@@ -2205,13 +2221,13 @@ we write an assertion to rule out those combinations that are not in this coding
 This assertion is embed into the transition function $T$,
 so that it can be enforced at every step in the unrolled state sequences.
 
-Algorithm \ref{alg_fofc} identifies the flow control vector $\vec{f}:=CNTL\_TXEnable\_P0$ in 0.475 seconds.
+Algorithm \ref{alg_fofc} identifies the flow control vector $\vec{f}:=CNTL\_TXEnable\_P0$ in 0.49 seconds.
 And then Algorithm \ref{algo_infer} infers the predicate $valid(\vec{f}):=CNTL\_TXEnable\_P0$ 
-that enables the data vector to be uniquely determined in 1.22 seconds.
-And then Algorithm \ref{algo_remove2} obtains the minimized $p:=4$, $l:=0$ and $r:=2$ in 0.69 seconds.
+that enables the data vector to be uniquely determined in 1.21 seconds.
+And then Algorithm \ref{algo_remove2} obtains the minimized $p:=4$, $l:=0$ and $r:=2$ in 0.68 seconds.
 Finally, 
 with the inferred $valid(\vec{f})$,
-generating the decoder's Boolean functions for $CNTL\_TXEnable\_P0$, $TXDATA$ and $TXDATAK$ costs 0.26 seconds.
+generating the decoder's Boolean functions for $CNTL\_TXEnable\_P0$, $TXDATA$ and $TXDATAK$ costs 0.28 seconds.
 The decoder contains 156 gates and 0 registers with area 366 and delay 7.6.
 
 
@@ -2229,7 +2245,7 @@ the output electrical idle variable $HSS\_TXELECIDLE$ becomes 1.
 So,
 the decoder can use the output variable $HSS\_TXELECIDLE$ to uniquely determine the value of flow control variable $CNTL\_TXEnable\_P0$.
 
-\begin{table}[t]%
+\begin{table}[b]%
 \tbl{The input and output variables of the 10G Ethernet encoder XGXS\label{tab:eth10g}}{%
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -2271,7 +2287,7 @@ and embed it into the the transition function $T$.
 
 Algorithm \ref{alg_fofc} identifies the flow control vector $\vec{f}:=bad\_code$ in 0.31 seconds.
 And then Algorithm \ref{algo_infer} infers the predicate $valid(\vec{f}):=\!bad\_code$ 
-that enables the data vector to be uniquely determined in 0.95 seconds.
+that enables the data vector to be uniquely determined in 0.88 seconds.
 And then Algorithm \ref{algo_remove2} obtains the minimized $p:=4$, $l:=0$ and $r:=1$ in 0.52 seconds.
 Finally, generating the decoder's Boolean functions for $bad\_code$, $encode\_data\_in$ and $konstant$ costs 0.17 seconds.
 The decoder contains 163 gates and 0 registers with area 370 and delay 8.1.
@@ -2297,7 +2313,7 @@ After deleting empty line and comments,
 this encoder's source code has 864 lines of verilog.
 
 
-\begin{table}[b]%
+\begin{table}[t]%
 \tbl{The input and output variables of the UltraSPARC T2 Ethernet encoder\label{tab:t2eth}}{%
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -2336,7 +2352,7 @@ The last four cases in Table \ref{tab:one} can never be uniquely determined,
 because they cannot be distinguished from the case of `PCS\_ENC\_DATA.
 So we write an assertion to rule them out.
 
-\begin{table}[t]%
+\begin{table}[b]%
 \tbl{Actions to be performed in UltraSPARC T2 Ethernet encoder\label{tab:one}}{%
 \begin{tabular}{|l|l|}
 \hline
@@ -2376,7 +2392,7 @@ so the decoder can recover the value of the flow control variable $tx\_enc\_ctrl
 
 \subsection{Comparing our algorithm with the state-of-the-art algorithm on circuits without flow control mechanism}\label{subsec_nonflow}
 
-\begin{table}[b]%
+\begin{table}[t]%
 \tbl{Comparing our algorithm with \cite{LiuTCAD12}\label{tab:comp_nocf}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
 \hline
@@ -2384,20 +2400,20 @@ so the decoder can recover the value of the flow control variable $tx\_enc\_ctrl
             &time check.& time    & decoder & decoder               &time check. decoder & decoder & decoder               \\
 Names       & decoder.  & gen.    & area    & delay                 & exist. and gen.    & area    & delay                 \\
             & exist.    & decoder &         &                       & decoder            &         &                       \\\hline
-XFI         & 13.24     &6.13     & 3878    & 13.8                  & 8.59               &   3913  & 12.5\\\hline
-SCRAMBLER   & 1.80      &0.55     & 698     & 3.8                   & 0.42               &   640   & 3.8 \\\hline
+XFI         & 17.74     &6.13     & 3878    & 13.8                  & 8.59               &   3913  & 12.5\\\hline
+SCRAMBLER   & 2.55      &0.55     & 698     & 3.8                   & 0.42               &   640   & 3.8 \\\hline
  CC\_3      & 0.06      &0.03     & 116     & 8.5                   & 0.21               &   104   & 9.1 \\\hline
- CC\_4      & 0.16      &0.09     & 365     & 12.5                  & 0.20               &   129   & 9.0 \\\hline
- HM(7,4)    & 0.09      &0.03     & 258     & 8.1                   &   0.05             &   255   & 7.3 \\\hline
- HM(15,11)  & 1.49      &2.23     & 5277    & 13.7                  &   2.02             &   3279  & 13.2\\\hline
+ CC\_4      & 0.16      &0.09     & 490     & 13.3                  & 0.20               &   129   & 9.0 \\\hline
+ HM(7,4)    & 0.09      &0.03     & 258     & 8.1                   & 0.05               &   255   & 7.3 \\\hline
+ HM(15,11)  & 1.49      &2.23     & 5277    & 13.7                  & 2.02               &   3279  & 13.2\\\hline
 \end{tabular}}
 \end{table}%
 
 Table \ref{tab:comp_nocf} compares our algorithm to \cite{LiuTCAD12} 
 on those benchmarks without flow control mechanism.
 
-The first 3 benchmarks have flow control mechanism and have been discussed in Subsection \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.
-So they are not discussed in this subsection.
+% The first 3 benchmarks have flow control mechanism and have been discussed in Subsection \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.
+% So they are not discussed in this subsection.
 
 For the 6 benchmarks from  XFI to HM(15,11),
 we have their source code.
@@ -2411,10 +2427,18 @@ I think this is caused by the fact that our algorithm need to spend lots of time
 to check whether each input variables $i\in \vec{i}$ can be uniquely determined,
 while \cite{LiuTCAD12} can check all input variables with one SAT solving.
 
-The other issue is that our decoder is much more larger and slower than that of \cite{LiuTCAD12},
+For most of the benchmarks,
+the circuit are and delay of our decoder are similar to that of \cite{LiuTCAD12}.
+
+For HM(15,11),
+our decoder is much more larger than that of \cite{LiuTCAD12},
 I think this may caused by the immature implementation of our Craig interpolant generating algorithm,
 which  manipulate the complex proof structure generated from MiniSat in OCaml.
 This can be significantly improved by porting similar codes from other formal tools, such as ABC \cite{ABC}.
+
+For CC\_4, 
+our decoder is also much larger and slower than \cite{LiuTCAD12},
+we will explain this issue in the following two subsections with more details.
 
 % The 2 benchmarks CC\_3 and CC\_4 have experimental result in \cite{LiuTCAD12},
 % and also have source code in the package sent to us by its author.
@@ -2440,20 +2464,7 @@ This can be significantly improved by porting similar codes from other formal to
 
 \subsection{Comparing run time overhead of increasing $p$, $l$ and $r$ simultaneously and separately}\label{subsec_incr_plr_exp}
 
-In Algorithm \ref{alg_fofc_inc},
-we increase $p$, $l$ and $r$ simultaneously,
-and then reduce them with Algorithm \ref{algo_remove2}.
-We call it A1 in this subsection.
-
-Subsection \ref{alter} shows another possible way to do this.
-It use three nested loops to increase $p$, $l$ and $r$ separately.
-We call it A2 in this subsection.
-
-We compare these two approaches in Table \ref{tab:comparing_simu_sepa}.
-% The first three benchmarks are those three circuits with flow control mechanism,
-% and the last two benchmarks are those without flow control mechanism.
-
-\begin{table}[t]%
+\begin{table}[b]%
 \tbl{Comparing run time overhead of increasing $p$, $l$ and $r$ simultaneously and separately\label{tab:comparing_simu_sepa}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
@@ -2461,17 +2472,32 @@ We compare these two approaches in Table \ref{tab:comparing_simu_sepa}.
 benchmarks         & p,l,r& time       & time            & time       &  total  & p,l,r& time       & time            & time       & total  \\
                    &      & find.      & infer.          & minimiz.   &  run    &      & find.      & infer.          & minimiz.   & run    \\
                    &      & $\vec{f}$  & $valid(\vec{f})$& $p$,$l$,$r$&  time   &      & $\vec{f}$  & $valid(\vec{f})$& $p$,$l$,$r$& time   \\\hline\hline
-PCIE2              & 3,0,2& 0.49       & 1.21            & 0.68       &  2.38   & 3,0,2& 0.38       & 0.80            & 0.38       & 1.60   \\\hline
-XGXS               & 3,0,1& 0.31       & 0.88            & 0.52       &  1.71   & 3,0,1& 0.23       & 0.58            & 0.30       & 1.11   \\\hline
-T2Eth              & 4,0,4& 4.28       & 15.17           & 6.25       &  25.70  & 4,0,4& 15.47      & 13.85           & 6.19       & 35.51  \\\hline
-XFI                & 2,1,0& 4.59       & 3.60            & 9.55       & 17.74   & 2,1,0& 3.52       & 2.75            & 10.05      & 16.32  \\\hline
-SCRAMBLER          & 2,1,0& 0.64       & 0.58            & 1.33       & 2.55    & 2,1,0& 0.48       & 0.43            & 1.47       & 2.38   \\\hline
+PCIE2              & 4,0,2& 0.49       & 1.21            & 0.68       &  2.38   & 4,0,2& 0.38       & 0.80            & 0.38       & 1.60   \\\hline
+XGXS               & 4,0,1& 0.31       & 0.88            & 0.52       &  1.71   & 4,0,1& 0.23       & 0.58            & 0.30       & 1.11   \\\hline
+T2Eth              & 5,0,4& 3.76       & 21.53           & 6.15       &  31.44  & 5,0,4& 15.47      & 13.85           & 6.19       & 35.51  \\\hline
+XFI                & 3,1,0& 4.59       & 3.60            & 9.55       & 17.74   & 3,1,0& 3.52       & 2.75            & 10.05      & 16.32  \\\hline
+SCRAMBLER          & 3,1,0& 0.64       & 0.58            & 1.33       & 2.55    & 3,1,0& 0.48       & 0.43            & 1.47       & 2.38   \\\hline
 CC\_3              & 3,2,2& 0.01       & 0.01            & 0.04       & 0.06    & 3,2,2& 0.01       & 0.01            & 0.01       & 0.03   \\\hline
 CC\_4              & 4,4,3& 0.07       & 0.01            & 0.08       & 0.16    & 4,1,4& 0.16       & 0.01            & 0.07       & 0.25   \\\hline
 HM(7,4)            & 3,0,0& 0.02       & 0.01            & 0.07       & 0.09    & 3,0,0& 0.01       & 0.01            & 0.04       & 0.06   \\\hline
 HM(15,11)          & 3,0,0& 0.22       & 0.05            & 1.21       & 1.49    & 3,0,0& 0.34       & 0.04            & 0.58       & 0.96   \\\hline
 \end{tabular}}
 \end{table}%
+
+In Algorithm \ref{alg_fofc_inc},
+we increase $p$, $l$ and $r$ simultaneously,
+and then reduce them with Algorithm \ref{algo_remove2}.
+We call it A1 case in this subsection.
+
+Subsection \ref{alter} shows another possible way to do this.
+It use three nested loops to increase $p$, $l$ and $r$ separately.
+We call it A2 case in this subsection.
+
+We compare these two approaches in Table \ref{tab:comparing_simu_sepa}.
+% The first three benchmarks are those three circuits with flow control mechanism,
+% and the last two benchmarks are those without flow control mechanism.
+
+
 
 By comparing the total run time in column 6 and 11,
 it is obvious that
@@ -2501,19 +2527,20 @@ first increase $p$, $l$ and $r$ simultaneously,
 and then reduce them with Algorithm \ref{algo_remove2}.
 
 CC\_4 is the only benchmark with different $p$,$l$ and $r$ on the 2nd and 7th column.
-This is caused by the different orders in expanding $l$ and $r$.
+This is caused by the different orders in expanding and reducing $l$ and $r$.
 For the A1 case,
 its decoder contains 14 registers, 206 gates, 490 area and 13.3 delay.
 For the A2 case,
-its decoder contains 10 registers, 61 gates, 154 area and 9.6 delay.
+its decoder contains 10 registers, 61 gates, 154 area and 9.6 delay,
+which is comparable to that of \cite{LiuTCAD12} in Table \ref{tab:comp_nocf}.
 So A2 case is much better than A1.
-But this still does not mean we need to increasing separately.
-We will talk about this in the next Subsection again and explain why.
+But this still does not mean we need to increasing $p$,$l$ and $r$ separately.
+We will talk about this in the next subsection again and explain why.
 
 \subsection{Comparing run times, circuit areas and delay between the two approaches 
 with and without minimizing $l$ and $r$ by Algorithm \ref{algo_remove2}}\label{subsec_min}
 
-\begin{table}[t]%
+\begin{table}[b]%
 \tbl{Comparing run times, circuit areas and delay between the two approaches 
 with and without minimizing $p$,$l$ and $r$ by Algorithm \ref{algo_remove2}\label{tab:compare_min}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
@@ -2522,11 +2549,11 @@ with and without minimizing $p$,$l$ and $r$ by Algorithm \ref{algo_remove2}\labe
 bench-      & p,l,r& runtime    & decoder & \#  & max                                       &time        & p,l,r& runtime    & decoder & \#  & max             \\
 marks       &      & generat.   & area    & of  &  logic                                    &minimiz.    &      & generat.   & area    & of  &logic            \\
             &      & decoder    &         & reg &delay                                      &$p$,$l$,$r$ &      & decoder    &         & reg & delay           \\\hline\hline
-PCIE2       & 3,3,3& 0.44       &  382    & 11  & 7.5                                       &0.68        & 3,0,2& 0.28       &  366    & 0   & 7.6             \\\hline
-XGXS        & 3,3,3& 0.35       &  351    &20   &8.2                                        &0.52        & 3,0,1& 0.18       &  370    & 0   & 8.1             \\\hline
-T2Eth       & 4,4,4& 4.76       &  1178   & 9   & 10.9                                      &6.25        & 4,0,4& 3.41       &  920    & 9   & 10.2            \\\hline
-XFI         & 2,2,2& 10.67      & 5079    &190  & 16.50                                     &9.55        & 2,1,0& 6.13       &  3878   & 58  & 13.8            \\\hline
-SCRAMBLER   & 2,2,2& 1.27       & 826     &186  &  3.8                                      &1.33        & 2,1,0& 0.55       &  698    & 58  & 3.8             \\\hline
+PCIE2       & 4,4,4& 0.44       &  382    & 11  & 7.5                                       &0.68        & 4,0,2& 0.28       &  366    & 0   & 7.6             \\\hline
+XGXS        & 4,4,4& 0.35       &  351    &20   &8.2                                        &0.52        & 4,0,1& 0.17       &  370    & 0   & 8.1             \\\hline
+T2Eth       & 5,5,5& 4.76       &  1178   & 9   & 10.9                                      &6.15        & 5,0,4& 3.40       &  920    & 9   & 10.2            \\\hline
+XFI         & 3,3,3& 10.67      & 5079    &190  & 16.50                                     &9.55        & 3,1,0& 6.13       &  3878   & 58  & 13.8            \\\hline
+SCRAMBLER   & 3,3,3& 1.27       & 826     &186  &  3.8                                      &1.33        & 3,1,0& 0.55       &  698    & 58  & 3.8             \\\hline
 CC\_3       & 3,3,3& 0.04       &  117    & 11  & 9.2                                       &0.04        & 3,2,2& 0.03       &  116    & 9   & 8.5             \\\hline
 CC\_4       & 4,4,4& 0.05       & 154     & 10  & 9.6                                       &0.08        & 4,4,3& 0.09       &  365    & 14  & 12.5            \\\hline
 HM(7,4)     & 3,3,3& 0.05       & 262     & 21  & 7.2                                       &0.07        & 3,0,0& 0.03       &  258    & 0   & 8.1             \\\hline
@@ -2559,8 +2586,13 @@ with significant runtime overhead in reducing $l$ and $r$ shown in the 7th colum
 Please notice the CC\_4 benchmark again, 
 from the 4th to 6th column, we can find that the circuit area and delay is similar to A2 case in the previous subsection, 
 but its value of $p$,$l$ and $r$ is similar to the A1 case.
-So this means that the decoder of CC\_4 has at least two significantly different implementations.
-And which implementation is selected is determined by some instable implementation detail in the SAT solver and the Craig interpolant algorithm.
+So this means that the decoder of CC\_4 has at least three significantly different implementations with
+area 154 in A2 case in previous subsection,
+area 365 in the 10th column of Table \ref{tab:compare_min}
+and area 490 in A1 case of previous subsection.
+The smaller one with area 154 and delay 9.6 is comparable to that of \cite{LiuTCAD12} shown in Table \ref{tab:comp_nocf}.
+
+Which decoder implementation finally generated for CC\_4 is determined by some instable implementation detail in the SAT solver and the Craig interpolant algorithm.
 So this answer the confusion in the previous subsection that,
 the circuit quality degradation in the A1 case is not caused by increasing $p$,$l$ and $r$ simultaneously.
 We should still increase them simultaneously and then minimize them with Algorithm \ref{algo_remove2}.
@@ -2568,7 +2600,7 @@ We should still increase them simultaneously and then minimize them with Algorit
 
 \subsection{Comparing circuit area and timing for the decoders generated by our algorithm and manually written decoders}\label{subsec_compareman}
 
-\begin{table}[b]%
+\begin{table}[t]%
 \tbl{Comparing circuit area and timing for the decoders generated by our algorithm and manually written decoders\label{tab:comparing_hand}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
@@ -2753,7 +2785,8 @@ from which an interpolation can be derived and used as an over-approximation of 
 In \cite{interpNoProof},
 interpolation is generated with a framework similar to the iterative enumerating and 
 enlarging approaches mentioned above.
-But there are two enlarging steps, each for the two formulas involving in computing interpolation.
+But there are two enlarging steps for each enumerated assignment,
+in which the enlarged assignment are enlarged with respect to the two formulas involved in constructing interpolant.
 This make it the first paper that constructs interpolation without proof.
 
 \subsection{Logic synthesis with Craig interpolation}
