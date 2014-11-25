@@ -640,7 +640,7 @@ F_{LN}(p,l,r):=\\
 
 \textbf{LN in $F_{LN}$ stands for "loop non-complementary",
 which means $F_{LN}(p,l,r)$ with three loops is used to check whether 
-the input variables can NOT be uniquely determined.
+the input variable can NOT be uniquely determined.
 }
 
 When $F_{LN}(p,l,r)$ is satisfiable,
@@ -705,12 +705,12 @@ Both cases will lead to this Algorithm's termination.
 
 %\subsection{Removing Redundant Output Letters}\label{sec_rmred}
 
-\section{Identifying flow control variables}\label{sec_findfc}
-We will first introduce how to find out the set of flow control variables in Subsection \ref{basic},
+\section{Identifying flow control vector}\label{sec_findfc}
+We will first introduce how to find out the flow control vector $\vec{f}$  in Subsection \ref{basic},
 and then introduce how to speed up this algorithm with incremental SAT in Subsection \ref{incSAT}.
 
-\subsection{Finding out flow control variables}\label{basic}
-%TODO here
+\subsection{Finding out flow control vector $\vec{f}$}\label{basic}
+
 To facilitate the presentation of our algorithm,
 we assume that the input variable vector $\vec{i}$ can be partitioned into two vectors: 
 the flow control vector $\vec{f}$ and the data vector $\vec{d}$.
@@ -723,7 +723,7 @@ And the algorithm to find out this partition will be presented in this Subsectio
 % 
 % \subsection{}
 
-The flow control vector $\vec{f}$ are used to represent the validness of $\vec{d}$.
+The flow control vector $\vec{f}$ are used to indicate the validness of $\vec{d}$.
 So,
 for a properly designed encoder,
 $\vec{f}$ should always be uniquely determined by a bounded sequence of the encoder's output variable vector $\vec{o}$,
@@ -733,12 +733,12 @@ or else the decoder cannot recognize the validness of $\vec{d}$.
 \SetAlgoVlined
 \KwIn{The input variable vector $\vec{i}$.}
 \KwOut{$\vec{f}\subset \vec{i}$ and $\vec{d}\subset \vec{i}$  that can and can not 
-be uniquely determined ,and the maximal $p$, $l$ and $r$ .}
+be uniquely determined ,and the maximal $p$, $l$ and $r$ reached in this searching.}
 \ShowLnLabel{initfd}$\vec{f}: = \{\}$;$\vec{d}:= \{\}$\;
 \ShowLnLabel{initplr}$p$:= 0 ;~$l$:= 0 ;~$r$:= 0 \;
 \ShowLnLabel{while}\While{$\vec{i}\ne \{\}$}{
-  $p++$; ~ $l++$; ~ $r++$\;
   assume $i\in\vec{i}$\;
+  $p++$; ~ $l++$; ~ $r++$\;
   \uIf {$F_{PC}(p,l,r)$ is unsatisfiable for $i$} {
     \ShowLnLabel{adduniq}
     $\vec{f}:= i\cup\vec{f}$\;
@@ -753,8 +753,8 @@ be uniquely determined ,and the maximal $p$, $l$ and $r$ .}
     }
   }
 }
-\KwRet ($\vec{f}$,$p_{max}$,$l_{max}$,$r_{max}$)
-\caption{$FindFlow(\vec{i})$:Identifying the flow control vector}
+\KwRet ($\vec{f}$,$p$,$l$,$r$)
+\caption{$FindFlow(\vec{i})$:Identifying the flow control vector $\vec{f}$}
 \label{alg_fofc}
 \end{algorithm}
 
@@ -770,7 +770,7 @@ At Line \ref{while},
 a while loop is used to iterate on all $i\in\vec{i}$.
 
 At Line \ref{adduniq},
-the input variable $i$ that can be uniquely determined will be added to the vector $\vec{f}$.
+the input variable $i$ that can be uniquely determined will be added to vector $\vec{f}$.
 
 On the other hand,
 when $\vec{i}$ is very long,
@@ -787,7 +787,7 @@ just like a flow control variable $f\in \vec{f}$.
 In this case,
 $d$ may be identified as a flow control variable by Algorithm \ref{alg_fofc}.
 But this do not harm our overall framework,
-because the decoder's Boolean function can still be correctly characterized in Section \ref{sec_char}.
+because the decoder's Boolean function of $d$ can still be correctly characterized in Section \ref{sec_char}.
 }
 
 
@@ -795,7 +795,7 @@ because the decoder's Boolean function can still be correctly characterized in S
 
 We can further speedup Algorithm \ref{alg_fofc} by employing the MiniSat's incremental SAT mechanism mentioned in Subsection \ref{subsec_incsat}.
 
-$F_{PC}(p,l,r)$ in Equation \ref{uniqt1} can be partitioned into the following two equations:
+$F_{PC}(p,l,r)$ in Equation (\ref{uniqt1}) can be partitioned into the following two equations by moving the third line of it into Equation (\ref{uniqt1_a}):
 \begin{equation}\label{uniqt1_f}
 % \begin{split}
 C_{PC}(p,l,r):=
@@ -835,7 +835,7 @@ A_{PC}(p,l,r):=
 \KwIn{The input variable vector $\vec{i}$.}
 \KwOut{$\vec{f}\subset \vec{i}$ and $\vec{d}\subset \vec{i}$ that can and can not 
 be uniquely determined,
-and the maximal $p$, $l$ and $r$ .}
+and the maximal $p$, $l$ and $r$ reached in this searching.}
 \ShowLnLabel{initfd2}$\vec{f}: = \{\}$;$\vec{d}:= \{\}$\;
 \ShowLnLabel{initplr2}$p$:= 0 ;~$l$:= 0 ;~$r$:= 0 \;
 \ShowLnLabel{while2}\While{$\vec{i}\ne \{\}$}{
@@ -866,7 +866,7 @@ and the maximal $p$, $l$ and $r$ .}
 \label{alg_fofc_inc}
 \end{algorithm}
 
-Similarly we can partition $F_{LN}(p,l,r)$ in Equation \ref{uniqln} into the following two equations:
+Similarly we can partition $F_{LN}(p,l,r)$ in Equation (\ref{uniqln}) into the following two equations:
 
 \begin{equation}\label{uniqln_f}
 % \begin{split}
@@ -1065,8 +1065,8 @@ Algorithm \ref{alg_craigchar} is proposed to characterize $FSAT_R(\vec{a})$ in E
 Line \ref{testsat} checks whether there is still some new valuation of $\vec{a}$ that can make $R(\vec{a},\vec{b},1)$ satisfiable,
 but has not been covered by $FSAT_R(\vec{a})$.
 Lines \ref{cofact1} and \ref{cofact2} assign the value of $\vec{b}$ 
-from the satisfying assignment to $R(\vec{a},\vec{b},1)$ and $R(\vec{a},\vec{b},0)$ respectively, 
-to remove $\vec{b}$ from them.
+from the satisfying assignment to $R(\vec{a},\vec{b},1)$ and $R(\vec{a},\vec{b},0)$ respectively.
+This will make $\vec{b}$ to no longer appear as free variables in these two formulas.
 
 Thus,
 $\phi_A\wedge \phi_B$ in Line \ref{ab} is unsatisfiable,
@@ -1086,12 +1086,13 @@ So Algorithm \ref{alg_craigchar} is a halting one.
 
 % \subsubsection{\textbf{Intuitive introduction}}\label{subsub_intro}.
 
-In this Section,
+In this section,
 we will present how to compute the predicate $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined.
 Similar to the halting algorithm presented in Subsection \ref{subsec_chkextdec},
 we will first present how to compute a monotonically growing under-approximation of $valid(\vec{f})$ in \ref{subsub_nonloop},
 and them present how to compute a monotonically shrinking over-approximation of $valid(\vec{f})$ in \ref{subsub_loop},
 and finally show that they will converge to $valid(\vec{f})$ in \ref{subsub_overal}.
+Its correctness will be proved in Subsection \ref{subsec_proofterm}.
 
 
 % 
@@ -1285,7 +1286,7 @@ So every valuation of $\vec{f}$ covered by $\neg FSAT_{PC}(p,l,r)$ can also make
 So we have:
 
 \begin{proposition}\label{prop_pc}
-$\neg FSAT_{PC}(p,l,r)$ is an under-approximation of $valid(\vec{f})$ that grow monotonically with respect to $p$,$l$ and $r$.
+$\neg FSAT_{PC}(p,l,r)$ is an under-approximation of $valid(\vec{f})$ that grows monotonically with respect to $p$,$l$ and $r$.
 \end{proposition}
 
 
@@ -1437,13 +1438,13 @@ the algorithm that infers the predicate $valid(\vec{f}_{p+l})$ is shown in
 Algorithm \ref{algo_infer}.
 It just iteratively increases the value of $p$, $l$ and $r$, 
 until $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ is unsatisfiable,
-which means that $FSAT_{PC}(p,l,r)$ and $FSAT_{LN}(p,l,r)$ are equal to each other.
+which means that $FSAT_{PC}(p,l,r)$ and $FSAT_{LN}(p,l,r)$ converge.
 In this case,
 $\neg FSAT_{PC}(p,l,r)$ is return as $valid(\vec{f})$.
 
 The proofs of its termination and correctness are given in the next subsection.
 
-\subsection{Proofs of termination and correctness}\label{subset_proofterm}
+\subsection{Proofs of termination and correctness}\label{subsec_proofterm}
 
 First we need to prove the following three lemmas:
 
@@ -1501,7 +1502,7 @@ $FSAT_{PC}(p,l,r)$ monotonically decreases  with respect to $p$, $l$ and $r$.
 \begin{center}
 \includegraphics[width=0.7\textwidth]{lnmap}
 \end{center}
-\caption{Mapping $F'^d_{LN}(p,l,r,1)$ to $F'^d_{LN}(p',l',r',1)$ by aligning $(p+l)$-step to $(p'+l')$-step.}
+\caption{Mapping $F'^d_{LN}(p,l,r,1)$ to $F'^d_{LN}(p',l',r',1)$ by aligning $(p+l)$-step to $(p'+l')$-step and unrolling the three loops.}
   \label{fig_lnmap}
 \end{figure}
 
@@ -1523,7 +1524,7 @@ we can map $F'^d_{LN}(p,l,r,1)$ to $F'^d_{LN}(p',l',r',1)$ by aligning $(p+l)$-s
 and unrolling those three loops.
 In this way we can get another satisfying assignment $A''$ of $F'^d_{LN}(p',l',r',1)$.
 
-By restricting the domain of $A''$ to $vec{f}_{p'+l'}$,
+By restricting the domain of $A''$ to $\vec{f}_{p'+l'}$,
 we can get the fourth satisfying assignment $A''':\vec{f}_{p'+l'}\to B$.
 It is obvious that $A\equiv A'''$.
 
@@ -1566,7 +1567,7 @@ So,
 it is a halting algorithm.
 \end{proof}
 
-
+% TODO here
 
 We will then prove the correctness of Algorithm \ref{algo_infer}.
 
@@ -1665,7 +1666,7 @@ return $<l',r'>$
 \subsection{An alternative approach for comparison}\label{alter}
 
 In above discussion,
-we first find out the flow control variables by increasing $p$, $l$ and $r$ simultaneously in Algorithm \ref{alg_fofc_inc},
+we first find out the flow control vector by increasing $p$, $l$ and $r$ simultaneously in Algorithm \ref{alg_fofc_inc},
 and then minimize their valuations with Algorithm \ref{algo_remove2}.
 This approach need to call SAT solver for $O(n)$ times,
 with $n=max(p,l,r)$.
@@ -2193,7 +2194,7 @@ Outputs  & $HSS\_TXD$           & 10    &The encoded data \\\cline{2-4}
 \end{tabular}}
 \end{table}%
 
-The list of input and output variables is shown in Table \ref{tab:pcieio}.
+The list of input and output variables are shown in Table \ref{tab:pcieio}.
 According to the 8b/10b encoding scheme's coding table\cite{encode8b10b},
 when $TXDATAK\equiv 0$,
 $TXDATA$ can be of any value.
@@ -2204,7 +2205,7 @@ we write an assertion to rule out those combinations that are not in this coding
 This assertion is embed into the transition function $T$,
 so that it can be enforced at every step in the unrolled state sequences.
 
-Algorithm \ref{alg_fofc} identifies the flow control variable $\vec{f}:=CNTL\_TXEnable\_P0$ in 0.475 seconds.
+Algorithm \ref{alg_fofc} identifies the flow control vector $\vec{f}:=CNTL\_TXEnable\_P0$ in 0.475 seconds.
 And then Algorithm \ref{algo_infer} infers the predicate $valid(\vec{f}):=CNTL\_TXEnable\_P0$ 
 that enables the data vector to be uniquely determined in 1.22 seconds.
 And then Algorithm \ref{algo_remove2} obtains the minimized $p:=4$, $l:=0$ and $r:=2$ in 0.69 seconds.
@@ -2255,7 +2256,7 @@ This encoder XGXS is compliant with clause 48 of IEEE 802.3 standard \cite{IEEE8
 After deleting empty line and comments,
 this encoder has 214 lines of verilog.
 
-The list of input and output variables is shown in Table \ref{tab:eth10g}.
+The list of input and output variables are shown in Table \ref{tab:eth10g}.
 This encoder also employs an 8b/10b encoding scheme\cite{encode8b10b} with two inputs:
 the 8-bit $encode\_data\_in$ to be encoded
 and 1-bit $konstant$ indicating a controlling character.
@@ -2268,7 +2269,7 @@ So,
 we write an assertion to exclude those combinations that are not in this table
 and embed it into the the transition function $T$.
 
-Algorithm \ref{alg_fofc} identifies the flow control variable $\vec{f}:=bad\_code$ in 0.31 seconds.
+Algorithm \ref{alg_fofc} identifies the flow control vector $\vec{f}:=bad\_code$ in 0.31 seconds.
 And then Algorithm \ref{algo_infer} infers the predicate $valid(\vec{f}):=\!bad\_code$ 
 that enables the data vector to be uniquely determined in 0.95 seconds.
 And then Algorithm \ref{algo_remove2} obtains the minimized $p:=4$, $l:=0$ and $r:=1$ in 0.52 seconds.
@@ -2323,7 +2324,7 @@ Outputs  &                      &       &with $tx\_er\equiv 1$ and $txd\equiv 8'
 % \end{tabnote}%
 \end{table}%
 
-The list of input and output variables is shown in Table \ref{tab:t2eth}.
+The list of input and output variables are shown in Table \ref{tab:t2eth}.
 This encoder also employs an 8b/10b encoding scheme\cite{encode8b10b},
 but with yet another style of flow control mechanism that is significantly different from that of the above two encoders.
 The data to be encoded is the 8-bit $txd$,
@@ -2362,7 +2363,7 @@ The name of action   & The meaning of action\\\hline\hline
 % \end{tabnote}%
 \end{table}%
 
-Algorithm \ref{alg_fofc} identifies the flow control variables $\vec{f}:=\{tx\_enc\_ctrl\_sel,tx\_en, tx\_er\}$ in 3.76 seconds.
+Algorithm \ref{alg_fofc} identifies the flow control vector $\vec{f}:=\{tx\_enc\_ctrl\_sel,tx\_en, tx\_er\}$ in 3.76 seconds.
 And then Algorithm \ref{algo_infer} infers the predicate $valid(\vec{f}):=tx\_enc\_ctrl\_sel\equiv `PCS\_ENC\_DATA$ 
 that enables the data vector to be uniquely determined in 21.53 seconds.
 And then Algorithm \ref{algo_remove2} obtains the minimized $p:=5$,$l:=0$ and $r:=4$ in 6.15 seconds.
@@ -2383,15 +2384,12 @@ so the decoder can recover the value of the flow control variable $tx\_enc\_ctrl
             &time check.& time    & decoder & decoder               &time check. decoder & decoder & decoder               \\
 Names       & decoder.  & gen.    & area    & delay                 & exist. and gen.    & area    & delay                 \\
             & exist.    & decoder &         &                       & decoder            &         &                       \\\hline
- PCIE2      &\multicolumn{7}{|c|}{} \\\cline{1-1}
- XGXS       &\multicolumn{7}{|c|}{Already presented in Subsection \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.} \\\cline{1-1}
- T2Eth      &\multicolumn{7}{|c|}{} \\\hline
 XFI         & 13.24     &6.13     & 3878    & 13.8                  & 8.59               &   3913  & 12.5\\\hline
 SCRAMBLER   & 1.80      &0.55     & 698     & 3.8                   & 0.42               &   640   & 3.8 \\\hline
- CC\_3      &           &         & 128     & 8.5                   & 0.21               &   104   & 9.1 \\\hline
- CC\_4      &           &         & 490     & 13.3                  & 0.20               &   129   & 9.0 \\\hline
- HM(7,4)    & 0.09      &  0.03   & 258     & 8.1                   &   0.05             &   255   & 7.3 \\\hline
- HM(15,11)  &           &         & 5277    & 13.7                  &   2.02             &   3279  & 13.2\\\hline
+ CC\_3      & 0.06      &0.03     & 116     & 8.5                   & 0.21               &   104   & 9.1 \\\hline
+ CC\_4      & 0.16      &0.09     & 365     & 12.5                  & 0.20               &   129   & 9.0 \\\hline
+ HM(7,4)    & 0.09      &0.03     & 258     & 8.1                   &   0.05             &   255   & 7.3 \\\hline
+ HM(15,11)  & 1.49      &2.23     & 5277    & 13.7                  &   2.02             &   3279  & 13.2\\\hline
 \end{tabular}}
 \end{table}%
 
@@ -2468,10 +2466,10 @@ XGXS               & 3,0,1& 0.31       & 0.88            & 0.52       &  1.71   
 T2Eth              & 4,0,4& 4.28       & 15.17           & 6.25       &  25.70  & 4,0,4& 15.47      & 13.85           & 6.19       & 35.51  \\\hline
 XFI                & 2,1,0& 4.59       & 3.60            & 9.55       & 17.74   & 2,1,0& 3.52       & 2.75            & 10.05      & 16.32  \\\hline
 SCRAMBLER          & 2,1,0& 0.64       & 0.58            & 1.33       & 2.55    & 2,1,0& 0.48       & 0.43            & 1.47       & 2.38   \\\hline
-CC\_3              & 3,2,2&            &                 &            &         & 3,2,2&            &                 &            &        \\\hline
-CC\_4              & 4,4,3&            &                 &            &         & 4,1,4&            &                 &            &        \\\hline
-HM(7,4)            & 3,0,0& 0.02       & 0.01            & 0.05       & 0.08    & 3,0,0&            &                 &            &        \\\hline
-HM(15,11)          & 3,0,0&            &                 &            &         & 3,0,0&            &                 &            &        \\\hline
+CC\_3              & 3,2,2& 0.01       & 0.01            & 0.04       & 0.06    & 3,2,2& 0.01       & 0.01            & 0.01       & 0.03   \\\hline
+CC\_4              & 4,4,3& 0.07       & 0.01            & 0.08       & 0.16    & 4,1,4& 0.16       & 0.01            & 0.07       & 0.25   \\\hline
+HM(7,4)            & 3,0,0& 0.02       & 0.01            & 0.07       & 0.09    & 3,0,0& 0.01       & 0.01            & 0.04       & 0.06   \\\hline
+HM(15,11)          & 3,0,0& 0.22       & 0.05            & 1.21       & 1.49    & 3,0,0& 0.34       & 0.04            & 0.58       & 0.96   \\\hline
 \end{tabular}}
 \end{table}%
 
@@ -2524,15 +2522,15 @@ with and without minimizing $p$,$l$ and $r$ by Algorithm \ref{algo_remove2}\labe
 bench-      & p,l,r& runtime    & decoder & \#  & max                                       &time        & p,l,r& runtime    & decoder & \#  & max             \\
 marks       &      & generat.   & area    & of  &  logic                                    &minimiz.    &      & generat.   & area    & of  &logic            \\
             &      & decoder    &         & reg &delay                                      &$p$,$l$,$r$ &      & decoder    &         & reg & delay           \\\hline\hline
-PCIE2       & 3,3,3& 0.44       &  382    & 11  & 7.5                                       &0.68        & 3,0,2& 0.28       &  374    & 0   & 9.1             \\\hline
-XGXS        & 3,3,3& 0.35       &  351    &20   &8.2                                        &0.52        & 3,0,1& 0.18       &  322    & 0   & 7.0             \\\hline
-T2Eth       & 4,4,4& 4.76       &  1178   & 9   & 10.9                                      &6.25        & 4,0,4& 3.41       &  1557   & 9   & 11.8            \\\hline
-XFI         & 2,2,2& 10.67      & 5079    &190  & 16.50                                     &9.55        & 2,1,0& 6.05       &  6023   & 58  & 15.5            \\\hline
+PCIE2       & 3,3,3& 0.44       &  382    & 11  & 7.5                                       &0.68        & 3,0,2& 0.28       &  366    & 0   & 7.6             \\\hline
+XGXS        & 3,3,3& 0.35       &  351    &20   &8.2                                        &0.52        & 3,0,1& 0.18       &  370    & 0   & 8.1             \\\hline
+T2Eth       & 4,4,4& 4.76       &  1178   & 9   & 10.9                                      &6.25        & 4,0,4& 3.41       &  920    & 9   & 10.2            \\\hline
+XFI         & 2,2,2& 10.67      & 5079    &190  & 16.50                                     &9.55        & 2,1,0& 6.13       &  3878   & 58  & 13.8            \\\hline
 SCRAMBLER   & 2,2,2& 1.27       & 826     &186  &  3.8                                      &1.33        & 2,1,0& 0.55       &  698    & 58  & 3.8             \\\hline
-CC\_3       & 3,3,3&            &  165    & 11  & 8.9                                       &            & 3,2,2&            &  128    & 9   & 8.5             \\\hline
-CC\_4       & 4,4,4&            & 154     & 10  & 9.6                                       &            & 4,4,3&            &  490    & 14  & 13.3            \\\hline
-HM(7,4)     & 3,3,3&            & 262     & 21  & 7.2                                       &            & 3,0,0&            &  258    & 0   & 8.1             \\\hline
-HM(15,11)   & 3,3,3&            & 5611    & 45  & 13.5                                      &            & 3,0,0&            &  5277   & 0   & 13.7            \\\hline
+CC\_3       & 3,3,3& 0.04       &  117    & 11  & 9.2                                       &0.04        & 3,2,2& 0.03       &  116    & 9   & 8.5             \\\hline
+CC\_4       & 4,4,4& 0.05       & 154     & 10  & 9.6                                       &0.08        & 4,4,3& 0.09       &  365    & 14  & 12.5            \\\hline
+HM(7,4)     & 3,3,3& 0.05       & 262     & 21  & 7.2                                       &0.07        & 3,0,0& 0.03       &  258    & 0   & 8.1             \\\hline
+HM(15,11)   & 3,3,3& 2.98       & 5611    & 45  & 13.5                                      &1.21        & 3,0,0& 2.23       &  5277   & 0   & 13.7            \\\hline
 \end{tabular}}
 \end{table}%
 
@@ -2570,30 +2568,31 @@ We should still increase them simultaneously and then minimize them with Algorit
 
 \subsection{Comparing circuit area and timing for the decoders generated by our algorithm and manually written decoders}\label{subsec_compareman}
 
-\begin{table}[t]%
+\begin{table}[b]%
 \tbl{Comparing circuit area and timing for the decoders generated by our algorithm and manually written decoders\label{tab:comparing_hand}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
 bench-   & \multicolumn{2}{|c|}{Decoder generated by us} &  \multicolumn{2}{|c|}{Manually written decoder} \\\cline{2-5}
 marks    & area    & max logic delay    &area    & max logic delay                  \\\hline
 PCIE2    & 366     &7.6                 & 594    & 9.7                              \\\hline
-XGXS     & 322     &7.0                 & 593    & 11.0                             \\\hline
+XGXS     & 370     &8.1                 & 593    & 11.0                             \\\hline
 T2Eth    & 920     &10.2                & 764    & 11.7                             \\\hline
-XFI      & 3878    & 13.8               &        &                                  \\\hline
+XFI      & 3878    & 13.8               & 3324   & 28.1                             \\\hline
 SCRAMBLER& 698     & 3.8                & 1035   & 6.4                              \\\hline
- CC\_3   & \multicolumn{4}{|c|}{}\\\cline{1-1}
- CC\_4   & \multicolumn{4}{|c|}{No manually written Decoder to be compared with.}\\\cline{1-1}
-HM(7,4)  & \multicolumn{4}{|c|}{}\\\cline{1-1}
-HM(15,11)& \multicolumn{4}{|c|}{}\\\hline
+%  CC\_3   & \multicolumn{4}{|c|}{}\\\cline{1-1}
+%  CC\_4   & \multicolumn{4}{|c|}{No manually written Decoder to be compared with.}\\\cline{1-1}
+% HM(7,4)  & \multicolumn{4}{|c|}{}\\\cline{1-1}
+% HM(15,11)& \multicolumn{4}{|c|}{}\\\hline
 \end{tabular}}
 \end{table}%
 
 Table \ref{tab:comparing_hand} compares the circuit area and timing of 
 the decoders generated by our algorithm and manually written decoders.
 
+CC\_3,CC\_4, HM(7,4) and HM(15,11) are not presented because there are no these decoder's source code.
 
 It is obvious that our decoder are smaller and faster than the manually written decoder in most cases.
-The only exception is the T2Eth benchmark, 
+The only exception is the T2Eth and XFI benchmarks, 
 the generated decoder is a little bit larger than the manually written one.
 
 \section{RELATED PUBLICATIONS}\label{sec_relwork}
@@ -2781,10 +2780,10 @@ But our case is much more complicated,
 because the Boolean relation to be handled is an unrolled transition function with unknown length.
 That is, 
 we must first find out the value of $p$, $l$ and $r$.
-But these value must be determine together with finding out the set of flow control variables.
+But these value must be determine together with finding out the flow control vector $\vec{f}$.
 So the way we handle non-determinism is significantly different from that of \cite{InterpBoolFunction}.
 But after we got the value of $p$, $l$ and $r$, 
-together with the flow control variables $\vec{f}$ and the predicate $valid(\vec{f})$,
+together with the flow control vector $\vec{f}$ and the predicate $valid(\vec{f})$,
 we can characterize the decoder's Boolean function with an algorithm similar to the second one in \cite{InterpBoolFunction}.
 
 \section{Conclusions}\label{sec_conclude}
