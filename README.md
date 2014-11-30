@@ -1,5 +1,5 @@
 
-Papers related complementary synthesis, which automatically generate a decoder from its encoder
+Papers related to complementary synthesis, which automatically generate a decoder from its encoder
 ==============================================================================================
 
 Complementary Synthesis for Encoder with Flow Control Mechanism, submitted to TODAES. https://github.com/shengyushen/dualsyn_paper/blob/master/todaes14_rev1/v2-acmsmall-sample.pdf
