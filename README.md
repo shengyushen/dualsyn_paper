@@ -1,6 +1,3 @@
-dualsyn_paper
-=============
-
 Papers related complementary synthesis, which automatically generate a decoder from its encoder
 ==============================================================================================
 
