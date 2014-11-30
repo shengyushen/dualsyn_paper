@@ -2,6 +2,7 @@ dualsyn_paper
 =============
 
 Papers related complementary synthesis, which automatically generate a decoder from its encoder
+==============================================================================================
 
 ShengYu Shen, Ying Qin, Kefei Wang, Zhengbin Pang, Jianmin Zhang, Sikun Li: Inferring Assertion for Complementary Synthesis. IEEE Trans. on CAD of Integrated Circuits and Systems 31(8): 1288-1292 (2012) https://github.com/shengyushen/dualsyn_paper/blob/master/tcad12/tcad_final/tcad_final/bare_jrnl.pdf
 
@@ -17,6 +18,7 @@ ShengYu Shen, Jianmin Zhang, Ying Qin, Sikun Li: Synthesizing complementary circ
 
 
 Papers related to Counterexample Guided Abstraction Renement (CEGAR) framework:
+==============================================================================================
 
 ShengYu Shen, Ying Qin, Sikun Li: A fast counterexample minimization approach with refutation analysis and incremental SAT. ASP-DAC 2005: 451-454
 
