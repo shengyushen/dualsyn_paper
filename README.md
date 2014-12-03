@@ -1,6 +1,6 @@
+#Shengyu Shen's publications
 
-Papers related to complementary synthesis, which automatically generate a decoder from its encoder
-==============================================================================================
+##Papers related to complementary synthesis, which automatically generate a decoder from its encoder
 
 Complementary Synthesis for Encoder with Flow Control Mechanism, submitted to TODAES. https://github.com/shengyushen/dualsyn_paper/blob/master/todaes14_rev1/v2-acmsmall-sample.pdf
 
@@ -17,8 +17,7 @@ ShengYu Shen, Ying Qin, Jianmin Zhang, Sikun Li: A halting algorithm to determin
 ShengYu Shen, Jianmin Zhang, Ying Qin, Sikun Li: Synthesizing complementary circuits automatically. ICCAD 2009: 381-388 https://github.com/shengyushen/dualsyn_paper/blob/master/iccad09/iccad09_newfinal/sigproc-sp.pdf
 
 
-Papers related to Counterexample Guided Abstraction Renement (CEGAR) framework:
-==============================================================================================
+##Papers related to Counterexample Guided Abstraction Renement (CEGAR) framework:
 
 ShengYu Shen, Ying Qin, Sikun Li: A fast counterexample minimization approach with refutation analysis and incremental SAT. ASP-DAC 2005: 451-454
 
