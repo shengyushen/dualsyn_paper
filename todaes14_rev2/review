@@ -1,0 +1,68 @@
+
+
+Dear Prof. Ying Qin,
+
+The ACM TODAES Editorial Board received the reviews on your revised submission to TODAES. The reviewers are in general agreement that the revised version has been noticeably improved, and thus it may warrant publication in TODAES. However, this paper still has important concerns to clear. We would like to note that failure in proper corrections and clarifications of the issues may make this paper recommended as Major revision or Reject. Detailed comments from the reviewers are appended to the end of this email.
+
+The revised paper has been evaluated by two reviewers. Both reviewers feel that the paper has been substantially improved and appreciate the great efforts made by the authors. There remain several issues that the authors are expected to fix before the paper can be accepted. In particular, one of the reviewers requests the authors to make a few important changes for the paper write-up. The authors are encouraged to carefully address all these issues when revising the paper.
+
+IMPORTANT: For the next round of reviews, you need to upload your revised manuscript in FINAL ACM FORMAT.
+
+Your revision is due THREE weeks from receipt of this email. Please resubmit your Manuscript (pdf or ps) through TODAES paper submission system at https://mc.manuscriptcentral.com/todaes by clicking on Revised Manuscripts and then on the title of the manuscript that you are uploading the revision for. Once you upload your revised manuscript, the ACM TODAES Editorial Board will review it and make a (prompt) go/no go decision without sending it out for further review.
+
+Note that if an accept decision is made, you will not have another chance to edit/revise the paper (other than reviewing the page proofs), so please read it over carefully before submitting your revision files.
+
+Sincerely,
+
+Prof. Naehyuck Chang
+Editor-in-Chief
+Transactions on Design Automation of Electronic Systems
+
+--------------------------------------------
+Instructions for uploading of the revised manuscript:
+
+Please upload through the File Upload Center at acm.manuscriptcentral.com by clicking on Revised Manuscripts and then on the title of the manuscript that you are uploading the revision for the following:
+
+FILES FOR REVIEW
+1. the correctly formatted revised Manuscript (pdf or ps).
+Make sure you give it the File Type Designation of Manuscript (if uploading it directly into the online system).
+For information on the ACM journal format, please see
+http://www.acm.org/pubs/submissions/submission.htm
+
+2. Revision Comments (pdf or ps) that detail the changes you made to the paper in response to reviewers comments, with the File Type Designation of Revision Comments.
+
+
+----------------------- REVIEWER COMMENTS  --------------
+  	
+		Referee: 1
+
+		Comments to the Author
+		The revision addressed most of my comments. Thank you. However, there are several minor clarifications needed.
+
+		1.	Regarding the over-approximation issue of interpolants, you commented “in the special case that A and B are complement to each other, that is, every assignment must satisfy either A or B but not both, then this interpolation must cover and only cover A.” Please explain why A and B have to be complementary to each other in your formulas. Essentially why there is no assignment a* under which R(a*, b, 0) and R(a*, b, 1) are both unsatisfiable? That is, why should R(a, b, t) be satisfiable under any assignment on variable a?
+
+		2.	In (9), “d_{p+l} \neq d’_{p+l}”. You use “\neq” instead of “\not \equiv”. Please clarify whether “\neq” means nonequivalence in some bit or bitwise nonequivalence.
+
+		3.	In page 2, “d can not be uniquely by…” -> “d can not be uniquely determined by…”; “d is not need by…” -> “d is not needed by…”; “can be any value” -> “can be of any value”
+
+		4.	In page 4, “it use…” -> “it uses…”
+
+		5.	In page 5, “p,l” -> “p, l”. There are many other places where space separation is missing.
+
+		6.	In page 5, “They can always be satisfiable with…” -> “They can always be satisfied with …”
+
+		7.	The first sentence of page 6 can be merged with the last paragraph of page 5.
+
+		8.	In page 6, “Second and more important,” -> “Second, and more importantly,”
+
+		9.	It is not clear which paper in references is referred to by the citation “[Jie-Hong Roland Jiang 2009]”.
+
+		10.	The relevance of [Wu et al. 2010] to the paper is not well described. Please either describe ECO in detail or remove it if the relevance is low.
+
+
+		Referee: 2
+
+		Comments to the Author
+		thanks for the effort in revising.
+
+

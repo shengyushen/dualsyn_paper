@@ -1,0 +1,41 @@
+assign sth into -> assign sth to 
+make sth to be uniquelly determined  -> enable sth to be uniquelly determined
+find out sth  -> identify sth
+算法的描述不应该使用第一人称 而用第三人称
+enforced first -> but only after enforcing sth
+whether sth can be uniquely -> if sth...
+All the state-of-the-art appliance companies are now 
+talk about -> consider
+can not -> cannot
+unrolled transition function sequences -> two sequences of unrolled transition function
+lets define -> we further define
+公式(12)到(13)有点衔接不上
+
+
+统一称谓 sat instance/predicate/relation/function/formula
+统一称谓 variable/signal/bit
+vector统一为variable vector
+formula/function over?可以
+
+
+
+
+举一个例子说明8b-10b 其中有输入k码 输出10b
+replaceing control character idle symbols.
+input data variables改成data variables
+
+
+
+find source code on github
+
+I have add assertion for lots of formula, 
+there may be some have not add,
+and there may also be some inconsistency in refering to these lines of formula
+
+explain the struct of our decoder
+explain we only compare area because our timing is much faster
+
+value and valuation unify to valuation
+
+it seems cc13/14 is too complex for current SAT, we need to use xorSAT
+
