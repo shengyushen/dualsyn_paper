@@ -12,48 +12,45 @@ Warning--empty address in REPARAM
 Warning--empty address in EFFSATUSMCCO
 Warning--empty address in InterpBoolFunction
 Warning--empty address in PRIMECLAUSE
-Warning--empty address in scalableFuncDep
-Warning--empty address in Bidecomp
-Warning--empty address in CONFLICTLEARN
-You've used 37 entries,
+You've used 28 entries,
             5290 wiz_defined-function locations,
-            1764 strings with 27132 characters,
-and the built_in function-call counts, 42166 in all, are:
-= -- 5284
-> -- 1507
-< -- 11
-+ -- 459
-- -- 677
-* -- 2768
-:= -- 4620
-add.period$ -- 204
-call.type$ -- 37
-change.case$ -- 251
-chr.to.int$ -- 37
-cite$ -- 46
-duplicate$ -- 3472
-empty$ -- 2418
-format.name$ -- 621
-if$ -- 9817
+            1682 strings with 24300 characters,
+and the built_in function-call counts, 32353 in all, are:
+= -- 4143
+> -- 1131
+< -- 9
++ -- 345
+- -- 555
+* -- 2123
+:= -- 3518
+add.period$ -- 155
+call.type$ -- 28
+change.case$ -- 189
+chr.to.int$ -- 28
+cite$ -- 34
+duplicate$ -- 2581
+empty$ -- 1804
+format.name$ -- 471
+if$ -- 7510
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 123
-newline$ -- 381
-num.names$ -- 306
-pop$ -- 1112
+missing$ -- 87
+newline$ -- 300
+num.names$ -- 230
+pop$ -- 807
 preamble$ -- 1
-purify$ -- 435
+purify$ -- 328
 quote$ -- 0
-skip$ -- 1038
+skip$ -- 786
 stack$ -- 0
-substring$ -- 4156
-swap$ -- 414
-text.length$ -- 349
+substring$ -- 3296
+swap$ -- 314
+text.length$ -- 347
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 512
-warning$ -- 9
-while$ -- 319
+type$ -- 386
+warning$ -- 6
+while$ -- 242
 width$ -- 0
-write$ -- 781
-(There were 9 warnings)
+write$ -- 598
+(There were 6 warnings)

@@ -175,17 +175,21 @@ and send $f\equiv 0$ to the receiver with whatever value on $d$.
 \end{enumerate}
 
 
-This mechanism can prevent the faster transmitter from transmitting too much data 
-that can not be handled by the slower receiver.
-But it fails the assumption of all current complementary synthesis algorithms 
-[\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}],
+% This mechanism can prevent the faster transmitter from transmitting too much data 
+% that can not be handled by the slower receiver.
+However,
+this mechanism fails the assumption of all complementary synthesis algorithms,
+% [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}],
 because $d$ can not be uniquely determined by the idle symbol $I$.
-It is obvious that,
-to resolve this issue and generate the decoder,
+So to resolve this issue,
 we only need to consider the case $f\equiv 1$,
 in which $d$ can be uniquely determined.
 For other cases in which $f\equiv 0$,
-$d$ is not needed by the receiver and can be of any value.
+$d$ is not needed by the receiver.
+So,
+% according to this insight,
+we propose a novel complementary synthesis algorithm 
+to handle flow control mechanism :
 
 \begin{figure}
 \centerline{\includegraphics[width=\textwidth]{nonuniq}}
@@ -194,10 +198,7 @@ $d$ is not needed by the receiver and can be of any value.
 \end{figure}
 
 
-Thus,
-according to this insight,
-we propose in this paper the first complementary synthesis algorithm 
-to handle encoders with flow control mechanism in three steps:
+
 \begin{enumerate}
  \item First,
 it applies the classical halting complementary synthesis algorithm \cite{ShenTCAD11}
@@ -210,7 +211,7 @@ by a bounded sequence of the encoder's output variables $\vec{o}$.
  \item Finally,
 % $\vec{f}$ can be uniquely determined by $\vec{o}$,
 it characterizes the decoder's Boolean function that computes each flow control variable $f\in\vec{f}$ 
-by building a Craig interpolant\cite{interp_McMillan}.
+by building a Craig interpolant \cite{interp_McMillan}.
 On the other hand,
 for other data variables $\vec{d}$,
 their values are meaningful only when $valid(\vec{f}) \equiv 1$.
@@ -232,7 +233,7 @@ our algorithm can be seen as a generalization of \cite{ShenTCAD12}.
 % This new algorithm has been implemented with the OCaml language. 
 % All generated SAT instances are solved with Minisat solver \cite{EXTSAT}. 
 Experimental results indicate that,
-for several complex encoders from real projects (e.g., Ethernet \cite{IEEE8023_S4} and PCI Express \cite{pcie21}),
+for several complex encoders (e.g., Ethernet \cite{IEEE8023_S4} and PCI Express \cite{pcie21}),
 our algorithms can always correctly identify the flow control variables, infer the predicates and generate the decoders. 
 In addition,
 we also conduct other experiments to compare our algorithms with the state-of-the-art complementary synthesis algorithms.
@@ -336,19 +337,17 @@ and use McMillan's algorithm \cite{interp_McMillan} to generate it.
 
 % \subsection{Incremental SAT mechanism of MiniSat solver}\label{subsec_incsat}
 
-In this paper,
-we use the MiniSat solver \cite{EXTSAT} to solve the generated CNF formulas.
-Like many other SAT solver based on conflict driven learning \cite{CONFLICTLEARN},
-MiniSat generates learned clauses from conflicts in searching,
+% In this paper,
+MiniSat solver \cite{EXTSAT} is used in this paper.
+% Like many other SAT solver based on conflict driven learning \cite{CONFLICTLEARN},
+It generates learned clauses from conflicts,
 and records them to prevent the same conflict from rising again.
-This mechanism can significantly speedup a particular SAT solving.
-
+% This mechanism can significantly speedup a particular SAT solving.
 % In many applications,
 % there often exists a serial of CNF formulas tightly related to each other.
 % If the learned clauses can be shared between them,
 % then these formulas can be solved much faster.
-
-MiniSat provides an incremental SAT mechanism that can share learned clauses between related formulas
+It provides an incremental SAT mechanism that can share learned clauses between related formulas
 to solve them faster.
 This mechanism includes two procedures:
 % \begin{enumerate}
@@ -394,14 +393,14 @@ A \textbf{loop} is a path $<\vec{s}_n,\dots,\vec{s}_m>$ with $\vec{s}_n\equiv \v
 \subsection{The halting algorithm to determine 
 if an input variable can be uniquely determined by a bounded sequence of output variable vector}\label{subsec_chkextdec}
 
-All the state-of-the-art complementary synthesis algorithms 
-[\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}] assume that $\vec{i}$ can be uniquely determined,
-so they always take $\vec{i}$ as a whole,
-and never consider individual variables $i\in\vec{i}$.
-But in this paper,
-we need to check each $i\in\vec{i}$ one by one,
-so there may be minor differences between our presentation here and that of 
-[\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}].
+% All the state-of-the-art complementary synthesis algorithms 
+% [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}] assume that $\vec{i}$ can be uniquely determined,
+% so they always take $\vec{i}$ as a whole,
+% and never consider individual variables $i\in\vec{i}$.
+% But in this paper,
+% we need to check each $i\in\vec{i}$ one by one,
+% so there may be minor differences between our presentation here and that of 
+% [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}].
 
 % What we describe here is a halting algorithm to determine if an input variable 
 % can be uniquely determined by a bounded sequence of output variable vector.
@@ -484,13 +483,15 @@ We always check their satisfiability before running our algorithm.
 So the unsatisfiability of $F_{PC}(p,l,r)$ always means $i_{p+l}\equiv i'_{p+l}$.
 
 
-According to Figure \ref{fig_pc},
-% it is obvious that,
-if $F_{PC}(p,l,r)$ is unsatisfiable,
-then $F_{PC}(p',l',r')$ is also unsatisfiable for $p'\ge p$, $l'\ge l$ and $r'\ge r$.
-By studying Equation (\ref{uniqt1}),
-we can find that the clause set of $F_{PC}(p',l',r')$ is a super set of $F_{PC}(p,l,r)$.
-This also lead to the same conclusion.
+% According to Figure \ref{fig_pc},
+% % it is obvious that,
+% if $F_{PC}(p,l,r)$ is unsatisfiable,
+% then $F_{PC}(p',l',r')$ is also unsatisfiable for $p'\ge p$, $l'\ge l$ and $r'\ge r$.
+By studying Equation (\ref{uniqt1}) and Figure \ref{fig_pc},
+we can find that,
+for $p'\ge p$, $l'\ge l$ and $r'\ge r$,
+the clause set of $F_{PC}(p',l',r')$ is a super set of $F_{PC}(p,l,r)$.
+% This also lead to the same conclusion.
 This means,
 the bounded proof of $F_{PC}(p,l,r)$'s unsatisfiability
 can be generalized to larger $p$, $l$ and $r$.
@@ -582,27 +583,20 @@ But this has not happen on all our benchmarks from industrial applications.
 
 \subsubsection{\textbf{The over-approximative approach}}\label{subsub_complete}.
 
-In the last subsection,
-we have just learned that,
-if $F_{PC}(p,l,r)$ is unsatisfiable,
-then $i_{p+l}$ can be uniquely determined for all larger $p$, $l$ and $r$.
-On the other hand,
-if $F_{PC}(p,l,r)$ is satisfiable,
-then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 
-for this particular valuation of $p$, $l$ and $r$.
-There are two possible cases:
+For $F_{PC}(p,l,r)$ presented in last subsection,
+there are two possibilities:
 \begin{enumerate}
  \item 
-$i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for larger $p$, $l$ and $r$;
+$i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for some $p$, $l$ and $r$;
  \item 
 $i_{p+l}$ can not be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for any $p$, $l$ and $r$ at all.
 \end{enumerate}
 
-If it is the first case,
+If it is the 1st case,
 then by iteratively increasing  $p$, $l$ and $r$,
 $F_{PC}(p,l,r)$ will eventually become unsatisfiable.
-But if it is the second case,
-then this iterative algorithm will never terminate.
+But if it is the 2nd case,
+this method will never terminate.
 
 \begin{figure}[b]
 \begin{center}
@@ -834,7 +828,6 @@ $\vec{f}: = \{\}$;$\vec{d}:= \{\}$; $p$:= 0 ;~$l$:= 0 ;~$r$:= 0 \;
 \ShowLnLabel{addcls21}  $addClause(C_{PC}(p,l,r))$\;
   \ForEach{$i\in\vec{i}$} {
 \ShowLnLabel{solve21}    \If {$solve(A_{PC}(p,l,r))$ is unsatisfiable for $i$} {
-      \ShowLnLabel{adduniq2}
       $\vec{i}:= \vec{i}-i$\;
       $\vec{f}:= i\cup\vec{f}$\;
     }
@@ -842,9 +835,8 @@ $\vec{f}: = \{\}$;$\vec{d}:= \{\}$; $p$:= 0 ;~$l$:= 0 ;~$r$:= 0 \;
 \ShowLnLabel{addcls22}  $addClause(C_{LN}(p,l,r))$\;
   \ForEach{$i\in\vec{i}$} {
 \ShowLnLabel{solve22}    \If {$solve(A_{LN}(p,l,r))$ is satisfiable for $i$ and satisfying assignment is $A$} {
-      \ShowLnLabel{adduniq3}
       \ForEach{$j\in\vec{i}$} {
-\ShowLnLabel{ruleout2}      \If {$A(j_{p+l})\neq A(j'_{p+l})$} {
+        \If {$A(j_{p+l})\neq A(j'_{p+l})$} {
 	  $\vec{i}:=\vec{i}-j$\;
 	  $\vec{d}:=j\cup\vec{d}$
 	}
@@ -857,7 +849,7 @@ $\vec{f}: = \{\}$;$\vec{d}:= \{\}$; $p$:= 0 ;~$l$:= 0 ;~$r$:= 0 \;
 \label{alg_fofc_inc}
 \end{algorithm}
 
-Similarly we can partition $F_{LN}(p,l,r)$ in Equation (\ref{uniqln}) into the following two equations:
+Similarly we can partition $F_{LN}(p,l,r)$ in Equation (\ref{uniqln}) into two equations:
 
 \begin{equation}\label{uniqln_f}
 % \begin{split}
@@ -1075,7 +1067,7 @@ This will make $\vec{b}$ to no longer appear as free variables in these two form
 Thus,
 $\phi_A\wedge \phi_B$ in Line \ref{ab} is unsatisfiable,
 and the common variables of $\phi_A$ and $\phi_B$ is $\vec{a}$.
-So an interpolant $ITP(\vec{a})$ can be generated with McMillian's algorithm \cite{interp_McMillan}.
+So an interpolant $ITP(\vec{a})$ can be generated with McMillan's algorithm \cite{interp_McMillan}.
 $ITP(\vec{a})$ is added to $FSAT_R(\vec{a})$ in Line \ref{add} and ruled out in Line \ref{testsat} again.
 
 Each iteration of the while loop in Algorithm \ref{alg_craigchar} adds at least a valuation of $\vec{a}$ to $FSAT_R(\vec{a})$,
@@ -1472,7 +1464,7 @@ $\mathbf{FSAT_{PC}(p,l,r)}$ in Algorithm \ref{algo_infer} monotonically decrease
 \end{lemma}
 \begin{proof}
 For any $p'>p$,$l'>l$ and $r'>l$,
-assume $A:\vec{f}_{p'+l'}\to B$ is a Boolean valuation of the flow control vector 
+assume $A:\vec{f}_{p'+l'}\to B$ is a valuation of the flow control vector 
 at $(p'+l')$-step.
 Further assume that $A$ is covered by $FSAT_{PC}(p',l',r')$.
 According to Equation (\ref{fsat_pc}) and Algorithm \ref{alg_craigchar},
@@ -1625,29 +1617,36 @@ and then present another possible structure of our algorithm in Subsection \ref{
 and discuss why we have chosen the one in Subsection \ref{reduceing} instead of Subsection \ref{alter}.
 
 \subsection{Minimizing the valuation of $l$ and $r$}\label{reduceing}
-As we have increase the value of $p$, $l$ and $r$ simultaneously in Algorithm \ref{algo_infer},
-there may be some redundancy in the valuation of $p$, $l$ and $r$,
-which may lead to unnecessary overhead in the decoder's circuit area and delay.
-
-For example,
-assume the encoder is a simple buffer whose $o:=i$.
-With $p\equiv 0$,$l\equiv 0$ and $r\equiv 0$,
-we can get the simplest decoder $i:=o$.
-In such a decoder,
-there is only one buffer and no registers.
-But with $p\equiv 0$,$l\equiv 0$ and $r\equiv 1$,
-we need an additional register to delay $o$ for one step,
-and then recover $i_i$ from the delayed $o$.
-
+As Algorithm \ref{algo_infer} increases $p$, $l$ and $r$ concurrently,
+there may be some redundancy leading to unnecessary overhead 
+in the decoder's area and delay.
+% For example,
+% assume the encoder is a simple buffer whose $o:=i$.
+% With $p\equiv 0$,$l\equiv 0$ and $r\equiv 0$,
+% we can get the simplest decoder $i:=o$.
+% In such a decoder,
+% there is only one buffer and no registers.
+% But with $p\equiv 0$,$l\equiv 0$ and $r\equiv 1$,
+% we need an additional register to delay $o$ for one step,
+% and then recover $i_i$ from the delayed $o$.
 According to Figure \ref{fig_pc},
-it is obvious that,
-$r$ affect both the decoder's latency and circuit area,
-$l$ affect only the decoder's circuit area,
+% it is obvious that,
+$r$ affect both the decoder's delay and area,
+$l$ affect only the decoder's area,
 while $p$ does not affect the decoder.
 
 So as shown in Algorithm \ref{algo_remove2}
 we chose to first minimize $r$, 
 then minimize $l$.
+To simplify the presentation,
+we will only introduce the $r$ case.
+In Line \ref{testr_1},
+when $F_{PC}(p,l,r'-1)\wedge valid(\vec{f}_{p+l})$ is satisfiable,
+then $r'$ is the last one that makes it unsatisfiable,
+we return it directly.
+On the other hand,
+if $r'\equiv 0$ can still make $F_{PC}(p,l,r')\wedge valid(\vec{f}_{p+l})$ unsatisfiable at Line \ref{testr0},
+we directly return 0.
 
 \begin{algorithm}[t]
 \SetAlgoVlined
@@ -1676,20 +1675,12 @@ return $<l',r'>$
 \label{algo_remove2}
 \end{algorithm}
 
-To simplify the presentation,
-we will only introduce the $r$ case.
-In Line \ref{testr_1},
-when $F_{PC}(p,l,r'-1)\wedge valid(\vec{f}_{p+l})$ is satisfiable,
-then $r'$ is the last one that makes it unsatisfiable,
-we return it directly.
-On the other hand,
-if $r'\equiv 0$ can still make $F_{PC}(p,l,r')\wedge valid(\vec{f}_{p+l})$ unsatisfiable at Line \ref{testr0},
-we directly return 0.
+
 
 \subsection{An alternative approach for comparison}\label{alter}
 
 In above discussion,
-we first find out the flow control vector by increasing $p$, $l$ and $r$ simultaneously in Algorithm \ref{alg_fofc_inc},
+we first find out the flow control vector by increasing $p$, $l$ and $r$ concurrently in Algorithm \ref{alg_fofc_inc},
 and then minimize their valuations with Algorithm \ref{algo_remove2}.
 This approach need to call SAT solver for $O(n)$ times,
 with $n=max(p,l,r)$.
@@ -1697,21 +1688,21 @@ with $n=max(p,l,r)$.
 There is another possible way to do this job in Algorithm \ref{alg_fofc_inc},
 that is,
 increasing $p$, $l$ and $r$ one by one with three nested loops,
-instead of simultaneously.
+instead of concurrently.
 This approach need to call SAT solver for $O(n^3)$ times,
 
 
 
 We will show in Subsection \ref{subsec_incr_plr_exp} that,
-increasing $p$, $l$ and $r$ simultaneously and then minimized them with Algorithm \ref{algo_remove2} is much faster than increasing them separately.
+increasing $p$, $l$ and $r$ concurrently and then minimized them with Algorithm \ref{algo_remove2} is much faster than increasing them separately.
 % We will also explain the reason there.
 
 
 \section{Characterizing the decoder's Boolean function}\label{sec_char}
-In Section \ref{sec_findfc},
-the encoder's input vector $\vec{i}$ has been partitioned into two vectors:
-the flow control vector $\vec{f}$ and the data vector $\vec{d}$.
-The algorithms to characterize the decoder's Boolean functions that compute $\vec{f}$ and $\vec{d}$ are different,
+% In Section \ref{sec_findfc},
+The encoder's input vector $\vec{i}$ has been partitioned into 
+the flow control vector $\vec{f}$ and data vector $\vec{d}$.
+The algorithms to characterize their Boolean functions are different,
 so they are discussed separately in the following two subsections.
 
 \subsection{Characterizing the decoder's Boolean function that computes $\vec{f}$}\label{subsec_fdec}
@@ -1758,7 +1749,7 @@ It is obvious that $\phi_A\wedge \phi_B$ equals $F_{PC}(p,l,r)$ in Equation (\re
 so it is unsatisfiable.
 The common variable set of $\phi_A$ and $\phi_B$ is $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$.
 So,
-a Craig interpolant $ITP$ can be derived by McMillian's algorithm \cite{interp_McMillan} from the unsatisfiability proof of $\phi_A\wedge \phi_B$,
+a Craig interpolant $ITP$ can be derived by McMillan's algorithm \cite{interp_McMillan} from the unsatisfiability proof of $\phi_A\wedge \phi_B$,
 which covers all values of $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$ that make $f_{p+l}\equiv 1$.
 At the same time,
 $ITP\wedge \phi_B$ is unsatisfiable,
@@ -1825,7 +1816,7 @@ $d_{p+l}$ cannot be 0 and 1 at the same time.
 So,
 $\phi_A'\wedge \phi_B'$ is unsatisfiable.
 Thus,
-a Craig interpolant $ITP$ can be derived by McMillian's algorithm \cite{interp_McMillan} from the unsatisfiability proof of $\phi_A'\wedge \phi_B'$,
+a Craig interpolant $ITP$ can be derived by McMillan's algorithm \cite{interp_McMillan} from the unsatisfiability proof of $\phi_A'\wedge \phi_B'$,
 which covers and only covers all valuations of $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$ that make $d_{p+l}\equiv 1$.
 Thus,
 $ITP$ is the decoder's Boolean function that computes $d\in\vec{d}$.
@@ -2127,10 +2118,10 @@ They come from two sources:
 % \end{enumerate}
 
 Each column of Table \ref{tab:summ} shows respectively the number of inputs, outputs, registers and gates of each benchmarks.
-The area column shows the circuit area of the encoder when mapped to mcnc.genlib library by
+The area column shows the area of the encoder when mapped to mcnc.genlib library by
 ABC synthesis tool \cite{ABC} with script "strash; dsd; strash; dc2; dc2; dch; map".
 In the remainder of this paper, 
-all circuit areas, gate number and delay are obtained in the same setting such that we can compare them to that of \cite{LiuTCAD12}.
+all areas, gate number and delay are obtained in the same setting such that we can compare them to that of \cite{LiuTCAD12}.
 
 \begin{table}[t]%
 \tbl{Benchmarks\label{tab:summ}}{%
@@ -2185,25 +2176,22 @@ Their experimental results will be presented in Subsection \ref{subsec_nonflow}.
 
 In Subsection \ref{subsec_incr_plr_exp}, we will compare run time overhead of two different approaches:
 \begin{enumerate}
- \item Increasing $p$, $l$ and $r$ simultaneously in Algorithm \ref{algo_infer} 
- and then minimizing them in Algorithm \ref{algo_remove2}.
+ \item Increasing $p$, $l$ and $r$ concurrently in Algorithm \ref{algo_infer},
+then minimizing in Algorithm \ref{algo_remove2}.
  \item Increasing $p$, $l$ and $r$ separately with three nested loops in Algorithm \ref{algo_infer}.
 \end{enumerate}
 
 In Subsection \ref{subsec_min},
-we will compare run times, circuit areas and delay between the two approaches 
+we will compare run times, areas and delay between the two approaches 
 that do and do not minimize $p$, $l$ and $r$ by Algorithm \ref{algo_remove2}.
 
 Finally in Subsection \ref{subsec_compareman},
-we will compare the circuit area and delay between the decoders generated by our algorithm and the decoders written manually.
+we will compare the area and delay between the decoders generated by our algorithm and the decoders written manually.
 
 
 \subsection{PCI Express 2.0 encoder}\label{subsec_pcie2}
-This encoder is compliant with the PCI Express 2.0 standard \cite{pcie21}.
-After deleting empty line and comments,
-its source code has 259 lines of verilog.
 
-\begin{table}[b]%
+\begin{table}[t]%
 \tbl{The input and output variables of the PCI Express 2.0 encoder\label{tab:pcieio}}{%
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -2217,16 +2205,16 @@ Outputs  & $HSS\_TXD$           & 10    &The encoded data \\\cline{2-4}
 \end{tabular}}
 \end{table}%
 
-The list of input and output variables are shown in Table \ref{tab:pcieio}.
+This PCI Express 2.0 \cite{pcie21} encoder has 259 lines of verilog.
+Its input and output variables are shown in Table \ref{tab:pcieio}.
 According to the 8b/10b encoding scheme \cite{encode8b10b},
 when $TXDATAK\equiv 0$,
-$TXDATA$ can be of any value.
+$TXDATA$ can be any value.
 But when $TXDATAK\equiv 1$,
 $TXDATA$ can only be 1C, 3C, 5C, 7C, 9C, BC, DC, FC, F7, FB, FD and FE.
-So,
-we write an assertion to rule out those combinations that are not in this coding table.
-This assertion is embed into the transition function $T$,
-so that it can be enforced at every step in the unrolled state sequences.
+So we write an assertion to rule out those combinations not in this schema.
+% This assertion is embed into the transition function $T$,
+% so that it can be enforced at every step in the unrolled state sequences.
 
 Algorithm \ref{alg_fofc} identifies the flow control vector $\vec{f}:=CNTL\_TXEnable\_P0$ in 0.49 seconds.
 And then Algorithm \ref{algo_infer} infers the predicate $valid(\vec{f}):=CNTL\_TXEnable\_P0$ 
@@ -2275,9 +2263,9 @@ Outputs  & $encode\_data\_out$  & 10    &The encoded data \\\hline
 \end{table}%
 
 \subsection{10G Ethernet encoder XGXS}\label{subsec_10g}
-This encoder XGXS is compliant with clause 48 of IEEE 802.3 standard \cite{IEEE8023_S4}.
-After deleting empty line and comments,
-this encoder has 214 lines of verilog.
+This encoder is compliant with clause 48 of IEEE 802.3 \cite{IEEE8023_S4}.
+% After deleting empty line and comments,
+It has 214 lines of verilog.
 Its input and output variables are shown in Table \ref{tab:eth10g}.
 This encoder also employs an 8b/10b encoding scheme \cite{encode8b10b} with two inputs:
 the 8-bit $encode\_data\_in$ to be encoded
@@ -2288,8 +2276,8 @@ $encode\_data\_in$ can be of any value.
 But when $konstant\equiv 1$,
 $encode\_data\_in$ can only be 1C, 3C, 5C, 7C, 9C, BC, DC, FC, F7, FB, FD and FE.
 So,
-we write an assertion to exclude those combinations that are not in this table
-and embed it into the the transition function $T$.
+we write an assertion to exclude those combinations that are not in this table.
+% and embed it into the the transition function $T$.
 
 Algorithm \ref{alg_fofc} identifies the flow control vector $\vec{f}:=bad\_code$ in 0.31 seconds.
 And then Algorithm \ref{algo_infer} infers the predicate $valid(\vec{f}):=\!bad\_code$ 
@@ -2432,15 +2420,14 @@ I think this is caused by the fact that our algorithm need to spend lots of time
 to check whether each input variables $i\in \vec{i}$ can be uniquely determined,
 while \cite{LiuTCAD12} can check all input variables with one SAT solving.
 
-For most of the benchmarks,
-the circuit area and delay of our decoder are similar to that of \cite{LiuTCAD12}.
-
+For most benchmarks,
+our decoder's area and delay are similar to \cite{LiuTCAD12}.
 For HM(15,11),
-our decoder is much more larger than that of \cite{LiuTCAD12},
-I think this may caused by the immature implementation of our Craig interpolant generating algorithm,
-which  manipulate the complex proof structure generated from MiniSat in OCaml.
-This can be significantly improved by porting similar codes from other formal tools, such as ABC \cite{ABC}.
-
+our decoder is much larger than \cite{LiuTCAD12}.
+This is caused by the immature implementation of our interpolant algorithm,
+% which  manipulate the complex proof structure generated from MiniSat in OCaml.
+and can be significantly improved by porting similar codes from other formal tools.
+% , such as ABC \cite{ABC}.
 For CC\_4, 
 our decoder is also much larger and slower than \cite{LiuTCAD12},
 we will explain this issue in the following two subsections with more details.
@@ -2467,13 +2454,13 @@ we will explain this issue in the following two subsections with more details.
 
 
 
-\subsection{Comparing run time overhead of increasing $p$, $l$ and $r$ simultaneously and separately}\label{subsec_incr_plr_exp}
+\subsection{Comparing run time overhead of increasing $p$, $l$ and $r$ concurrently and separately}\label{subsec_incr_plr_exp}
 
 \begin{table}[b]%
-\tbl{Comparing run time overhead of increasing $p$, $l$ and $r$ simultaneously and separately\label{tab:comparing_simu_sepa}}{%
+\tbl{Comparing run time overhead of increasing $p$, $l$ and $r$ concurrently and separately\label{tab:comparing_simu_sepa}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
-                   & \multicolumn{5}{|c|}{A1:Increasing simultaneously   }      &  \multicolumn{5}{|c|}{A2:Increasing separately}           \\\cline{2-11}
+                   & \multicolumn{5}{|c|}{A1:Increasing concurrently   }      &  \multicolumn{5}{|c|}{A2:Increasing separately}           \\\cline{2-11}
 benchmarks         & p,l,r& time       & time            & time       &  total  & p,l,r& time       & time            & time       & total  \\
                    &      & find.      & infer.          & min.       &  run    &      & find.      & infer.          & min.       & run    \\
                    &      & $\vec{f}$  & $valid(\vec{f})$& $p$,$l$,$r$&  time   &      & $\vec{f}$  & $valid(\vec{f})$& $p$,$l$,$r$& time   \\\hline\hline
@@ -2490,7 +2477,7 @@ HM(15,11)          & 3,0,0& 0.22       & 0.05            & 1.21       & 1.49    
 \end{table}%
 
 In Algorithm \ref{alg_fofc_inc},
-we increase $p$, $l$ and $r$ simultaneously,
+we increase $p$, $l$ and $r$ concurrently,
 and then reduce them with Algorithm \ref{algo_remove2}.
 We call it A1 case in this subsection.
 Subsection \ref{alter} shows another possible way to do this.
@@ -2521,12 +2508,12 @@ their difference is significant.
 This can be witnessed by comparing column 3 and 8,
 especially the row of T2Eth.
 
-So A2 beats A1 in smaller circuits,
+A2 beats A1 in smaller circuits,
 while A1 win on larger ones.
-So we chose A1,
-that is,
-first increase $p$, $l$ and $r$ simultaneously,
-and then reduce them with Algorithm \ref{algo_remove2}.
+So we chose A1.
+% that is,
+% first increase $p$, $l$ and $r$ simultaneously,
+% and then reduce them with Algorithm \ref{algo_remove2}.
 
 CC\_4 is the only benchmark with different $p$, $l$ and $r$ on the 2nd and 7th column.
 This is caused by the different orders in expanding and reducing $l$ and $r$.
@@ -2539,11 +2526,11 @@ So A2 case is much better than A1.
 But this still does not mean we need to increasing $p$, $l$ and $r$ separately.
 We will talk about this in the next subsection again and explain why.
 
-\subsection{Comparing run times, circuit areas and delay between the two approaches 
+\subsection{Comparing run times, areas and delay between the two approaches 
 with and without minimizing $l$ and $r$ by Algorithm \ref{algo_remove2}}\label{subsec_min}
 
 \begin{table}[b]%
-\tbl{Comparing run times, circuit areas and delay between the two approaches 
+\tbl{Comparing run times, areas and delay between the two approaches 
 with and without minimizing $p$, $l$ and $r$ by Algorithm \ref{algo_remove2}\label{tab:compare_min}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
@@ -2563,11 +2550,10 @@ HM(15,11)   & 3,3,3& 2.98       & 5611    & 45  & 13.5                          
 \end{tabular}}
 \end{table}%
 
-To improve the decoder's circuit area and timing,
-Algorithm \ref{algo_remove2} is invoked to reduce $l$ and $r$ before characterizing the decoder's Boolean function.
-To show its efficiency,
-we present the experimental result in Table \ref{tab:compare_min}.
-
+% To improve the decoder's area and delay,
+% Algorithm \ref{algo_remove2} is invoked to reduce $l$ and $r$ before characterizing the decoder's Boolean function.
+% To show its efficiency,
+The experimental result are presented in Table \ref{tab:compare_min}.
 % The first column is the benchmarks.
 % The second and third columns are the run time overhead of 
 % finding out the flow control vector $\vec{f}$ and inferring $valid(\vec{f})$.
@@ -2586,7 +2572,7 @@ it is obvious that the decoders area and number of registers are significantly r
 with significant runtime overhead in reducing $l$ and $r$ shown in the 7th column.
 
 Please notice the CC\_4 benchmark again, 
-from the 4th to 6th column, we can find that the circuit area and delay is similar to A2 case in the previous subsection, 
+from the 4th to 6th column, we can find that the area and delay is similar to A2 case in the previous subsection, 
 but its value of $p$, $l$ and $r$ is similar to the A1 case.
 So this means that the decoder of CC\_4 has at least three significantly different implementations with
 area 154 in A2 case in previous subsection,
@@ -2596,14 +2582,14 @@ The smaller one with area 154 and delay 9.6 is comparable to that of \cite{LiuTC
 
 Which decoder implementation finally generated for CC\_4 is determined by some instable implementation detail in the SAT solver and the Craig interpolant algorithm.
 So this answer the confusion in the previous subsection that,
-the circuit quality degradation in the A1 case is not caused by increasing $p$, $l$ and $r$ simultaneously.
-We should still increase them simultaneously and then minimize them with Algorithm \ref{algo_remove2}.
+the circuit quality degradation in the A1 case is not caused by increasing $p$, $l$ and $r$ concurrently.
+We should still increase them concurrently and then minimize them with Algorithm \ref{algo_remove2}.
 
 
-\subsection{Comparing circuit area and timing for the decoders generated by our algorithm and manually written decoders}\label{subsec_compareman}
+\subsection{Comparing area and delay for the decoders generated by our algorithm and manually written decoders}\label{subsec_compareman}
 
 \begin{table}[t]%
-\tbl{Comparing circuit area and timing for the decoders generated by our algorithm and manually written decoders\label{tab:comparing_hand}}{%
+\tbl{Comparing area and delay for the decoders generated by our algorithm and manually written decoders\label{tab:comparing_hand}}{%
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
 bench-   & \multicolumn{2}{|c|}{Decoder generated by us} &  \multicolumn{2}{|c|}{Manually written decoder} \\\cline{2-5}
@@ -2619,14 +2605,13 @@ SCRAMBLER& 698     & 3.8                & 1035   & 6.4                          
 % HM(15,11)& \multicolumn{4}{|c|}{}\\\hline
 \end{tabular}}
 \end{table}%
-
-Table \ref{tab:comparing_hand} compares the circuit area and timing of 
-the decoders generated by our algorithm and manually written decoders.
-CC\_3,CC\_4, HM(7,4) and HM(15,11) are not presented because there are no these decoder's source code.
-
-It is obvious that our decoder are smaller and faster than the manually written decoder in most cases.
-The only exception is the T2Eth and XFI benchmarks, 
-the generated decoder is a little bit larger than the manually written one.
+The experimental result are presented in Table \ref{tab:comparing_hand}.
+% Table \ref{tab:comparing_hand} compares the area and delay of 
+% the decoders generated by our algorithm and manually written decoders.
+CC\_3, CC\_4, HM(7,4) and HM(15,11 ) are not presented because we don't have their source code.
+Most our decoders are smaller and faster than the manually written ones.
+The only exceptions are the T2Eth and XFI, 
+the generated decoders are a little bit larger than the manually written ones.
 
 \section{RELATED PUBLICATIONS}\label{sec_relwork}
 %\subsection{Complementary Synthesis}
@@ -2649,31 +2634,31 @@ in building the decoder.
 The halting problem was independently tackled in \cite{ShenTCAD11} and \cite{LiuICCAD11} by searching for loops in the state sequence,
 while the runtime overhead problem was addressed in \cite{ShenTCAD12,LiuICCAD11} by interpolant \cite{interp_McMillan}.
 
-Shen et al.\citeyear{ShenTCAD12} automatically inferred an assertion for configuration pins, 
+Shen et al. \citeyear{ShenTCAD12} automatically inferred an assertion for configuration pins, 
 which can lead to the decoder's existence.
-It can be seen as a special case of Algorithm \ref{algo_infer} in Section \ref{sec_infer},
+It can be seen as a special case of Algorithm \ref{algo_infer},
 with the restriction that the inferred assertion must hold on all steps.
 % to prevent the encoder from leaving the unique state set.
 Our Algorithm \ref{algo_infer},
 on the other hand,
-is the first algorithm that allows states with and without the inferred assertion to be interleaved freely with each other,
-which make it possible to handle encoder with flow control mechanism.
+is the first algorithm that allows states with and without the inferred assertion to be interleaved freely with each other.
+% which make it possible to handle encoder with flow control mechanism.
 
 A break-through algorithm is proposed by \cite{TuDAC13}  
-based on property directed reachability analysis \cite{BradleyVMCAI11,EenFMCAD11} 
+based on property directed reachability analysis \cite{EenFMCAD11} 
 that can take the encoder's initial state into consideration,
 so that the infinite history of the encoder and the decoder can be used to generate the decoder's output.
 This algorithm can handle some special encoders that cannot be handled by the state-of-the-art algorithms.
-Their work is orthogonal to ours.
+% Their work is orthogonal to ours.
 
 \subsection{Program inversion}\label{subsec_proinv}
-According to \cite{dim_syn},
-program inversion involves deriving a program $P^{-1}$
+% According to \cite{dim_syn},
+Program inversion derives a program $P^{-1}$
 that negates the computation of a given program $P$.
 So,
-the definition of program inversion is very similar to complementary synthesis.
+it is very similar to complementary synthesis.
 
-The initial work on program inversion used proof-based approaches \cite{prog_inv},
+The initial work on program inversion \cite{prog_inv} used proof-based approaches,
 which could handle only very small programs and very simple syntax structures.
 
 Gl\"{u}ck et al. \cite{mtd_autoProginv} inverted first-order functional programs
@@ -2757,16 +2742,15 @@ it can not guarantee the correctness of it solution if its assumptions do not ho
 
 \subsection{Satisfying Assignments Enumeration}\label{subsec_relallsat}
 
-Some algorithms enumerate all satisfying assignments by trying to enlarge the complete satisfying assignments,
-so that a large state set that contains more complete satisfying assignments can be obtained.
-
-The first approach of this kind is proposed by \cite{SATUNBMC}.
-He constructs an alternative implication graph in SAT solver,
-which records the reasoning relation that leads to the assignment of a particular object variable.
+Some algorithms try to enumerate all satisfying assignments faster 
+by enlarging each complete satisfying assignment.
+% so that a large state set that contains more complete satisfying assignments can be obtained.
+McMillan \cite{SATUNBMC} constructs an alternative implication graph in SAT solver,
+which records the reasoning relation that leads to the assignment of a particular variable.
 All variables outside this graph can be ruled out from the complete assignment.
 In \cite{MINASS} and \cite{REPARAM},
 those variables whose absence can not make $obj\equiv 0$ satisfiable are removed one by one.
-In \cite{MINCEX} and \cite{PRIMECLAUSE,EFFCON},
+In \cite{MINCEX} and \cite{PRIMECLAUSE},
 conflict analysis based approaches are used
 to remove multiple irrelevant variables in one SAT run.
 In \cite{MEMEFFALLSAT},
@@ -2780,7 +2764,7 @@ Cofactoring \cite{EFFSATUSMCCO} qualifies out unimportant variables by setting t
 
 Other algorithms tries to construct an interpolation to cover all satisfying assignments.
 The first such algorithm was proposed by \cite{InterpBoolFunction}.
-It construct a first formula that contradicts with another formula to get an unsatisfiable formula,
+It constructs a first formula that contradicts with another formula to get an unsatisfiable formula,
 from which an interpolation can be derived and used as an over-approximation of the first formula.
 In \cite{interpNoProof},
 interpolation is generated with a framework similar to the iterative enumerating and 

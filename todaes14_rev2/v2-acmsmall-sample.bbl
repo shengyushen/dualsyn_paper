@@ -43,47 +43,6 @@
 \url{http://dx.doi.org/10.2200/S00341ED1V01Y201103CAC014}}
 
 
-\bibitem[\protect\citeauthoryear{Avnit, D'Silva, Sowmya, Ramesh, and
-  Parameswaran.}{Avnit et~al\mbox{.}}{2009}]%
-        {converter_todeas09}
-{Karin Avnit}, {Vijay D'Silva}, {Arcot Sowmya}, {S. Ramesh}, {and} {Sri
-  Parameswaran.} 2009.
-\newblock \showarticletitle{Provably correct on-chip communication: A formal
-  approach to automatic protocol converter synthesis}.
-\newblock {\em ACM Transactions on Design Automation of Electronic Systems\/}
-  {14}, 2 (March 2009), 14:1--14:41.
-\newblock
-\showISSN{1084-4309}
-\showDOI{%
-\url{http://dx.doi.org/10.1145/1497561.1497562}}
-
-
-\bibitem[\protect\citeauthoryear{Avnit and Sowmya}{Avnit and Sowmya}{2009}]%
-        {converter_date09}
-{Karin Avnit} {and} {Arcot Sowmya}. 2009.
-\newblock \showarticletitle{A formal approach to design space exploration of
-  protocol converters}. In {\em Proceedings of the Conference on Design,
-  Automation and Test in Europe,DATE 2009} {\em (DATE '09)}. European Design
-  and Automation Association, 3001 Leuven, Belgium, Belgium, 129--134.
-\newblock
-\showDOI{%
-\url{http://dx.doi.org/10.1109/DATE.2009.5090645}}
-
-
-\bibitem[\protect\citeauthoryear{Avnit, Sowmya, and Parameswaran}{Avnit
-  et~al\mbox{.}}{2008}]%
-        {converter_date08}
-{Karin Avnit}, {Vijay D'Silvaand~Arcot Sowmya}, {and} {S.~Rameshand~Sri
-  Parameswaran}. 2008.
-\newblock \showarticletitle{A Formal Approach To The Protocol Converter
-  Problem}. In {\em Proceedings of the conference on Design, automation and
-  test in Europe,DATE 2008} {\em (DATE '08)}. ACM Press, Munich, Germany,
-  294--299.
-\newblock
-\showDOI{%
-\url{http://dx.doi.org/10.1109/DATE.2008.4484695}}
-
-
 \bibitem[\protect\citeauthoryear{Berkeley Logic Synthesis and Verification
   Group}{Berkeley Logic Synthesis and Verification Group}{2008}]%
         {ABC}
@@ -93,19 +52,6 @@ Berkeley Logic Synthesis and Verification Group 2008.
 \newblock
 \newblock
 \shownote{http://www.eecs.berkeley.edu/∼alanmi/abc/.}
-
-
-\bibitem[\protect\citeauthoryear{Bradley}{Bradley}{2011}]%
-        {BradleyVMCAI11}
-{Aaron~R. Bradley}. 2011.
-\newblock \showarticletitle{SAT-based model checking without unrolling}.
-\newblock In {\em Verification, Model Checking, and Abstract Interpretation,
-  12th International Conference, VMCAI 2011}, {David A.~Schmidt Ranjit~Jhala}
-  (Ed.). Lecture Notes in Computer Science, Vol. 6538. Springer-Verlag, Berlin
-  Heidelberg, 70--87.
-\newblock
-\showDOI{%
-\url{http://dx.doi.org/10.1007/978-3-642-18275-4_7}}
 
 
 \bibitem[\protect\citeauthoryear{Chauhan, Clarke, and Kroening}{Chauhan
@@ -215,18 +161,6 @@ Berkeley Logic Synthesis and Verification Group 2008.
 \url{http://dx.doi.org/10.1007/978-3-540-30494-4_20}}
 
 
-\bibitem[\protect\citeauthoryear{Gulwani}{Gulwani}{2010}]%
-        {dim_syn}
-{Sumit Gulwani}. 2010.
-\newblock \showarticletitle{Dimensions in program synthesis}. In {\em
-  Proceedings of the 12th international ACM SIGPLAN symposium on Principles and
-  practice of declarative programming,PPDP 2010} {\em (PPDP '10)}. ACM Press,
-  Hagenberg, Austria, 13--24.
-\newblock
-\showDOI{%
-\url{http://dx.doi.org/10.1145/1836089.1836091}}
-
-
 \bibitem[\protect\citeauthoryear{IEEE}{IEEE}{2012}]%
         {IEEE8023_S4}
 {IEEE}. 2012.
@@ -248,21 +182,6 @@ Retrieved January 25, 2013 from
 \newblock
 
 
-\bibitem[\protect\citeauthoryear{Jin, Han, and Somenzi}{Jin
-  et~al\mbox{.}}{2005}]%
-        {EFFCON}
-{HoonSang Jin}, {HyoJung Han}, {and} {Fabio Somenzi}. 2005.
-\newblock \showarticletitle{Efficient conflict analysis for finding all
-  satisfying assignments of a boolean circuit}.
-\newblock In {\em Tools and Algorithms for the Construction and Analysis of
-  Systems, 11th International Conference, TACAS 2005}, {Lenore D.~Zuck
-  Nicolas~Halbwachs} (Ed.). Lecture Notes in Computer Science, Vol. 3440.
-  Springer-Verlag, Berlin Heidelberg, 287--300.
-\newblock
-\showDOI{%
-\url{http://dx.doi.org/10.1007/978-3-540-31980-1_19}}
-
-
 \bibitem[\protect\citeauthoryear{Jin and Somenzi:}{Jin and Somenzi:}{2005}]%
         {PRIMECLAUSE}
 {HoonSang Jin} {and} {Fabio Somenzi:}. 2005.
@@ -272,30 +191,6 @@ Retrieved January 25, 2013 from
 \newblock
 \showDOI{%
 \url{http://dx.doi.org/10.1109/DAC.2005.193911}}
-
-
-\bibitem[\protect\citeauthoryear{Lee, Jiang, Huang, and Mishchenko}{Lee
-  et~al\mbox{.}}{2007}]%
-        {scalableFuncDep}
-{Chih-Chun Lee}, {Jie-Hong~Roland Jiang}, {Chung-Yang Huang}, {and} {Alan
-  Mishchenko}. 2007.
-\newblock \showarticletitle{Scalable exploration of functional dependency by
-  interpolation and incremental SAT solving}. In {\em Proceedings of 2007
-  International Conference on Computer-Aided Design} {\em (ICCAD '07)}. IEEE,
-  227--233.
-\newblock
-
-
-\bibitem[\protect\citeauthoryear{Lee, Jiang, and Hung}{Lee
-  et~al\mbox{.}}{2008}]%
-        {Bidecomp}
-{Ruei-Rung Lee}, {Jie-Hong~Roland Jiang}, {and} {Wei-Lun Hung}. 2008.
-\newblock \showarticletitle{Bi-decomposing large Boolean functions via
-  interpolation and satisfiability solving}. In {\em Proceedings of the 45th
-  Design Automation Conference, DAC 2008} {\em (DAC '08)}. IEEE, 636--641.
-\newblock
-\showDOI{%
-\url{http://dx.doi.org/10.1145/1391469.1391634}}
 
 
 \bibitem[\protect\citeauthoryear{Liu, Chou, Lin, and Jiang}{Liu
@@ -482,18 +377,6 @@ Retrieved January 25, 2013 from
 \showISSN{0018-8646}
 \showDOI{%
 \url{http://dx.doi.org/10.1147/rd.275.0440}}
-
-
-\bibitem[\protect\citeauthoryear{Zhang, Madigan, Moskewicz, and Malik}{Zhang
-  et~al\mbox{.}}{2001}]%
-        {CONFLICTLEARN}
-{Lintao Zhang}, {Conor~F. Madigan}, {Matthew~W. Moskewicz}, {and} {Sharad
-  Malik}. 2001.
-\newblock \showarticletitle{Efficient Conflict Driven Learning in Boolean
-  Satisfiability Solver}. In {\em Proceedings of the 2001 International
-  Conference on Computer-Aided Design, ICCAD 2001} {\em (ICCAD '01)}. ACM,
-  279--285.
-\newblock
 
 
 \end{thebibliography}
