@@ -24,86 +24,86 @@
 \newlabel{subsec_SAT}{{2.1}{3}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Finite state machine}{3}}
 \citation{ShenTCAD11}
+\newlabel{fig_pc}{{2}{4}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}The halting algorithm to determine if an input variable can be uniquely determined by a bounded sequence of output variable vector}{4}}
 \newlabel{subsec_chkextdec}{{2.3}{4}}
 \newlabel{subsub_sound}{{2.3.1}{4}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}\textbf  {The under-approximative approach}}{4}}
 \newlabel{uniqt1}{{1}{4}}
-\newlabel{fig_pc}{{2}{4}}
 \citation{TuDAC13}
 \citation{ShenTCAD11}
 \newlabel{prop_pc1}{{2.1}{5}}
 \newlabel{subsub_complete}{{2.3.2}{5}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.2}\textbf  {The over-approximative approach}}{5}}
-\newlabel{uniqln}{{2}{6}}
+\newlabel{uniqln}{{2}{5}}
+\newlabel{fig_ln}{{3}{6}}
 \newlabel{prop_ln1}{{2.2}{6}}
 \newlabel{subsub_algo}{{2.3.3}{6}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.3}\textbf  {The full algorithm}}{6}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Identifying flow control vector}{6}}
-\newlabel{sec_findfc}{{3}{6}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Finding out flow control vector $\mathaccent "017E\relax {f}$}{6}}
-\newlabel{basic}{{3.1}{6}}
-\newlabel{fig_ln}{{3}{6}}
+\newlabel{linepc1}{{4}{6}}
+\newlabel{lnsat}{{6}{6}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces $CheckUniqueness(i)$: The halting algorithm to determine whether $i\in \mathaccent "017E\relax {i}$ can be uniquely determined by a bounded sequence of output variable vector $\mathaccent "017E\relax {o}$}}{6}}
+\newlabel{alg_pcln}{{1}{6}}
+\newlabel{while}{{2}{7}}
+\newlabel{adduniq}{{6}{7}}
+\newlabel{nonuniqres}{{8}{7}}
+\newlabel{ruleout}{{10}{7}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces $FindFlow(\mathaccent "017E\relax {i})$:Identifying the flow control vector $\mathaccent "017E\relax {f}$}}{7}}
+\newlabel{alg_fofc}{{2}{7}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Identifying flow control vector}{7}}
+\newlabel{sec_findfc}{{3}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Finding out flow control vector $\mathaccent "017E\relax {f}$}{7}}
+\newlabel{basic}{{3.1}{7}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Speeding up with incremental SAT}{7}}
 \newlabel{incSAT}{{3.2}{7}}
-\newlabel{uniqt1_f}{{3}{7}}
-\newlabel{uniqt1_a}{{4}{7}}
-\newlabel{uniqln_f}{{5}{7}}
-\newlabel{linepc1}{{4}{7}}
-\newlabel{lnsat}{{6}{7}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces $CheckUniqueness(i)$:The halting algorithm to determine whether $i\in \mathaccent "017E\relax {i}$ can be uniquely determined by a bounded sequence of output variable vector $\mathaccent "017E\relax {o}$}}{7}}
-\newlabel{alg_pcln}{{1}{7}}
+\newlabel{uniqt1_f}{{3}{8}}
+\newlabel{uniqt1_a}{{4}{8}}
+\newlabel{uniqln_f}{{5}{8}}
 \newlabel{uniqln_a}{{6}{8}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Inferring predicate that enables the encoder's data vector to be uniquely determined}{8}}
-\newlabel{sec_infer}{{4}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Characterizing a function that makes a Boolean formula satisfiable}{8}}
-\newlabel{subsec_craig}{{4.1}{8}}
-\newlabel{while}{{2}{8}}
-\newlabel{adduniq}{{6}{8}}
-\newlabel{nonuniqres}{{8}{8}}
-\newlabel{ruleout}{{10}{8}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces $FindFlow(\mathaccent "017E\relax {i})$:Identifying the flow control vector $\mathaccent "017E\relax {f}$}}{8}}
-\newlabel{alg_fofc}{{2}{8}}
+\newlabel{addcls21}{{4}{8}}
+\newlabel{solve21}{{6}{8}}
+\newlabel{addcls22}{{9}{8}}
+\newlabel{solve22}{{11}{8}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces $FindFlowIncSAT(\mathaccent "017E\relax {i})$:Identifying the flow control vector with incremental SAT}}{8}}
+\newlabel{alg_fofc_inc}{{3}{8}}
 \citation{EFFSATUSMCCO}
 \citation{interp_McMillan}
 \citation{EFFSATUSMCCO}
-\citation{interp_McMillan}
+\newlabel{initcondition}{{1}{9}}
+\newlabel{testsat}{{2}{9}}
+\newlabel{cofact1}{{4}{9}}
+\newlabel{cofact2}{{5}{9}}
+\newlabel{ab}{{6}{9}}
+\newlabel{add}{{7}{9}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {4}{\ignorespaces $CharacterizingFormulaSAT(R,\mathaccent "017E\relax {a},\mathaccent "017E\relax {b},t)$:Characterizing a Boolean function over $\mathaccent "017E\relax {a}$ that can make $R(\mathaccent "017E\relax {a},\mathaccent "017E\relax {b},1)$ satisfiable}}{9}}
+\newlabel{alg_craigchar}{{4}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Inferring predicate that enables the encoder's data vector to be uniquely determined}{9}}
+\newlabel{sec_infer}{{4}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Characterizing a function that makes a Boolean formula satisfiable}{9}}
+\newlabel{subsec_craig}{{4.1}{9}}
 \newlabel{fchar}{{7}{9}}
-\newlabel{addcls21}{{4}{9}}
-\newlabel{solve21}{{6}{9}}
-\newlabel{addcls22}{{9}{9}}
-\newlabel{solve22}{{11}{9}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces $FindFlowIncSAT(\mathaccent "017E\relax {i})$:Identifying the flow control vector with incremental SAT}}{9}}
-\newlabel{alg_fofc_inc}{{3}{9}}
-\newlabel{initcondition}{{1}{10}}
-\newlabel{testsat}{{2}{10}}
-\newlabel{cofact1}{{4}{10}}
-\newlabel{cofact2}{{5}{10}}
-\newlabel{ab}{{6}{10}}
-\newlabel{add}{{7}{10}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {4}{\ignorespaces $CharacterizingFormulaSAT(R,\mathaccent "017E\relax {a},\mathaccent "017E\relax {b},t)$:Characterizing a Boolean function over $\mathaccent "017E\relax {a}$ that can make $R(\mathaccent "017E\relax {a},\mathaccent "017E\relax {b},1)$ satisfiable}}{10}}
-\newlabel{alg_craigchar}{{4}{10}}
-\newlabel{fig_mono}{{4}{10}}
+\citation{interp_McMillan}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Inferring $valid(\mathaccent "017E\relax {f})$ that enables $\mathaccent "017E\relax {d}$ to be uniquely determined}{10}}
 \newlabel{subsec_infer}{{4.2}{10}}
 \newlabel{subsub_nonloop}{{4.2.1}{10}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}\textbf  {Computing monotonically growing under-approximation of $valid(\mathaccent "017E\relax {f})$}}{10}}
-\newlabel{uniqt1d}{{9}{11}}
-\newlabel{tpc}{{10}{11}}
-\newlabel{fpcq}{{11}{11}}
+\newlabel{uniqt1d}{{9}{10}}
+\newlabel{tpc}{{10}{10}}
+\newlabel{fpcq}{{11}{10}}
 \newlabel{pcdef1}{{12}{11}}
 \newlabel{pcdef2}{{13}{11}}
 \newlabel{fsat_pc}{{14}{11}}
-\newlabel{prop_pc}{{4.1}{12}}
-\newlabel{subsub_loop}{{4.2.2}{12}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}\textbf  {Computing monotonically shrinking over-approximation of $valid(\mathaccent "017E\relax {f})$}}{12}}
+\newlabel{prop_pc}{{4.1}{11}}
+\newlabel{subsub_loop}{{4.2.2}{11}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}\textbf  {Computing monotonically shrinking over-approximation of $valid(\mathaccent "017E\relax {f})$}}{11}}
+\newlabel{fig_mono}{{4}{11}}
 \newlabel{uniqlnd}{{15}{12}}
 \newlabel{tln}{{16}{12}}
 \newlabel{lndef1}{{17}{12}}
 \newlabel{fsat_ln}{{18}{12}}
+\newlabel{prop_ln}{{4.2}{12}}
 \@writefile{loa}{\contentsline {algocf}{\numberline {5}{\ignorespaces $InferringUniqueFormula$:inferring the predicate $valid(\mathaccent "017E\relax {f}_{p+l})$ that enables $\mathaccent "017E\relax {d}_{p+l}$ to be uniquely determined}}{13}}
 \newlabel{algo_infer}{{5}{13}}
-\newlabel{prop_ln}{{4.2}{13}}
 \newlabel{subsub_overal}{{4.2.3}{13}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}\textbf  {The algorithm to compute $valid(\mathaccent "017E\relax {f})$}}{13}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Proofs of termination and correctness}{13}}
@@ -134,11 +134,6 @@
 \citation{EXTSAT}
 \citation{ShenTCAD12}
 \citation{LiuTCAD12}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Characterizing the decoder's Boolean function that computes $\mathaccent "017E\relax {d}$}{17}}
-\newlabel{da}{{21}{17}}
-\newlabel{db}{{22}{17}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Experimental Results}{17}}
-\newlabel{sec_exp}{{7}{17}}
 \citation{ABC}
 \citation{LiuTCAD12}
 \citation{pcie21}
@@ -148,49 +143,57 @@
 \citation{ShenTCAD12}
 \citation{LiuTCAD12}
 \citation{LiuTCAD12}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Characterizing the decoder's Boolean function that computes $\mathaccent "017E\relax {d}$}{17}}
+\newlabel{da}{{21}{17}}
+\newlabel{db}{{22}{17}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Experimental Results}{17}}
+\newlabel{sec_exp}{{7}{17}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Benchmarks}{17}}
 \citation{ShenTCAD12}
 \citation{pcie21}
 \citation{encode8b10b}
 \newlabel{tab:summ}{{I}{18}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Benchmarks}{18}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.2}PCI Express 2.0 encoder}{18}}
 \newlabel{subsec_pcie2}{{7.2}{18}}
+\newlabel{tab:pcieio}{{II}{18}}
 \citation{IEEE8023_S4}
 \citation{encode8b10b}
 \citation{encode8b10b}
-\newlabel{tab:pcieio}{{II}{19}}
+\citation{IEEE8023_S4}
+\citation{encode8b10b}
+\newlabel{tab:eth10g}{{III}{19}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.3}10G Ethernet encoder XGXS}{19}}
 \newlabel{subsec_10g}{{7.3}{19}}
-\newlabel{tab:eth10g}{{III}{19}}
-\citation{IEEE8023_S4}
-\citation{encode8b10b}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}UltraSPARC T2 Ethernet encoder}{19}}
+\newlabel{subsec_t2e}{{7.4}{19}}
+\citation{LiuTCAD12}
+\citation{LiuTCAD12}
+\citation{LiuTCAD12}
+\citation{LiuTCAD12}
+\citation{LiuTCAD12}
+\citation{LiuTCAD12}
+\citation{LiuTCAD12}
+\citation{LiuTCAD12}
+\citation{LiuTCAD12}
+\citation{LiuTCAD12}
+\citation{LiuTCAD12}
 \newlabel{tab:t2eth}{{IV}{20}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}UltraSPARC T2 Ethernet encoder}{20}}
-\newlabel{subsec_t2e}{{7.4}{20}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Comparing our algorithm with the state-of-the-art algorithm on circuits without flow control mechanism}{20}}
+\newlabel{subsec_nonflow}{{7.5}{20}}
 \newlabel{tab:one}{{V}{20}}
 \citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
-\citation{LiuTCAD12}
 \newlabel{tab:comp_nocf}{{VI}{21}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Comparing our algorithm with the state-of-the-art algorithm on circuits without flow control mechanism}{21}}
-\newlabel{subsec_nonflow}{{7.5}{21}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.6}Comparing run time overhead of increasing $p$, $l$ and $r$ concurrently and separately}{21}}
 \newlabel{subsec_incr_plr_exp}{{7.6}{21}}
 \newlabel{tab:comparing_simu_sepa}{{VII}{21}}
 \citation{LiuTCAD12}
-\citation{LiuTCAD12}
+\citation{ShenICCAD09}
+\newlabel{tab:compare_min}{{VIII}{22}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.7}Comparing run times, areas and delay between the two approaches with and without minimizing $l$ and $r$ by Algorithm 6\hbox {}}{22}}
 \newlabel{subsec_min}{{7.7}{22}}
-\newlabel{tab:compare_min}{{VIII}{22}}
-\citation{ShenICCAD09}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.8}Comparing area and delay for our generated decoders and manually written decoders}{22}}
+\newlabel{subsec_compareman}{{7.8}{22}}
+\newlabel{tab:comparing_hand}{{IX}{22}}
 \citation{ShenTCAD11}
 \citation{LiuICCAD11}
 \citation{ShenTCAD12,LiuICCAD11}
@@ -201,15 +204,6 @@
 \citation{prog_inv}
 \citation{mtd_autoProginv}
 \citation{program_inversion_11}
-\newlabel{tab:comparing_hand}{{IX}{23}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.8}Comparing area and delay for the decoders generated by our algorithm and manually written decoders}{23}}
-\newlabel{subsec_compareman}{{7.8}{23}}
-\@writefile{toc}{\contentsline {section}{\numberline {8}RELATED PUBLICATIONS}{23}}
-\newlabel{sec_relwork}{{8}{23}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Complementary synthesis}{23}}
-\newlabel{subsec_compsyn_relat}{{8.1}{23}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Program inversion}{23}}
-\newlabel{subsec_proinv}{{8.2}{23}}
 \citation{SATUNBMC}
 \citation{MINASS}
 \citation{REPARAM}
@@ -219,6 +213,14 @@
 \citation{EFFSATUSMCCO}
 \citation{InterpBoolFunction}
 \citation{interpNoProof}
+\@writefile{toc}{\contentsline {section}{\numberline {8}RELATED PUBLICATIONS}{23}}
+\newlabel{sec_relwork}{{8}{23}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Complementary synthesis}{23}}
+\newlabel{subsec_compsyn_relat}{{8.1}{23}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Program inversion}{23}}
+\newlabel{subsec_proinv}{{8.2}{23}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Satisfying Assignments Enumeration}{23}}
+\newlabel{subsec_relallsat}{{8.3}{23}}
 \citation{pcie21}
 \citation{IEEE8023_S4}
 \bibstyle{ACM-Reference-Format-Journals}
@@ -228,10 +230,6 @@
 \bibcite{REPARAM}{\citeauthoryear {Chauhan, Clarke, and Kroening}{Chauhan et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2004}}
 \bibcite{interpNoProof}{\citeauthoryear {Chockler, Ivrii, and Matsliah}{Chockler et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2012}}
 \bibcite{Craig}{\citeauthoryear {Craig}{Craig}{1957}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Satisfying Assignments Enumeration}{24}}
-\newlabel{subsec_relallsat}{{8.3}{24}}
-\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusions}{24}}
-\newlabel{sec_conclude}{{9}{24}}
 \bibcite{prog_inv}{\citeauthoryear {Dijkstra}{Dijkstra}{1979}}
 \bibcite{EenFMCAD11}{\citeauthoryear {E{\'e}n, Mishchenko, and Brayton}{E{\'e}n et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2011}}
 \bibcite{EXTSAT}{\citeauthoryear {E\'en and S{\"o}rensson}{E\'en and S{\"o}rensson}{2003}}
@@ -240,6 +238,8 @@
 \bibcite{MEMEFFALLSAT}{\citeauthoryear {Grumberg, Schuster, and Yadgar}{Grumberg et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2004}}
 \bibcite{IEEE8023_S4}{\citeauthoryear {IEEE}{IEEE}{2012}}
 \bibcite{InterpBoolFunction}{\citeauthoryear {Jiang, Lin, and Hung}{Jiang et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2009}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusions}{24}}
+\newlabel{sec_conclude}{{9}{24}}
 \bibcite{PRIMECLAUSE}{\citeauthoryear {Jin and Somenzi:}{Jin and Somenzi:}{2005}}
 \bibcite{LiuICCAD11}{\citeauthoryear {Liu, Chou, Lin, and Jiang}{Liu et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2011}}
 \bibcite{LiuTCAD12}{\citeauthoryear {Liu, Chou, Lin, and Jiang.}{Liu et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2012}}
@@ -255,4 +255,4 @@
 \bibcite{program_inversion_11}{\citeauthoryear {Srivastava, Gulwani, Chaudhuri, and Foster}{Srivastava et\nobreakspace  {}al\unhbox \voidb@x \hbox {.}}{2011}}
 \bibcite{TuDAC13}{\citeauthoryear {Tu and Jiang}{Tu and Jiang}{2013}}
 \bibcite{encode8b10b}{\citeauthoryear {Widmer and Franaszek}{Widmer and Franaszek}{1983}}
-\lastpage{26}
+\lastpage{25}
