@@ -37,9 +37,9 @@
 
 % Title portion
 \title{Complementary Synthesis for Encoder with Flow Control Mechanism}
-\author{YING QIN and
-SHENGYU SHEN and
-QINGBO WU and
+\author{YING QIN ,
+SHENGYU SHEN ,
+QINGBO WU ,
 HUADONG DAI and
 YAN JIA  
 \affil{School of Computer, National University of Defense Technology}}
@@ -56,23 +56,23 @@ with the assumption that the encoder's all input variables can always
 be uniquely determined by its output symbol sequence.
 However,
 to prevent the faster encoder from overwhelming the slower decoder,
-many encoder employ flow control mechanism that fails this assumption.
+many encoders employ flow control mechanism that fails this assumption.
 Such encoders,
-when its output symbol sequence is too fast to be processed by the decoder,
+when their output symbol sequences are too fast to be processed by the decoders,
 will stop transmitting data symbols,
 but instead transmitting idle symbols that can only uniquely determine a subset of the encoder's input variables.
 And the decoder should recognize and discard these idle symbols.
 % Although this mechanism can prevent losing data symbols,
 This mechanism fails the assumption of all complementary synthesis algorithms,
-because some input variables can not be uniquely determined by the idle symbol.
+because some input variables can't be uniquely determined by the idle symbol.
 
-This paper proposes the first algorithm 
+A novel algorithm is proposed 
 to handle such encoders.
 First,
 it identifies all input variables that can be uniquely determined,
-and take them as flow control variables.
+and takes them as flow control variables.
 Second,
-it infers a predicate over these flow control variables,
+it infers a predicate over these flow control variables
 that enables all other input variables to be uniquely determined.
 Third,
 it characterizes the decoder's Boolean function with Craig interpolant.
@@ -80,7 +80,7 @@ it characterizes the decoder's Boolean function with Craig interpolant.
 % their decoder's Boolean function can also be characterized similarly but the inferred predicate must be enforced first.
 
 Experimental results on several complex encoders indicate that
-our algorithm can always correctly identify the flow control variables,
+this algorithm can always correctly identify the flow control variables,
 infer the predicates
 and generate the decoder's Boolean functions.
 \end{abstract}
@@ -88,13 +88,13 @@ and generate the decoder's Boolean functions.
 \category{B.5.2}{Design Aids}{Automatic synthesis}
 \category{B.6.3}{Design Aids}{Automatic synthesis}
 
-\terms{Algorithms, Logic synthesis, Verification}
+\terms{Algorithms, Verification}
 
-\keywords{Craig interpolation, decoder, encoder, finite-state transition system, satisfiability solving}
+\keywords{Complementary synthesis, Craig interpolant, decoder, encoder, finite-state transition system, satisfiability solving}
 
-\acmformat{Ying Qin and
-ShengYu Shen and
-QingBo Wu and
+\acmformat{Ying Qin ,
+ShengYu Shen ,
+QingBo Wu ,
 HuaDong Dai and
 Yan Jia, 2014. Complementary Synthesis for Encoder with Flow Control Mechanism.
 % ACM Trans. Embedd. Comput. Syst. X, X, Article XX (XXXX 201X), X pages.
@@ -134,8 +134,9 @@ The encoder maps its input variables $\vec{i}$ to its output variables $\vec{o}$
 % according to some predefined rules,
 % such as Ethernet \cite{IEEE8023_S4} and PCI Express \cite{pcie21},
 while the decoder recovers $\vec{i}$ from $\vec{o}$.
-Complementary synthesis [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}]
-ease this job by
+Complementary synthesis 
+ [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}]
+eases this job by
 automatically generating a decoder from an encoder,
 with the assumption that $\vec{i}$ can always be
 uniquely determined by a bounded sequence of $\vec{o}$.
@@ -144,7 +145,7 @@ However,
 the encoders of many high speed communication systems employ flow control mechanism \cite{flowcontrol} that 
 fails this assumption.
 Figure~\ref{fig:nonuniq}a) shows such a communication system with flow control mechanism,
-which include a faster transmitter and a slower receiver connected by a pair of encoder and decoder.
+which includes a faster transmitter and a slower receiver connected by a pair of encoder and decoder.
 There are two input variables from the transmitter to the encoder:
 the data bit $d$ to be encoded,
 and the flow control bit $f$ indicating the validness of $d$.
@@ -155,11 +156,11 @@ that maps $f$ and $d$ to the output symbol $\vec{o}$.
 % by checking whether $o$ is $D_0$ or $D_1$,
 % we can determine whether the $d$ is 0 or 1;
 % But when $f\equiv 0$,
-% we can not determine the value of $d$,
+% we can't determine the value of $d$,
 % because $o$ is always $I$.
 
 
-The flow control mechanism prevent the faster transmitter from overwhelming the slower receiver in the following way:
+The flow control mechanism prevents the faster transmitter from overwhelming the slower receiver in the following way:
 \begin{enumerate}
 \item
 When the receiver can keep up with the transmitter,
@@ -167,7 +168,7 @@ the transmitter will rise $f$ to 1,
 which makes the encoder to transmit $D_d$ according to the value of $d$.
 And the decoder can always recover both $f$ and $d$ from $D_d$ according to Figure~\ref{fig:nonuniq}b).
 \item
-But when the receiver can not keep up with the transmitter,
+But when the receiver can't keep up with the transmitter,
 the transmitter will drop $f$ to 0 to stop the encoder transmitting new $D_d$,
 but instead transmitting the idle symbol $I$ without considering the value of $d$.
 And the decoder should discard this idle symbol $I$,
@@ -176,16 +177,16 @@ and send $f\equiv 0$ to the receiver with whatever value on $d$.
 
 
 % This mechanism can prevent the faster transmitter from transmitting too much data 
-% that can not be handled by the slower receiver.
+% that can't be handled by the slower receiver.
 However,
 this mechanism fails the assumption of all complementary synthesis algorithms,
 % [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}],
-because $d$ can not be uniquely determined by the idle symbol $I$.
+because $d$ can't be uniquely determined by the idle symbol $I$.
 So to resolve this issue,
 we only need to consider the case $f\equiv 1$,
 in which $d$ can be uniquely determined.
 For other cases in which $f\equiv 0$,
-$d$ is not needed by the receiver.
+$d$ isn't needed by the receiver.
 So,
 % according to this insight,
 we propose a novel complementary synthesis algorithm 
@@ -204,7 +205,7 @@ to handle flow control mechanism :
 it applies the classical halting complementary synthesis algorithm \cite{ShenTCAD11}
 to identify all the input variables of the encoder that can be uniquely determined,
 and call them the flow control variables $\vec{f}$.
-Other input variables that can not be uniquely determined is called the data variables $\vec{d}$.
+Other input variables that can't be uniquely determined are called the data variables $\vec{d}$.
  \item Second,
 it infers a sufficient and necessary predicate $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined
 by a bounded sequence of the encoder's output variables $\vec{o}$.
@@ -338,7 +339,7 @@ and use McMillan's algorithm \cite{interp_McMillan} to generate it.
 % \subsection{Incremental SAT mechanism of MiniSat solver}\label{subsec_incsat}
 
 % In this paper,
-MiniSat solver \cite{EXTSAT} is used in this paper.
+MiniSat \cite{EXTSAT} is used in this paper to solve all formulas.
 % Like many other SAT solver based on conflict driven learning \cite{CONFLICTLEARN},
 It generates learned clauses from conflicts,
 and records them to prevent the same conflict from rising again.
@@ -352,7 +353,7 @@ to solve them faster.
 This mechanism includes two procedures:
 % \begin{enumerate}
 % \item
-$addClause(F)$ used to add a CNF formula $F$ to the clause database of MiniSat, and
+$addClause(F)$ used to add a CNF formula $F$ to the clause database, and
 % \item
 $solve(A)$ that solves $F$ with a set of literals $A$ as assumptions
 .
@@ -404,8 +405,8 @@ if an input variable can be uniquely determined by a bounded sequence of output 
 
 % What we describe here is a halting algorithm to determine if an input variable 
 % can be uniquely determined by a bounded sequence of output variable vector.
-\cite{ShenTCAD11} proposed the first halting algorithm.
-It iteratively unrolls the transition function.
+\citeN{ShenTCAD11} proposed the first halting algorithm
+that iteratively unrolls the transition function.
 And for each iteration,
 it uses two approximative approaches to determine the answer.
 The first one is an under-approximative one that presented in \ref{subsub_sound},
@@ -504,20 +505,20 @@ If $F_{PC}(p,l,r)$ is unsatisfiable,
 then $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for all larger $p$, $l$ and $r$.
 \end{proposition}
 
-Equation (\ref{uniqt1}) does not include an initial state,
+Equation (\ref{uniqt1}) doesn't include an initial state,
 instead it uses the $p$ steps prefix state sequence $<\vec{s_0},\dots,\vec{s_{p-1}}>$ 
 to propagate $assertion(\vec{i})$ into $<\vec{s_p},\dots,\vec{s_{p+l+r}}>$,
-such that some states that can not be reached with $assertion(\vec{i})$ can be eliminated.
+such that some states that can't be reached with $assertion(\vec{i})$ can be eliminated.
 This leads to two major advantages over considering initial states:
 First,
 it simplify and speedup our algorithm by avoiding the need to compute the reachable state set or inductive invariants.
-\cite{TuDAC13} rules out unreachable states by inferring inductive invariants.
-But it can not handle our most complex XFI benchmark \cite{ShenTCAD11},
+\citeN{TuDAC13} rules out unreachable states by inferring inductive invariants.
+But it can't handle our most complex XFI benchmark \cite{ShenTCAD11},
 while our algorithms always can.
 Second, 
 % and more importantly,
-ignoring initial states improve the decoder's reliability by 
-making the decoder's output depend on only bounded history of its input.
+ignoring initial states improves the decoder's reliability by 
+making the decoder's output depend only on  bounded history of its input.
 Thus any corrupted $\vec{o}$ can only affect the decoder for finite number of steps.
 
 Of course ignoring initial states has one drawback that it is a little bit too stronger than necessary.
@@ -528,7 +529,7 @@ instead of on the smaller state set $R$ that is reachable from initial states.
 In some cases,
 our algorithm may fail to handle properly designed encoders.
 % It is obvious that $R\subset R^p$.
-But this has not happen on all our benchmarks.
+But this has never happen on all our benchmarks.
 % 
 % Their work is orthogonal to ours.
 % So to simplify our discussion,
@@ -589,7 +590,7 @@ there are two possibilities:
  \item 
 $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for some $p$, $l$ and $r$;
  \item 
-$i_{p+l}$ can not be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for any $p$, $l$ and $r$ at all.
+$i_{p+l}$ can't be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for any $p$, $l$ and $r$ at all.
 \end{enumerate}
 
 If it is the 1st case,
@@ -635,7 +636,7 @@ the input variable can NOT be uniquely determined.
 
 
 When $F_{LN}(p,l,r)$ is satisfiable,
-then $i_{p+l}$ can not be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
+then $i_{p+l}$ can't be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
 More importantly,
 by unrolling these three loops,
 we can generalize the satisfiability of $F_{LN}(p,l,r)$ to all larger $p$, $l$ and $r$.
@@ -683,7 +684,7 @@ we know that $F_{PC}(p',l',r')$ is unsatisfiable.
 So eventually $F_{PC}(p,l,r)$ will become unsatisfiable in Line \ref{linepc1};
  \item
 On the other hand,
-if there does not exist such $p$, $l$ and $r$,
+if there doesn't exist such $p$, $l$ and $r$,
 then eventually $p$, $l$ and $r$ will be larger than the encoder's longest path without loop,
 which means that there will be three loops in $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
@@ -702,9 +703,9 @@ and then introduce how to speed up it with incremental SAT in Subsection \ref{in
 \subsection{Finding out flow control vector $\vec{f}$}\label{basic}
 
 To facilitate the presentation of our algorithm,
-we assume that the input variable vector $\vec{i}$ can be partitioned into two vectors: 
+we assume that the input variable vector $\vec{i}$ can be partitioned into 
 the flow control vector $\vec{f}$ and the data vector $\vec{d}$.
-And the algorithm to find out this partition will be presented in this Subsection.
+% And the algorithm to find out this partition will be presented in this Subsection.
 
 % In this section,
 % we propose a two-step algorithm to 
@@ -713,7 +714,7 @@ And the algorithm to find out this partition will be presented in this Subsectio
 % 
 % \subsection{}
 
-The flow control vector $\vec{f}$ are used to indicate the validness of $\vec{d}$.
+The flow control vector $\vec{f}$ is used to indicate the validness of $\vec{d}$.
 So,
 for a properly designed encoder,
 $\vec{f}$ should always be uniquely determined by a bounded sequence of the encoder's output vector $\vec{o}$,
@@ -722,7 +723,7 @@ or else the decoder cannot recognize the validness of $\vec{d}$.
 \begin{algorithm}[t]
 \SetAlgoVlined
 \KwIn{The input variable vector $\vec{i}$.}
-\KwOut{$\vec{f}\subset \vec{i}$ and $\vec{d}\subset \vec{i}$  that can and can not 
+\KwOut{$\vec{f}\subset \vec{i}$ and $\vec{d}\subset \vec{i}$  that can and can't 
 be uniquely determined ,and the maximal $p$, $l$ and $r$ reached in this searching.}
 $\vec{f}: = \{\}$;$\vec{d}:= \{\}$;$p$:= 0 ;~$l$:= 0 ;~$r$:= 0 \;
 \ShowLnLabel{while}\While{$\vec{i}\ne \{\}$}{
@@ -771,7 +772,7 @@ some data variable $d\in \vec{d}$ can be uniquely determined,
 just like a flow control variable $f\in \vec{f}$.
 In this case,
 $d$ may be identified as a flow control variable by Algorithm \ref{alg_fofc}.
-But this do not harm our overall framework,
+But this doesn't harm our overall framework,
 because the decoder's Boolean function of $d$ can still be correctly characterized in Section \ref{sec_char}.
 
 
@@ -819,7 +820,7 @@ A_{PC}(p,l,r):=
 \begin{algorithm}[b]
 \SetAlgoVlined
 \KwIn{The input variable vector $\vec{i}$.}
-\KwOut{$\vec{f}\subset \vec{i}$ and $\vec{d}\subset \vec{i}$ that can and can not 
+\KwOut{$\vec{f}\subset \vec{i}$ and $\vec{d}\subset \vec{i}$ that can and can't 
 be uniquely determined,
 and the maximal $p$, $l$ and $r$ reached in this searching.}
 $\vec{f}: = \{\}$;$\vec{d}:= \{\}$; $p$:= 0 ;~$l$:= 0 ;~$r$:= 0 \;
@@ -963,7 +964,7 @@ to characterize a Boolean function that makes a Boolean formula satisfiable.
 In Subsection \ref{subsec_infer},
 we apply this algorithm to infer $valid(\vec{f})$,
 % the predicate that enable $\vec{d}$ to be uniquely determined by a bounded sequence of $\vec{o}$.
-the predicate that enable $\vec{d}$ to be uniquely determined.
+the predicate that enables $\vec{d}$ to be uniquely determined.
 
 
 \subsection{Characterizing a function that makes a Boolean formula satisfiable}\label{subsec_craig}
@@ -1015,7 +1016,7 @@ Intuitively,
 assume that $R(\vec{a},\vec{b},1)$ is satisfiable with a satisfying assignment $A:\vec{a}\cup\vec{b}\cup\{t\}\to\{0,1\}$,
 the following new formula can be constructed by cofactoring \cite{EFFSATUSMCCO}:
 
-\begin{algorithm}[t]
+\begin{algorithm}[b]
 \SetAlgoVlined
 \KwIn{The Boolean formula $R(\vec{a},\vec{b},t)$, 
 its important variable vector $\vec{a}$,
@@ -1060,7 +1061,7 @@ $ITP(\vec{a})$ covers exactly the set of valuations of $\vec{a}$ that can make $
 Based on the foregoing discussion,
 Algorithm \ref{alg_craigchar} is proposed to characterize $FSAT_R(\vec{a})$ in Equation (\ref{fchar}).
 Line \ref{testsat} checks whether there is still some new valuation of $\vec{a}$ that can make $R(\vec{a},\vec{b},1)$ satisfiable,
-but has not been covered by $FSAT_R(\vec{a})$.
+but hasn't been covered by $FSAT_R(\vec{a})$.
 Lines \ref{cofact1} and \ref{cofact2} assign the value of $\vec{b}$ 
 from the satisfying assignment to $R(\vec{a},\vec{b},1)$ and $R(\vec{a},\vec{b},0)$ respectively.
 This will make $\vec{b}$ to no longer appear as free variables in these two formulas.
@@ -1119,11 +1120,11 @@ Its correctness will be proved in Subsection \ref{subsec_proofterm}.
 % % On the other hand,
 % But according to Figure \ref{fig_pc} and Proposition \ref{prop_pc1},
 % only the unsatisfiability of $F_{PC}(p,l,r)$ can be generalized to larger $p$, $l$ and $r$,
-% while its satisfiability can not.
+% while its satisfiability can't.
 % % $\vec{d}_{p+l}$ not uniquely determined for some particular $p$, $l$ and $r$,
 % % may become uniquely determined for larger $p$, $l$ and $r$.
 % % For example,
-% % an encoder with 3 step latency can not uniquely determine its input $\vec{i}$ with $p$, $l$ and $r$ smaller than 3.
+% % an encoder with 3 step latency can't uniquely determine its input $\vec{i}$ with $p$, $l$ and $r$ smaller than 3.
 % % But it can with $p$, $l$ and $r$ larger than 3.
 % % That means,
 % This means,
@@ -1187,7 +1188,7 @@ F^d_{PC}(p,l,r):=
 
 Here,
 $\vec{d}_{p+l}\ne \vec{d}'_{p+l}$ means some bit in $\vec{d}_{p+l}$ 
-doesn't equal to the corresponding bit in $\vec{d}'_{p+l}$.
+isn't equal to the corresponding bit in $\vec{d}'_{p+l}$.
 If $F^d_{PC}(p,l,r)$ is satisfiable,
 then $\vec{d}_{p+l}$ cannot be uniquely determined by $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$.
 We define $T_{PC}(p,l,r)$ by collecting the 3rd line of Equation (\ref{uniqt1d}):
@@ -1203,7 +1204,7 @@ T_{PC}(p,l,r):=\\
 % \end{split}
 \end{equation}
 
-\begin{figure}[b]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{mono}
 \end{center}
@@ -1267,7 +1268,7 @@ We further define:
 \end{equation}
 
 % $\vec{f}_{p+l}$ can be uniquely determined, 
-% so we do not need to consider $\vec{f'}_{p+l}$.
+% so we don't need to consider $\vec{f'}_{p+l}$.
 Thus,
 $\vec{a}\cup\vec{b}$ is the vector that contains all the input variable vectors $<\vec{i}_0,\dots,\vec{i}_{p+l+r}>$ and $<\vec{i'}_0,\dots,\vec{i'}_{p+l+r}>$
 at all steps for the two sequences of unrolled transition function.
@@ -1416,7 +1417,7 @@ and is a subset of $\neg valid(\vec{f})$.
 Thus we have the following proposition:
 
 \begin{proposition}\label{prop_ln}
-$\neg FSAT_{LN}(p,l,r)$ is an over-approximation of $valid(\vec(f))$ that shrinks monotonically.
+$\neg FSAT_{LN}(p,l,r)$ is an over-approximation of $valid(\vec{f})$ that shrinks monotonically.
 \end{proposition}
 
 This is shown intuitively in Figure \ref{fig_mono}.
@@ -1430,7 +1431,7 @@ This is shown intuitively in Figure \ref{fig_mono}.
 
 \subsubsection{\textbf{The algorithm to compute $valid(\vec{f})$}}\label{subsub_overal}.
 
-\begin{algorithm}[t]
+\begin{algorithm}[b]
 \SetAlgoVlined
 % \KwIn{The Boolean formula $R(\vec{a},\vec{b},t)$, 
 % its important variable vector $\vec{a}$,
@@ -1442,7 +1443,7 @@ $p$:= $p_{max}$;~$l$:= $l_{max}$;~$r$:= $r_{max}$ \;
   $p$ ++ ;~$l$ ++ ;~$r$ ++ \;
 }
 \KwRet {$\neg FSAT_{LN}(p,l,r)$}
-\caption{$InferringUniqueFormula$:inferring the predicate $valid(\vec{f}_{p+l})$ 
+\caption{$InferringUniqueFormula$: inferring the predicate $valid(\vec{f}_{p+l})$ 
 that enables $\vec{d}_{p+l}$ to be uniquely determined}
 \label{algo_infer}
 \end{algorithm}
@@ -1485,6 +1486,14 @@ for each $p'+l'-l-p\le n\le p'+l'+r$,
 we map $s_n$ in $F'^d_{PC}(p',l',r',1)$ to $s_{n-p'-l'+l+p}$ in $F'^d_{PC}(p,l,r,1)$.
 $i_n$ and $o_n$ are also mapped similarly.
 
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{pcmap}
+\end{center}
+\caption{Mapping $F'^d_{PC}(p',l',r',1)$ to $F'^d_{PC}(p,l,r,1)$ by aligning $(p'+l')$-step to $(p+l)$-step.}
+  \label{fig_pcmap}
+\end{figure}
+
 With this mapping, 
 we can transform the satisfying assignment $A'$ of $F'^d_{PC}(p',l',r',1)$ 
 to yet another satisfying assignment $A''$ of $F'^d_{PC}(p,l,r,1)$.
@@ -1500,15 +1509,9 @@ Thus,
 $FSAT_{PC}(p,l,r)$ monotonically decreases  with respect to $p$, $l$ and $r$.
 \end{proof}
 
-\begin{figure}[t]
-\begin{center}
-\includegraphics[width=0.7\textwidth]{pcmap}
-\end{center}
-\caption{Mapping $F'^d_{PC}(p',l',r',1)$ to $F'^d_{PC}(p,l,r,1)$ by aligning $(p'+l')$-step to $(p+l)$-step.}
-  \label{fig_pcmap}
-\end{figure}
 
-\begin{figure}[b]
+
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=0.7\textwidth]{lnmap}
 \end{center}
@@ -1564,7 +1567,7 @@ let's first prove that Algorithm \ref{algo_infer} is a halting one.
 \begin{proof}
 As the encoder is represented by a finite state machine,
 the length of the longest path without loop is finite.
-If Algorithm \ref{algo_infer} does not halt,
+If Algorithm \ref{algo_infer} doesn't halt,
 then eventually the values of $p$, $l$ and $r$ in Algorithm \ref{algo_infer} will be larger than the length of the longest path without loop,
 which means there will be loops in these three state sequences $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
@@ -1600,15 +1603,15 @@ then we have:
  Then according to Lemma \ref{lemmalninc},
  for all $p''>max(p',p)$,$l''>max(l',l)$ and $r''>max(r',r)$,
  $FSAT_{LN}(p'',l'',r'')$ also covers $A$.
- \item $FSAT_{LN}(p,l,r)$ does not cover $A$.
+ \item $FSAT_{LN}(p,l,r)$ doesn't cover $A$.
  $FSAT_{LN}(p,l,r)$ is the last one computed by Algorithm \ref{algo_infer} before it terminates.
  Which means that the $valid(\vec{f})$'s under-approximation and over-approximation have converge.
  So for all $p''>max(p',p)$,$l''>max(l',l)$ and $r''>max(r',r)$,
  $FSAT_{LN}(p'',l'',r'')$ must be equal to $FSAT_{LN}(p,l,r)$.
- Thus $FSAT_{LN}(p'',l'',r'')$ also does not cover $A$.
+ Thus $FSAT_{LN}(p'',l'',r'')$ also doesn't cover $A$.
 \end{enumerate}
 
-These two cases conflit with each other.
+These two cases conflict with each other.
 So there is no such $A$ covered by $\neg FSAT_{LN}(p,l,r)$ that makes $\vec{d}$ to be \textbf{NOT} uniquely determined for some particular $p'$, $l'$ and $r'$.
 So the only covering case is proved.
 \end{proof}
@@ -1634,9 +1637,9 @@ in the decoder's area and delay.
 % and then recover $i_i$ from the delayed $o$.
 According to Figure \ref{fig_pc},
 % it is obvious that,
-$r$ affect both the decoder's delay and area,
-$l$ affect only the decoder's area,
-while $p$ does not affect the decoder.
+$r$ affects both the decoder's delay and area,
+$l$ affects only the decoder's area,
+while $p$ doesn't affect the decoder.
 
 So as shown in Algorithm \ref{algo_remove2}
 we chose to first minimize $r$, 
@@ -1826,11 +1829,11 @@ A Craig interpolant $ITP$ can be derived by McMillan's algorithm \cite{interp_Mc
 and used as the decoder's Boolean function that computes $d\in\vec{d}$.
 
 Furthermore,
-when $valid(\vec{f}_{p+l})$ does not hold,
+when $valid(\vec{f}_{p+l})$ doesn't hold,
 the data variable $d\in\vec{d}_{p+l}$ cannot be uniquely determined.
 So,
 no function can be used to calculate its value.
-But this is not a problem,
+But this isn't a problem,
 because the decoder is supposed 
 to only recover the value of control flow vector $\vec{f}$,
 and ignore the exact value of $\vec{d}$ in this case.
@@ -1885,7 +1888,7 @@ we can also use the incremental SAT approach in Subsection \ref{subsec_fdec} to 
 % \subsection{Frequency Assignment}
 % 
 % We propose a suboptimal distribution to be used by each node, which is
-% easy to compute and does not depend on the number of competing
+% easy to compute and doesn't depend on the number of competing
 % nodes. A natural candidate is an increasing geometric sequence, in
 
 % which
@@ -2155,7 +2158,7 @@ how will we present their experimental result:
  \item 
 By studying the 5 benchmarks used in our previous papers \cite{ShenTCAD12},
 we found that most of them have built-in flow control mechanisms.
-This is not a surprise to us,
+This isn't a surprise to us,
 because these benchmarks all come from real industrial projects.
 These three benchmarks will be presented in Subsection 
 \ref{subsec_pcie2},\ref{subsec_10g} and \ref{subsec_t2e}.
@@ -2163,11 +2166,11 @@ These three benchmarks will be presented in Subsection
 For all other benchmarks in Table \ref{tab:summ} without flow control mechanism,
 if their input variables can always uniquely determined,
 our algorithm can recognize all their input variables as flow control variables,
-and direct generate their decoder's Boolean functions.
+and directly generate their decoder's Boolean functions.
 Their experimental results will be presented in Subsection \ref{subsec_nonflow}.
 %  \item 
 % The last two benchmarks in Table \ref{tab:summ} only exist in \cite{LiuTCAD12}.
-% We can not find their source code in the benchmark package sent to us by Liu.
+% We can't find their source code in the benchmark package sent to us by Liu.
 % So we will not discuss them here.
 \end{enumerate}
 
@@ -2274,7 +2277,7 @@ $encode\_data\_in$ can be of any value.
 But when $konstant\equiv 1$,
 $encode\_data\_in$ can only be 1C, 3C, 5C, 7C, 9C, BC, DC, FC, F7, FB, FD and FE.
 So,
-we write an assertion to exclude those combinations that are not in this table.
+we write an assertion to exclude those combinations that aren't in this table.
 % and embed it into the the transition function $T$.
 
 Algorithm \ref{alg_fofc} identifies $\vec{f}:=bad\_code$ in 0.31 seconds.
@@ -2285,7 +2288,7 @@ The decoder contains 163 gates and 0 registers with area 370 and delay 8.1.
 
 Although this encoder uses the same coding mechanism as does the PCI Express 2.0 encoder mentioned above,
 the way it handles the invalid data vector is different.
-This encoder does not have a separate output variable to indicate the validness of the output data;
+This encoder doesn't have a separate output variable to indicate the validness of the output data;
 instead,
 the validness and exact value of all input variables are both encoded in $encode\_data\_out$.
 By studying this encoder's source code,
@@ -2482,9 +2485,9 @@ We compare these two cases in Table \ref{tab:comparing_simu_sepa}.
 % and the last two benchmarks are those without flow control mechanism.
 
 By comparing the total run time in column 6 and 11,
-obviously A2 is faster than A1 in most of the case.
+obviously A2 is faster than A1 in most cases.
 % The only exception is the T2Eth.
-But this does not mean that we should use A2 instead of A1.
+But this doesn't mean that we should use A2 instead of A1.
 % The answer is NO.
 
 According to Subsection \ref{alter},
@@ -2492,7 +2495,7 @@ A1 needs to call SAT solver for $O(n)$ times,
 with $n=max(p,l,r)$.
 And A2 need to call SAT solver for $O(n^3)$ times.
 For benchmarks with small $n$,
-these two approaches do not have too much difference on this overhead.
+these two approaches don't have too much difference on this overhead.
 But for benchmarks with larger $n$,
 such as T2Eth,
 their difference is significant.
@@ -2500,7 +2503,7 @@ their difference is significant.
 % especially the row of T2Eth.
 
 A2 beats A1 in smaller circuits,
-while A1 win on larger ones.
+while A1 wins on larger ones.
 So we chose A1.
 % that is,
 % first increase $p$, $l$ and $r$ simultaneously,
@@ -2514,7 +2517,7 @@ For the A2 case,
 its decoder contains 10 registers, 61 gates, 154 area and 9.6 delay,
 which is comparable to that of \cite{LiuTCAD12} in Table \ref{tab:comp_nocf}.
 So A2 case is much better than A1.
-But this still does not mean we need to increasing $p$, $l$ and $r$ separately.
+But this still doesn't mean we need to increasing $p$, $l$ and $r$ separately.
 We will talk about this in the next subsection again and explain why.
 
 \subsection{Comparing run times, areas and delay between the two approaches 
@@ -2548,8 +2551,8 @@ The experimental results are presented in Table \ref{tab:compare_min}.
 % The first column is the benchmarks.
 % The second and third columns are the run time overhead of 
 % finding out the flow control vector $\vec{f}$ and inferring $valid(\vec{f})$.
-When Algorithm \ref{algo_remove2} is not used,
-the 2nd to 6th columns give respectively the $p$, $l$ and $r$ valuation,
+When Algorithm \ref{algo_remove2} isn't used,
+the 2nd to 6th columns give respectively the $p$, $l$ and $r$ valuations,
 the runtime to generate the decoder,
 the decoder area,
 the number of registers,
@@ -2573,7 +2576,7 @@ The smaller one with area 154 and delay 9.6 is comparable to that of \cite{LiuTC
 
 Which decoder implementation finally generated for CC\_4 is determined by some instable implementation detail in the SAT solver and the Craig interpolant algorithm.
 So this answer the confusion in the previous subsection that,
-the circuit quality degradation in the A1 case is not caused by increasing $p$, $l$ and $r$ concurrently.
+the circuit quality degradation in the A1 case isn't caused by increasing $p$, $l$ and $r$ concurrently.
 We should still increase them concurrently and then minimize them with Algorithm \ref{algo_remove2}.
 
 
@@ -2599,7 +2602,7 @@ SCRAMBLER& 698     & 3.8                & 1035   & 6.4                          
 The experimental results are presented in Table \ref{tab:comparing_hand}.
 % Table \ref{tab:comparing_hand} compares the area and delay of 
 % the decoders generated by our algorithm and manually written decoders.
-CC\_3, CC\_4, HM(7,4) and HM(15,11 ) are not presented because we don't have their source code.
+CC\_3, CC\_4, HM(7,4) and HM(15,11 ) aren't presented because we don't have their source code.
 Most our decoders are smaller and faster than the manually written ones.
 The only exceptions are the T2Eth and XFI, 
 our generated decoders are a little bit larger.
@@ -2625,7 +2628,7 @@ in building the decoder.
 The halting problem was independently tackled in \cite{ShenTCAD11} and \cite{LiuICCAD11} by searching for loops in the state sequence,
 while the runtime overhead problem was addressed in \cite{ShenTCAD12,LiuICCAD11} by interpolant \cite{interp_McMillan}.
 
-Shen et al. \citeyear{ShenTCAD12} automatically inferred an assertion for configuration pins, 
+\citeN{ShenTCAD12} automatically inferred an assertion for configuration pins, 
 which can lead to the decoder's existence.
 It can be seen as a special case of Algorithm \ref{algo_infer},
 with the restriction that the inferred assertion must hold on all steps.
@@ -2635,7 +2638,7 @@ on the other hand,
 is the first algorithm that allows states with and without the inferred assertion to be interleaved freely with each other.
 % which make it possible to handle encoder with flow control mechanism.
 
-Tu et al. \cite{TuDAC13} takes the encoder's initial states into consideration
+\citeN{TuDAC13} takes the encoder's initial states into consideration
 with property directed reachability analysis \cite{EenFMCAD11},
 so that the encoder's infinite history can be used to generate the decoder's output.
 This algorithm can handle some encoders that cannot be handled by the state-of-the-art algorithms.
@@ -2645,25 +2648,25 @@ This algorithm can handle some encoders that cannot be handled by the state-of-t
 % According to \cite{dim_syn},
 Program inversion derives a program $P^{-1}$
 that negates the computation of a given program $P$.
-So,
+So
 it is very similar to complementary synthesis.
 
 The initial work on program inversion \cite{prog_inv} used proof-based approaches,
 which could handle only very small programs and very simple syntax structures.
 
-Gl\"{u}ck et al. \cite{mtd_autoProginv} inverted first-order functional programs
+\citeN{mtd_autoProginv} inverted first-order functional programs
 by eliminating nondeterminism with LR-based parsing methods.
-But,
+But
 the use of functional languages in that work is incompatible with our complementary synthesis.
 
-Srivastava et al. \cite{program_inversion_11} assumed that an inverse program was related to the original program,
+\citeN{program_inversion_11} assumed that an inverse program was related to the original program,
 so the space of possible inversions can be inferred by automatically
 mining the original program for expressions, predicates, and control flow.
-This algorithm inductively rules out invalid paths that cannot fulfill the requirement of inversion
+This algorithm inductively rules out invalid paths that can't fulfill the requirement of inversion
 % to narrow down the space of candidate programs 
 until only the valid ones remain.
 So,
-it can not guarantee the correctness of it solution if its assumptions do not hold.
+it can't guarantee the correctness of its solution if its assumptions don't hold.
 
 % \subsection{The completeness of bounded model checking}\label{subsec_bmc_relate}
 % Bounded model checking(BMC) \cite{bmc_tacas99} is a model checking technology that considers only paths of limited length.
@@ -2735,11 +2738,11 @@ it can not guarantee the correctness of it solution if its assumptions do not ho
 Some algorithms try to enumerate all satisfying assignments faster 
 by enlarging each complete satisfying assignment.
 % so that a large state set that contains more complete satisfying assignments can be obtained.
-McMillan \cite{SATUNBMC} constructs an alternative implication graph in SAT solver,
+\citeN{SATUNBMC} constructs an alternative implication graph in SAT solver,
 which records the reasoning relation that leads to the assignment of a particular variable.
 All variables outside this graph can be ruled out from the complete assignment.
 In \cite{MINASS} and \cite{REPARAM},
-those variables whose absence can not make $obj\equiv 0$ satisfiable are removed one by one.
+those variables whose absence can't make $obj\equiv 0$ satisfiable are removed one by one.
 In \cite{MINCEX} and \cite{PRIMECLAUSE},
 conflict analysis based approaches are used
 to remove multiple irrelevant variables in one SAT run.
@@ -2750,18 +2753,18 @@ Thus,
 the important subset forms a search tree,
 with each leaf being another search tree for the unimportant set.
 %Tobias Nopper et al.\cite{CMPMINCEX} propose an counterexample minimization algorithm for incomplete designs that contain black box.
-Cofactoring \cite{EFFSATUSMCCO} qualifies out unimportant variables by setting them to constant value returned by the SAT solver.
+\citeN{EFFSATUSMCCO} qualifies out unimportant variables by setting them to constant value returned by the SAT solver.
 
 Other algorithms constructs interpolations to cover more satisfying assignments.
-\cite{InterpBoolFunction}
+\citeN{InterpBoolFunction}
 constructs a first formula that contradicts with another formula,
 from which an interpolation can be derived and used as an over-approximation of the first formula.
-\cite{interpNoProof} generates
+\citeN{interpNoProof} generates
 interpolation with a framework similar to the iterative enumerating and 
 enlarging approaches mentioned above.
 But there are two enlarging steps for each enumerated assignment,
 in which the assignments are enlarged with respect to the two formulas involved in constructing interpolant.
-It is the first paper that constructs interpolation without proof.
+It is the first paper that constructs interpolant without proof.
 
 % \subsection{Logic synthesis with Craig interpolation}
 % In \cite{scalableFuncDep,Bidecomp},
@@ -2776,7 +2779,7 @@ It is the first paper that constructs interpolation without proof.
 % In \cite{InterpBoolFunction},
 % the first algorithm to characterize a Boolean function from a Boolean Relation was proposed. 
 % It includes two different algorithms:
-% The first one handle a general  non-deterministic Boolean relation that can not uniquely determined its output, 
+% The first one handle a general  non-deterministic Boolean relation that can't uniquely determined its output, 
 % The second one is a special case of the first one 
 % that handles a deterministic relation that can uniquely determine its output by Craig interpolation.
 % The second one is used in \cite{ShenTCAD12}.
@@ -2898,7 +2901,7 @@ The authors would like to thank the anonymous reviewers for their fruitful sugge
 % channel-switching time of Micaz motes: 24.3 $\mu$s. We then conduct
 % the same experiments with different Micaz motes, as well as
 % experiments with the transmitter switching from Channel 11 to other
-% channels. In both scenarios, the channel-switching time does not have
+% channels. In both scenarios, the channel-switching time doesn't have
 % obvious changes. (In our experiments, all values are in the range of
 % 23.6 $\mu$s to 24.9 $\mu$s.)
 
