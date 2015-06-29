@@ -1,0 +1,44 @@
+\contentsline {chapter}{\numberline {1}面向流控机制的对偶综合}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1} 引言}{1}{section.1.1}
+\contentsline {section}{\numberline {1.2}背景知识}{2}{section.1.2}
+\contentsline {subsection}{\numberline {1.2.1}命题逻辑可满足问题}{2}{subsection.1.2.1}
+\contentsline {subsection}{\numberline {1.2.2}MiniSat 求解器的递增求解机制}{3}{subsection.1.2.2}
+\contentsline {subsection}{\numberline {1.2.3}有限状态机}{4}{subsection.1.2.3}
+\contentsline {subsection}{\numberline {1.2.4}确认一个输入变量是否能够被输出变量的有限长序列唯一决定的停机算法}{4}{subsection.1.2.4}
+\contentsline {subsubsection}{\numberline {1.2.4.1}下估计算法}{5}{subsubsection.1.2.4.1}
+\contentsline {subsubsection}{\numberline {1.2.4.2}上估计算法}{6}{subsubsection.1.2.4.2}
+\contentsline {subsubsection}{\numberline {1.2.4.3}完整算法}{7}{subsubsection.1.2.4.3}
+\contentsline {section}{\numberline {1.3}识别流控变量}{8}{section.1.3}
+\contentsline {subsection}{\numberline {1.3.1}识别流控变量$\mathaccentV {vec}17E{f}$}{8}{subsection.1.3.1}
+\contentsline {subsection}{\numberline {1.3.2}使用增量SAT求解加速识别算法}{9}{subsection.1.3.2}
+\contentsline {section}{\numberline {1.4}推导使得数据变量向量被唯一决定的谓词}{11}{section.1.4}
+\contentsline {subsection}{\numberline {1.4.1}特征化使得特定CNF公式被满足的谓词}{11}{subsection.1.4.1}
+\contentsline {subsection}{\numberline {1.4.2}推导使得$\mathaccentV {vec}17E{d}$ 被唯一决定的谓词$valid(\mathaccentV {vec}17E{f})$}{12}{subsection.1.4.2}
+\contentsline {subsubsection}{\numberline {1.4.2.1}\textbf {计算$valid(\mathaccentV {vec}17E{f})$的单调增长的下估计}}{13}{subsubsection.1.4.2.1}
+\contentsline {subsubsection}{\numberline {1.4.2.2}\textbf {计算$valid(\mathaccentV {vec}17E{f})$的单调递减上估计}}{14}{subsubsection.1.4.2.2}
+\contentsline {subsubsection}{\numberline {1.4.2.3}\textbf {计算$valid(\mathaccentV {vec}17E{f})$的算法}}{15}{subsubsection.1.4.2.3}
+\contentsline {subsection}{\numberline {1.4.3}停机和正确性证明}{16}{subsection.1.4.3}
+\contentsline {section}{\numberline {1.5}压缩迁移关系展开序列的长度}{19}{section.1.5}
+\contentsline {subsection}{\numberline {1.5.1}压缩$l$ 和$r$}{19}{subsection.1.5.1}
+\contentsline {subsection}{\numberline {1.5.2}另一种可能的算法结构}{20}{subsection.1.5.2}
+\contentsline {section}{\numberline {1.6}产生解码器函数}{20}{section.1.6}
+\contentsline {subsection}{\numberline {1.6.1}产生$\mathaccentV {vec}17E{f}$的解码器函数}{20}{subsection.1.6.1}
+\contentsline {subsection}{\numberline {1.6.2}产生$\mathaccentV {vec}17E{d}$的解码函数}{21}{subsection.1.6.2}
+\contentsline {section}{\numberline {1.7}实验结果}{22}{section.1.7}
+\contentsline {subsection}{\numberline {1.7.1}测试集}{22}{subsection.1.7.1}
+\contentsline {subsection}{\numberline {1.7.2}PCI Express 2.0 编码器}{23}{subsection.1.7.2}
+\contentsline {subsection}{\numberline {1.7.3}10G 以太网编码器XGXS}{24}{subsection.1.7.3}
+\contentsline {subsection}{\numberline {1.7.4}UltraSPARC T2 以太网编码器}{24}{subsection.1.7.4}
+\contentsline {subsection}{\numberline {1.7.5}针对不具备流控机制的编码器比较我们的算法和现有算法}{25}{subsection.1.7.5}
+\contentsline {subsection}{\numberline {1.7.6}比较两种可能性：同时增长$p$, $l$ 和$r$ 或者单独增长}{26}{subsection.1.7.6}
+\contentsline {subsection}{\numberline {1.7.7}在压缩和不压缩$l$ 和$r$的两种算法之间比较运行时间，电路面积和延迟}{27}{subsection.1.7.7}
+\contentsline {subsection}{\numberline {1.7.8}在我们的算法和手工书写的解码器之间比较电路面积和延迟}{28}{subsection.1.7.8}
+\contentsline {section}{\numberline {1.8}相关工作}{29}{section.1.8}
+\contentsline {subsection}{\numberline {1.8.1}对偶综合}{29}{subsection.1.8.1}
+\contentsline {subsection}{\numberline {1.8.2}程序求反}{29}{subsection.1.8.2}
+\contentsline {subsection}{\numberline {1.8.3}协议转换}{30}{subsection.1.8.3}
+\contentsline {subsection}{\numberline {1.8.4}可满足赋值遍历}{30}{subsection.1.8.4}
+\contentsline {subsection}{\numberline {1.8.5}基于Craig插值的逻辑综合算法}{30}{subsection.1.8.5}
+\contentsline {section}{\numberline {1.9}结论}{31}{section.1.9}
+\contentsline {chapter}{参考文献}{33}{section*.20}
+\contentsfinish 

@@ -1,0 +1,10 @@
+\contentsline {table}{\numberline {1.1}{\ignorespaces Benchmarks\relax }}{23}{table.caption.11}
+\contentsline {table}{\numberline {1.2}{\ignorespaces PCI Express 2.0 编码器的输入和输出变量描述\relax }}{24}{table.caption.12}
+\contentsline {table}{\numberline {1.3}{\ignorespaces 10G 以太网编码器XGXS的输入和输出\relax }}{25}{table.caption.13}
+\contentsline {table}{\numberline {1.4}{\ignorespaces UltraSPARC T2 以太网编码器的输入输出列表\relax }}{25}{table.caption.14}
+\contentsline {table}{\numberline {1.5}{\ignorespaces UltraSPARC T2 以太网编码器的动作列表\relax }}{26}{table.caption.15}
+\contentsline {table}{\numberline {1.6}{\ignorespaces 比较我们的算法和\textsuperscript {\cite {LiuTCAD12}}的算法\relax }}{26}{table.caption.16}
+\contentsline {table}{\numberline {1.7}{\ignorespaces 比较两种可能性：同时增长$p$, $l$ 和$r$ 或者单独增长\relax }}{27}{table.caption.17}
+\contentsline {table}{\numberline {1.8}{\ignorespaces 在压缩和不压缩$l$ 和$r$的两种算法之间比较运行时间，电路面积和延迟\relax }}{28}{table.caption.18}
+\contentsline {table}{\numberline {1.9}{\ignorespaces 在我们的算法和手工书写的解码器之间比较电路面积和延迟\relax }}{29}{table.caption.19}
+\contentsfinish 

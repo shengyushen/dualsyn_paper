@@ -1,0 +1,64 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: thesis.aux
+The style file: bstutf8.bst
+Database file #1: ref/refs.bib
+-- BUPTThesis.bst version 1.0 Beta 1 (2009/05/31) by Yu Zhang.
+-- http://code.google.com/p/buptthesis/
+-- See the "userguide.pdf" manual for usage information.
+Warning--The editor in ShenICCAD09 is missing.
+Warning--empty editor in ShenICCAD09
+Warning--The refdate in ShenTCAD10 is missing.
+Warning--The refdate in ShenTCAD11 is missing.
+Warning--The refdate in ShenTCAD12 is missing.
+Warning--The editor in LiuICCAD11 is missing.
+Warning--empty editor in LiuICCAD11
+Warning--The refdate in LiuTCAD12 is missing.
+Warning--The editor in TuDAC13 is missing.
+Warning--empty editor in TuDAC13
+Warning--empty editor in flowcontrol
+Warning--empty booktitle in flowcontrol
+Warning--there's a publisher but no address in flowcontrol
+Warning--The editor in CHAFF is missing.
+Warning--empty editor in CHAFF
+Warning--The editor in grasp is missing.
+Warning--empty editor in grasp
+Warning--The editor in BERKMIN is missing.
+Warning--empty editor in BERKMIN
+Warning--The editor in EFFSATUSMCCO is missing.
+Warning--empty editor in EFFSATUSMCCO
+Warning--The editor in CONFLICTLEARN is missing.
+Warning--empty editor in CONFLICTLEARN
+Warning--The author in ABC is missing.
+Warning--The refdate in encode8b10b is missing.
+Warning--The editor in EenFMCAD11 is missing.
+Warning--empty editor in EenFMCAD11
+Warning--The editor in dim_syn is missing.
+Warning--empty editor in dim_syn
+Warning--The editor in prog_inv is missing.
+Warning--empty editor in prog_inv
+Warning--The refdate in mtd_autoProginv is missing.
+Warning--The editor in program_inversion_11 is missing.
+Warning--empty editor in program_inversion_11
+Warning--The editor in converter_date08 is missing.
+Warning--empty editor in converter_date08
+Warning--The refdate in converter_todeas09 is missing.
+Warning--The editor in converter_date09 is missing.
+Warning--empty editor in converter_date09
+Warning--The editor in REPARAM is missing.
+Warning--empty editor in REPARAM
+Warning--The editor in PRIMECLAUSE is missing.
+Warning--empty editor in PRIMECLAUSE
+Warning--The editor in InterpBoolFunction is missing.
+Warning--empty editor in InterpBoolFunction
+Warning--The editor in scalableFuncDep is missing.
+Warning--empty editor in scalableFuncDep
+Warning--The editor in Bidecomp is missing.
+Warning--empty editor in Bidecomp
+Warning--The editor in ecoInterp is missing.
+Warning--empty editor in ecoInterp
+Warning--empty pages in DBLP:journals/corr/cond-mat-0111153
+Warning--The refdate in DBLP:journals/corr/cond-mat-0111153 is missing.
+Warning--The author in Yongzhi_Wang is missing.
+Warning--There is month but no year in Yongzhi_Wang
+
+Done.
+(There were 55 warnings)
