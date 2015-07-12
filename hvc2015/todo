@@ -1,0 +1,20 @@
+1	original compsyns all treate ambitious as invalid, and rule them all out
+  but this may rule out some valid together with some invalid
+	so we need an debug methods
+2	resolving ambitious with counterexample minimization
+	or "minimization counterexample of complementary synthesis"
+3	infer the delta between two assertions, either on state machines predicates or on input pattern
+4	infer the preceding pattern that resolve current ambitious
+
+
+NOT used any longer
+
+1	checking field, 
+	association and distribution with formality
+	inferring zero
+	inferring inverse, first craig then unsat
+
+2	original compsyn is to find the f^-1, while compsyn for fec is to find a function from a larger codomain
+
+
+

@@ -1,0 +1,3 @@
+rm -rf *.log *.dvi *~ *.blg *.backup *.aux *.bbl
+
+
