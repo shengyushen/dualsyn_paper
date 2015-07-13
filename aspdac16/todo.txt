@@ -1,0 +1,3 @@
+unify the registers and states
+fig1c) C*C is not clear
+

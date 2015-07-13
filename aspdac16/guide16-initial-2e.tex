@@ -143,11 +143,10 @@ that can be exploited to overcome these problems.
 % \textbf{
 Thus,
 we propose a novel algorithm to first find out the encoder's pipeline registers in each pipeline stage,
-and then characterize these pipeline registers' Boolean function
-with support set from the next pipeline stage.
-Finally,
-the Boolean function of the encoder's input variables can be characterized 
-with support set from the first pipeline stage.
+and then characterize all Boolean functions that recover each of these pipeline registers
+from the registers in the next pipeline stage,
+and finally characterize the Boolean functions that recover the encoder's input variables 
+from the first pipeline stage.
 % }
 
 % \textbf{
@@ -190,28 +189,28 @@ significantly improve the quality of the generated decoders.
 
 For example,
 one simple encoder is shown in Figure \ref{fig_pipe}a).
-It has a pipeline stage with two registers $r_0$ and $r_1$.
-The two inputs variables $i_0$ and $i_1$ are used to compute $r_0$ and $r_1$,
-while $r_0$ and $r_1$ are used to compute the output variables $\vec{o}$.
+It has a pipeline stage with two registers $r^0$ and $r^1$.
+The two inputs variables $i^0$ and $i^1$ are used to compute $r^0$ and $r^1$,
+while $r^0$ and $r^1$ are used to compute the output variables $\vec{o}$.
 According to this structure,
-$r_0$ and $r_1$ can be uniquely determined by $\vec{o}$,
-while $i_0$ and $i_1$ can be uniquely determined by $r_0$ and $r_1$.
+$r^0$ and $r^1$ can be uniquely determined by $\vec{o}$,
+while $i^0$ and $i^1$ can be uniquely determined by $r^0$ and $r^1$.
 So,
 a properly designed decoder,
 often written by human engineers,
 should be like the one shown in Figure \ref{fig_pipe}b),
-which recovers $r_0$ and $r_1$ from $\vec{o}$ with combinational logic $C_1$
-and further recovers $i_0$ and $i_1$ from $r_0$ and $r_1$ with combinational logic $C_0$ and $C'_0$.
+which recovers $r^0$ and $r^1$ from $\vec{o}$ with combinational logic $C^2$
+and further recovers $i^0$ and $i^1$ from $r^0$ and $r^1$ with combinational logic $C^0$ and $C^1$.
 
 Such a decoder has the following advantages:
 % \begin{enumerate}
 %  \item 
  \textbf{First},
- $C_1$ is shared in recovering $i_0$ and $i_1$,
+ $C^2$ is shared in recovering $i^0$ and $i^1$,
  which improves the circuit area.
 %  \item 
  \textbf{Second},
- the critical path is cut by registers $r_0$ and $r_1$, 
+ the critical path is cut by registers $r^0$ and $r^1$, 
  which improves the circuit speed.
 %  \item 
  \textbf{Finally},
@@ -224,8 +223,8 @@ all complementary synthesis algorithms \cite{ShenTCAD10,ShenTCAD11,ShenTCAD12,Li
 generate the decoder's Boolean function with Jiang's algorithm \cite{InterpBoolFunction} 
 based on Craig interpolant \cite{Craig}.
 As shown in Figure \ref{fig_pipe}c),
-these Boolean function recover $i_0$ and $i_1$ directly from $\vec{o}$ 
-with two large combinational logic $C_0*C_1$ and $C'_0*C_1$
+these Boolean function recover $i^0$ and $i^1$ directly from $\vec{o}$ 
+with two large combinational logic $C^0*C^2$ and $C^1*C^2$
 without any pipeline registers.
 
 Thus,
@@ -233,9 +232,9 @@ such decoder have the following major shortcomings:
 % \begin{enumerate}
 %  \item 
  \textbf{First}, their circuit area are unnecessarily large because 
- the common logic $C_1$ are hidden deeply in
- the two large combinational logic $C_0*C_1$ and $C'_0*C_1$.
- It is difficult to factor out $C_1$, 
+ the common logic $C^2$ are hidden deeply in
+ the two large combinational logic $C^0*C^2$ and $C^1*C^2$.
+ It is difficult to factor out $C^2$, 
  especially for XOR-rich circuits.
 %  \item 
  \textbf{Second}, the decoder is unnecessarily slow because 
@@ -246,19 +245,19 @@ such decoder have the following major shortcomings:
 % \end{enumerate}
 
 To overcome these shortcomings,
-we propose in this paper a novel algorithm to 
-first infer the pipeline structure of the encoder,
-and then characterize the Boolean functions recovering each pipeline registers with support set from the next pipeline stage.
-Finally, 
-the Boolean function recovering each input variables can be characterized with support set from the first pipeline stage.
+we propose a novel algorithm to first find out the encoder's pipeline registers in each pipeline stage,
+and then characterize all Boolean functions that recover each of these pipeline registers
+from the registers in the next pipeline stage,
+and finally characterize the Boolean functions that recover the encoder's input variables 
+from the first pipeline stage.
 
-\begin{figure*}[t]
+\begin{figure}[t]
 \begin{center}
-\includegraphics[width=\textwidth]{pc}
+\includegraphics[width=0.5\textwidth]{pcln}
 \end{center}
 \caption{The under and over-approximative approaches}
   \label{fig_pc}
-\end{figure*}
+\end{figure}
 
 Experimental results on several complex encoders,
 such as PCI Express \cite{pcie21} and Ethernet \cite{IEEE8023_S4},
@@ -294,11 +293,10 @@ then we say $v\in\vec{v}$;
 otherwise $v\notin\vec{v}$.
 % For a variable $v$ and a vector $\vec{v}$,
 % if $v\notin\vec{v}$,
-The vector that contains both $v$ and all members of $\vec{v}$ is $v\cup\vec{v}$.
-The vector that contains all members of $\vec{v}$ except $v$
-is $\vec{v}-v$.
-For two vectors $\vec{a}$ and $\vec{b}$,
-the new vector with all members of $\vec{a}$ and $\vec{b}$ is denoted as $\vec{a}\cup\vec{b}$.
+$v\cup\vec{v}$ is the vector containing both $v$ and all members of $\vec{v}$.
+$\vec{v}/\vec{w}$ is the vector containing all members of $\vec{v}$ but no member of $\vec{w}$.
+% For two vectors $\vec{a}$ and $\vec{b}$,
+$\vec{a}\cup\vec{b}$ is the vector with all members of $\vec{a}$ and $\vec{b}$.
 The set of truth valuations of $\vec{v}$ is $[\![\vec{v}]\!]$,
 for instance,
 $[\![(v_1,v_2)]\!]=\{(0,0),(0,1),(1,0),(1,1)\}$.
@@ -343,7 +341,7 @@ it is unsatisfiable.
 % \subsection{Craig interpolation}\label{subsec_pre_interp}
 % Craig\cite{Craig} had proved the following theorem:
 % \begin{theorem}[Craig Interpolation Theorem\cite{Craig}]\label{thm_craig}
-Given two Boolean formulas $\phi_A$ and $\phi_B$,
+For formulas $\phi_A$ and $\phi_B$,
 with $\phi_A\wedge \phi_B$ unsatisfiable,
 there exists a formula $\phi_I$ referring only
 to the common variables of $\phi_A$ and $\phi_B$ such that $\phi_A\Rightarrow \phi_I$
@@ -625,7 +623,23 @@ $F_{PC}(p,l,r)$ will eventually become unsatisfiable.
 But if it is the 2nd case,
 this method will never terminate.
 
-
+\begin{algorithm}[t]
+\SetAlgoVlined
+\KwIn{The input variable $i\in\vec{i}$.}
+\KwOut{whether $i\in\vec{i}$ can be uniquely determined by $\vec{o}$, and the value of $p$, $l$ and $r$.}
+$p$:= 0; ~$l$:= 0;~$r$:= 0\;
+\While{$1$}{
+   $p$++;~$l$++;~$r$++\;\ShowLnLabel{linepc1}
+   \uIf{$F_{PC}(p,l,r)$ is unsatisfiable}{
+    \KwRet ($1$, $p$, $l$, $r$);
+   }\ShowLnLabel{lnsat}\uElseIf{$F_{LN}(p,l,r)$ is satisfiable} {
+    \KwRet ($0$, $p$, $l$, $r$);
+   }
+}
+\caption{$CheckUniqueness(i)$: The halting algorithm to determine 
+whether $i\in\vec{i}$ can be uniquely determined by a bounded sequence of output variable vector $\vec{o}$}
+\label{alg_pcln}
+\end{algorithm}
 
 So,
 to obtain a halting algorithm,
@@ -672,25 +686,6 @@ Please refer to \cite{ShenTCAD11} for more detail of this.
 
 \subsubsection{The full algorithm}\label{subsub_algo}
 
-\begin{algorithm}[t]
-\SetAlgoVlined
-\KwIn{The input variable $i\in\vec{i}$.}
-\KwOut{whether $i\in\vec{i}$ can be uniquely determined by $\vec{o}$, and the value of $p$, $l$ and $r$.}
-$p$:= 0; ~$l$:= 0;~$r$:= 0\;
-\While{$1$}{
-   $p$++;~$l$++;~$r$++\;\ShowLnLabel{linepc1}
-   \uIf{$F_{PC}(p,l,r)$ is unsatisfiable}{
-    \KwRet ($1$, $p$, $l$, $r$);
-   }\ShowLnLabel{lnsat}\uElseIf{$F_{LN}(p,l,r)$ is satisfiable} {
-    \KwRet ($0$, $p$, $l$, $r$);
-   }
-}
-\caption{$CheckUniqueness(i)$: The halting algorithm to determine 
-whether $i\in\vec{i}$ can be uniquely determined by a bounded sequence of output variable vector $\vec{o}$}
-\label{alg_pcln}
-\end{algorithm}
-
-
 With Propositions \ref{prop_pc1} and \ref{prop_ln1},
 we can generalize their bounded proof to unbounded cases.
 This leads to the halting
@@ -713,15 +708,388 @@ $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
 This will make $F_{LN}(p,l,r)$ satisfiable in Line \ref{lnsat}.
 \end{enumerate}
 
-
 Both cases will lead to this Algorithm's termination.
 Please refer to \cite{ShenTCAD11} for more detail of this algorithm's correctness and termination proof.
 
+
+
+
+
 \section{Inferring the encoder's pipeline structure}\label{sec_pipeinfer}
 
+\subsection{A general model for the encoder}
+As shown in Figure \ref{fig_pipeenc},
+we assume that the 
+the encoder have $n$ pipeline stages.
+If we take the combinational logic block $C^j$ as a function,
+then this encoder can be represented by the following equations.
 
+\begin{equation}\label{equ_genpipe}
+\begin{array}{cccc}
+\vec{stg}^0   & := & C^0(\vec{i})         &\\
+\vec{stg}^j   & := & C^j(\vec{stg}^{j-1}) & 1\le j\le n-1\\
+\vec{o}       & := & C^n(\vec{stg}^{n-1}) &
+\end{array}
+\end{equation}
+
+
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{pipemod}
+\end{center}
+\caption{A general structure of the encoder}
+  \label{fig_pipeenc}
+\end{figure}
+
+
+Thus,
+each $C^j$ can be seen as a small encoder that computes $\vec{stg}^j$ or $\vec{o}$
+from $\vec{stg}^{j-1}$ or $\vec{i}$.
+
+\subsection{Inferring $p$, $l$ and $r$}\label{subsec_inferplr}
+Before inferring the pipeline stages,
+we first apply Algorithm \ref{alg_pcln} to infer the value of $p$, $l$ and $r$ that can make the 
+output sequence $<o_{p},\dots,o_{p+l+r}>$ uniquely determine all $i\in \vec{i}_{p+l}$.
+
+As there are more than one $i\in \vec{i}$,
+we need to apply Algorithm \ref{alg_pcln} for each $i\in \vec{i}$ 
+to get the $p$, $l$ and $r$ for each of them.
+
+And then we set the final $p$,$l$ and $r$ to be the maximal $p$, $l$ and $r$ of all $i\in \vec{i}$ respectively.
+According to Equation \ref{uniqt1},
+these values of $p$, $l$ and $r$ can indeed make the 
+output sequence $<o_{p},\dots,o_{p+l+r}>$ uniquely determine all $i_{p+l}\in \vec{i}_{p+l}$.
+
+
+\subsection{Minimizing $r$ and $l$}\label{reduceing}
+
+\begin{algorithm}[t]
+\SetAlgoVlined
+\For{$r':=r \to 0$} {
+\ShowLnLabel{testr_1}
+  \If{$r'\equiv 0$ or $F_{PC}(p,l,r'-1)$ is satisfiable for some $i\in \vec{i}$} {
+    break
+  }
+}
+return $r'$
+\caption{$RemoveRedundancy(p,l,r)$}
+\label{algo_remove2}
+\end{algorithm}
+
+As Algorithm \ref{alg_pcln} increases $p$, $l$ and $r$ simultaneously,
+there may be some redundancy in the value of $l$ and $r$.
+So we need to first minimize $r$ in Algorithm \ref{algo_remove2}
+
+
+% To simplify the presentation,
+% we will only introduce the $r$ case.
+In Line \ref{testr_1},
+when $F_{PC}(p,l,r'-1)$ is satisfiable,
+then $r'$ is the last one that makes it unsatisfiable,
+we return it directly.
+On the other hand,
+when $r'\equiv 0$,
+$F_{PC}(p,l,0)$ must have been tested in the last iteration,
+and the result must be unsatisfiable.
+In this case we return $0$.
+
+% Minimizing $l$ is similar but with two exceptions:
+% First, 
+% the range of $l'$ to be enumerated contains some negative value,
+% which means $i$ only depend on the value of $o$ in the future.
+% Second,
+% to be compatible with such cases,
+% we use a new formula $F'_{PC}$ in Line \ref{testr_2}.
+% When $l\ge 0$,
+% $F'_{PC}$ equals to $F_{PC}$.
+% But when $l<0$,
+% $F'_{PC}$ is define below:
+% 
+% \begin{multline}\label{uniqt11}
+% % \begin{split}
+% F'_{PC}(p,l,r):=\\
+% \left\{
+% \begin{array}{cc}
+% &\bigwedge_{m=0}^{p+l+r}
+% \{
+% (\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+% \}
+% \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}
+% \{
+% (\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+% \}
+% \\
+% \wedge&\bigwedge_{m=p-l}^{p+r}\vec{o}_m\equiv \vec{o'}_m \\
+% \wedge& i_{p}\equiv 1 \wedge  i'_{p}\equiv 0 
+% % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
+% \end{array}
+% \right\}
+% % \end{split}
+% \end{multline}
+% 
+% The only change of Equation (\ref{uniqt11}) compared to Equation (\ref{uniqt1})
+% are that 
+% the range of output vector is change to $p-l\le m\le p+r$,
+% while the subscripts of $i$ and $i'$ in the last line refer to $p$ only,
+% $l$ are removed.
+
+Now, 
+we have a minimized $r$ from Algorithm \ref{algo_remove2},
+which can make $\vec{i}_{p+l}$ to be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
+
+We further require that 
+\begin{enumerate}
+ \item As shown in Figure \ref{fig_pc1},
+ $l$ can be reduced to 0,
+ which means $\vec{i}_{p}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+r}>$,
+ that is,
+ the set of future outputs.
+ \item The above mentioned output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+r}>$ 
+ can be further reduced to $\vec{o}_{p+r}$.
+ This means $\vec{o}_{p+r}$ is the only output vector needed to recover the input vector $\vec{i}_p$.
+\end{enumerate}
+
+Checking these two requirements
+equals to checking the unsatisfiability of the following equation.
+
+\begin{multline}\label{uniqt11}
+% \begin{split}
+F'_{PC}(p,r):=\\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\vec{o}_{p+r}\equiv \vec{o'}_{p+r} \\
+\wedge& i_{p}\equiv 1 \wedge  i'_{p}\equiv 0 
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+
+This equation seems much stronger than the general requirement in Equation (\ref{uniqt1}).
+But we will show in experimental results that 
+they are always fulfilled.
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.25\textwidth]{pc1}
+\end{center}
+\caption{Recovering input with reduced output sequence}
+  \label{fig_pc1}
+\end{figure}
+
+\subsection{Inferring pipeline stages}\label{subsec_inferstage}
+
+Now,
+with the inferred $p$ and $r$,
+we need to generalize $F'_{PC}$ in Equation (\ref{uniqt11}) to the following new formula that
+can determine whether a particular variable $v$ at step $j$
+can be uniquely determined by a vector $\vec{w}$ at step $k$.
+Now $v$ and $\vec{w}$ can be either input, registers or output variables.
+
+\begin{multline}\label{uniqt2}
+% \begin{split}
+F''_{PC}(p,r,v,j,\vec{w},k):=\\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\vec{w}_{k}\equiv \vec{w'}_{k} \\
+\wedge& v_{j}\equiv 1 \wedge  v'_{j}\equiv 0 
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+Obviously,
+when $F''_{PC}(p,r,v,j,\vec{w},k)$ is unsatisfiable,
+$\vec{w}_k$ can uniquely determine $v_j$.
+
+The last pipeline stage $\vec{stg}^{n-1}$ is 
+exactly the set of registers $s\in \vec{s}$ 
+that can be uniquely determined at the $p+r$-th step by $\vec{o}$.
+With Equation (\ref{uniqt2}),
+it can be formally defined as:
+
+\begin{multline}\label{stgn_1}
+ \vec{stg}^{n-1} := 
+\left\{
+ s\in \vec{s} ~| 
+\begin{array}{cc}
+ F''_{PC}(p,r,
+ s,p+r,
+ \vec{o},p+r)\\
+ ~is~unsatisfiable
+\end{array}
+\right\}
+\end{multline}
+
+And the second to last pipeline stage $\vec{stg}^{n-2}$ 
+is exactly the set of registers $s\in \vec{s}/\vec{stg}^{n-1}$
+that can be uniquely determined at the $p+r-1$-th step by $\vec{stg}^{n-1}$ at $p+r$-th step.
+
+\begin{multline}\label{stgn_2}
+ \vec{stg}^{n-2} := \\
+ \left\{
+ s\in \vec{s}/\vec{stg}^{n-1} ~| 
+\begin{array}{cc}
+ F''_{PC}(p,r,s,p+r-1,\vec{stg}^{n-1},p+r)\\
+ ~is~unsatisfiable
+\end{array}
+\right\}
+\end{multline}
+
+Similarly,
+we can recursively defined $\vec{stg}^j$ below,
+where $0\le j\le n-2$:
+
+\begin{multline}\label{stgn_def}
+\begin{array}{ccc}
+S             & := & \vec{s}/\bigcup_{j<k\le n-2}\vec{stg}^{k}\\
+D             & := & (n-2)-(p+r-1)\\
+\end{array}
+\end{multline}
+
+\begin{multline}\label{stgn_j}
+\vec{stg}^{j} := \\
+ \left\{
+ s\in S ~| 
+\begin{array}{cc}
+ F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)\\
+ ~is~unsatisfiable
+\end{array}
+\right\}
+\end{multline}
+
+With Equation (\ref{stgn_1}) and (\ref{stgn_j}),
+all the pipeline stages can now be inferred.
 
 \section{Characterizing the Boolean function of input variables and pipeline registers}\label{sec_char}
+\subsection{Characterizing the Boolean function of the last pipeline stage}
+
+According to Equation (\ref{stgn_1}),
+every registers $s\in \vec{stg}^{n-1}$ can be uniquely determined by $\vec{o}$ at the $p+r$-th step,
+that is,
+$F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ is unsatisfiable.
+
+$F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ can be partitioned into the following two formulas:
+
+\begin{multline}
+ \phi_A := \\
+ \left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge& s_{p+r}\equiv 1 
+\end{array}
+\right\}
+\end{multline}
+
+\begin{multline}
+% \begin{split}
+\phi_B := \\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\vec{o}_{p+r}\equiv \vec{o'}_{p+r} \\
+\wedge& s'_{p+r}\equiv 0 
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+As $F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ equals to $\phi_A \wedge \phi_B$,
+so $\phi_A \wedge \phi_B$ is unsatisfiable.
+And the common variables of $\phi_A$ and $\phi_B$ is $\vec{o}_{p+r}$.
+
+According to \cite{InterpBoolFunction},
+a Craig interpolant $\phi_I$ of $\phi_A$ with respect to $\phi_B$ can be constructed,
+which refer only to $\vec{o}_{p+r}$,
+and covers all the valuation of $\vec{o}_{p+r}$ that can make $s_{p+r}\equiv 1$.
+At the same time,
+$\phi_I\wedge \phi_B$ is unsatisfiable,
+which means $\phi_I$ covers nothing that can make $s_{p+r}\equiv 0$.
+
+Thus,
+$\phi_I$ can be used as the decoder's Boolean function that recovers $s\in \vec{stg}^{n-1}$ from $\vec{o}$.
+
+\subsection{Characterizing the Boolean function of the other pipeline stages}
+Similar to last subsection,
+we can partition the unsatisfiable formula $F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)$ 
+in Equation (\ref{stgn_j}) into the following two equations:
+
+\begin{multline}
+ \phi_A := \\
+ \left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge& s_{j-D}\equiv 1 
+\end{array}
+\right\}
+\end{multline}
+
+\begin{multline}
+% \begin{split}
+\phi_B := \\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\vec{s}_{j-D+1}\equiv \vec{s'}_{j-D+1} \\
+\wedge& s'_{j-D}\equiv 0 
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+Again,
+a Craig interpolant $\phi_I$ of $\phi_A$ with respect to $\phi_B$ can be constructed,
+and used as the decoder's Boolean function that recovers $s\in \vec{stg}^{j}$ from $\vec{stg}^{j+1}$.
+
+\subsection{Characterizing the Boolean function of the encoder's input variables}
+
+
 
 
 \section{Experimental Results}\label{sec_exp}
@@ -738,7 +1106,7 @@ Please refer to \cite{ShenTCAD11} for more detail of this algorithm's correctnes
 %
 %The incomplete problem has been addressed by \cite{ShengYuShen:fmcad10}, while \cite{ShengYuShen:tcad} addresses the second shortcoming by simplifying the SAT instance with unsatisfiable core extraction before building decoders.
 
-\subsection{Complementary synthesis}\label{subsec_compsyn_relat}
+% \subsection{Complementary synthesis}\label{subsec_compsyn_relat}
 The first complementary synthesis algorithm was proposed by \cite{ShenICCAD09}.
 It checks the decoder's existence by iteratively increasing the bound of unrolled transition function sequence,
 and generates the decoder's Boolean function by enumerating all satisfying assignments of the decoder's output.
@@ -839,19 +1207,19 @@ This algorithm can handle some encoders that cannot be handled by the state-of-t
 %which assumes that each agents act to achieve their own goals instead of failing each other.
 
 
-\subsection{Protocol converter synthesis}
-Protocol converter synthesis is a process that automatically generates a translator between two different communication protocols.
-This is relevant to our work,
-because both focus on synthesizing communication circuits.
-
-In \cite{converter_date08,converter_todeas09},
-Avnit et al. first defined a general model for describing different protocols,
-and then provided an algorithm to decide
-whether there is some functionality of a protocol that cannot be translated into another.
-Finally,
-they synthesized a translator by computing the greatest fixed point for the update function of the buffer's control states.
-Latter in \cite{converter_date09}, 
-they improved their algorithm with a more efficient design space exploration algorithm.
+% \subsection{Protocol converter synthesis}
+% Protocol converter synthesis is a process that automatically generates a translator between two different communication protocols.
+% This is relevant to our work,
+% because both focus on synthesizing communication circuits.
+% 
+% In \cite{converter_date08,converter_todeas09},
+% Avnit et al. first defined a general model for describing different protocols,
+% and then provided an algorithm to decide
+% whether there is some functionality of a protocol that cannot be translated into another.
+% Finally,
+% they synthesized a translator by computing the greatest fixed point for the update function of the buffer's control states.
+% Latter in \cite{converter_date09}, 
+% they improved their algorithm with a more efficient design space exploration algorithm.
 
 % \subsection{Satisfying Assignments Enumeration}\label{subsec_relallsat}
 % 
