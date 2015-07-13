@@ -37,6 +37,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \documentclass[twocolumn]{article}
+\usepackage[ruled,linesnumbered]{algorithm2e}
+\usepackage[pdftex]{graphicx}
+\usepackage{amsmath,amsfonts}
+
+\newtheorem{proposition}{Proposition}
 %% If you use dvips and ps2pdf, please use Postscript font 
 %% and uncomment the line below.
 %%\usepackage{times}
@@ -116,12 +121,7 @@ minus3pt\let\@listi\@listI}
 
 %for two authors
 \author{
-\\
-\\
-\\
-\\
-\\
-\\ % To make more spaces just add \\!
+% To make more spaces just add \\!
 }
 \maketitle
 \thispagestyle{empty}
@@ -130,33 +130,30 @@ minus3pt\let\@listi\@listI}
 \textbf{
 Abstract}---
 Complementary synthesis automatically generates an encoder's decoder
-that recovers the encoder's inputs variables from its output variables.
+that recovers the encoder's inputs from its output.
 However,
-the Boolean function of the decoder are characterized by Craig interpolant,
-and thus include lots of random logic gates that make it
-unnecessarily large and difficult to be understood by human.
-By studying the structure of many encoders from real industrial projects,
-we found that most of them have a pipeline structure 
-that can be exploited to overcome these two problems.
+the generated decoders  
+include duplicated and non-pipelined logic that make it
+unnecessarily large and slow.
+On the other hand,
+many encoders from industrial projects have pipelined structure 
+that can be exploited to overcome these problems.
 % }
 
 % \textbf{
 Thus,
 we propose a novel algorithm to first find out the encoder's pipeline registers in each pipeline stage,
-and then characterize the Boolean function of these pipeline registers and the encoder's input variables 
+and then characterize these pipeline registers' Boolean function
 with support set from the next pipeline stage.
-% Finally,
-% the Boolean function of the input variables can be characterized 
-% with support set from the first pipeline stage.
+Finally,
+the Boolean function of the encoder's input variables can be characterized 
+with support set from the first pipeline stage.
 % }
 
 % \textbf{
 Experimental results on several complex encoders indicate that
-this algorithm can always correctly infer the encoder's pipeline structure,
-and generate the Boolean functions for the pipeline registers and input variables.
-Furthermore,
-the circuit area are significantly reduced,
-and the generated decoder's structure are much more easier to be understood.
+this algorithm can always correctly generate the decoders with significantly
+improved circuit area and speed.
 % }
 }
 
@@ -179,162 +176,761 @@ the decoder's Boolean function can be characterized
 with the algorithm proposed by Jiang et al. \cite{InterpBoolFunction}
 based on Craig interpolant \cite{Craig}.
 
+By studying the structure of many encoders from industrial projects,
+we find that most of them have a pipeline structure that can be exploited to
+significantly improve the quality of the generated decoders.
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{pipeline}
+\end{center}
+\caption{The pipelined encoder and its decoders}
+  \label{fig_pipe}
+\end{figure}
+
+For example,
+one simple encoder is shown in Figure \ref{fig_pipe}a).
+It has a pipeline stage with two registers $r_0$ and $r_1$.
+The two inputs variables $i_0$ and $i_1$ are used to compute $r_0$ and $r_1$,
+while $r_0$ and $r_1$ are used to compute the output variables $\vec{o}$.
+According to this structure,
+$r_0$ and $r_1$ can be uniquely determined by $\vec{o}$,
+while $i_0$ and $i_1$ can be uniquely determined by $r_0$ and $r_1$.
+So,
+a properly designed decoder,
+often written by human engineers,
+should be like the one shown in Figure \ref{fig_pipe}b),
+which recovers $r_0$ and $r_1$ from $\vec{o}$ with combinational logic $C_1$
+and further recovers $i_0$ and $i_1$ from $r_0$ and $r_1$ with combinational logic $C_0$ and $C'_0$.
+
+Such a decoder has the following advantages:
+% \begin{enumerate}
+%  \item 
+ \textbf{First},
+ $C_1$ is shared in recovering $i_0$ and $i_1$,
+ which improves the circuit area.
+%  \item 
+ \textbf{Second},
+ the critical path is cut by registers $r_0$ and $r_1$, 
+ which improves the circuit speed.
+%  \item 
+ \textbf{Finally},
+ the pipeline structure is preserved,
+ which makes it much more easier to be understood by human.
+% \end{enumerate}
+
 However,
-the decoders generated in this way have two major shortcomings:
-\begin{enumerate}
- \item Its circuit area is unnecessarily large because 
- some common logic for two different input variables $i_1,i_2\in \vec{i}$ are hidden deeply in
- the two Boolean function computed by Craig interpolants.
- \item The decoder's circuit structure are lost, 
+all complementary synthesis algorithms \cite{ShenTCAD10,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+generate the decoder's Boolean function with Jiang's algorithm \cite{InterpBoolFunction} 
+based on Craig interpolant \cite{Craig}.
+As shown in Figure \ref{fig_pipe}c),
+these Boolean function recover $i_0$ and $i_1$ directly from $\vec{o}$ 
+with two large combinational logic $C_0*C_1$ and $C'_0*C_1$
+without any pipeline registers.
+
+Thus,
+such decoder have the following major shortcomings:
+% \begin{enumerate}
+%  \item 
+ \textbf{First}, their circuit area are unnecessarily large because 
+ the common logic $C_1$ are hidden deeply in
+ the two large combinational logic $C_0*C_1$ and $C'_0*C_1$.
+ It is difficult to factor out $C_1$, 
+ especially for XOR-rich circuits.
+%  \item 
+ \textbf{Second}, the decoder is unnecessarily slow because 
+ there are no registers to cut its critical path.
+%  \item 
+ \textbf{Finally},the decoder's pipeline structure are lost, 
  which make it very difficult to be understood by human engineers.
+% \end{enumerate}
+
+To overcome these shortcomings,
+we propose in this paper a novel algorithm to 
+first infer the pipeline structure of the encoder,
+and then characterize the Boolean functions recovering each pipeline registers with support set from the next pipeline stage.
+Finally, 
+the Boolean function recovering each input variables can be characterized with support set from the first pipeline stage.
+
+\begin{figure*}[t]
+\begin{center}
+\includegraphics[width=\textwidth]{pc}
+\end{center}
+\caption{The under and over-approximative approaches}
+  \label{fig_pc}
+\end{figure*}
+
+Experimental results on several complex encoders,
+such as PCI Express \cite{pcie21} and Ethernet \cite{IEEE8023_S4},
+indicate that
+this algorithm can always correctly generate the decoder with significantly improved
+circuit area and speed,
+and the generated decoder are much more easier to be understood.
+
+\emph{The remainder of this paper is organized as follows}.
+%Section \ref{sec_casestudy} explains our ideas with a simple example.
+Section \ref{sec_prem} introduces the background material;
+Section \ref{sec_pipeinfer} infer the pipeline structure,
+while Section \ref{sec_char} characterizes the Boolean function that recovers the input variables and pipeline registers;
+Sections \ref{sec_exp} and \ref{sec_relwork} present the experimental results and related works;
+Finally,
+Section \ref{sec_conclude} sums up the conclusion.
+
+
+\section{Preliminaries}\label{sec_prem}
+
+% \subsection{Flow control mechanism}\label{subsec_fc}
+
+
+
+\subsection{Propositional satisfiability}\label{subsec_SAT}
+% We use a denotation similar to that of \cite{TuDAC13}.
+The Boolean set is $\mathbb{B}=\{0,1\}$.
+A variables vector is $\vec{v}=(v,\dots)$.
+The number of variables in $\vec{v}$ is $|\vec{v}|$.
+If a variable $v$ is a member of $\vec{v}$,
+% that is $\vec{v}=(\dots,v,\dots)$,
+then we say $v\in\vec{v}$;
+otherwise $v\notin\vec{v}$.
+% For a variable $v$ and a vector $\vec{v}$,
+% if $v\notin\vec{v}$,
+The vector that contains both $v$ and all members of $\vec{v}$ is $v\cup\vec{v}$.
+The vector that contains all members of $\vec{v}$ except $v$
+is $\vec{v}-v$.
+For two vectors $\vec{a}$ and $\vec{b}$,
+the new vector with all members of $\vec{a}$ and $\vec{b}$ is denoted as $\vec{a}\cup\vec{b}$.
+The set of truth valuations of $\vec{v}$ is $[\![\vec{v}]\!]$,
+for instance,
+$[\![(v_1,v_2)]\!]=\{(0,0),(0,1),(1,0),(1,1)\}$.
+
+% A Boolean formula $F$ over a variable set $V$ is constructed by connecting variables from $V$ 
+% with symbols $\neg$, $\wedge$, $\vee$ and $\Rightarrow$,
+% which stand for logical connectives negation, conjunction, disjunction, and implication, respectively.
+
+The propositional satisfiability problem(SAT) for a formula $F$ over a variable set $V$ 
+is to find a satisfying assignment $A:V\to \mathbb{B}$,
+so that $F$ can be evaluated to $1$.
+If $A$ exists, then $F$ is satisfiable;
+otherwise,
+it is unsatisfiable.
+
+% A computer program that decides the existence of such a satisfying assignment is called a SAT solver,
+%  such as Zchaff\cite{CHAFF},
+%  Grasp\cite{grasp},
+%  Berkmin\cite{BERKMIN},
+%  and MiniSat\cite{EXTSAT}.
+ 
+% Normally,
+% a SAT solver requires the formula to be represented in the conjunctive normal form(CNF),
+% in which a formula is a conjunction of its clause set,
+% and a clause is a disjunction of its literal set,
+% and a literal is a variable or its negation.
+% A formula in the CNF format is also called a SAT instance,
+
+
+% \subsection{Cofactoring}\label{subsec_pre_cofact}
+
+% For a Boolean function $f:B^n\to B$,
+% we use $supp(f)$ to denote its support set $\{v_1\dots v_n\}$.
+% According to \cite{EFFSATUSMCCO},
+% the positive and negative cofactors of $f(v_1\dots v\dots v_n)$ with respect to variable
+% $v$ are $f_{v\equiv 1}=f(v_1\dots 1\dots v_n)$ and $f_{v\equiv 0}=f(v_1\dots 0\dots v_n)$,
+% respectively.
+% % Existential quantification of $f(v_1\dots v\dots v_n)$ with respect to a
+% % variable $v$ is $\exists v f=f_v+f_v’$.
+% \textbf{Cofactoring} is the action that applies 1 or 0 to $v$ to get $f_{v\equiv 1}$ or $f_{v\equiv 0}$.
+
+% \subsection{Craig interpolation}\label{subsec_pre_interp}
+% Craig\cite{Craig} had proved the following theorem:
+% \begin{theorem}[Craig Interpolation Theorem\cite{Craig}]\label{thm_craig}
+Given two Boolean formulas $\phi_A$ and $\phi_B$,
+with $\phi_A\wedge \phi_B$ unsatisfiable,
+there exists a formula $\phi_I$ referring only
+to the common variables of $\phi_A$ and $\phi_B$ such that $\phi_A\Rightarrow \phi_I$
+and $\phi_I\wedge \phi_B$ is unsatisfiable.
+$\phi_I$ is the \textbf{Craig interpolant} \cite{Craig} of $\phi_A$ with respect to $\phi_B$,
+% \end{theorem}
+and can be computed with McMillan's algorithm \cite{interp_McMillan}.
+
+% In the remainder of this paper,
+% we will focus on the propositional logic only,
+% There are many approaches to generate interpolants for propositional logic,
+% so please refer to Krajicek\cite{interp_Krajicek},
+% Pudlak\cite{interp_Pudlak} and McMillan\cite{interp_McMillan} for more details.
+% which is generated by MiniSat\cite{EXTSAT}.
+
+
+% \subsection{Incremental SAT mechanism of MiniSat solver}\label{subsec_incsat}
+
+% In this paper,
+% MiniSat \cite{EXTSAT} is used in this paper to solve all formulas.
+% % Like many other SAT solver based on conflict driven learning \cite{CONFLICTLEARN},
+% It generates learned clauses from conflicts,
+% and records them to prevent the same conflict from rising again.
+% % This mechanism can significantly speedup a particular SAT solving.
+% % In many applications,
+% % there often exists a serial of CNF formulas tightly related to each other.
+% % If the learned clauses can be shared between them,
+% % then these formulas can be solved much faster.
+% It provides an incremental SAT mechanism that can share learned clauses between related formulas
+% to solve them faster.
+% This mechanism includes two procedures:
+% % \begin{enumerate}
+% % \item
+% $addClause(F)$ used to add a CNF formula $F$ to the clause database, and
+% % \item
+% $solve(A)$ that solves $F$ with a set of literals $A$ as assumptions
+% .
+% \end{enumerate}
+
+
+\subsection{Finite state machine}
+
+% \begin{figure}[t]
+% \centering
+% \includegraphics{mealy}
+% \caption{Mealy finite state machine}
+% \label{mealy}
+% \end{figure}
+
+The encoder is modeled by a finite state machine(FSM) $M=(\vec{s},\vec{i},\vec{o},T)$,
+consisting of a state variable vector $\vec{s}$,
+% an initial state $s_0\in S$,
+an input variable vector $\vec{i}$,
+% a finite set of configuration letters $C$,
+an output variable vector $\vec{o}$,
+and a transition function $T: [\![\vec{s}]\!]\times [\![\vec{i}]\!]\to [\![\vec{s}]\!]\times [\![\vec{o}]\!]$ 
+that computes the next state and output variable vector from the current state and input variable vector.
+
+% As shown in Figure \ref{mealy},
+% as well as in the remainder of this paper,
+% the state is represented as a gray round corner box,
+% and the transition function $T$ is represented as a white rectangle.
+The behavior of FSM $M$ can be reasoned by unrolling transition function for multiple steps.
+The state variable $s\in\vec{s}$, input variable $i\in\vec{i}$ and output variable $o\in\vec{o}$ at the $n$-th step 
+are respectively denoted as $s_n$, $i_n$ and $o_n$.
+Furthermore,
+the state, the input and the output variable vectors at the $n$-th step are respectively denoted as $\vec{s}_n$, $\vec{i}_n$ and $\vec{o}_n$.
+% We further denote the sequence of state, input letter and output letter from the $n$-th to the $m$-th step respectively as $s_n^m$, $i_n^m$ and $o_n^m$.
+A \textbf{path} is a state sequence $<\vec{s}_n,\dots,\vec{s}_m>$ with $\exists \vec{i}_j\vec{o}_j (\vec{s}_{j+1},\vec{o}_j)\equiv T(\vec{s}_j,\vec{i}_j)$ for all $n\le j< m$.
+A \textbf{loop} is a path $<\vec{s}_n,\dots,\vec{s}_m>$ with $\vec{s}_n\equiv \vec{s}_m$.
+
+\subsection{The halting algorithm to determine 
+if an input variable can be uniquely determined by a bounded sequence of output variable vector}\label{subsec_chkextdec}
+
+% All the state-of-the-art complementary synthesis algorithms 
+% [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}] assume that $\vec{i}$ can be uniquely determined,
+% so they always take $\vec{i}$ as a whole,
+% and never consider individual variables $i\in\vec{i}$.
+% But in this paper,
+% we need to check each $i\in\vec{i}$ one by one,
+% so there may be minor differences between our presentation here and that of 
+% [\citeNP{ShenICCAD09};\citeyearNP{ShenTCAD10,ShenTCAD11,ShenTCAD12};\citeNP{LiuICCAD11};\citeyearNP{LiuTCAD12};\citeNP{TuDAC13}].
+
+% What we describe here is a halting algorithm to determine if an input variable 
+% can be uniquely determined by a bounded sequence of output variable vector.
+The first halting algorithm \cite{ShenTCAD11} iteratively unrolls the transition function.
+For each iteration,
+it uses an under-approximative and an over-approximative approaches 
+presented respectively in \ref{subsub_sound} and \ref{subsub_complete}
+to determine the answer.
+% The first one is an under-approximative one that presented in \ref{subsub_sound},
+% while the second one is an over-approximative one presented in \ref{subsub_complete}.
+% That is,
+% when the first one says YES then the final answer is YES,
+% and when the second approach says NO then the final answer is NO.
+We will show in \ref{subsub_algo} that 
+these two approaches will eventually converge to a conclusive answer.
+
+\subsubsection{The under-approximative approach}\label{subsub_sound}
+
+As shown in Figure \ref{fig_pc}a),
+on the unrolled transition functions,
+an input variable $i\in\vec{i}$ can be uniquely determined,
+if there exist three integers $p$, $l$ and $r$,
+such that for any particular valuation of the output sequence $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$,
+$i_{p+l}$ cannot be 0 and 1 at the same time.
+This is equal to the unsatisfiability of $F_{PC}(p,l,r)$ in Equation (\ref{uniqt1}).
+
+\begin{multline}\label{uniqt1}
+% \begin{split}
+F_{PC}(p,l,r):=\\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
+\wedge& i_{p+l}\equiv 1 \wedge  i'_{p+l}\equiv 0 
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+
+% \begin{figure*}[t]
+% \begin{center}
+% \includegraphics[width=\textwidth]{ln}
+% \end{center}
+% \caption{The over-approximative  approach checking if $i_{p+l}$ can NOT be uniquely determined}
+%   \label{fig_ln}
+% \end{figure*}
+
+Here,
+$p$ is the length of the prefix state transition sequence.
+$l$ and $r$ are the lengths of the two output sequences 
+$<\vec{o}_{p+1},\dots,\vec{o}_{p+l}>$ and $<\vec{o}_{p+l+1},\dots,\vec{o}_{p+l+r}>$
+used to determine $i_{p+l}$.
+Line 1 of Equation (\ref{uniqt1}) corresponds to the left path in Figure \ref{fig_pc},
+while Line 2 corresponds to the right path in Figure \ref{fig_pc}.
+These two paths are of the same length.
+Line 3 forces these two paths' output sequences to be the same,
+while Line 4 forces their $i_{p+l}$ to be different.
+% Line 5 and 6 are the assertion predicates given 
+% by the user that constrain the valid valuation on $\vec{i}$.
+% PC in $F_{PC}$ is the abbreviation of "parameterized complementary",
+% which means $F_{PC}(p,l,r)$ is used to check whether the encoder's input can be uniquely determined with the three parameters $p$, $l$ and $r$.
+
+
+% According to Figure \ref{fig_pc},
+% the first three lines of Equation (\ref{uniqt1}) are two unrolled transition function sequences with the same output sequences.
+% They can always be satisfied with the same input variable vectors and initial state vector.
+% And the last two lines are constraints on input variable vectors.
+% We always check their satisfiability before running our algorithm.
+% So the unsatisfiability of $F_{PC}(p,l,r)$ always means $i_{p+l}\equiv i'_{p+l}$.
+
+
+% According to Figure \ref{fig_pc},
+% % it is obvious that,
+% if $F_{PC}(p,l,r)$ is unsatisfiable,
+% then $F_{PC}(p',l',r')$ is also unsatisfiable for $p'\ge p$, $l'\ge l$ and $r'\ge r$.
+According to Equation (\ref{uniqt1}),
+% and Figure \ref{fig_pc},
+% we can find that,
+for $p'\ge p$, $l'\ge l$ and $r'\ge r$,
+the clause set of $F_{PC}(p',l',r')$ is a super set of $F_{PC}(p,l,r)$.
+% This also lead to the same conclusion.
+% This means,
+So,
+the bounded proof of $F_{PC}(p,l,r)$'s unsatisfiability
+can be generalized to unbounded cases.
+
+
+\begin{proposition}\label{prop_pc1}
+If $F_{PC}(p,l,r)$ is unsatisfiable,
+% then $i_{p+l}$ cannot take on two different values for any particular valuation of the output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$,
+then $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for all larger $p$, $l$ and $r$.
+\end{proposition}
+
+% Equation (\ref{uniqt1}) doesn't include an initial state,
+% instead it uses the $p$ steps prefix state sequence $<\vec{s_0},\dots,\vec{s_{p-1}}>$ 
+% to propagate $assertion(\vec{i})$ into $<\vec{s_p},\dots,\vec{s_{p+l+r}}>$,
+% such that some states that can't be reached with $assertion(\vec{i})$ can be eliminated.
+% This leads to two major advantages over considering initial states:
+% First,
+% it simplify and speedup our algorithm by avoiding the need to compute the reachable state set or inductive invariants.
+% \cite{TuDAC13} rules out unreachable states by inferring inductive invariants.
+% But it can't handle our most complex XFI benchmark \cite{ShenTCAD11},
+% while our algorithms always can.
+% Second, 
+% % and more importantly,
+% ignoring initial states improves the decoder's reliability by 
+% making the decoder's output depend only on  bounded history of its input.
+% Thus any corrupted $\vec{o}$ can only affect the decoder for finite number of steps.
+% 
+% Of course ignoring initial states has one drawback that it is a little bit too stronger than necessary.
+% That is,
+% it requires that $\vec{i}$ must be uniquely determined on a larger state set $R^p$ 
+% that is reachable in $p$ steps from any states,
+% instead of on the smaller state set $R$ that is reachable from initial states.
+% In some cases,
+% our algorithm may fail to handle properly designed encoders.
+% % It is obvious that $R\subset R^p$.
+% But this has never happen on all our benchmarks.
+% 
+% Their work is orthogonal to ours.
+% So to simplify our discussion,
+% we will not integrate their work here.
+% At the same time,
+% for all the benchmarks we have tried,
+% our current approach is sufficient.
+
+
+
+% $d$ is the relative delay between $o_{n+d-l}^{n+d-1}$ and $i_n$,
+% while $l$ is the length of $o_{n+d-l}^{n+d-1}$,
+% and $p$ is the length of the prefix path used to rule out some unreachable states.
+% This condition is formally defined below:
+
+% \begin{definition11}\label{def_pcc}%\addtolength{\itemsep}{-0.5\baselineskip}
+% %{\setlength{\baselineskip}{0.5\baselineskip}
+% \textbf{Parameterized Complementary Condition (PC)}:
+% For encoder $E$,
+% assertion $R$,
+% and three integers $p$,$d$ and $l$,
+% $E\vDash PC(p,d,l,R)$ holds if
+% \begin{enumerate}
+%  \item $i_n$ can be uniquely determined by $o_{n+d-l}^{n+d-1}$ on $s_{n-p}^{n+d-1}$.
+%  \item $R$ covers all $c_x$, where $n-p\le x\le n+d-1$.
+% \end{enumerate}
+% 
+% This equals the unsatisfiability of $F_{PC}(p,d,l,R)$ in Equation (\ref{uniqt1}).
+% We further define $E\vDash PC(R)$ as $\exists p,d,l:E\vDash PC(p,d,l,R)$.
+% \end{definition11}
+
+%This definition is the same as that of Subsection \ref{subsec_chkextdec} and paper \cite{ShengYuShen:iccad09}.
+
+
+% At the same time,
+% the last three lines of Equation (\ref{uniqt1}) correspond to Condition 2 of Definition \ref{def_pcc}.
+% The 6th and the 7th lines constrain that all configuration letters are equal to $c$,
+% while the last line constrains $c$ to be covered by $R$.
+
+% The algorithm based on checking $E\vDash PC(R)$\cite{ShengYuShen:iccad09,ShengYuShen:tcad} just enumerates all combinations of $p$,$d$ and $l$,
+% from small to large,
+% until $F_{PC}(p,d,l,R)$ becomes unsatisfiable,
+% which means that the decoder $E^{-1}$ exists.
+% 
+% \begin{figure}[b]
+% \begin{center}
+% \includegraphics[width=0.45\textwidth]{doubleloop}
+% \end{center}
+% \caption{The loop-like non-complementary condition}
+%   \label{fig_double_loop}
+% \end{figure}
+
+\subsubsection{The over-approximative approach}\label{subsub_complete}
+
+For $F_{PC}(p,l,r)$ presented in last subsection,
+there are two possibilities:
+\begin{enumerate}
+ \item 
+$i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for some $p$, $l$ and $r$;
+ \item 
+$i_{p+l}$ can't be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for any $p$, $l$ and $r$ at all.
+\end{enumerate}
+
+If it is the 1st case,
+then by iteratively increasing  $p$, $l$ and $r$,
+$F_{PC}(p,l,r)$ will eventually become unsatisfiable.
+But if it is the 2nd case,
+this method will never terminate.
+
+
+
+So,
+to obtain a halting algorithm,
+we need to distinguish these two cases.
+One such solution is shown in Figure \ref{fig_pc}b),
+which is similar to Figure \ref{fig_pc} but with three additional constraints used to detect loops 
+on the three state sequences $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
+$<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
+It is formally defined in Equation (\ref{uniqln}) with the last three lines corresponding to the three new constraints used to detect loops.
+
+\begin{multline}\label{uniqln}
+% \begin{split}
+F_{LN}(p,l,r):=\\
+\left\{
+\begin{array}{cc}
+&F_{PC}(p,l,r)\\
+\wedge&\bigvee_{x=0}^{p-1}\bigvee_{y=x+1}^{p} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
+\wedge&\bigvee_{x=p+1}^{p+l-1}\bigvee_{y=x+1}^{p+l} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
+\wedge&\bigvee_{x=p+l+1}^{p+l+r-1}\bigvee_{y=x+1}^{p+l+r} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\}
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+% LN in $F_{LN}$ stands for "loop non-complementary",
+% which means $F_{LN}(p,l,r)$ with three loops is used to check whether 
+% the input variable can NOT be uniquely determined.
+
+
+When $F_{LN}(p,l,r)$ is satisfiable,
+then $i_{p+l}$ can't be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
+More importantly,
+by unrolling these three loops,
+we can generalize the satisfiability of $F_{LN}(p,l,r)$ to all larger $p$, $l$ and $r$.
+This means:
+
+
+\begin{proposition}\label{prop_ln1}
+If $F_{LN}(p,l,r)$ is satisfiable,
+then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for all larger $p$, $l$ and $r$.
+\end{proposition}
+
+Please refer to \cite{ShenTCAD11} for more detail of this.
+
+\subsubsection{The full algorithm}\label{subsub_algo}
+
+\begin{algorithm}[t]
+\SetAlgoVlined
+\KwIn{The input variable $i\in\vec{i}$.}
+\KwOut{whether $i\in\vec{i}$ can be uniquely determined by $\vec{o}$, and the value of $p$, $l$ and $r$.}
+$p$:= 0; ~$l$:= 0;~$r$:= 0\;
+\While{$1$}{
+   $p$++;~$l$++;~$r$++\;\ShowLnLabel{linepc1}
+   \uIf{$F_{PC}(p,l,r)$ is unsatisfiable}{
+    \KwRet ($1$, $p$, $l$, $r$);
+   }\ShowLnLabel{lnsat}\uElseIf{$F_{LN}(p,l,r)$ is satisfiable} {
+    \KwRet ($0$, $p$, $l$, $r$);
+   }
+}
+\caption{$CheckUniqueness(i)$: The halting algorithm to determine 
+whether $i\in\vec{i}$ can be uniquely determined by a bounded sequence of output variable vector $\vec{o}$}
+\label{alg_pcln}
+\end{algorithm}
+
+
+With Propositions \ref{prop_pc1} and \ref{prop_ln1},
+we can generalize their bounded proof to unbounded cases.
+This leads to the halting
+Algorithm \ref{alg_pcln} that search for $p$, $l$ and $r$ that enable
+an input variable $i_{p+l}$ to be uniquely determined by the output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$:
+\begin{enumerate}
+ \item 
+On the one hand, 
+if there exists such $p$, $l$ and $r$,
+then let $p':=max(p,l,r)$, $l':=max(p,l,r)$ and $r':=max(p,l,r)$.
+From Propositions \ref{prop_pc1},
+we know that $F_{PC}(p',l',r')$ is unsatisfiable.
+So eventually $F_{PC}(p,l,r)$ will become unsatisfiable in Line \ref{linepc1};
+ \item
+On the other hand,
+if there doesn't exist such $p$, $l$ and $r$,
+then eventually $p$, $l$ and $r$ will be larger than the encoder's longest path without loop,
+which means that there will be three loops in $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
+$<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
+This will make $F_{LN}(p,l,r)$ satisfiable in Line \ref{lnsat}.
 \end{enumerate}
 
 
+Both cases will lead to this Algorithm's termination.
+Please refer to \cite{ShenTCAD11} for more detail of this algorithm's correctness and termination proof.
+
+\section{Inferring the encoder's pipeline structure}\label{sec_pipeinfer}
 
 
 
-\section{How to Format the Page}
-
-\subsection{Full-Size Camera-Ready Copy} 
-
-Prepare Initial-Submission paper in full size format, on A4 size or 8 1/2''
-$\times$ 11''(21.5cm $\times$ 27.9 cm) paper.
-
-\subsection{Fonts}
-The best results will be obtained if your computer word-processor has
-several font sizes. Try to follow the font sizes specified in Table I as
-best as you can. As an aid to gauging font size, 1 point is about
-0.35mm. Use a proportional, serif font such as Times of Dutch Roman.
-
-\begin{table}[tb]
-\caption{Fonts for Initial-Submission and Camera-Ready Papers}
-\begin{minipage}{8cm}
-\def\arraystretch{1.5}\tabcolsep 2pt
-\def\thefootnote{a}\footnotesize
-\begin{tabular}{l@{~}l@{~~~}l}
-\hline
-\parbox[c]{7mm}{Font\newline Size} & Style & Text\\
-\hline
- 14pt&bold     &Paper title\\
- 12pt&         &Authors' names\\
- 10pt&         &Authors' affiliations, main text, equations,\\[-5pt]
-     &         &first letters in section titles\footnotemark[1]\\
- 10pt&italic   &Subheddings\\
- ~9pt&bold     &Abstract\\
- ~8pt&         &Section titles\footnotemark[1], table
-                names\footnotemark[1], first letters in table\\[-5pt]
-     &         &captions\footnotemark[1],
-                tables, figure captions, references,\\[-5pt]
-     &         &footnotes, text subscripts and superscripts\\
- ~6pt&         &Table captions\footnotemark[1], table superscripts\\
-\hline
-\end{tabular}
-\footnotetext[1]{\scriptsize Uppercase}
-\end{minipage}
-\end{table}
+\section{Characterizing the Boolean function of input variables and pipeline registers}\label{sec_char}
 
 
-\subsection{Formats}
-
-In formatting your A4-size paper, set top margin to 29mm (1.14 inches),
-bottom margin to 30mm (1.18 inches), left and right margins to 15mm
-(0.59 inches) If you are using paper 8 1/2'' $\times$ 11'', set top margin
-to 17mm (0.67 inches), bottom margin to 24mm (0.94 inches), left
-margin to 18mm (0.71 inches) and right margins to 17mm (0.67 inches). The column
-width is 88mm (3.46 inches) with 5mm (0.2 inches) space between the two
-columns.
-
-You should left- and right-justify your columns. On the last page of
-your paper, try to adjust the lengths of the two columns so that they
-are the same. Use automatic hyphenation if you have it and check
-spelling. Either digitize or paste down your figures.
-
-%{\bf Number each of you submitted pages at the top, right corner, in
-%non-photographic light blue pencil.}
+\section{Experimental Results}\label{sec_exp}
 
 
-\section{Figures and Tables}
-Position figures and tables at the tops and bottoms of columns. Avoid
-placing them in the middle of columns. Large figures and tables may
-span across both columns. Figure captions should be below the figures;
-table captions should be above the tables. Avoid placing figures and
-tables before their first mention in the text. Use the abbreviation
-``Fig.1'', even at the beginning of a sentence.
+\section{RELATED PUBLICATIONS}\label{sec_relwork}
+%\subsection{Complementary Synthesis}
+%%Complementary synthesis is an emerging new research topic,
+%%there are only two papers that discuss this problem.
+%
+%The concept of complementary synthesis was first proposed by us\cite{ShengYuShen:iccad09} in ICCAD 2009.
+%Its major shortcomings are that it is incomplete,
+%and its run-time overhead of building decoder is too large.
+%
+%The incomplete problem has been addressed by \cite{ShengYuShen:fmcad10}, while \cite{ShengYuShen:tcad} addresses the second shortcoming by simplifying the SAT instance with unsatisfiable core extraction before building decoders.
 
-\begin{figure}[tb]
-\begin{center}
-\begin{minipage}{5cm}
-$.$\hrulefill $.$\\$|$\hfill $|$\\$|$\hfill $|$\\$|$\hfill $|$\\
-$|$\hfill this is \hfill $|$\\
-$|$\hfill a sample \hfill $|$\\
-$|$\hfill  figure  \hfill $|$\\
-$|$\hfill $|$\\$|$\hfill $|$\\$|$\hfill $|$\\$.$\hrulefill $.$\\
-\end{minipage}
-\caption{This is a sample figure. Captions exceeding
-one line are arranged like this.}
-\end{center}
-\end{figure}
+\subsection{Complementary synthesis}\label{subsec_compsyn_relat}
+The first complementary synthesis algorithm was proposed by \cite{ShenICCAD09}.
+It checks the decoder's existence by iteratively increasing the bound of unrolled transition function sequence,
+and generates the decoder's Boolean function by enumerating all satisfying assignments of the decoder's output.
+Its major shortcomings are that it may not halt and that it has large runtime overhead
+in building the decoder.
 
-\textbf{
-The paper's graphics should have resolutions of 600dpi for monochrome,
-300 dpi for grayscale, and 300 dpi for color. But, please do not include
-too much high-resolution images or photos in your paper.
-%%% Images or photos over 300dpi do not enhance the quality of your
-%%% paper, but increase the size of the PDF file!
-%%% Reduce the dpis of them as small as possible. 
-} % Modified by N. Togawa 06/01/2005
+The halting problem was independently tackled in \cite{ShenTCAD11} and \cite{LiuICCAD11} by searching for loops in the state sequence,
+while the runtime overhead problem was addressed in \cite{ShenTCAD12,LiuICCAD11} by interpolant \cite{interp_McMillan}.
 
-\section{Helpful Hints}
+\cite{ShenTCAD12} automatically inferred an assertion for configuration pins, 
+which can lead to the decoder's existence.
+% It can be seen as a special case of Algorithm \ref{algo_infer},
+% with the restriction that the inferred assertion must hold on all steps.
+% % to prevent the encoder from leaving the unique state set.
+% Our Algorithm \ref{algo_infer},
+% on the other hand,
+% is the first algorithm that allows states with and without the inferred assertion to be interleaved freely with each other.
+% which make it possible to handle encoder with flow control mechanism.
 
-\subsection{References}
-List and number all references at the end of the paper. When reffering
-to them in the text, type the corresponding reference number in the
-% parentheses as shown at the end of this sentence \cite{key}. Number
-the citations consecutively. The sentence punctuation follows the
-parentheses. Do not use ``Ref.\ \cite{baz}'' or
-``reference \cite{baz}'' except at the beginning of a sentence.
+\cite{TuDAC13} takes the encoder's initial states into consideration
+with property directed reachability analysis \cite{EenFMCAD11},
+so that the encoder's infinite history can be used to generate the decoder's output.
+This algorithm can handle some encoders that cannot be handled by the state-of-the-art algorithms.
+% Their work is orthogonal to ours.
 
-\subsection{Footnotes}
-Number the footnotes separately in superscripts. Place the actual
-footnote at the bottom of the column in which it is cited. Do not put
-footnotes in the reference list.
+% \subsection{Program inversion}\label{subsec_proinv}
+% % According to \cite{dim_syn},
+% Program inversion derives a program $P^{-1}$
+% that negates the computation of a given program $P$.
+% So
+% it is very similar to complementary synthesis.
+% 
+% The initial work on program inversion \cite{prog_inv} used proof-based approaches,
+% which could handle only very small programs and very simple syntax structures.
+% 
+% \cite{mtd_autoProginv} inverted first-order functional programs
+% by eliminating nondeterminism with LR-based parsing methods.
+% But
+% the use of functional languages in that work is incompatible with our complementary synthesis.
+% 
+% \cite{program_inversion_11} assumed that an inverse program was related to the original program,
+% so the space of possible inversions can be inferred by automatically
+% mining the original program for expressions, predicates, and control flow.
+% This algorithm inductively rules out invalid paths that can't fulfill the requirement of inversion
+% % to narrow down the space of candidate programs 
+% until only the valid ones remain.
+% So,
+% it can't guarantee the correctness of its solution if its assumptions don't hold.
 
-\subsection{Authors names}
+% \subsection{The completeness of bounded model checking}\label{subsec_bmc_relate}
+% Bounded model checking(BMC) \cite{bmc_tacas99} is a model checking technology that considers only paths of limited length.
+% So it is an incomplete algorithm.
+% Many researchers have tried to find complete approaches for BMC.
+% 
+% One line of research\cite{bmc_tacas99,RecDiam} tried to find out a bound $b$,
+% which can guarantee the correctness of a specification,
+% if the specification is correct on all paths that are shorter than $b$.
+% Line 8 of Algorithm \ref{algo_infer} finds out the value of $p$,$d$ and $l$ that can prove the non-existence of the decoder,
+% which is similar to \cite{bmc_tacas99,RecDiam}.
+% 
+% The other line of research\cite{kind_tacas99} tried to find a bound for induction,
+% such that the correctness of a specification within any bound $b$ implies the correctness on bound $b+1$.
+% Our algorithm proves the non-existence of the decoder by unfolding loops.
+% This is similar to finding induction patterns \cite{kind_tacas99}.
 
-Give all authors' names; do not use ``et al'' unless there are six
-authors or more. Papers that have not been published, even if they have
-been submitted for publication, should be cited as
-``unpublished'' \cite{unpub}.  Papers that have been accepted for
-publication should be cited as ``in press'' \cite{inpress}.
-Capitalize only the first word in a paper title, except for proper nouns
-and element symbols.
+% \textbf{This paper achieves completeness without following these two approaches.
+% Instead,
+% it defines two complement uniqueness conditions,
+% $LP$ and $LL$,
+% and find out proper algorithms to check them.}
 
-For papers published in translation journals, please give the English
-citation first, followed by the original foreign language
-citations \cite{trans}.
+%\subsection{Temporal Logic Synthesis}
+%%Automatically synthesis of program from logic specification is first identified as Church's problem in 1962\cite{LOGARTHAUTO}.
+%%Some early researches \cite{SLVSQFSS,AUTOINF} solve this problem by reducing it to checking emptiness of tree automata.
+%
+%The temporal logic synthesis was first addressed by Clarke et al.\cite{DSGSYNTMPLG} and Manna et al. \cite{SYNTMPLGSPC}.
+%But Pnueli et al. \cite{SYNRCTVMD} pointed out that the complexity of LTL synthesis is double exponent.
+%%This high complexity drives researchers turning their focus to find smaller but still useful subset of temporal logic,
+%%such that synthesis problem can be solved with lower complexity.
+%
+%One line of research \cite{CNTLSYNTMDAUTO,DTMGENGMELTL,SYNRCTVDES} focuses on the so-called generalized reactive formulas of the form:
+%$(\square \lozenge p_1 \wedge \cdots \square \lozenge p_m) \to (\square \lozenge q_1 \wedge \cdots \square \lozenge q_n)$.
+%Complexity of solving synthesis problem for such formula is $O(N^3)$.
+%
+%The other line of research focuses on finding efficient algorithm \cite{SYNCNTLBNDRPN}
+%for expensive safra determination algorithm \cite{CMPLXAUTO} on an useful formula subset,
+%or just avoiding it\cite{NEWALGSTRGSYN}.
+%
+%%Yet another approach is antichain\cite{ANTICHAIN},
+%%which reduces the expensive state set computation to computation on maximal and minimal elements of lattice.
+%
+%Based on these research works,
+%some tools\cite{ANZU} that can handle small temporal formulas have been developed.
+%
+%All these works assume a hostile environment,
+%which seems too restrictive for many applications.
+%So Fisman et al. \cite{rationalsyn_tacas10}, Chatterjee et al. \cite{assguasyn_tacas07} and Ummels et al. \cite{ralgame_istta06} proposed rational synthesis algorithm,
+%which assumes that each agents act to achieve their own goals instead of failing each other.
 
-\subsection{Notice for \LaTeX\ users}
 
-If you use \LaTeX\ to create your initial-submission paper, we recommend you
-to use \texttt{dvipdfm} to produce PDF files from dvi files. If you cannot
-use it, please use Type1 fonts instead of ugly Type3 fonts!
+\subsection{Protocol converter synthesis}
+Protocol converter synthesis is a process that automatically generates a translator between two different communication protocols.
+This is relevant to our work,
+because both focus on synthesizing communication circuits.
 
-\section{Summary and Conclusions}
+In \cite{converter_date08,converter_todeas09},
+Avnit et al. first defined a general model for describing different protocols,
+and then provided an algorithm to decide
+whether there is some functionality of a protocol that cannot be translated into another.
+Finally,
+they synthesized a translator by computing the greatest fixed point for the update function of the buffer's control states.
+Latter in \cite{converter_date09}, 
+they improved their algorithm with a more efficient design space exploration algorithm.
 
-This template can be downloaded through the ASP-DAC 2016 web site
-(http://www.aspdac.com/). If you have any problem, please contact ASP-DAC
-2016 publication chair.\\
+% \subsection{Satisfying Assignments Enumeration}\label{subsec_relallsat}
+% 
+% Some algorithms try to enumerate all satisfying assignments faster 
+% by enlarging each complete satisfying assignment.
+% % so that a large state set that contains more complete satisfying assignments can be obtained.
+% \cite{SATUNBMC} constructs an alternative implication graph in SAT solver,
+% which records the reasoning relation that leads to the assignment of a particular variable.
+% All variables outside this graph can be ruled out from the complete assignment.
+% In \cite{MINASS} and \cite{REPARAM},
+% those variables whose absence can't make $obj\equiv 0$ satisfiable are removed one by one.
+% In \cite{MINCEX} and \cite{PRIMECLAUSE},
+% conflict analysis based approaches are used
+% to remove multiple irrelevant variables in one SAT run.
+% In \cite{MEMEFFALLSAT},
+% the variable set is divided into an important subset and an unimportant subset.
+% Variables in the important subset have higher decision priority than those unimportant ones.
+% Thus,
+% the important subset forms a search tree,
+% with each leaf being another search tree for the unimportant set.
+% %Tobias Nopper et al.\cite{CMPMINCEX} propose an counterexample minimization algorithm for incomplete designs that contain black box.
+% \cite{EFFSATUSMCCO} qualifies out unimportant variables by setting them to constant value returned by the SAT solver.
+% 
+% Other algorithms constructs interpolations to cover more satisfying assignments.
+% \cite{InterpBoolFunction}
+% constructs a first formula that contradicts with another formula,
+% from which an interpolation can be derived and used as an over-approximation of the first formula.
+% \cite{interpNoProof} generates
+% interpolation with a framework similar to the iterative enumerating and 
+% enlarging approaches mentioned above.
+% But there are two enlarging steps for each enumerated assignment,
+% in which the assignments are enlarged with respect to the two formulas involved in constructing interpolant.
+% It is the first paper that constructs interpolant without proof.
+
+% \subsection{Logic synthesis with Craig interpolation}
+% In \cite{scalableFuncDep,Bidecomp},
+% the functional dependency and logic decomposition problems are solved 
+% by formulating the base Boolean functions' output bits as the input bits to an unknown Boolean function, 
+% and characterize this unknown function by Craig interpolation.
+% This algorithm is also used in our paper \cite{ShenTCAD12} to find out all the possible decoders.
+% 
+% % In \cite{ecoInterp},
+% % an ECO is generated with Craig interpolation.
+% 
+% In \cite{InterpBoolFunction},
+% the first algorithm to characterize a Boolean function from a Boolean Relation was proposed. 
+% It includes two different algorithms:
+% The first one handle a general  non-deterministic Boolean relation that can't uniquely determined its output, 
+% The second one is a special case of the first one 
+% that handles a deterministic relation that can uniquely determine its output by Craig interpolation.
+% The second one is used in \cite{ShenTCAD12}.
+% 
+% This paper also need to handle a non-deterministic Boolean relation,
+% which seems to be similar to that one handled by the first algorithm of \cite{InterpBoolFunction}.
+% But our case is much more complicated, 
+% because the Boolean relation to be handled is an unrolled transition function with unknown length.
+% That is, 
+% we must first find out the value of $p$, $l$ and $r$.
+% But these value must be determine together with finding out the flow control vector $\vec{f}$.
+% So the way we handle non-determinism is significantly different from that of \cite{InterpBoolFunction}.
+% But after we got the value of $p$, $l$ and $r$, 
+% together with the flow control vector $\vec{f}$ and the predicate $valid(\vec{f})$,
+% we can characterize the decoder's Boolean function with an algorithm similar to the second one in \cite{InterpBoolFunction}.
+
+\section{Conclusions}\label{sec_conclude}
+
+In this paper,
+we propose,
+the first algorithm that can handle pipelined encoders.
+Experimental results on several complex encoders,
+such as PCI Express \cite{pcie21} and Ethernet \cite{IEEE8023_S4},
+indicate that
+this algorithm can always correctly infer the encoder's pipeline structure,
+and generate the Boolean functions for the pipeline registers and input variables.
+Furthermore,
+the circuit area and speed are significantly improved,
+and the generated decoder's structure are much more easier to be understood.
 
 
-%this is how to do an unnumbered subsection 
-\section*{\sc Acknowledgements}
-This article was written by referring to {\em ``Author's guide --
-Preparation of Papers in Two-Column Format for VLSI Symposia on
-Technology and Circuits''}, the {\em ``Preparation of Papers in
-Two-Column Format for the Proceedings of the 32nd ACM/IEEE Design
-Automation Conference''} written by Ann Burgmeyer, IEEE and {\em ``the
-template for producing IEEE-format articles using \LaTeX''}, written by
-Matthew Ward, Worcester Polytechnic Institute.
 
 \bibliographystyle{abbrv}
 \bibliography{ssy}
