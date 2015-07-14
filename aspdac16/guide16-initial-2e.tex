@@ -987,6 +987,19 @@ D             & := & (n-2)-(p+r-1)\\
 With Equation (\ref{stgn_1}) and (\ref{stgn_j}),
 all the pipeline stages can now be inferred.
 
+\subsection{Inferring the pipeline stage that uniquely determines input vector}\label{subsec_inferinput}
+
+According to Figure \ref{fig_pipeenc},
+the $\vec{stg}^0$ defined in Equation (\ref{stgn_j}) is
+exactly the pipeline stage that uniquely determined the input vector $\vec{i}$.
+
+But in real encoder circuits,
+this may not necessary the case.
+So we need to search for the smallest $j$ from $0$ to $n-1$ that can make $\vec{i}$ to be uniquely determined by $\vec{stg}^j$,
+that is,
+the smallest $j$ that can make $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ unsatisfiable for all $in\in \vec{i}$,
+with $D$ defined in Equation (\ref{stgn_def}).
+
 \section{Characterizing the Boolean function of input variables and pipeline registers}\label{sec_char}
 \subsection{Characterizing the Boolean function of the last pipeline stage}
 
@@ -1074,7 +1087,7 @@ in Equation (\ref{stgn_j}) into the following two equations:
 (\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
 \}
 \\
-\wedge&\vec{s}_{j-D+1}\equiv \vec{s'}_{j-D+1} \\
+\wedge&\vec{stg}^{j+1}_{j-D+1}\equiv \vec{stg'}^{j+1}_{j-D+1} \\
 \wedge& s'_{j-D}\equiv 0 
 % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
 % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
@@ -1089,10 +1102,55 @@ and used as the decoder's Boolean function that recovers $s\in \vec{stg}^{j}$ fr
 
 \subsection{Characterizing the Boolean function of the encoder's input variables}
 
+According to Subsection \ref{subsec_inferinput},
+assume we have found the smallest $j$ that can make $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ unsatisfiable for all $in\in \vec{i}$,
+with $D$ defined in Equation (\ref{stgn_def}).
+Then we can partition $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ into the following formulas:
 
+\begin{multline}
+% \begin{split}
+\phi_A:=\\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge& i_{p}\equiv 1 
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
 
+\begin{multline}
+% \begin{split}
+\phi_B:=\\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\vec{stg}^j_{j-D}\equiv \vec{stg'}^j_{j-D} \\
+\wedge& i'_{p}\equiv 0 
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+Similar to the last subsection,
+the Craig interpolant $\phi_I$ of $\phi_A$ with respect to $\phi_B$ 
+can be used as the decoder's Boolean function that recovers $i\in\vec{i}$ from $\vec{stg}^j$.
 
 \section{Experimental Results}\label{sec_exp}
+
+
 
 
 \section{RELATED PUBLICATIONS}\label{sec_relwork}
