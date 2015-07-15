@@ -1190,34 +1190,48 @@ all area and delay are obtained in the same setting.
 
 
 
-\begin{table}[t]
-\caption{Benchmarks}
-\begin{tabular}{|c|c|c|c|c|}
+\begin{table*}[t]
+\caption{Benchmarks and experimental results}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
- Names     &    \#   &   \#reg &Circuit& Description                         \\
-           & in/out  &         &area  &   of Encoders                        \\\hline\hline
- pcie      & 10/11   & 23      & 326  &PCIE 2.0 \cite{pcie21}                               \\
-           &         &         &      &                         \\\hline
- xgxs      & 10/10   & 16      & 453  &10Gb Ethernet                \\
-           &         &         &      & clause 48 \cite{IEEE8023_S4}             \\\hline
- t2eth     & 14/14   & 49      & 2252 &1Gb Ethernet                    \\
-           &         &         &      & clause 36 \cite{IEEE8023_S4}               \\\hline
-scram-     &64/64    & 58      & 1034 & inserting 01                  \\
-bler       &         &         &      &  flipping             \\\hline
- xfi       & 72/66   & 72      & 7772 &10Gb Ethernet                \\
-           &         &         &      & clause 49 \cite{IEEE8023_S4}             \\\hline
+ Names     & \multicolumn{4}{|c|}{The encoders}                                  &   \multicolumn{3}{|c|}{decoder gener-}             &   \multicolumn{4}{|c|}{decoder gener-} \\    
+           & \multicolumn{4}{|c|}{}                                              &   \multicolumn{3}{|c|}{ated by \cite{ShenTCAD11}}  &   \multicolumn{4}{|c|}{ated by this paper} \\\cline{2-12}
+           &    \#   &   \#    &area  & Description                             &run  &delay&area                                    &run  &delay&area&\#\\
+           & in/out  &  reg    &      &   of Encoders                            &time &(ns) &                                        &time &(ns) &    &reg\\\hline\hline
+ pcie      & 10/11   & 23      & 326  &PCIE 2.0 \cite{pcie21}                    &0.37 &7.20 &624                                     &3.57 & 5.89&652 &9/12\\\hline
+ xgxs      & 10/10   & 16      & 453  &     Ethernet clause 48 \cite{IEEE8023_S4}&0.21 &7.02 &540                                     &1.57 & 5.93&829 &13\\\hline
+ t2eth     & 14/14   & 49      & 2252 &    Ethernet clause 36 \cite{IEEE8023_S4} &12.7 &6.54 &434                                     &47.2 & 6.12&877 &8/8/10/20\\\hline
+scrambler  &64/64    & 58      & 1034 & inserting 01 flipping                    &     \multicolumn{7}{|c|}{no pipeline }\\\cline{1-5}
+ xfi       & 72/66   & 72      & 7772 &     Ethernet clause 49 \cite{IEEE8023_S4}&     \multicolumn{7}{|c|}{stages found}\\\hline
 \end{tabular}\label{tab_bench}
-\end{table}
+\end{table*}
 
 
-Table \ref{tab_res} compares the old algorithm from \cite{ShenTCAD11} to this paper's algorithm.
-The 2-th to 4-th columns show respectively the run time of \cite{ShenTCAD11}'s algorithm to generate the decoder without pipeline,
+% \begin{table}[t]
+% \caption{Experimental results}
+% \begin{tabular}{|c|c|c|c|c|c|c|c|}
+% \hline
+%            
+%  Na-       
+%  mes       
+%            
+%  pcie      &0.37 &7.20 &624 &3.57 & 5.89&652 &9/12\\\hline
+%  xgxs      &0.21 &7.02 &540 &1.57 & 5.93&829 &13\\\hline
+%  t2eth     &12.7 &6.54 &434 &47.2 & 6.12&877 &8/8/10/20\\\hline
+%  scr.      &     \multicolumn{7}{|c|}{no pipeline }\\\cline{1-1}
+%  xfi       &     \multicolumn{7}{|c|}{structure found}\\\hline
+% \end{tabular}\label{tab_res}
+% \end{table}
+
+
+% Table \ref{tab_res} compares the old algorithm from \cite{ShenTCAD11} to this paper's algorithm.
+The 6-th to 8-th columns show respectively the run time of \cite{ShenTCAD11}'s algorithm to generate the decoder without pipeline,
 and the delay and area of the generated decoder.
-While the 5-th to 7-th columns show respectively the run time of this paper's algorithm to generate the pipelined decoder,
+While the 9-th to 11-th columns show respectively the run time of this paper's algorithm to generate the pipelined decoder,
 and the delay and area of the generated decoder.
 The last column shows the number of registers in each pipeline stage.
 
-Comparing the 3rd and the 6-th column indicates that
+Comparing the 7rd and the 10-th column indicates that
 the decoders' delay have been significantly improved.
 And the the last column shows that there actually exist very deep pipeline,
 especially the t2eth with 4 pipeline stages.
@@ -1423,24 +1437,6 @@ Experimental results on several complex encoders
 indicate that
 this algorithm can always correctly infer the encoder's pipeline structure,
 and generate a pipelined decoder that is significantly faster.
-
-\begin{table}[t]
-\caption{Experimental results}
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
-\hline
-           &   \multicolumn{3}{|c|}{decoder gener-}                    &   \multicolumn{4}{|c|}{decoder gener-} \\
- Names     &   \multicolumn{3}{|c|}{ated by \cite{ShenTCAD11}}         &   \multicolumn{4}{|c|}{ated by this paper} \\\cline{2-8}
-           & run            & delay                     & area         & run                 & delay                     & area  &  \#  \\
-           & time(s)        & (ns)                      &              & time(s)             & (ns)                      &       &  reg \\\hline\hline
- pcie      & 0.37           & 7.20                      & 624          & 3.57                &  5.89                     & 652   &  9/12\\\hline
- xgxs      & 0.21           & 7.02                      & 540          & 1.57                &  5.93                     & 829   &   13   \\\hline
- t2eth     & 12.71          & 6.54                      & 434          & 47.19               &  6.12                     & 877   &  8/8/    \\
-           &                &                           &              &                     &                           &       &  10/20    \\\hline
- scr.      &                \multicolumn{7}{|c|}{no pipeline }                                                           \\\cline{1-1}
- xfi       &                \multicolumn{7}{|c|}{structure found}\\\hline
-\end{tabular}\label{tab_res}
-\end{table}
-
 
 % \bibliographystyle{abbrv}
 % \bibliography{ssy}
