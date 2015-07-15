@@ -164,7 +164,7 @@ The encoder maps its input variables $\vec{i}$ to its output variables $\vec{o}$
 % such as Ethernet \cite{IEEE8023_S4} and PCI Express \cite{pcie21},
 while the decoder recovers $\vec{i}$ from $\vec{o}$.
 Complementary synthesis 
-\cite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+\cite{ShenICCAD09,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 eases this job by
 automatically generating a decoder from an encoder,
 with the assumption that $\vec{i}$ can always be
@@ -224,14 +224,14 @@ which improves the circuit speed.
 
 
 However,
-all complementary synthesis algorithms \cite{ShenTCAD10,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+all existing complementary synthesis algorithms \cite{ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 generate the decoders with Jiang's algorithm \cite{InterpBoolFunction} 
 based on Craig interpolant \cite{Craig}.
 As shown in Figure \ref{fig_pipe}c),
 these decoders recover $\vec{i}$ directly from $\vec{o}$ 
 with a large combinational logic $C^0*C^1$.
-Such a decoder is unnecessarily slow because 
-there are no registers to cut its critical path.
+Such decoders are unnecessarily slow because 
+there are no registers to cut their critical path.
 
 % Thus,
 % such decoder have the following major shortcomings:
@@ -251,11 +251,11 @@ there are no registers to cut its critical path.
 % % \end{enumerate}
 
 To generate a proper decoder like Figure \ref{fig_pipe}b) in complementary synthesis,
-we propose a novel algorithm to first find out the encoder's pipeline registers in each pipeline stage,
-and then characterize all Boolean functions that recover each of these pipeline registers
-from the next pipeline stage or output variables $\vec{o}$,
-and finally characterize the Boolean functions that recover the encoder's input variables 
-from the first pipeline stage.
+we propose a novel algorithm to first find out the encoder's pipeline registers in each pipeline stage $\vec{stg}^j$,
+and then characterize all Boolean functions that recover each pipeline stage $\vec{stg}^j$
+from the next pipeline stage $\vec{stg}^{j+1}$ or output variables $\vec{o}$,
+and finally characterize the Boolean functions that recover the encoder's input $\vec{i}$
+from the first pipeline stage $\vec{stg}^0$.
 
 \begin{figure}[t]
 \begin{center}
@@ -353,7 +353,8 @@ to the common variables of $\phi_A$ and $\phi_B$ such that $\phi_A\Rightarrow \p
 and $\phi_I\wedge \phi_B$ is unsatisfiable.
 $\phi_I$ is the \textbf{Craig interpolant} \cite{Craig} of $\phi_A$ with respect to $\phi_B$.
 % \end{theorem}
-% and can be computed with McMillan's algorithm \cite{InterpBoolFunction}.
+$\phi_I$ can be computed by McMillan's algorithm \cite{interp_McMillan}
+and used to characterize a Boolean function from a Boolean relation \cite{InterpBoolFunction}.
 
 % In the remainder of this paper,
 % we will focus on the propositional logic only,
@@ -613,7 +614,7 @@ then $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}
 
 \subsubsection{The over-approximative approach}\label{subsub_complete}
 
-If $F_{PC}(p,l,r)$ presented in the last subsection is satisfiable,
+If $F_{PC}(p,l,r)$ presented in last subsection is satisfiable,
 there are two possibilities:
 \begin{enumerate}
  \item 
@@ -636,9 +637,9 @@ $p$:= 0; ~$l$:= 0;~$r$:= 0\;
 \While{$1$}{
    $p$++;~$l$++;~$r$++\;\ShowLnLabel{linepc1}
    \uIf{$F_{PC}(p,l,r)$ is unsatisfiable}{
-    \KwRet ($1$, $p$, $l$, $r$);
+    \KwRet (yes, $p$, $l$, $r$);
    }\ShowLnLabel{lnsat}\uElseIf{$F_{LN}(p,l,r)$ is satisfiable} {
-    \KwRet ($0$, $p$, $l$, $r$);
+    \KwRet (no, $p$, $l$, $r$);
    }
 }
 \caption{$CheckUniqueness(i)$: The halting algorithm to determine 
@@ -724,7 +725,7 @@ Please refer to \cite{ShenTCAD11} for more detail of this algorithm's correctnes
 
 \subsection{A general model for the encoder}
 As shown in Figure \ref{fig_pipeenc},
-we assume that the 
+we assume that 
 the encoder have $n$ pipeline stages.
 If we take the combinational logic block $C^j$ as a function,
 then this encoder can be represented by the following equations.
@@ -759,7 +760,7 @@ always means the step index in the unrolled transition function.
 For example,
 $\vec{stg}^j$ is the $j$-th pipeline stage.
 While $\vec{stg}^j_i$ is the value of this $j$-th pipeline stage 
-at the $i$-th step in the unrolled state transition function.
+at the $i$-th step in the unrolled state transition sequence.
 
 \subsection{Inferring $p$, $l$ and $r$}\label{subsec_inferplr}
 Before inferring the pipeline stages,
@@ -800,11 +801,11 @@ So we need to first minimize $r$ in Algorithm \ref{algo_remove2}
 % we will only introduce the $r$ case.
 In Line \ref{testr_1},
 when $F_{PC}(p,l,r'-1)$ is satisfiable,
-then $r'$ is the last one that makes it unsatisfiable,
+then $r'$ is the last one that makes $F_{PC}(p,l,r')$ unsatisfiable,
 we return it directly.
 On the other hand,
 when $r'\equiv 0$,
-$F_{PC}(p,l,0)$ must have been tested in the last iteration,
+$F_{PC}(p,l,0)$ must have been tested in last iteration,
 and the result must be unsatisfiable.
 In this case we return $0$.
 
@@ -854,7 +855,7 @@ Now,
 we have a minimized $r$ from Algorithm \ref{algo_remove2},
 which can make $\vec{i}_{p+l}$ to be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
 
-We further require that 
+We further require that :
 \begin{enumerate}
  \item As shown in Figure \ref{fig_pc1},
  $l$ can be reduced to 0,
@@ -1073,7 +1074,7 @@ which means $\phi_I$ covers nothing that can make $s_{p+r}\equiv 0$.
 Thus,
 $\phi_I$ can be used as the decoder's Boolean function that recovers $s\in \vec{stg}^{n-1}$ from $\vec{o}$.
 
-\subsection{Characterizing the Boolean function of the other pipeline stages}
+\subsection{Characterizing the Boolean function of other pipeline stages}
 Similar to last subsection,
 we can partition the unsatisfiable formula $F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)$ 
 in Equation (\ref{stgn_j}) into the following two equations:
@@ -1118,7 +1119,7 @@ and used as the decoder's Boolean function that recovers $s\in \vec{stg}^{j}$ fr
 \subsection{Characterizing the Boolean function of the encoder's input variables}
 
 According to Subsection \ref{sec_pipeinfer}.\ref{subsec_inferinput},
-we have found the smallest $j$ that can make $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ unsatisfiable for all $in\in \vec{i}$,
+we have found the smallest $j$ that can make $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ unsatisfiable for all $i\in \vec{i}$,
 with $D$ defined in Equation (\ref{stgn_def}).
 $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ is unsatisfiable and can be partitioned into :
 
@@ -1180,8 +1181,8 @@ All experiments have been run on a server with 16 Intel Xeon E5648 processors at
 
 Table \ref{tab_bench} shows the benchmarks used in this paper.
 % They are listed in the order of circuit area.
-The 2nd to 3rd column show respectively the number of inputs, outputs and registers of each benchmark.
-The area column shows the area of the encoder when mapped to LSI10K library with Design Compiler.
+The 2nd and 3rd column show respectively the number of inputs, outputs and registers of each benchmark.
+The 4th column shows the area of the encoder when mapped to LSI10K library with Design Compiler.
 % We use Design compiler here instead of ABC \cite{ABC} used by other researchers 
 % because ABC can not read in verilog files with registers generated by our algorithms.
 In this paper, 
@@ -1225,20 +1226,20 @@ scrambler  &64/64    & 58      & 1034 & inserting 01 flipping                   
 
 
 % Table \ref{tab_res} compares the old algorithm from \cite{ShenTCAD11} to this paper's algorithm.
-The 6-th to 8-th columns show respectively the run time of \cite{ShenTCAD11}'s algorithm to generate the decoder without pipeline,
+The 6th to 8th columns show respectively the run time of \cite{ShenTCAD11}'s algorithm to generate the decoder without pipeline,
 and the delay and area of the generated decoder.
-While the 9-th to 11-th columns show respectively the run time of this paper's algorithm to generate the pipelined decoder,
+While the 9th to 11th columns show respectively the run time of this paper's algorithm to generate the pipelined decoder,
 and the delay and area of the generated decoder.
 The last column shows the number of registers in each pipeline stage.
 
-Comparing the 7rd and the 10-th column indicates that
+Comparing the 7th and the 10th column indicates that
 the decoders' delay have been significantly improved.
 And the the last column shows that there actually exist very deep pipeline,
 especially the t2eth with 4 pipeline stages.
 
 One thing that is a little bit surprise is,
 the two largest benchmarks scrambler and xfi do not have pipeline stages inside.
-We study their code and confirm that they actually don't have such pipeline stages.
+We study their code and confirm that this is true.
 Their area are so large because they use much wider datapaths with 64 to 72 bits.
 % Please refer to IEEE 802.3ae clause 49 \cite{IEEE8023_S4}  for more details.
 
@@ -1254,10 +1255,10 @@ Their area are so large because they use much wider datapaths with 64 to 72 bits
 %The incomplete problem has been addressed by \cite{ShengYuShen:fmcad10}, while \cite{ShengYuShen:tcad} addresses the second shortcoming by simplifying the SAT instance with unsatisfiable core extraction before building decoders.
 
 % \subsection{Complementary synthesis}\label{subsec_compsyn_relat}
-The first complementary synthesis algorithm was proposed by Shen et al.\cite{ShenICCAD09}.
-It checks the decoder's existence by iteratively increasing the bound of unrolled transition function sequence,
-and generates the decoder's Boolean function by enumerating all satisfying assignments of the decoder's output.
-But this algorithm may not halt and is too slow in building the decoder.
+Shen et al.\cite{ShenICCAD09} proposed the first complementary synthesis algorithm.
+It checks the decoder's existence by iteratively unrolling transition function to longer path,
+and generates the decoder's Boolean function by enumerating all satisfying assignments.
+But it may not halt and is too slow in building the decoder.
 
 The halting problem was independently tackled in Shen et al.\cite{ShenTCAD11} and Liu at al.\cite{LiuICCAD11} by searching for loops in the state sequence,
 while the runtime overhead problem was addressed in \cite{ShenTCAD12,LiuICCAD11} by interpolant \cite{InterpBoolFunction}.
@@ -1272,7 +1273,7 @@ that can lead to the decoder's existence.
 % is the first algorithm that allows states with and without the inferred assertion to be interleaved freely with each other.
 % which make it possible to handle encoder with flow control mechanism.
 Tu et al.\cite{TuDAC13} proposed a breakthrough algorithm that 
-use the encoder's infinite history to generate the decoder's output.
+uses the encoder's infinite history to generate the decoder's output.
 % This algorithm can handle some encoders that cannot be handled by the state-of-the-art algorithms.
 % Their work is orthogonal to ours.
 
@@ -1476,10 +1477,10 @@ H.-Y. Liu, Y.-C. Chou, C.-H. Lin, and J.-H.~R. Jiang.
 \newblock Automatic decoder synthesis: Methods and case studies.
 \newblock {\em IEEE Tran. on CAD of IC and Sys.}, 31(9):31:1319--31:1331, September 2012.
 
-% \bibitem{interp_McMillan}
-% K.~L. McMillan.
-% \newblock Interpolation and sat-based model checking.
-% \newblock In CAV 2003, pages 1--13,2003.
+\bibitem{interp_McMillan}
+K.~L. McMillan.
+\newblock Interpolation and sat-based model checking.
+\newblock In CAV 2003, pages 1--13,2003.
 
 \bibitem{pcie21}
 PCI-SIG.
@@ -1490,10 +1491,10 @@ S.~Shen, Y.~Qin, K.~Wang, Z.~Pang, J.~Zhang, and S.~Li.
 \newblock Inferring assertion for complementary synthesis.
 \newblock {\em IEEE Tran. on CAD of IC and Sys.}, 31(8):31:1288--31:1292, August 2012.
 
-\bibitem{ShenTCAD10}
-S.~Shen, Y.~Qin, K.~Wang, L.~Xiao, J.~Zhang, and S.~Li.
-\newblock Synthesizing complementary circuits automatically.
-\newblock {\em IEEE Tran. on CAD of IC and Sys.}, 29(8):29:1191--29:1202, August 2010.
+% \bibitem{ShenTCAD10}
+% S.~Shen, Y.~Qin, K.~Wang, L.~Xiao, J.~Zhang, and S.~Li.
+% \newblock Synthesizing complementary circuits automatically.
+% \newblock {\em IEEE Tran. on CAD of IC and Sys.}, 29(8):29:1191--29:1202, August 2010.
 
 \bibitem{ShenTCAD11}
 S.~Shen, Y.~Qin, L.~Xiao, K.~Wang, J.~Zhang, and S.~Li.
