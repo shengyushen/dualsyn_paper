@@ -136,7 +136,7 @@ the generated decoders is non-pipelined
 and therefore very slow.
 On the other hand,
 many encoders from industrial projects have pipelined structure 
-that can be exploited to overcome this problems.
+that can be exploited to resolve this problems.
 % }
 
 % \textbf{
@@ -188,18 +188,23 @@ significantly improve the quality of the generated decoders.
 
 For example,
 one simple encoder is shown in Figure \ref{fig_pipe}a).
-It has a pipeline stage with two registers $r^0$ and $r^1$.
-The two inputs variables $i^0$ and $i^1$ are used to compute $r^0$ and $r^1$,
-while $r^0$ and $r^1$ are used to compute the output variables $\vec{o}$.
+It has a pipeline stage $\vec{stg}^0$ with some registers.
+The inputs variables $\vec{i}$ are used to compute $\vec{stg}^0$,
+while $\vec{stg}^0$ are used to compute the output variables $\vec{o}$.
 According to this structure,
-$r^0$ and $r^1$ can be uniquely determined by $\vec{o}$,
-while $i^0$ and $i^1$ can be uniquely determined by $r^0$ and $r^1$.
+$\vec{stg}^0$ can be uniquely determined by $\vec{o}$,
+while $\vec{i}$ can be uniquely determined by $\vec{stg}^0$.
+
 So,
 a properly designed decoder,
 often written by human engineers,
 should be like the one shown in Figure \ref{fig_pipe}b),
-which recovers $r^0$ and $r^1$ from $\vec{o}$ with combinational logic $C^2$
-and further recovers $i^0$ and $i^1$ from $r^0$ and $r^1$ with combinational logic $C^0$ and $C^1$.
+which recovers $\vec{stg}^0$ from $\vec{o}$ with combinational logic $C^1$,
+and further recovers $\vec{i}$ from $\vec{stg}^0$ with combinational logic $C^0$.
+In such a decoder,
+the critical path is cut by registers $\vec{stg}^0$, 
+which improves the circuit speed.
+
 % 
 % Such a decoder has the following advantages:
 % % \begin{enumerate}
@@ -217,19 +222,14 @@ and further recovers $i^0$ and $i^1$ from $r^0$ and $r^1$ with combinational log
 % %  which makes it much more easier to be understood by human.
 % % \end{enumerate}
 
-In such a decoder,
-the critical path is cut by registers $r^0$ and $r^1$, 
-which improves the circuit speed.
 
 However,
 all complementary synthesis algorithms \cite{ShenTCAD10,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
-generate the decoder's Boolean function with Jiang's algorithm \cite{InterpBoolFunction} 
+generate the decoders with Jiang's algorithm \cite{InterpBoolFunction} 
 based on Craig interpolant \cite{Craig}.
 As shown in Figure \ref{fig_pipe}c),
-these Boolean function recover $i^0$ and $i^1$ directly from $\vec{o}$ 
-with two large combinational logic $C^0*C^2$ and $C^1*C^2$
-without any pipeline registers.
-
+these decoders recover $\vec{i}$ directly from $\vec{o}$ 
+with a large combinational logic $C^0*C^1$.
 Such a decoder is unnecessarily slow because 
 there are no registers to cut its critical path.
 
@@ -250,10 +250,10 @@ there are no registers to cut its critical path.
 % %  which make it very difficult to be understood by human engineers.
 % % \end{enumerate}
 
-To overcome this problem,
+To generate a proper decoder like Figure \ref{fig_pipe}b) in complementary synthesis,
 we propose a novel algorithm to first find out the encoder's pipeline registers in each pipeline stage,
 and then characterize all Boolean functions that recover each of these pipeline registers
-from the registers in the next pipeline stage,
+from the next pipeline stage or output variables $\vec{o}$,
 and finally characterize the Boolean functions that recover the encoder's input variables 
 from the first pipeline stage.
 
@@ -274,8 +274,8 @@ this algorithm can always correctly generate a pipelined decoder with significan
 \emph{The remainder of this paper is organized as follows}.
 %Section \ref{sec_casestudy} explains our ideas with a simple example.
 Section \ref{sec_prem} introduces the background material;
-Section \ref{sec_pipeinfer} infer the pipeline structure,
-while Section \ref{sec_char} characterizes the Boolean function that recovers the input variables and pipeline registers;
+Section \ref{sec_pipeinfer} infers the pipeline structure,
+while Section \ref{sec_char} characterizes the Boolean functions that recover the input variables and pipeline registers;
 Sections \ref{sec_exp} and \ref{sec_relwork} present the experimental results and related works;
 Finally,
 Section \ref{sec_conclude} sums up the conclusion.
@@ -351,9 +351,9 @@ with $\phi_A\wedge \phi_B$ unsatisfiable,
 there exists a formula $\phi_I$ referring only
 to the common variables of $\phi_A$ and $\phi_B$ such that $\phi_A\Rightarrow \phi_I$
 and $\phi_I\wedge \phi_B$ is unsatisfiable.
-$\phi_I$ is the \textbf{Craig interpolant} \cite{Craig} of $\phi_A$ with respect to $\phi_B$,
+$\phi_I$ is the \textbf{Craig interpolant} \cite{Craig} of $\phi_A$ with respect to $\phi_B$.
 % \end{theorem}
-and can be computed with McMillan's algorithm \cite{interp_McMillan}.
+% and can be computed with McMillan's algorithm \cite{InterpBoolFunction}.
 
 % In the remainder of this paper,
 % we will focus on the propositional logic only,
@@ -493,11 +493,11 @@ $p$ is the length of the prefix state transition sequence.
 $l$ and $r$ are the lengths of the two output sequences 
 $<\vec{o}_{p+1},\dots,\vec{o}_{p+l}>$ and $<\vec{o}_{p+l+1},\dots,\vec{o}_{p+l+r}>$
 used to determine $i_{p+l}$.
-Line 1 of Equation (\ref{uniqt1}) corresponds to the left path in Figure \ref{fig_pc},
-while Line 2 corresponds to the right path in Figure \ref{fig_pc}.
+Line 2 of Equation (\ref{uniqt1}) corresponds to the path in Figure \ref{fig_pc}a),
+while Line 3 is a copy of it.
 These two paths are of the same length.
-Line 3 forces these two paths' output sequences to be the same,
-while Line 4 forces their $i_{p+l}$ to be different.
+Line 4 forces these two paths' output sequences to be the same,
+while Line 5 forces their $i_{p+l}$ to be different.
 % Line 5 and 6 are the assertion predicates given 
 % by the user that constrain the valid valuation on $\vec{i}$.
 % PC in $F_{PC}$ is the abbreviation of "parameterized complementary",
@@ -613,11 +613,11 @@ then $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}
 
 \subsubsection{The over-approximative approach}\label{subsub_complete}
 
-For $F_{PC}(p,l,r)$ presented in last subsection,
+If $F_{PC}(p,l,r)$ presented in the last subsection is satisfiable,
 there are two possibilities:
 \begin{enumerate}
  \item 
-$i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for some $p$, $l$ and $r$;
+$i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for some larger $p$, $l$ and $r$;
  \item 
 $i_{p+l}$ can't be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for any $p$, $l$ and $r$ at all.
 \end{enumerate}
@@ -650,7 +650,7 @@ So,
 to obtain a halting algorithm,
 we need to distinguish these two cases.
 One such solution is shown in Figure \ref{fig_pc}b),
-which is similar to Figure \ref{fig_pc} but with three additional constraints used to detect loops 
+which is similar to Figure \ref{fig_pc}a) but with three additional constraints used to detect loops 
 on the three state sequences $<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ and 
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
 It is formally defined in Equation (\ref{uniqln}) with the last three lines corresponding to the three new constraints used to detect loops.
@@ -757,14 +757,14 @@ while the subscript,
 as mentioned in Subsection \ref{subsec_fsm},
 always means the step index in the unrolled transition function.
 For example,
-$\vec{stg}^j$ is the vector of registers in the $j$-th pipeline stage.
+$\vec{stg}^j$ is the $j$-th pipeline stage.
 While $\vec{stg}^j_i$ is the value of this $j$-th pipeline stage 
 at the $i$-th step in the unrolled state transition function.
 
 \subsection{Inferring $p$, $l$ and $r$}\label{subsec_inferplr}
 Before inferring the pipeline stages,
 we first apply Algorithm \ref{alg_pcln} to infer the value of $p$, $l$ and $r$ that can make the 
-output sequence $<o_{p},\dots,o_{p+l+r}>$ uniquely determine all $i\in \vec{i}_{p+l}$.
+output sequence $<o_{p},\dots,o_{p+l+r}>$ uniquely determine all $i_{p+l}\in \vec{i}_{p+l}$.
 
 As there are more than one $i\in \vec{i}$,
 we need to apply Algorithm \ref{alg_pcln} for each $i\in \vec{i}$ 
@@ -980,7 +980,7 @@ It can be formally defined as:
 Similarly,
 for $0\le j\le n-2$,
 $\vec{stg}^j$ at $j-((n-2)-(p+r-1))$-th step
-cat be uniquely determined by $\vec{stg}^{j+1}$ at $j-((n-2)-(p+r-1))+1$-th step.
+can be uniquely determined by $\vec{stg}^{j+1}$ at $j-((n-2)-(p+r-1))+1$-th step.
 So we can recursively defined $\vec{stg}^j$ as :
 
 \begin{multline}\label{stgn_def}
@@ -1159,7 +1159,7 @@ $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ is unsatisfiable and can be partitioned in
 % \end{split}
 \end{multline}
 
-Similar to the last subsection,
+Similar to last subsection,
 the Craig interpolant $\phi_I$ of $\phi_A$ with respect to $\phi_B$ 
 can be used as the decoder's Boolean function that recovers $i\in\vec{i}$ from $\vec{stg}^j$.
 
@@ -1179,13 +1179,13 @@ All experiments have been run on a server with 16 Intel Xeon E5648 processors at
 % \end{enumerate}
 
 Table \ref{tab_bench} shows the benchmarks used in this paper.
-They are listed in the order of circuit area.
-The 2nd to 3rd column of shows respectively the number of inputs, outputs and registers of each benchmark.
+% They are listed in the order of circuit area.
+The 2nd to 3rd column show respectively the number of inputs, outputs and registers of each benchmark.
 The area column shows the area of the encoder when mapped to LSI10K library with Design Compiler.
-We use Design compiler here instead of ABC \cite{ABC} used by other researchers 
-because ABC can not read in verilog files with registers generated by our algorithms.
+% We use Design compiler here instead of ABC \cite{ABC} used by other researchers 
+% because ABC can not read in verilog files with registers generated by our algorithms.
 In this paper, 
-all areas, gate number and delay are obtained in the same setting.
+all area and delay are obtained in the same setting.
 % we can compare them to that of \cite{LiuTCAD12}.
 
 
@@ -1210,24 +1210,23 @@ bler       &         &         &      &  flipping             \\\hline
 \end{table}
 
 
-Table \ref{tab_res} compares the old algorithm from \cite{ShenTCAD10} to this paper's algorithm.
-The 2-th to 4-th columns show respectively the run time of \cite{ShenTCAD10}'s algorithm to generate the decoder without pipeline,
+Table \ref{tab_res} compares the old algorithm from \cite{ShenTCAD11} to this paper's algorithm.
+The 2-th to 4-th columns show respectively the run time of \cite{ShenTCAD11}'s algorithm to generate the decoder without pipeline,
 and the delay and area of the generated decoder.
 While the 5-th to 7-th columns show respectively the run time of this paper's algorithm to generate the pipelined decoder,
 and the delay and area of the generated decoder.
 The last column shows the number of registers in each pipeline stage.
 
-By comparing the 3rd and the 6-th column,
-we can find that the decoders' delay have been improved significantly.
-And the the last column shows that there actuall exist very deep pipeline,
-especially for the t2eth benchmark,
-which have 4 pipeline stages.
+Comparing the 3rd and the 6-th column indicates that
+the decoders' delay have been significantly improved.
+And the the last column shows that there actually exist very deep pipeline,
+especially the t2eth with 4 pipeline stages.
 
 One thing that is a little bit surprise is,
 the two largest benchmarks scrambler and xfi do not have pipeline stages inside.
-We study their code and confirm that they actually dont have such pipeline stages.
-Their area are so large because they use a much more compilcated encoding schema than other encoders.
-Please refer to IEEE 802.3ae clause 49 \cite{IEEE8023_S4}  for more details.
+We study their code and confirm that they actually don't have such pipeline stages.
+Their area are so large because they use much wider datapaths with 64 to 72 bits.
+% Please refer to IEEE 802.3ae clause 49 \cite{IEEE8023_S4}  for more details.
 
 \section{RELATED PUBLICATIONS}\label{sec_relwork}
 %\subsection{Complementary Synthesis}
@@ -1247,7 +1246,7 @@ and generates the decoder's Boolean function by enumerating all satisfying assig
 But this algorithm may not halt and is too slow in building the decoder.
 
 The halting problem was independently tackled in Shen et al.\cite{ShenTCAD11} and Liu at al.\cite{LiuICCAD11} by searching for loops in the state sequence,
-while the runtime overhead problem was addressed in \cite{ShenTCAD12,LiuICCAD11} by interpolant \cite{interp_McMillan}.
+while the runtime overhead problem was addressed in \cite{ShenTCAD12,LiuICCAD11} by interpolant \cite{InterpBoolFunction}.
 
 Shen et al. \cite{ShenTCAD12} inferred an assertion for configuration pins
 that can lead to the decoder's existence.
@@ -1430,15 +1429,15 @@ and generate a pipelined decoder that is significantly faster.
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
 \hline
            &   \multicolumn{3}{|c|}{decoder gener-}                    &   \multicolumn{4}{|c|}{decoder gener-} \\
- Names     &   \multicolumn{3}{|c|}{ated by \cite{ShenTCAD10}}         &   \multicolumn{4}{|c|}{ated by this paper} \\\cline{2-8}
+ Names     &   \multicolumn{3}{|c|}{ated by \cite{ShenTCAD11}}         &   \multicolumn{4}{|c|}{ated by this paper} \\\cline{2-8}
            & run            & delay                     & area         & run                 & delay                     & area  &  \#  \\
            & time(s)        & (ns)                      &              & time(s)             & (ns)                      &       &  reg \\\hline\hline
  pcie      & 0.37           & 7.20                      & 624          & 3.57                &  5.89                     & 652   &  9/12\\\hline
  xgxs      & 0.21           & 7.02                      & 540          & 1.57                &  5.93                     & 829   &   13   \\\hline
  t2eth     & 12.71          & 6.54                      & 434          & 47.19               &  6.12                     & 877   &  8/8/    \\
            &                &                           &              &                     &                           &       &  10/20    \\\hline
- scr.      &                \multicolumn{7}{|c|}{no pipeline structure found}                                                           \\\hline
- xfi       &                \multicolumn{7}{|c|}{no pipeline structure found}\\\hline
+ scr.      &                \multicolumn{7}{|c|}{no pipeline }                                                           \\\cline{1-1}
+ xfi       &                \multicolumn{7}{|c|}{structure found}\\\hline
 \end{tabular}\label{tab_res}
 \end{table}
 
@@ -1446,11 +1445,11 @@ and generate a pipelined decoder that is significantly faster.
 % \bibliographystyle{abbrv}
 % \bibliography{ssy}
 
-\begin{thebibliography}{10}
+\begin{thebibliography}{12}
 
-\bibitem{ABC}
-Abc:a system for sequential synthesis and verification, 2008.
-\newblock http://www.eecs.berkeley.edu/∼alanmi/abc/.
+% \bibitem{ABC}
+% Abc:a system for sequential synthesis and verification, 2008.
+% \newblock http://www.eecs.berkeley.edu/∼alanmi/abc/.
 
 \bibitem{Craig}
 W.~Craig.
@@ -1481,10 +1480,10 @@ H.-Y. Liu, Y.-C. Chou, C.-H. Lin, and J.-H.~R. Jiang.
 \newblock Automatic decoder synthesis: Methods and case studies.
 \newblock {\em IEEE Tran. on CAD of IC and Sys.}, 31(9):31:1319--31:1331, September 2012.
 
-\bibitem{interp_McMillan}
-K.~L. McMillan.
-\newblock Interpolation and sat-based model checking.
-\newblock In CAV 2003, pages 1--13,2003.
+% \bibitem{interp_McMillan}
+% K.~L. McMillan.
+% \newblock Interpolation and sat-based model checking.
+% \newblock In CAV 2003, pages 1--13,2003.
 
 \bibitem{pcie21}
 PCI-SIG.

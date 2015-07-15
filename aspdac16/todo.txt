@@ -1,3 +1,4 @@
 unify the registers and states
 fig1c) C*C is not clear
 OK	only use speed in advantage
+the last
