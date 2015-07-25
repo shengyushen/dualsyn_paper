@@ -1,0 +1,1284 @@
+
+%%%%%%%%%%%%%%%%%%%%%%% file typeinst.tex %%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% This is the LaTeX source for the instructions to authors using
+% the LaTeX document class 'llncs.cls' for contributions to
+% the Lecture Notes in Computer Sciences series.
+% http://www.springer.com/lncs       Springer Heidelberg 2006/05/04
+%
+% It may be used as a template for your own input - copy it
+% to a new file with a new name and use it as the basis
+% for your article.
+%
+% NB: the document class 'llncs' has its own and detailed documentation, see
+% ftp://ftp.springer.de/data/pubftp/pub/tex/latex/llncs/latex2e/llncsdoc.pdf
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\documentclass[runningheads,a4paper]{llncs}
+
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+
+\usepackage{url}
+\urldef{\mailsa}\path|{syshen,yingqin,|
+\urldef{\mailsb}\path|jmzhang,|
+\urldef{\mailsc}\path|skli}@nudt.edu.cn|
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+\newtheorem{algorithm}{Algorithm}
+
+\begin{document}
+
+\mainmatter  % start of an individual contribution
+
+% first the title is needed
+%\title{Lecture Notes in Computer Science:\\Authors' Instructions
+%for the Preparation\\of Camera-Ready
+%Contributions\\to LNCS/LNAI/LNBI Proceedings}
+\title{CompSyn : A Tool for Automatically Synthesizing Decoders}
+
+% a short form should be given in case it is too long for the running head
+%\titlerunning{Lecture Notes in Computer Science: Authors' Instructions}
+
+% the name(s) of the author(s) follow(s) next
+%
+% NB: Chinese authors should write their first names(s) in front of
+% their surnames. This ensures that the names appear correctly in
+% the running heads and the author index.
+%
+\author{ShengYu Shen%
+%\thanks{Project 61070132 supported by National Natural Science Foundation of China.}%
+\and Ying Qin\and JianMin Zhang\and SiKun Li}
+%
+\authorrunning{ShengYu Shen\and Ying Qin\and JianMin Zhang\and SiKun Li}
+% (feature abused for this document to repeat the title also on left hand pages)
+
+% the affiliations are given next; don't give your e-mail address
+% unless you accept that it will be published
+\institute{School of Computer, National University of Defense Technology, China\\
+\mailsa\mailsb\mailsc\\
+\url{http://www.ssypub.org/}}
+
+%
+% NB: a more complex sample for affiliations and the mapping to the
+% corresponding authors can be found in the file "llncs.dem"
+% (search for the string "\mainmatter" where a contribution starts).
+% "llncs.dem" accompanies the document class "llncs.cls".
+%
+
+\toctitle{Lecture Notes in Computer Science}
+\tocauthor{Authors' Instructions}
+\maketitle
+
+
+\begin{abstract}
+CompSyn is a tool that automatically synthesizes the decoder circuit of a particular encoder,
+under some predefined assertion.
+This tool has two usage modes: the synthesis mode and inferring mode.
+
+\vspace{0.1cm}
+
+\textbf{The synthesis mode} is used,
+when the correct assertion is known,
+to determine the existence of the decoder and generate it.
+On the other hand,
+when the correct assertion is not known,
+\textbf{the inferring mode} is used to infer this assertion and generate all possible decoders.
+To help the user in selecting the correct decoder,
+this mode also infers each decoder's precondition formula,
+which represents the set of assertions that correspond to this decoder.
+
+\vspace{0.1cm}
+
+Experimental results show that
+this tool can always inferring correct assertions and generate decoder circuits for several complex encoders,
+including PCI-E and Ethernet.
+And the human effort in specifying assertion and selecting the correct decoder can be significantly reduced.
+
+\keywords{Complementary Synthesis, Inferring Assertion}
+\end{abstract}
+
+
+\section{Introduction}\label{sec_intro}
+One of the most difficult jobs in designing communication and multimedia chips
+is to design and verify the complex complementary circuit pair $(E,E^{-1})$,
+in which the encoder $E$ transforms information into a format suitable for transmission and storage,
+while its complementary circuit(or decoder) $E^{-1}$ recovers this information.
+
+In order to facilitate this job,
+we propose the complementary synthesis\cite{ShengYuShen:iccad09,ShengYuShen:tcad,ShengYuShen:tcad11,ShengYuShen:iccad11} algorithm,
+and develop the CompSyn tool to automatically synthesize the decoder circuit of an encoder.
+This tool has two usage modes: 
+
+\begin{enumerate}
+\item \textbf{The synthesis mode}:
+In addition to the encoder's Verilog source code,
+the user need to specify an assertion on the encoder's configuration pins,
+to put the encoder into correct working states.
+With this assertion,
+this mode can automatically determine the existence of the decoder\cite{ShengYuShen:tcad11} and generate it\cite{ShengYuShen:tcad}.
+\item \textbf{The inferring mode}:
+If the correct assertion is NOT known,
+this mode is used to infer this assertion and generate all possible decoders\cite{ShengYuShen:iccad11}.
+To help the user in selecting the correct decoder,
+this mode also infers each decoder's precondition formula,
+which represents the set of assertions that correspond to this decoder.
+\end{enumerate}
+
+We have implemented our algorithm with the OCaml language,
+and solved the generated SAT instances with the Minisat solver\cite{EXTSAT}.
+The benchmark set includes several complex encoders from industrial projects
+(e.g.,
+PCI-E\cite{PCIESPEC} and Ethernet\cite{IEEE80232002}).
+Experimental results show that
+this tool can always infer correct assertions and generate decoders for them.
+And by using the inferring mode,
+the human effort in specifying assertion and selecting the correct decoder can be significantly reduced.
+All experimental results and programs can be downloaded from \url{http://www.ssypub.org}.
+
+
+\section{An Overview of the Flow}\label{sec_over}
+
+The overall flow of the CompSyn tool is shown in Figure \ref{fig_over}.
+These steps are connected together by the standard make tools in Linux.
+
+
+\section{Preliminaries}\label{sec_prem}
+
+\subsection{Propositional Satisfiability}\label{subsec_SAT}
+The Boolean value set is denoted as $B=\{0,1\}$.
+For a Boolean formula $F$ over a variable set $V$,
+the \textbf{Propositional Satisfiability Problem}(abbreviated as \textbf{SAT}) is to find a satisfying assignment $A:V\to B$,
+so that $F$ can be evaluated to 1.
+If such a satisfying assignment exists, then $F$ is \textbf{satisfiable};
+otherwise,
+it is \textbf{unsatisfiable}.
+A computer program that decides the existence of such a satisfying assignment is called a \textbf{SAT solver}.
+% such as Zchaff\cite{CHAFF},
+% % Grasp\cite{grasp},
+% Berkmin\cite{BERKMIN},
+% and MiniSAT\cite{EXTSAT}.
+
+Normally,
+a SAT solver requires formula $F$ to be represented in the \textbf{Conjunctive Normal Form(CNF)},
+in which a \textbf{formula} $F=\bigwedge_{cl\in CL}cl$ is a conjunction of its clause set $CL$,
+and a \textbf{clause} $cl=\bigvee_{l\in Lit}l$ is a disjunction of its literal set $Lit$,
+and a \textbf{literal} is a variable $v$ or its negation $\neg v$.
+A formula in the CNF format is also called a \textbf{SAT instance},
+
+
+\subsection{Cofactoring}\label{subsec_pre_cofact}
+
+For a Boolean function $f:B^n\to B$,
+we use $supp(f)$ to denote its support set $\{v_1\dots v_n\}$.
+According to \cite{Cofact},
+the positive and negative cofactors of $f(v_1\dots v\dots v_n)$ with respect to variable
+$v$ are $f_v=f(v_1\dots 1\dots v_n)$ and $f_{\overline{v}}=f(v_1\dots 0\dots v_n)$,
+respectively.
+% Existential quantification of $f(v_1\dots v\dots v_n)$ with respect to a
+% variable $v$ is $\exists v f=f_v+f_v’$.
+\textbf{Cofactoring} is the action that applies 0 or 1 to $v$ to get $f_v$ or $f_{\overline{v}}$.
+
+
+\subsection{Craig Interpolation}\label{subsec_pre_interp}
+Craig\cite{Craig} had proved the following theorem for all first order logics.
+
+\begin{theorem}[Craig Interpolation Theorem]\label{thm_craig}
+Given two formulas $\phi_A$ and $\phi_B$,
+with $\phi_A\wedge \phi_B$ unsatisfiable,
+there exists a formula $\phi_I$ referring only
+to the common variables of $\phi_A$ and $\phi_B$ such that $\phi_A\to \phi_I$
+and $\phi_I\wedge \phi_B$ is unsatisfiable.
+The formula $\phi_I$ is referred to as the interpolant of $\phi_A$ with respect to $\phi_B$.
+\end{theorem}
+
+In the remainder of this paper,
+we will focus on the Boolean propositional logic only,
+% There are many approaches to generate interpolants for propositional logic,
+% so please refer to Krajicek\cite{interp_Krajicek},
+% Pudlak\cite{interp_Pudlak} and McMillan\cite{interp_McMillan} for more details.
+and use the algorithm proposed by McMillan\cite{interp_McMillan} to generate interpolants from the proof of unsatisfiability,
+which is generated by MiniSAT\cite{EXTSAT}.
+
+\subsection{Recurrence Diameter}
+
+A circuit can be modeled by a Mealy finite state machine \cite{MEALY}.
+
+\begin{definition}[Mealy finite state machine]\label{MealyFSM_old}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+\textbf{Mealy finite state machine} is a 5-tuple $M=(S,s_0,I,O,T)$,
+consisting of a finite state set $S$,
+an initial state $s_0\in S$,
+a finite set of input letters $I$,
+a finite set of output letters $O$,
+a transition function $T: S\times I\to S\times O$ that computes the next state and output letter from the current state and input letter.
+%}
+\end{definition}
+
+We denote the state, the input letter and the output letter at the $n$-th cycle respectively as $s_n$, $i_n$ and $o_n$.
+We further denote the sequence of state, input letter and output letter from the $n$-th to the $m$-th cycle respectively as $s_n^m$, $i_n^m$ and $o_n^m$.
+
+A \textbf{loop} is a state sequence $s_n^{m}$ with $s_n\equiv s_m$.
+A \textbf{loop-like path} is a state sequence $s_n^{m}$ with $s_i\equiv s_j$,
+where $n\le i< j\le m$.
+
+Kroening et al. \cite{RecDiam} defined the \textbf{state variables recurrence diameter} with respect to $M$,
+denoted by $rrd(M)$,
+as the longest state sequence without loop in $M$ starting from an initial state.
+
+% \begin{equation}\label{equ_svrd}
+% rrd(M)\stackrel{def}{=}\max\{i|\exists s_0 \dots s_i:
+% I(s_0)\wedge \bigwedge^{i-1}_{j=0}T(s_j,s_{j+1})\wedge\bigwedge^{i-1}_{j=0}\bigwedge^{i}_{k=j+1}s_{j}\ne s_{k}\}
+% \end{equation}
+
+In this paper,
+we define a similar concept: the \textbf{uninitialized state variables recurrence diameter} with respect to $M$,
+denoted by $uirrd(M)$,
+as the longest state sequence without loop in $M$.
+%}
+
+\begin{equation}\label{equ_uisvrd}
+\begin{array}{cc}
+uirrd(M)\stackrel{def}{=}&\max\{i|\exists s_0 \dots s_i  i_0 \dots i_i o_0 \dots o_i:\\
+&\bigwedge^{i-1}_{j=0}(s_{j+1},o_j)\equiv T(s_j,i_j)\wedge\bigwedge^{i-1}_{j=0}\bigwedge^{i}_{k=j+1}s_{j}\ne s_{k}\}
+\end{array}
+\end{equation}
+
+The only difference between these two definitions is that
+our $uirrd$ does not consider the initial state.
+These definitions are only used in proving our theorems below.
+Our algorithm does not need to compute these diameters.
+
+Obviously,
+a state sequence longer than $uirrd(M)$ must be a loop-like path.
+
+\subsection{The Original Algorithm to Determine the Existence of the Decoder}\label{subsec_chkextdec}
+
+
+The complementary synthesis algorithm\cite{ShengYuShen:iccad09} includes two steps:
+determining the existence of the decoder and characterizing its Boolean function.
+We will only introduce the first step here.
+
+To model the encoder $E$ with configuration pins,
+we extend the traditional definition of Mealy finite state machine \cite{MEALY}:
+
+\begin{definition}[Mealy finite state machine with configuration]\label{MealyFSM}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+Mealy finite state machine with configuration is a 6-tuple $M=(S,s_0,I,C,O,T)$,
+consisting of a finite state set $S$,
+an initial state $s_0\in S$,
+a finite set of input letters $I$,
+a finite set of configuration letters $C$,
+a finite set of output letters $O$,
+and a transition function $T: S\times I\times C\to S\times O$ that computes the next state
+and the output letter from the current state,
+the input letter and the configuration letter.
+%}
+\end{definition}
+
+\begin{figure}[t]
+\centering
+\includegraphics{mealy}
+\caption{Mealy finite state machine with configuration}
+\label{mealy}
+\end{figure}
+
+As shown in Figure \ref{mealy},
+as well as in the remainder of this paper,
+the state is represented as a gray round corner box,
+and the transition function $T$ is represented as a white rectangle.
+
+We denote the configuration letter at the $n$-th cycle as $c_n$.
+We further denote the sequence of configuration letter from the $n$-th to the $m$-th cycle as $c_n^m$.
+
+\begin{figure}[b]
+\begin{center}
+\includegraphics{t1}
+\end{center}
+\caption{The parameterized complementary condition}
+  \label{t1}
+\end{figure}
+
+\begin{definition}[Assertion on configuration pins]\label{def_ass}
+An assertion(or a formula) on configuration pins is a configuration letter set $R$.
+For a configuration letter $c$,
+$R(c)$ means $c\in R$.
+If $R(c)$ holds,
+we also say that $R$ covers $c$.
+\end{definition}
+
+
+As shown in Figure \ref{t1},
+a sufficient condition for the existence of $E^{-1}$ is,
+there exist three parameters $p$, $d$ and $l$,
+so that $i_n$ of $E$ can be uniquely determined by the output sequence $o_{n+d-l}^{n+d-1}$.
+$d$ is the relative delay between $o_{n+d-l}^{n+d-1}$ and $i_n$,
+while $l$ is the length of $o_{n+d-l}^{n+d-1}$,
+and $p$ is the length of the prefix state sequence used to rule out some unreachable states.
+This condition is formally defined below:
+
+\begin{definition}[Parameterized Complementary Condition (PC) ]\label{def_pcc}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+For encoder $E$,
+assertion $R$,
+and three integers p,d and l,
+$E\vDash PC(p,d,l,R)$ holds if
+\begin{enumerate}
+ \item $i_n$ can be uniquely determined by $o_{n+d-l}^{n+d-1}$ on $s_{n-p}^{n+d-1}$.
+ \item The assertion $R$ covers all $c_x$, where $n-p\le x\le n+d-1$.
+\end{enumerate}
+
+This equals the unsatisfiability of $F_{PC}(p,d,l,R)$ in Equation (\ref{uniqt1}).
+We further define $E\vDash PC(R)$ as $\exists p,d,l:E\vDash PC(p,d,l,R)$.
+\end{definition}
+
+\begin{equation}\label{uniqt1}
+F_{PC}(p,d,l,R)\stackrel{def}{=}
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s_{m+1},o_m)\equiv T(s_m,i_m,c_m)
+\}
+\\
+\wedge&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s'_{m+1},o'_m)\equiv T(s'_m,i'_m,c'_m)
+\}
+\\
+\wedge&\bigwedge_{m=n+d-l}^{n+d-1}o_m\equiv o'_m \\
+\wedge& i_n\ne i'_n \\
+\wedge&\bigwedge_{x=n-p}^{n+d-1}c_x\equiv c \\
+\wedge&\bigwedge_{x=n-p}^{n+d-1}c_x'\equiv c \\
+\wedge& R(c)
+\end{array}
+\right\}
+\end{equation}
+
+%This definition is the same as that of Subsection \ref{subsec_chkextdec} and paper \cite{ShengYuShen:iccad09}.
+
+The first four lines of Equation (\ref{uniqt1}) correspond to Condition 1 of Definition \ref{def_pcc}.
+The 1st and the 2nd lines of Equation (\ref{uniqt1}) correspond respectively to two unfolded instances of $E$'s transition function.
+The only difference between them is that a prime is appended to every variable in the 2nd line.
+The 3rd line forces the output sequences of these two unfolded instances to be the same,
+while the 4th line forces their input letters to be different.
+
+At the same time,
+the last three lines of Equation (\ref{uniqt1}) correspond to Condition 2 of Definition \ref{def_pcc}.
+The 5th and the 6th lines constrain that all configuration letters are equal to $c$,
+while the last line constrains $c$ to be covered by $R$.
+
+The algorithm based on checking $E\vDash PC(R)$\cite{ShengYuShen:iccad09,ShengYuShen:tcad} just enumerates all combinations of $p$,$d$ and $l$,
+from small to large,
+until $F_{PC}(p,d,l,R)$ becomes unsatisfiable,
+which means that the decoder $E^{-1}$ exists.
+
+\section{A Halting Algorithm to Infer Assertion}\label{sec_exist}
+$PC$ in Definition \ref{def_pcc} only defines how to determine the existence of decoder $E^{-1}$.
+So when the decoder does not exist,
+the algorithm based on checking $E\vDash PC(R)$\cite{ShengYuShen:iccad09,ShengYuShen:tcad} will never halt.
+
+To find a halting algorithm,
+we must define how to determine the non-existence of $E^{-1}$.
+This will be discussed in subsection \ref{subsec_chknonext},
+while the proof of its correctness is presented in subsection \ref{subsec_correctness}.
+Based on this result,
+the overall framework of our algorithm will be presented in subsection \ref{subsec_algo},
+
+\subsection{Determining the Non-existence of the Decoder}\label{subsec_chknonext}
+
+
+According to Definition \ref{def_pcc} and Figure \ref{t1},
+$E^{-1}$ exists if there is a parameter value tuple $<p,d,l>$ that makes
+$E\vDash PC(p,d,l,R)$ holds.
+% such that every path longer than $p$ always reaches a particular state $s_n$,
+% in which the input letter $i_n$ can be uniquely determined by the output sequence $o_{n+d-l}^{n+d-1}$.
+
+So,
+intuitively,
+$E^{-1}$ does not exist if for every parameter value tuple $<p,d,l>$,
+we can always find another tuple $<p',d',l'>$ with $p'>p$,$l'>l$ and $d'>d$,
+such that $E\vDash PC(p',d',l',R)$ does not hold.
+
+This case can be detected by the SAT instance in Figure \ref{fig_double_loop},
+which is similar to Figure \ref{t1},
+except that three new constraints are inserted to detect loops on state sequences $s_{n-p}^{n+d-l}$,$s_{n+d-l+1}^n$ and $s_{n+1}^{n+d}$.
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics{doubleloop}
+\end{center}
+\caption{The loop-like non-complementary condition}
+  \label{fig_double_loop}
+\end{figure}
+
+
+If this SAT instance is satisfiable,
+for any parameter value $<p,d,l>$,
+we can unfold these three loops until we find $<p',d',l'>$ that is larger than $<p,d,l>$.
+It is obvious that this unfolded instance is still satisfiable,
+which means $E\vDash PC(p',d',l',R)$ does not hold.
+So the decoder does not exist.
+
+According to Line 1 and 2 of Equation (\ref{uniqt1}),
+there are actually two unfolded instances of transition function $T$,
+so we need to detect these loops on both of them,
+i.e.,
+on the productive machine $M^2$ defined below:
+
+\begin{definition}[Productive machine]%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+For Mealy machine $M=(S,s_0,I,C,O,T)$,
+its productive machine is $M^2=(S^2,s_0^2,I^2,C^2,O^2,T^2)$,
+where
+$T^2$ is defined as $(<s_{m+1},s'_{m+1}>,<o_m,o'_m>)=T^2(<s_m,s'_m>,<i_m,i'_m>,<c_m,c'_m>)$ with $(s_{m+1},o_m)=T(s_m,i_m,c_m)$ and $(s'_{m+1},o'_m)=T(s'_m,i'_m,c'_m)$.
+\end{definition}
+
+Thus,
+we define the loop-like non-complementary condition below to determine the non-existence of $E^{-1}$:
+
+\begin{definition}[Loop-like Non-complementary Condition (LN)]\label{def_lnc}%\addtolength{\itemsep}{-0.5\baselineskip}
+%{\setlength{\baselineskip}{0.5\baselineskip}
+For encoder $E$ and its Mealy machine $M=(S,s_0,I,C,O,T)$,
+assume its productive machine is $M^2=(S^2,s_0^2,I^2,C^2,O^2,T^2)$,
+then $E\vDash LN(p,d,l,R)$ holds if
+$i_n$ can not be uniquely determined by $o_{n+d-l}^{n+d-1}$ on the state transition sequence $s_{n-p}^{n+d-1}$,
+and there are loops on $(s^2)_{n-p}^{n+d-l}$,$(s^2)_{n+d-l+1}^n$ and $(s^2)_{n+1}^{n+d}$.
+This equals the satisfiability of $F_{LN}(p,d,l,R)$ in Equation (\ref{uniqln}).
+We further define $E\vDash LN(R)$ as $\exists p,d,l:E\vDash LN(p,d,l,R)$.
+\end{definition}
+
+\begin{equation}\label{uniqln}
+F_{LN}(p,d,l,R)\stackrel{def}{=}
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s_{m+1},o_m)\equiv T(s_m,i_m,c_m)
+\}
+\\
+\wedge&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s'_{m+1},o'_m)\equiv T(s'_m,i'_m,c'_m)
+\}
+\\
+\wedge&\bigwedge_{m=n+d-l}^{n+d-1}o_m\equiv o'_m \\
+\wedge& i_n\ne i'_n \\
+\wedge&\bigwedge_{x=n-p}^{n+d-1}c_x\equiv c \\
+\wedge&\bigwedge_{x=n-p}^{n+d-1}c_x'\equiv c \\
+\wedge& R(c) \\
+\wedge& \bigvee_{x=n-p}^{n+d-l-1}\bigvee_{y=x+1}^{n+d-l} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+d-l+1}^{n-1}\bigvee_{y=x+1}^{n} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+1}^{n+d-1}\bigvee_{y=x+1}^{n+d} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\}
+\end{array}
+\right\}
+\end{equation}
+
+By comparing Equation (\ref{uniqt1}) and (\ref{uniqln}),
+it is obvious that their only difference lies in the last three newly inserted lines in (\ref{uniqln}),
+which will be used to detect loops on the following three state sequences:
+\begin{equation}
+\begin{array}{c}
+Prefix_{p,d,l}=(s^2)_{n-p}^{n+d-l} \\
+Left_{p,d,l}=(s^2)_{n+d-l+1}^n \\
+Right_{p,d,l}=(s^2)_{n+1}^{n+d}
+\end{array}
+\end{equation}
+
+The correctness of this approach will be proved in the next subsection.
+
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics{doubleloop_unfold}
+\end{center}
+\caption{The loop-like non-complementary condition unfolded for $q$ times}
+  \label{fig_double_loop_unfold}
+\end{figure}
+
+Before proceeding to next subsection,
+we need to define how to unfold these loops in above three state sequences.
+Assume that the length of loops in $Prefix_{p,d,l}$, $Left_{p,d,l}$ and $Right_{p,d,l}$ are $l_1$, $l_2$ and $l_3$ respectively.
+We further assume that we unfold these loops for $q$ times.
+Then,
+the SAT instance generated from this unfolding is shown in Figure \ref{fig_double_loop_unfold},
+It is obvious that,
+the unfolded SAT instance corresponds to $F_{LN}(p",d",l",R)$,
+where:
+
+\begin{equation}
+\begin{array}{ccc}
+p"&=&l_1*q+(d-l+p-l_1)+l_2*q+(l-d-l_2) \\
+d"&=&l_3*q+(d-l_3) \\
+l"&=&l_2*q+(l-d-l_2)+l_3*q+(d-l_3)
+\end{array}
+\end{equation}
+
+It is obvious that for every particular $<p,d,l>$ and $<p',d',l'>$,
+there always exists a $q$,
+such that $Prefix_{p",d",l"}$,$Left_{p",d",l"}$ and $Right_{p",d",l"}$ resulted from this unfolding
+are \textbf{not shorter} than $Prefix_{p',d',l'}$,$Left_{p',d',l'}$ and $Right_{p',d',l'}$ respectively.
+
+
+
+\subsection{Proving Correctness}\label{subsec_correctness}
+
+Before proving the correctness of our approach,
+we need some lemmas.
+
+\begin{lemma}[]\label{lemma_unfold_longer}
+For $F_{LN}(p",d",l",R)$ in Figure \ref{fig_double_loop_unfold},
+we have $F_{LN}(p,d,l,R)\to F_{LN}(p",d",l",R)$
+\end{lemma}
+\begin{proof}
+Please refer to Appendix.
+\end{proof}
+
+\begin{lemma}[]\label{lemma_pc_long}
+For two tuples $<p,d,l>$ and $<p',d',l'>$,
+if $Prefix_{p',d',l'}$,$Left_{p',d',l'}$ and $Right_{p',d',l'}$ are \textbf{not shorter} than $Prefix_{p,d,l}$,$Left_{p,d,l}$ and $Right_{p,d,l}$ respectively,
+then $E\vDash PC(p,d,l,R)\to E\vDash PC(p',d',l',R)$.
+\end{lemma}
+\begin{proof}
+It is obvious that $F_{PC}(p,d,l,R)$ is a sub-formula of $F_{PC}(p',d',l',R)$,
+so the unsatisfiability of the former implies the unsatisfiability of the latter.
+Thus,
+$E\vDash PC(p,d,l,R)\to E\vDash PC(p',d',l',R)$ holds.
+\end{proof}
+
+The following two theorems will prove that $E\vDash LN(R)\leftrightarrow \neg \{E\vDash PC(R)\}$.
+
+\begin{theorem}[]\label{thm_pc_nln}
+$E\vDash LN(R)\to \neg \{E\vDash PC(R)\}$
+\end{theorem}
+\begin{proof}
+We can prove it by contradiction.
+Assume that $E\vDash LN(R)$ and $E\vDash PC(R)$ both hold.
+This means there exist $<p,d,l>$ and $<p',d',l'>$,
+such that $E\vDash PC(p,d,l,R)$ and $E\vDash LN(p',d',l',R)$.
+
+On one hand,
+$E\vDash LN(p',d',l',R)$ implies that there are loops in the state sequences $Prefix_{p',d',l'}$,$Left_{p',d',l'}$ and $Right_{p',d',l'}$.
+By unfolding these loops,
+we can get another tuple $<p",d",l">$,
+so that :
+\begin{enumerate}
+\item $Prefix_{p",d",l"}$,$Left_{p",d",l"}$ and $Right_{p",d",l"}$ are longer than $Prefix_{p,d,l}$,$Left_{p,d,l}$ and $Right_{p,d,l}$ respectively
+\item According to Lemma \ref{lemma_unfold_longer},
+$F_{LN}(p",d",l",R)$ is satisfiable.
+\end{enumerate}
+
+$F_{PC}(p",d",l",R)$ is a sub-formula of $F_{LN}(p",d",l",R)$,
+so $F_{PC}(p",d",l",R)$ is also satisfiable,
+which means that $E\vDash PC(p",d",l",R)$ does not hold.
+
+On the other hand,
+according to Lemma \ref{lemma_pc_long},
+$E\vDash PC(p",d",l",R)$ holds.
+
+This contradiction concludes the proof.
+\end{proof}
+
+\begin{theorem}[]\label{thm_nln_pc}
+$E\vDash LN(R)\gets \neg \{E\vDash PC(R)\}$
+\end{theorem}
+\begin{proof}
+We can also prove it by contradiction.
+Assume that neither $E\vDash LN(R)$ nor $E\vDash PC(R)$ holds.
+Then for every $<p,d,l>$ and $<p',d',l'>$,
+$F_{PC}(p,d,l,R)$ is satisfiable,
+while $F_{LN}(p',d',l',R)$ is unsatisfiable.
+
+Thus,
+assume $uirrd(M^2)$ is the uninitialized state variables recurrence diameter of $E$'s productive machine.
+Let's define $<p,d,l>$ as:
+\begin{equation}
+\begin{array}{c}
+p=uirrd(M^2)*2+2 \\
+d=uirrd(M^2)+1 \\
+l=uirrd(M^2)*2+2
+\end{array}
+\end{equation}
+
+With this definition,
+it is obvious that $Prefix_{p,d,l}$,$Left_{p,d,l}$ and $Right_{p,d,l}$ are all longer than $uirrd(M^2)$.
+This means there are loops in all these three state sequences,
+which will make $F_{LN}(p,d,l,R)$ satisfiable.
+This contradicts with the fact that $F_{LN}(p',d',l',R)$ is unsatisfiable for every $<p',d',l'>$.
+
+This contradiction concludes the proof.
+\end{proof}
+
+Theorems \ref{thm_pc_nln} and \ref{thm_nln_pc} show that,
+we can enumerate all combinations of $<p,d,l>$ from small to large,
+and check $E\vDash PC(p,d,l,R)$ and $E\vDash LN(p,d,l,R)$ in every iteration.
+This process will eventually terminate with one and only one answer between $E\vDash PC(R)$ and $E\vDash LN(R)$.
+The implementation of this algorithm will be presented in the next subsection.
+
+\subsection{Algorithm Implementation}\label{subsec_algo}
+
+\begin{algorithm}\label{algo_pcln}
+\textbf{InferAssertion}
+\begin{enumerate}
+\item $NA=\{\}$
+\item for $x=0\to \infty$
+\item \hspace{0.5cm}      $<p,d,l>=<2x,x,2x>$
+\item \hspace{0.5cm}      if $F_{PC}(p,d,l,\bigwedge_{na\in NA}\neg na)$ is unsatisfiable
+\item \hspace{1.0cm}        if $\bigwedge_{na\in NA}\neg na$ is satisfiable then
+\item \hspace{1.5cm}          decoder exists with final assertion $\bigwedge_{na\in NA}\neg na$
+\item \hspace{1.0cm}        else
+\item \hspace{1.5cm}          decoder does not exist
+\item \hspace{1.0cm}        halt
+\item \hspace{0.5cm}      elseif $F_{LN}(p,d,l,\bigwedge_{na\in NA}\neg na)$ is satisfiable
+\item \hspace{1.0cm}        let $c$ be the configuration letter leading to the non-existence of decoder
+\item \hspace{1.0cm}        $na\leftarrow InferCoveringFormula(c)$
+\item \hspace{1.0cm}        $NA\leftarrow NA\cup \{na\}$
+\item \hspace{0.5cm}      endif
+\item endfor
+\end{enumerate}
+\end{algorithm}
+
+In Line 1 of Algorithm \ref{algo_pcln},
+$NA$ will be used to record all inferred formulas that can lead to the non-existence of the decoder.
+They are all inferred by the procedure $InferCoveringFormula$ in Line 12,
+whose functionality is to infer a formula that can cover not only $c$,
+but also many other configuration letters leading to the non-existence of the decoder.
+More details of this procedure will be presented in Section \ref{sec_infer}.
+
+Line 3 ensures that the length of $Prefix_{p,d,l}$,$Left_{p,d,l}$ and $Right_{p,d,l}$ are all set to $x$,
+whose value is enumerated in Line 2.
+In this way,
+many redundant combinations of $p$,$d$ and $l$ are no longer need to be tested.
+Thus, the performance of this algorithm can be significantly boosted.
+
+Line 4 means the input letter can be uniquely determined by the output sequence with parameter value $<p,d,l>$.
+Line 5 means that there is at least one configuration letter that can lead to the existence of the decoder,
+and the final assertion is created by anding all inverses of NA assertions in the 6th line.
+
+Line 7 means all configuration letters can eventually lead to the non-existence of the decoder.
+There must be some bugs in the encoder.
+
+Line 10 means that the decoder does not exist with the configuration letter $c$ in Line 11.
+We need to rule out $c$ such that Algorithm \ref{algo_pcln} can continue searching for other configuration letters that may lead to the existence of the decoder.
+The procedure $InferCoveringFormula$ in Line 12 will be used to infer a formula $na$ that covers not only $c$,
+but also a large set of invalid configuration letters.
+They will be ruled out in Line 13.
+
+We can prove that Algorithm \ref{algo_pcln} is a halting one.
+\begin{theorem}[]\label{thm_pcln_halt}
+Algorithm \ref{algo_pcln} is a halting algorithm.
+\end{theorem}
+\begin{proof}
+According to Theorems \ref{thm_pc_nln} and \ref{thm_nln_pc},
+Algorithm \ref{algo_pcln} will eventually reach Line 4 or 10.
+
+In the former case,
+this algorithm will halt at Line 9.
+
+In the latter case,
+a new formula $na$ will be inferred,
+which will cover the configuration letter $c$.
+Because the number of such $c$ is finite,
+all of them will eventually be ruled out by $\bigwedge_{na\in NA}\neg na$.
+Then Algorithm \ref{algo_pcln} will eventually reach Line 4,
+and halt at Line 9.
+
+\end{proof}
+
+\section{Inferring New Formula Covering Invalid Configuration Letter $c$ with Cofactoring and Craig Interpolation}\label{sec_infer}
+This section will introduce the implementation of $InferCoveringFormula$ in Line 12 of Algorithm \ref{algo_pcln}.
+It will be used to infer a Boolean formula $na$
+that covers not only $c$,
+but also many other configuration letters leading to the non-existence of the decoder.
+This job will be accomplished in the following three steps:
+\begin{enumerate}
+ \item Transforming $F_{LN}$ into an equivalent form with an object variable,
+       such that it can be used to defined a Boolean function $f$.
+ \item Eliminating some variables from the support set of $f$ with cofactoring\cite{Cofact},
+       until only $c$ remains.
+ \item Characterizing $f$ with Craig Interpolation.
+       This $f$ is also the formula $na$ in Line 12 of Algorithm \ref{algo_pcln}.
+\end{enumerate}
+
+These three steps will be presented in the following three subsections.
+
+\subsection{An Equivalent Form of $F_{LN}$}
+
+As mentioned above,
+we need to transform $F_{LN}$ into another equivalent form with an object variable.
+
+First,
+we need to move the third line and the last three lines of Equation (\ref{uniqln}) into a new subformula:
+
+\begin{equation}\label{uniqln_subg}
+G(p,d,l)\stackrel{def}{=}
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n+d-l}^{n+d-1}o_m\equiv o'_m \\
+\wedge& \bigvee_{x=n-p}^{n+d-l-1}\bigvee_{y=x+1}^{n+d-l} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+d-l+1}^{n-1}\bigvee_{y=x+1}^{n} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+1}^{n+d-1}\bigvee_{y=x+1}^{n+d} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\}
+\end{array}
+\right\}
+\end{equation}
+
+And then,
+$F_{LN}$ can be transformed into :
+\begin{equation}\label{uniqln_new}
+F'_{LN}(p,d,l,R)\stackrel{def}{=}
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s_{m+1},o_m)\equiv T(s_m,i_m,c_m)
+\}
+\\
+\wedge&\bigwedge_{m=n-p}^{n+d-1}
+\{
+(s'_{m+1},o'_m)\equiv T(s'_m,i'_m,c'_m)
+\}
+\\
+\wedge& i_n\ne i'_n \\
+\wedge&\bigwedge_{x=n-p}^{n+d-1}c_x\equiv c \\
+\wedge&\bigwedge_{x=n-p}^{n+d-1}c_x'\equiv c \\
+\wedge& R(c) \\
+\wedge& t\equiv G(p,d,l)
+\end{array}
+\right\}
+\end{equation}
+
+It is obvious that $F_{LN}$ and $F'_{LN}\wedge t\equiv 1$ is equisatisfiable.
+
+At the same time,
+according to Figure \ref{fig_double_loop},
+$F'_{LN}$ actually defines a function $f':S^{2}\times I^{(d+p)*2}\times C\to B$,
+whose support set $supp(f')$ is $\{s_{n-p},s'_{n-p},i_{n-p}^{n+d-1},(i')_{n-p}^{n+d-1},c\}$,
+and its output is the object variable $t$ in the last line of Equation (\ref{uniqln_new}).
+
+\subsection{Cofactoring}
+According to Line 10 of Algorithm \ref{algo_pcln},
+$F_{LN}$ is satisfiable.
+We further assume that $A$ is the satisfying assignment of $F_{LN}$.
+We can just assert the value of $i_{n-p}^{n+d-1}$, $(i')_{n-p}^{n+d-1}$, $s_{n-p}$ and $(s')_{n-p}$ into formula $F'_{LN}$,
+and get :
+
+\begin{equation}\label{equ_char}
+F"_{LN}(c,t)\stackrel{def}{=}
+\left\{
+\begin{array}{cc}
+& F'_{LN}\\
+\wedge& i_{n-p}^{n+d-1}\equiv A(i_{n-p}^{n+d-1})\\
+\wedge& (i')_{n-p}^{n+d-1}\equiv A((i')_{n-p}^{n+d-1})\\
+\wedge& s_{n-p}\equiv A(s_{n-p})\\
+\wedge& (s')_{n-p}\equiv A((s')_{n-p})
+\end{array}
+\right\}
+\end{equation}
+
+Now,
+$F"_{LN}$ defines another function $f"$,
+whose support set is reduced to $c$.
+
+\subsection{Characterizing $f"$ with Craig Interpolation}
+
+We then encode $F"_{LN}(c,t)$ into the CNF format,
+and denote it as $CNF(F"_{LN}(c,t))$.
+Assume $CNF'(F"_{LN}(c,t'))$ is a copy of $CNF(F"_{LN}(c,t))$.
+They share the same variable index for $c$ only,
+while all other variables are encoded independently.
+In this way,
+we can construct formula $\phi_A$ and $\phi_B$ as:
+
+\begin{equation}\label{equ_interpA}
+\phi_A\stackrel{def}{=}CNF(F"_{LN}(c,t))\wedge t\equiv 1
+\end{equation}
+
+\begin{equation}\label{equ_interpB}
+\phi_B\stackrel{def}{=}CNF'(F"_{LN}(c,t'))\wedge t'\equiv 0
+\end{equation}
+
+It is obvious that $\phi_A\wedge \phi_B$ is unsatisfiable.
+With the interpolant generating algorithm proposed by McMillan\cite{interp_McMillan},
+we can generate an interpolant,
+which is a circuit with Boolean function $ITP:C\to B$.
+
+According to Theorem \ref{thm_craig},
+$ITP$ is inconsistent with $\phi_B$ in Equation (\ref{equ_interpB}).
+So it characterizes a set $C'\subseteq C$ that can make $\phi_A$ in Equation (\ref{equ_interpA}) satisfiable.
+According to Equations (\ref{uniqln_new}) and (\ref{equ_char}),
+it is obvious that:
+\begin{enumerate}
+ \item The $c$ in Line 11 of of Algorithm \ref{algo_pcln} is in $C'$.
+According to Theorem \ref{thm_pcln_halt},
+this will ensure that Algorithm \ref{algo_pcln} is halting.
+ \item All $c'\in C'$ can also lead to the non-existence of the decoder.
+This will speedup Algorithm \ref{algo_pcln} significantly.
+\end{enumerate}
+
+
+
+
+\section{Experimental Results}\label{sec_exp}
+We have implemented this algorithm with the OCaml language,
+and solved the generated SAT instances with Minisat solver\cite{EXTSAT}.
+All experiments are run on a PC with a 2.4GHz Intel Core 2 Q6600 processor, 8GB memory and Ubuntu 10.04 linux.
+All experimental results and programs can be downloaded from \url{http://www.ssypub.org}.
+%All related programs and data files can be downloaded from \url{http://www.ssypub.org}.
+\subsection{Benchmarks}
+
+\begin{table}[t]
+\centering
+\caption{Information of Benchmarks}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+&XGXS&XFI&scrambler&PCI-E&T2 ethernet\\\hline
+Line number of&214&466&24&1139&1073\\
+verilog source code&&&&&\\\hline
+\#regs&15&135&58&22&48\\\hline
+Data path width&8&64&66&10&10\\\hline
+\end{tabular}\label{tab_benchmark}
+\end{table}
+
+
+\begin{table}[b]
+\centering
+\caption{Experimental Results}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+&                                        &XGXS     &XFI       &scrambler     &PCI-E    &T2 ethernet\\\hline
+&Run time of checking                           &&&&&\\
+\cite{ShengYuShen:fmcad10}&$PC$(sec)     &0.07     &17.84     &2.70      &0.47    &30.59\\\cline{2-7}
+&$d,p,l$                                 &1,2,1    &0,3,2     &0,2,2     &2,2,1   &4,2,1         \\ \hline\hline
+&Configuration                 &&&&&\\
+&pin number                              &3        &120       &1         &16      &26\\\cline{2-7}
+&Run time of inferring                         &&&&&\\
+ours&assertion(sec)                      &3.69     &372.15    &3.14      &30.53   &188.56\\\cline{2-7}
+&$d,p,l$                                 &1,3,1    &0,4,2     &0,2,2     &2,2,1   &0,3,1          \\ \hline
+\end{tabular}\label{tab_res}
+\end{table}
+
+Table \ref{tab_benchmark} shows information of the following benchmarks.
+\begin{enumerate}
+
+\item A XGXS encoder compliant to clause 48 of IEEE-802.3ae 2002 standard \cite{IEEE80232002}.
+
+\item A XFI encoder compliant to clause 49 of the same IEEE standard.
+
+\item A 66-bit scrambler used to ensure
+that a data sequence has sufficiently many 0-1 transitions
+, so that it can run through a high-speed
+noisy serial transmission channel.
+
+\item A PCI-E physical coding module \cite{PCIESPEC}.
+
+\item The Ethernet module of Sun's OpenSparc T2 processor.
+\end{enumerate}
+
+\subsection{Results}
+
+The 2nd row of Table \ref{tab_res} shows the run time of checking the decoder's existence
+with the halting algorithm\cite{ShengYuShen:fmcad10} proposed previously by us.
+And the 3rd row shows the value of $d$, $p$ and $l$ discovered by that algorithm.
+
+At the same time,
+the 4th row shows the configuration pin's bit number,
+the 5th row shows the run time of inferring assertion with our new algorithm,
+while the last line shows the value of $d$, $p$ and $l$ discovered.
+
+By comparing the 2nd and the 5th rows,
+it is obvious that our approach is much slower than that of \cite{ShengYuShen:fmcad10},
+which is caused by the much more complicated procedure $InferCoveringFormula$
+used to infer new formulas.
+
+By comparing the 3rd and the 6th rows,
+it is obvious that there are some minor differences on those parameter values.
+This is caused by the different orders in checking various parameter combinations.
+
+
+\section{Related Works}\label{sec_relwork}
+\subsection{Complementary Synthesis and Program Inverse}
+The concept of complementary synthesis was first proposed by us\cite{ShengYuShen:iccad09,ShengYuShen:tcad} in ICCAD 2009.
+Its major shortcomings is that it is not halting.
+We addressed this problem by building a set of over-approximations that is similar to onion-rings \cite{ShengYuShen:fmcad10}.
+
+According to Gulwani\cite{dim_syn},
+program inverse is the problem that derive a program $P^{-1}$
+that negate the computation of a given program $P$.
+So the definition of program inverse is very similar to complementary synthesis.
+
+Initial work on deriving program inverse used proof-based approaches\cite{prog_inv},
+but it can only handle very small programs and very simple syntax structures.
+
+Gl\"{u}ck et.al \cite{mtd_autoProginv} inverses the first-order functional programs
+by eliminating nondeterminism with LR-based parsing methods.
+The requirement that the program to be inversed should be expressed in functional language makes it impossible to apply it to our application.
+
+Srivastava et.al \cite{prog_inv_rev} assumes that an inverse program is typically related to the original program,
+so the space of possible inverses can be inferred by automatically
+mining the original program for expressions, predicates, and control flow.
+This algorithm inductively rules out invalid paths that can't fulfill the requirement of inversion,
+to narrow down the space of candidate programs until only the valid ones remain.
+So it can only guarantee the existence of a solution,
+but not the correctness of this solution if its assumptions do not hold.
+
+
+\subsection{Protocol Converter Synthesis}
+The protocol converter synthesis is the problem that automatically generates a translator between two different communication protocols.
+
+Avnit et.al \cite{converter_date08} first defines a general model for describing the different protocols.
+Then it provides an algorithm to decide
+whether there are some functionality of a protocol that can't be translated into another.
+Finally,
+it synthesizes the translator by computing a greatest fixed point for the update function of buffer's control states.
+Avnit et.al\cite{converter_date09} improved the algorithm mentioned above with a more efficient design space exploration algorithm.
+%The implementation of this tool is introduced in \cite{converter_tacas10}.
+
+\section{Conclusions}\label{sec_conclude}
+
+This paper proposes a fully automatic approach to infer assertion for complementary synthesis.
+Experimental results show that our approach can infer assertions for many complex encoders,
+such as PCI-E\cite{PCIESPEC} and Ethernet\cite{IEEE80232002},.
+
+One direction for future work is to develop an abstraction and refinement framework for complementary synthesis,
+such that larger designs can be handled.
+
+\section*{Acknowledgment}
+% The authors would like to thank the anonymous reviewers for their hard work.
+
+This work was funded by Projects 60603088 and 61070132 supported by National Natural Science Foundation of China.
+
+\begin{thebibliography}{4}
+
+\bibitem{ShengYuShen:iccad09}
+Shen, S.,
+Zhang, J.,
+Qin, Y.,
+Li, S.
+:
+Synthesizing Complementary Circuits Automatically.
+In: 2009 International Conference on Computer-Aided Design,
+pp. 381--388.
+IEEE Press,
+New York (2009)
+
+\bibitem{ShengYuShen:tcad}
+Shen, S.,
+Qin, Y.,
+Wang, K.,
+Xiao, L.,
+Zhang, J.,
+Li, S.
+:
+Synthesizing Complementary Circuits Automatically.
+IEEE transaction on CAD of Integrated Circuits and Systems
+29(8),
+1191--1202
+(2010)
+
+\bibitem{ShengYuShen:tcad11}
+Shen, S.,
+Qin, Y.,
+Xiao, L.,
+Wang, K.,
+Zhang, J.,
+Li, S.
+:
+A halting algorithm to determine the existence of the decoder.
+IEEE transaction on CAD of Integrated Circuits and Systems
+30(10),
+1191--1202
+(2011)
+
+\bibitem{ShengYuShen:iccad11}
+Shen, S.,
+Qin, Y.,
+Zhang, J.,
+Li, S.
+:
+Inferring Assertion for Complementary Synthesis.
+\emph{accepted by ICCAD11.
+  \url{http://www.ssypub.org/pub/iccad11_ssy.pdf}}.
+
+
+
+\bibitem{Cofact}
+Ganai, M.K.,
+Gupta, A.,
+Ashar, P.
+:
+Efficient SAT-based unbounded symbolic model checking using circuit cofactoring.
+In: 2004 International Conference on Computer-Aided Design,
+pp. 510--517.
+IEEE Press,
+New York (2004)
+
+
+\bibitem{Craig}
+Craig, W.
+:
+Linear reasoning: A new form of the Herbrand-Gentzen theorem.
+J. Symbolic Logic. 22(3), 250--268 (1957)
+
+
+\bibitem{EXTSAT}
+E\'en, N.,
+S\"orensson, N.
+:
+Extensible SAT-solver.
+In: Giunchiglia, E., Tacchella, A. (eds.)
+SAT 2003.
+LNCS, vol. 2919,
+pp. 502--518.
+Springer, Heidelberg (2003)
+
+\bibitem{PCIESPEC}
+PCI Express Base Specification Revision 1.0.
+Download from \url{http://www.pcisig.com}
+
+\bibitem{IEEE80232002}
+\emph{IEEE Standard for Information technology Telecommunications and
+  information exchange between systems Local and metropolitan area networks
+  Specific requirements Part 3: Carrier Sense Multiple Access with Collision
+  Detection (CSMA/CD) Access Method and Physical Layer Specifications
+  Amendment: Media Access Control (MAC) Parameters, Physical Layers, and
+  Management Parameters for 10 Gb/s Operation}, IEEE Std. 802.3, 2002.
+
+
+
+% \bibitem{CHAFF}
+% Moskewicz, M.,
+% Madigan, C.,
+% Zhao, Y.,
+% Zhang, L.,
+% Malik, S.
+% :
+% Chaff: Engineering an Efficient SAT Solver.
+% In: 38th Design Automation Conference,
+% pp. 530--535.
+% IEEE Press,
+% New York (2001)
+
+
+
+% \bibitem{grasp}
+% Silva, J.,
+% Sakallah, K.
+% :
+% GRASP - a new search algorithm for satisfiability.
+% In: 1996 International Conference on Computer-Aided Design,
+% pp. 220--227.
+% IEEE Press,
+% New York (1996)
+
+
+% \bibitem{BERKMIN}
+% Goldberg, E.,
+% Novikov, Y.
+% :
+% BerkMin: A Fast and Robust Sat-Solver.
+% In: 2002 Design, Automation and Test in Europe Conference and Exposition,
+% pp. 142--149.
+% IEEE Press,
+% New York (2002)
+
+
+% \bibitem{interp_Krajicek} Krajicek, J.: Interpolation theorems, lower bounds for proof systems,
+% and independence results for bounded arithmetic.
+% J. Symbolic Logic 62(2), 457--486 (1997)
+
+
+% \bibitem{interp_Pudlak} Pudlak, P.: Lower bounds for resolution and cutting plane proofs and
+% monotone computations.
+% J. Symbolic Logic 62(3), 981--998 (1997)
+
+
+\bibitem{interp_McMillan}
+McMillan, K.L.
+:
+Interpolation and SAT-based model checking.
+In: Hunt, W.A., Somenzi, F. (eds.)
+CAV 2003.
+LNCS, vol. 2725,
+pp. 1--13.
+Springer, Heidelberg (2003)
+
+\bibitem{MEALY} Mealy, G.H.: A method for synthesizing sequential circuits.
+Bell Systems Technical Journal 34(5), 1045--1079 (1955)
+
+\bibitem{RecDiam}
+Kroening, D.,
+Strichman, O.
+:
+Efficient Computation of Recurrence Diameters.
+In: Zuck, L.D., Attie, P.C., Cortesi, A., Mukhopadhyay, S. (eds.)
+VMCAI 2003.
+LNCS, vol. 2575,
+pp. 298--309.
+Springer, Heidelberg (2003)
+
+\bibitem{ShengYuShen:fmcad10}
+Shen, S.,
+Qin, Y.,
+Zhang, J.,
+Li, S.
+:
+A Halting Algorithm to Determine the Existence of Decoder.
+In: 10th International Conference on Formal Methods in Computer-Aided Design,
+pp. 91--100.
+IEEE Press,
+New York (2010)
+
+\bibitem{dim_syn}
+Gulwani, S.
+:
+Dimensions in program synthesis.
+In: 12th International ACM SIGPLAN Conference on Principles and Practice of Declarative Programming,
+pp. 13--24.
+ACM Press,
+New York (2010)
+
+\bibitem{prog_inv}
+Edsger W. Dijkstra.
+Program Inversion.
+in Program Construction,
+pp 54-57,
+1978.
+
+
+\bibitem{mtd_autoProginv}
+Gl\"{u}ck, R.,
+Kawabe, M.
+:
+A method for automatic program inversion based on LR(0) parsing.
+Fundam. Inf. 66(4), 367--395 (2005)
+
+\bibitem{prog_inv_rev}
+Srivastava, S.,
+Gulwani, S.,
+Chaudhuri, S.,
+Foster, J.
+:
+Program inversion revisited.
+Technical Report MSR-TR-2010-34, Microsoft Research (2010)
+
+
+
+\bibitem{converter_date08}
+Avnit, K.,
+D'Silva, V.,
+Sowmya, A.,
+Ramesh, S.,
+Parameswaran, S.
+:
+A Formal Approach To The Protocol Converter Problem.
+In: 2008 Design, Automation and Test in Europe Conference and Exposition,
+pp. 294--299.
+IEEE Press,
+New York (2008)
+
+
+\bibitem{converter_date09}
+Avnit, K.,
+Sowmya, A.
+:
+A formal approach to design space exploration of protocol converters.
+In: 2009 Design, Automation and Test in Europe Conference and Exposition,
+pp. 129--134.
+IEEE Press,
+New York (2009)
+
+
+% \bibitem{converter_tacas10}
+% Avnit, K.,
+% Sowmya, A.,
+% Peddersen, J.
+% :
+% ACS: Automatic Converter Synthesis for SoC Bus Protocols.
+% In: Esparza, J., Majumdar,R. (eds.)
+% TACAS 2010.
+% LNCS, vol. 6015,
+% pp. 343--348.
+% Springer, Heidelberg (2010)
+
+\end{thebibliography}
+
+\section*{Appendix}
+\setcounter{lemma}{0}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{doubleloop_unfold_cmp}
+\caption{Correspondance between $F_{LN}(p,d,l,R)$ and $F_{LN}(p",d",l",R)$}
+\label{doubleloop_unfold_cmp}
+\end{figure}
+
+\begin{lemma}[]
+For $F_{LN}(p",d",l",R)$ in Figure \ref{fig_double_loop_unfold},
+we have $F_{LN}(p,d,l,R)\to F_{LN}(p",d",l",R)$
+\end{lemma}
+\begin{proof}
+The formula $F_{LN}(p",d",l",R)$ is:
+
+\begin{equation}\label{equ_correspondance}
+F_{LN}(p",d",l",R)\stackrel{def}{=}
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=n-p"}^{n+d"-1}
+\{
+(s_{m+1},o_m)\equiv T(s_m,i_m,c_m)
+\}
+\\
+\wedge&\bigwedge_{m=n-p"}^{n+d"-1}
+\{
+(s'_{m+1},o'_m)\equiv T(s'_m,i'_m,c'_m)
+\}
+\\
+\wedge&\bigwedge_{m=n+d"-l"}^{n+d"-1}o_m\equiv o'_m \\
+\wedge& i_n\ne i'_n \\
+\wedge&\bigwedge_{x=n-p"}^{n+d"-1}c_x\equiv c \\
+\wedge&\bigwedge_{x=n-p"}^{n+d"-1}c_x'\equiv c \\
+\wedge& R(c) \\
+\wedge& \bigvee_{x=n-p"}^{n+d"-l"-1}\bigvee_{y=x+1}^{n+d"-l"} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+d"-l"+1}^{n-1}\bigvee_{y=x+1}^{n} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\} \\
+\wedge& \bigvee_{x=n+1}^{n+d"-1}\bigvee_{y=x+1}^{n+d"} \{s_x\equiv s_y\wedge s'_x\equiv s'_y\}
+\end{array}
+\right\}
+\end{equation}
+
+Assume that $F_{LN}(p,d,l,R)$ is satisfied,
+and its satisfying assignment is $A$.
+We need to prove that $F_{LN}(p",d",l",R)$ is also satisfied with $A$.
+
+The directed arcs numbered from 1 to 12 in Figure \ref{doubleloop_unfold_cmp},
+show the correspondence between $F_{LN}(p,d,l,R)$ and the $F_{LN}(p",d",l",R)$.
+
+The arcs 2 and 3 mean that we can apply the satisfying assignment of the loop in $Right_{p,d,l}$
+to the unfolded loops in $Right_{p",d",l"}$.
+The arcs 1 and 4 mean that we can apply the the satisfying assignments of the two state sequences in $Right_{p,d,l}$,
+but not in the loop of $Right_{p,d,l}$,
+to $Right_{p",d",l"}$.
+With the arcs from 1 to 4,
+we can make the state sequence $Right_{p",d",l"}$ satisfiable.
+
+Similarly,
+we can also make the state sequences $Prefix_{p",d",l"}$ and $Left_{p",d",l"}$ satisfiable.
+
+Thus the first line of Equation (\ref{equ_correspondance}) is satisfied with the assignment $A$.
+
+Similarly,
+the 2nd to 7th lines of Equation (\ref{equ_correspondance}) are also satisfied with the assignment $A$.
+
+At the same time,
+there are $q$ loops in $Prefix_{p",d",l"}$, $Left_{p",d",l"}$ and $Right_{p",d",l"}$,
+which will make the last three lines in Equation (\ref{equ_correspondance}) satisfied.
+
+Thus,the satisfying assignment $A$ of $F_{LN}(p,d,l,R)$ can also make $F_{LN}(p",d",l",R)$ satisfied.
+
+This concludes the proof.
+\end{proof}
+
+\end{document}

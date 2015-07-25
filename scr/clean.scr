@@ -1,2 +1,0 @@
-find|grep "\.log$\|\.dvi$\|\.ps$\|\.backup$\|\.bbl$\|\.aux$\|\.blg$"|awk '{print "rm -f " $1}'
-
