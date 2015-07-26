@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.1415926-2.3-0.9997.5 (MiKTeX 2.9) (preloaded format=xelatex 2014.12.13)  16 DEC 2014 00:52
+This is XeTeX, Version 3.1415926-2.3-0.9997.5 (MiKTeX 2.9) (preloaded format=xelatex 2015.7.26)  26 JUL 2015 22:44
 entering extended mode
 **thesis
-(C:\THESIS-FINAL\THESIS-FINAL\thesis.tex
+(E:\dualsyn_paper\qy_thesis_controlflow\thesis.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for loaded.
-(C:\THESIS-FINAL\THESIS-FINAL\nudtpaper.cls
+(E:\dualsyn_paper\qy_thesis_controlflow\nudtpaper.cls
 Document Class: nudtpaper 2011/07/17 v2.2 NUDT paper template
 (C:\CTEX\MiKTeX\tex\latex\base\ifthen.sty
 Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
@@ -189,7 +189,7 @@ Package: tabularx 1999/01/07 v2.07 `tabularx' package (DPC)
 \TX@delta=\dimen149
 \TX@cols=\count113
 \TX@ftn=\toks21
-) (C:\THESIS-FINAL\THESIS-FINAL\slashbox.sty
+) (E:\dualsyn_paper\qy_thesis_controlflow\slashbox.sty
 slashbox style by K.Yasuoka, May 1993.
 \@slashboxa=\box33
 \@slashboxb=\box34
@@ -1021,7 +1021,7 @@ tly
 \c@endremarkctr=\count346
 \c@remark=\count347
 \displaytitle=\toks44
-) (C:\THESIS-FINAL\THESIS-FINAL\mynudt.sty
+) (E:\dualsyn_paper\qy_thesis_controlflow\mynudt.sty
 Package: mynudt 2009/08/20 by you
 (C:\CTEX\MiKTeX\tex\latex\cases\cases.sty
 Package: cases 2002/05/02 ver 2.5 
@@ -1078,7 +1078,7 @@ Package: nomencl 2005/09/22 v4.2 Nomenclature package (LN)
 \nomlabelwidth=\dimen266
 \nom@tempdim=\dimen267
 \nomitemsep=\skip85
-)) (C:\THESIS-FINAL\THESIS-FINAL\thesis.aux)
+)) (E:\dualsyn_paper\qy_thesis_controlflow\thesis.aux)
 LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 71.
 LaTeX Font Info:    Try loading font information for OML+txmi on input line 71.
 
@@ -1177,8 +1177,8 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 71.
 LaTeX Info: Redefining \pageref on input line 71.
 LaTeX Info: Redefining \nameref on input line 71.
-(C:\THESIS-FINAL\THESIS-FINAL\thesis.out) (C:\THESIS-FINAL\THESIS-FINAL\thesis.
-out)
+(E:\dualsyn_paper\qy_thesis_controlflow\thesis.out) (E:\dualsyn_paper\qy_thesis
+_controlflow\thesis.out)
 \@outlinefile=\write4
 \g_fontspec_family_Adobe Song Std_int=\count365
 .................................................
@@ -1286,47 +1286,12 @@ LaTeX Font Info:    Font shape `U/fsy/m/n' will be
 . * 'normal' with NFSS spec.:
 . <->"Adobe Heiti Std/ICU:script=latn;language=DFLT;mapping=tex-text;"
 .................................................
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!
-C:\THESIS-FINAL\THESIS-FINAL\thesis.tex:78: fontspec error: "font-not-found"
-! 
-! The font "STZhongsong" cannot be found.
-! 
-! See the fontspec documentation for further information.
-! 
-! For immediate help type H <return>
-|'''''''''''''''''''''''''''''''''''''''''''''''
-| A font might not be found for many reasons.
-| Check the spelling, where the font is installed etc. etc.
-| 
-| When in doubt, ask someone for help!
-|...............................................
-
 .................................................
 . fontspec info: "no-scripts"
 . 
 . Font STZhongsong does not contain any OpenType `Script' information.
 .................................................
 \g_fontspec_family_STZhongsong_int=\count369
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!
-
-C:\THESIS-FINAL\THESIS-FINAL\thesis.tex:78: fontspec error: "font-not-found"
-! 
-! The font "STZhongsong" cannot be found.
-! 
-! See the fontspec documentation for further information.
-! 
-! For immediate help type H <return>
-|'''''''''''''''''''''''''''''''''''''''''''''''
-| A font might not be found for many reasons.
-| Check the spelling, where the font is installed etc. etc.
-| 
-| When in doubt, ask someone for help!
-|...............................................
-
 .................................................
 . fontspec info: "no-font-shape"
 . 
@@ -1351,43 +1316,8 @@ C:\THESIS-FINAL\THESIS-FINAL\thesis.tex:78: fontspec error: "font-not-found"
 . This font family consists of the following shapes:
 . 
 . * 'normal' with NFSS spec.:
-. <->"STZhongsong:mapping=tex-text;"
+. <->"STZhongsong/ICU:mapping=tex-text;"
 .................................................
-
-C:\THESIS-FINAL\THESIS-FINAL\thesis.tex:78: Font EU1/STZhongsong(0)/m/n/22.0824
-9=STZhongsong:mapping=tex-text; at 22.08249pt not loadable: Metric (TFM) file o
-r installed font not found
-I wasn't able to read the size data for this font,
-so I will ignore the font specification.
-[Wizards can fix TFM files using TFtoPL/PLtoTF.]
-You might try inserting a different font spec;
-e.g., type `I\font<same font id>=<substitute font name>'.
-
-
-C:\THESIS-FINAL\THESIS-FINAL\thesis.tex:78: Font \xeCJK@cusong/m/n/22.08249=STZ
-hongsong:mapping=tex-text; at 22.08249pt not loadable: Metric (TFM) file or ins
-talled font not found
-I wasn't able to read the size data for this font,
-so I will ignore the font specification.
-[Wizards can fix TFM files using TFtoPL/PLtoTF.]
-You might try inserting a different font spec;
-e.g., type `I\font<same font id>=<substitute font name>'.
-
-Missing character: There is no 无 in font nullfont!
-Missing character: There is no 线 in font nullfont!
-Missing character: There is no 传 in font nullfont!
-Missing character: There is no 感 in font nullfont!
-Missing character: There is no 器 in font nullfont!
-Missing character: There is no 网 in font nullfont!
-Missing character: There is no 络 in font nullfont!
-Missing character: There is no 拓 in font nullfont!
-Missing character: There is no 扑 in font nullfont!
-Missing character: There is no 压 in font nullfont!
-Missing character: There is no 缩 in font nullfont!
-Missing character: There is no 技 in font nullfont!
-Missing character: There is no 术 in font nullfont!
-Missing character: There is no 研 in font nullfont!
-Missing character: There is no 究 in font nullfont!
 LaTeX Font Info:    Calculating math sizes for size <14.05249> on input line 78
 .
 LaTeX Font Info:    Font shape `U/fsy/m/n' will be
@@ -1412,24 +1342,6 @@ LaTeX Font Info:    Font shape `U/fsy/m/n' will be
 . 
 . This font family consists of the following shapes:
 .................................................
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!
-
-C:\THESIS-FINAL\THESIS-FINAL\thesis.tex:78: fontspec error: "font-not-found"
-! 
-! The font "STZhongsong" cannot be found.
-! 
-! See the fontspec documentation for further information.
-! 
-! For immediate help type H <return>
-|'''''''''''''''''''''''''''''''''''''''''''''''
-| A font might not be found for many reasons.
-| Check the spelling, where the font is installed etc. etc.
-| 
-| When in doubt, ask someone for help!
-|...............................................
-
 .................................................
 . fontspec info: "no-scripts"
 . 
@@ -1443,47 +1355,6 @@ C:\THESIS-FINAL\THESIS-FINAL\thesis.tex:78: fontspec error: "font-not-found"
 . 
 . This font family consists of the following shapes:
 .................................................
-
-C:\THESIS-FINAL\THESIS-FINAL\thesis.tex:78: Font EU1/STZhongsong(0)/m/n/16.06=S
-TZhongsong:mapping=tex-text; at 16.06pt not loadable: Metric (TFM) file or inst
-alled font not found
-I wasn't able to read the size data for this font,
-so I will ignore the font specification.
-[Wizards can fix TFM files using TFtoPL/PLtoTF.]
-You might try inserting a different font spec;
-e.g., type `I\font<same font id>=<substitute font name>'.
-
-
-C:\THESIS-FINAL\THESIS-FINAL\thesis.tex:78: Font \xeCJK@cusong/m/n/16.06=STZhon
-gsong:mapping=tex-text; at 16.06pt not loadable: Metric (TFM) file or installed
- font not found
-I wasn't able to read the size data for this font,
-so I will ignore the font specification.
-[Wizards can fix TFM files using TFtoPL/PLtoTF.]
-You might try inserting a different font spec;
-e.g., type `I\font<same font id>=<substitute font name>'.
-
-Missing character: There is no 国 in font nullfont!
-Missing character: There is no 防 in font nullfont!
-Missing character: There is no 科 in font nullfont!
-Missing character: There is no 学 in font nullfont!
-Missing character: There is no 技 in font nullfont!
-Missing character: There is no 术 in font nullfont!
-Missing character: There is no 大 in font nullfont!
-Missing character: There is no 学 in font nullfont!
-Missing character: There is no 研 in font nullfont!
-Missing character: There is no 究 in font nullfont!
-Missing character: There is no 生 in font nullfont!
-Missing character: There is no 院 in font nullfont!
-Missing character: There is no 二 in font nullfont!
-Missing character: There is no 〇 in font nullfont!
-Missing character: There is no 一 in font nullfont!
-Missing character: There is no 四 in font nullfont!
-Missing character: There is no 年 in font nullfont!
-Missing character: There is no 十 in font nullfont!
-Missing character: There is no 二 in font nullfont!
-Missing character: There is no 月 in font nullfont!
-
 (C:\CTEX\MiKTeX\tex\generic\oberdiek\se-ascii-print.def
 File: se-ascii-print.def 2010/03/01 v1.8 stringenc: Printable ASCII characters
 ) [1
@@ -1498,16 +1369,11 @@ LaTeX Font Info:    Font shape `U/fsy/m/n' will be
 (Font)              scaled to size 10.11768pt on input line 78.
 LaTeX Font Info:    Font shape `U/fsy/m/n' will be
 (Font)              scaled to size 7.22694pt on input line 78.
- [3
+[3
 
 ] [4
 
 ]
-Missing character: There is no 独 in font nullfont!
-Missing character: There is no 创 in font nullfont!
-Missing character: There is no 性 in font nullfont!
-Missing character: There is no 声 in font nullfont!
-Missing character: There is no 明 in font nullfont!
 .................................................
 . fontspec info: "defining-font"
 . 
@@ -1516,23 +1382,11 @@ Missing character: There is no 明 in font nullfont!
 . 
 . This font family consists of the following shapes:
 .................................................
-Missing character: There is no 学 in font nullfont!
-Missing character: There is no 位 in font nullfont!
-Missing character: There is no 论 in font nullfont!
-Missing character: There is no 文 in font nullfont!
-Missing character: There is no 版 in font nullfont!
-Missing character: There is no 权 in font nullfont!
-Missing character: There is no 使 in font nullfont!
-Missing character: There is no 用 in font nullfont!
-Missing character: There is no 授 in font nullfont!
-Missing character: There is no 权 in font nullfont!
-Missing character: There is no 书 in font nullfont!
- [5
+[5
 
 ] [6
 
-]
-(C:\THESIS-FINAL\THESIS-FINAL\thesis.toc
+] (E:\dualsyn_paper\qy_thesis_controlflow\thesis.toc
 .................................................
 . fontspec info: "defining-font"
 . 
@@ -1582,21 +1436,19 @@ LaTeX Font Info:    Font shape `U/fsy/m/n' will be
 . 
 . This font family consists of the following shapes:
 .................................................
- [1
+[1
 
 
 
 ])
 \tf@toc=\write5
- [2]
-(C:\THESIS-FINAL\THESIS-FINAL\thesis.lot)
+[2] (E:\dualsyn_paper\qy_thesis_controlflow\thesis.lot)
 \tf@lot=\write6
- [3
+[3
 
 ] [4
 
-]
-(C:\THESIS-FINAL\THESIS-FINAL\thesis.lof
+] (E:\dualsyn_paper\qy_thesis_controlflow\thesis.lof
 Overfull \hbox (6.55424pt too wide) in paragraph at lines 5--5
 []|[][]\xeCJK@song/m/n/12.045 通 过 将 第 $\OT1/txr/m/n/12.045 (\OML/txmi/m
 /it/12.045 p[] \OT1/txr/m/n/12.045 + \OML/txmi/m/it/12.045 l[]\OT1/txr/m/n/12.0
@@ -1621,31 +1473,11 @@ m/it/12.045 F[]\OT1/txr/m/n/12.045 (\OML/txmi/m/it/12.045 p; l; r; \OT1/txr/m/n
 
 )
 \tf@lof=\write7
- [5
+[5
 
 ] [6
 
-]
-(C:\THESIS-FINAL\THESIS-FINAL\data/chap06.tex
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!
-
-C:\THESIS-FINAL\THESIS-FINAL\data/chap06.tex:29: fontspec error: "font-not-foun
-d"
-! 
-! The font "STZhongsong" cannot be found.
-! 
-! See the fontspec documentation for further information.
-! 
-! For immediate help type H <return>
-|'''''''''''''''''''''''''''''''''''''''''''''''
-| A font might not be found for many reasons.
-| Check the spelling, where the font is installed etc. etc.
-| 
-| When in doubt, ask someone for help!
-|...............................................
-
+] (E:\dualsyn_paper\qy_thesis_controlflow\data/chap06.tex
 .................................................
 . fontspec info: "no-scripts"
 . 
@@ -1659,30 +1491,8 @@ d"
 . 
 . This font family consists of the following shapes:
 .................................................
-
-C:\THESIS-FINAL\THESIS-FINAL\data/chap06.tex:29: Font EU1/STZhongsong(0)/m/n/14
-.05249=STZhongsong:mapping=tex-text; at 14.05249pt not loadable: Metric (TFM) f
-ile or installed font not found
-I wasn't able to read the size data for this font,
-so I will ignore the font specification.
-[Wizards can fix TFM files using TFtoPL/PLtoTF.]
-You might try inserting a different font spec;
-e.g., type `I\font<same font id>=<substitute font name>'.
-
-
-C:\THESIS-FINAL\THESIS-FINAL\data/chap06.tex:29: Font \xeCJK@cusong/m/n/14.0524
-9=STZhongsong:mapping=tex-text; at 14.05249pt not loadable: Metric (TFM) file o
-r installed font not found
-I wasn't able to read the size data for this font,
-so I will ignore the font specification.
-[Wizards can fix TFM files using TFtoPL/PLtoTF.]
-You might try inserting a different font spec;
-e.g., type `I\font<same font id>=<substitute font name>'.
-
-Missing character: There is no 引 in font nullfont!
-Missing character: There is no 言 in font nullfont!
 File: figures/nonuniq.eps Graphic file (type eps)
- <figures/nonuniq.eps>
+<figures/nonuniq.eps>
 .................................................
 . fontspec info: "defining-font"
 . 
@@ -1699,7 +1509,7 @@ File: figures/nonuniq.eps Graphic file (type eps)
 . 
 . This font family consists of the following shapes:
 .................................................
- [1
+[1
 
 
 
@@ -1713,30 +1523,7 @@ File: figures/nonuniq.eps Graphic file (type eps)
 . 
 . This font family consists of the following shapes:
 .................................................
-Missing character: There is no 背 in font nullfont!
-Missing character: There is no 景 in font nullfont!
-Missing character: There is no 知 in font nullfont!
-Missing character: There is no 识 in font nullfont!
- [2] [3]
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!
-
-C:\THESIS-FINAL\THESIS-FINAL\data/chap06.tex:272: fontspec error: "font-not-fou
-nd"
-! 
-! The font "STZhongsong" cannot be found.
-! 
-! See the fontspec documentation for further information.
-! 
-! For immediate help type H <return>
-|'''''''''''''''''''''''''''''''''''''''''''''''
-| A font might not be found for many reasons.
-| Check the spelling, where the font is installed etc. etc.
-| 
-| When in doubt, ask someone for help!
-|...............................................
-
+[2] [3]
 .................................................
 . fontspec info: "no-scripts"
 . 
@@ -1750,37 +1537,12 @@ nd"
 . 
 . This font family consists of the following shapes:
 .................................................
-
-C:\THESIS-FINAL\THESIS-FINAL\data/chap06.tex:272: Font EU1/STZhongsong(0)/m/n/1
-2.045=STZhongsong:mapping=tex-text; at 12.045pt not loadable: Metric (TFM) file
- or installed font not found
-I wasn't able to read the size data for this font,
-so I will ignore the font specification.
-[Wizards can fix TFM files using TFtoPL/PLtoTF.]
-You might try inserting a different font spec;
-e.g., type `I\font<same font id>=<substitute font name>'.
-
-
-C:\THESIS-FINAL\THESIS-FINAL\data/chap06.tex:272: Font \xeCJK@cusong/m/n/12.045
-=STZhongsong:mapping=tex-text; at 12.045pt not loadable: Metric (TFM) file or i
-nstalled font not found
-I wasn't able to read the size data for this font,
-so I will ignore the font specification.
-[Wizards can fix TFM files using TFtoPL/PLtoTF.]
-You might try inserting a different font spec;
-e.g., type `I\font<same font id>=<substitute font name>'.
-
-Missing character: There is no 下 in font nullfont!
-Missing character: There is no 估 in font nullfont!
-Missing character: There is no 计 in font nullfont!
-Missing character: There is no 算 in font nullfont!
-Missing character: There is no 法 in font nullfont!
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [4]
+[4]
 File: figures/pc.eps Graphic file (type eps)
- <figures/pc.eps> [5]
+<figures/pc.eps> [5]
 Package hyperref Info: bookmark level for unknown proposition defaults to 0 on 
 input line 352.
 \g_fontspec_family_Adobe Kaiti Std_int=\count370
@@ -1810,13 +1572,8 @@ input line 352.
 . * 'normal' with NFSS spec.:
 . <->"Adobe Kaiti Std/ICU:script=latn;language=DFLT;mapping=tex-text;"
 .................................................
-Missing character: There is no 上 in font nullfont!
-Missing character: There is no 估 in font nullfont!
-Missing character: There is no 计 in font nullfont!
-Missing character: There is no 算 in font nullfont!
-Missing character: There is no 法 in font nullfont!
 File: figures/ln.eps Graphic file (type eps)
- <figures/ln.eps> [6]
+<figures/ln.eps> [6]
 Overfull \hbox (19.66498pt too wide) in paragraph at lines 450--452
 []\xeCJK@kai/m/n/12.045 当 $\OML/txmi/m/it/12.045 F[]\OT1/txr/m/n/12.045 (\OML
 /txmi/m/it/12.045 p; l; r\OT1/txr/m/n/12.045 )$ \xeCJK@kai/m/n/12.045 可 满 �
@@ -1826,19 +1583,9 @@ OML/txmi/m/it/12.045 p$\EU1/TimesNewRoman(0)/m/n/12.045 , $\OML/txmi/m/it/12.04
 都 不 能 被 $\OML/txmi/m/it/12.045 < []; [] ; [] >$
  []
 
-Missing character: There is no 完 in font nullfont!
-Missing character: There is no 整 in font nullfont!
-Missing character: There is no 算 in font nullfont!
-Missing character: There is no 法 in font nullfont!
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 458.
- [7]
-Missing character: There is no 识 in font nullfont!
-Missing character: There is no 别 in font nullfont!
-Missing character: There is no 流 in font nullfont!
-Missing character: There is no 控 in font nullfont!
-Missing character: There is no 变 in font nullfont!
-Missing character: There is no 量 in font nullfont!
+[7]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 511.
@@ -1847,29 +1594,10 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 511.
 
- [8] [9]
+[8] [9]
 Underfull \vbox (badness 5302) has occurred while \output is active []
 
- [10]
-Missing character: There is no 推 in font nullfont!
-Missing character: There is no 导 in font nullfont!
-Missing character: There is no 使 in font nullfont!
-Missing character: There is no 得 in font nullfont!
-Missing character: There is no 数 in font nullfont!
-Missing character: There is no 据 in font nullfont!
-Missing character: There is no 变 in font nullfont!
-Missing character: There is no 量 in font nullfont!
-Missing character: There is no 向 in font nullfont!
-Missing character: There is no 量 in font nullfont!
-Missing character: There is no 被 in font nullfont!
-Missing character: There is no 唯 in font nullfont!
-Missing character: There is no 一 in font nullfont!
-Missing character: There is no 决 in font nullfont!
-Missing character: There is no 定 in font nullfont!
-Missing character: There is no 的 in font nullfont!
-Missing character: There is no 谓 in font nullfont!
-Missing character: There is no 词 in font nullfont!
- [11]
+[10] [11]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 822.
@@ -1885,25 +1613,6 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 822.
-
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!
-
-C:\THESIS-FINAL\THESIS-FINAL\data/chap06.tex:842: fontspec error: "font-not-fou
-nd"
-! 
-! The font "STZhongsong" cannot be found.
-! 
-! See the fontspec documentation for further information.
-! 
-! For immediate help type H <return>
-|'''''''''''''''''''''''''''''''''''''''''''''''
-| A font might not be found for many reasons.
-| Check the spelling, where the font is installed etc. etc.
-| 
-| When in doubt, ask someone for help!
-|...............................................
 
 .................................................
 . fontspec info: "no-scripts"
@@ -1922,49 +1631,11 @@ nd"
 LaTeX Font Warning: Font shape `EU1/STZhongsong(0)/bx/n' undefined
 (Font)              using `EU1/STZhongsong(0)/m/n' instead on input line 842.
 
-
-C:\THESIS-FINAL\THESIS-FINAL\data/chap06.tex:842: Font \xeCJK@cusong/bx/n/12.04
-5=STZhongsong:mapping=tex-text; at 12.045pt not loadable: Metric (TFM) file or 
-installed font not found
-I wasn't able to read the size data for this font,
-so I will ignore the font specification.
-[Wizards can fix TFM files using TFtoPL/PLtoTF.]
-You might try inserting a different font spec;
-e.g., type `I\font<same font id>=<substitute font name>'.
-
-Missing character: There is no 计 in font nullfont!
-Missing character: There is no 算 in font nullfont!
-Missing character: There is no 的 in font nullfont!
-Missing character: There is no 单 in font nullfont!
-Missing character: There is no 调 in font nullfont!
-Missing character: There is no 增 in font nullfont!
-Missing character: There is no 长 in font nullfont!
-Missing character: There is no 的 in font nullfont!
-Missing character: There is no 下 in font nullfont!
-Missing character: There is no 估 in font nullfont!
-Missing character: There is no 计 in font nullfont!
 File: figures/mono.eps Graphic file (type eps)
- <figures/mono.eps>
+<figures/mono.eps>
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [12] [13]
-Missing character: There is no 计 in font nullfont!
-Missing character: There is no 算 in font nullfont!
-Missing character: There is no 的 in font nullfont!
-Missing character: There is no 单 in font nullfont!
-Missing character: There is no 调 in font nullfont!
-Missing character: There is no 递 in font nullfont!
-Missing character: There is no 减 in font nullfont!
-Missing character: There is no 上 in font nullfont!
-Missing character: There is no 估 in font nullfont!
-Missing character: There is no 计 in font nullfont!
- [14]
-Missing character: There is no 计 in font nullfont!
-Missing character: There is no 算 in font nullfont!
-Missing character: There is no 的 in font nullfont!
-Missing character: There is no 算 in font nullfont!
-Missing character: There is no 法 in font nullfont!
-
+[12] [13] [14]
 Overfull \hbox (41.86359pt too wide) in paragraph at lines 1092--1099
 \OML/txmi/m/it/12.045 FSAT[]\OT1/txr/m/n/12.045 (\OML/txmi/m/it/12.045 p; l; r\
 OT1/txr/m/n/12.045 )$ \xeCJK@song/m/n/12.045 和 $\OML/txmi/m/it/12.045 FSAT[]\
@@ -1974,15 +1645,15 @@ song/m/n/12.045 收 敛 到 一 个 确 定 的 集 合 上。| 在 此 情 况
  (\OML/txmi/m/it/12.045 p; l; r\OT1/txr/m/n/12.045 )$
  []
 
- [15]
+[15]
 Package hyperref Info: bookmark level for unknown lemma defaults to 0 on input 
 line 1106.
 Package hyperref Info: bookmark level for unknown proof defaults to 0 on input 
 line 1110.
 File: figures/pcmap.eps Graphic file (type eps)
- <figures/pcmap.eps>
+<figures/pcmap.eps>
 File: figures/lnmap.eps Graphic file (type eps)
- <figures/lnmap.eps> [16]
+<figures/lnmap.eps> [16]
 Overfull \hbox (12.42036pt too wide) in paragraph at lines 1191--1194
 []\xeCJK@kai/m/n/12.045 很 明 显 $\OML/txmi/m/it/12.045 F[]\OT1/txr/m/n/12.0
 45 (\OML/txmi/m/it/12.045 p; l; r; \OT1/txr/m/n/12.045 1)$ \xeCJK@kai/m/n/12.04
@@ -1992,7 +1663,7 @@ xmi/m/it/12.045 p; l; r; \OT1/txr/m/n/12.045 1)$ \xeCJK@kai/m/n/12.045 的 超
 2.045 p; l; r; \OT1/txr/m/n/12.045 1)$
  []
 
- [17]
+[17]
 Package hyperref Info: bookmark level for unknown theorem defaults to 0 on inpu
 t line 1202.
 
@@ -2006,20 +1677,7 @@ Overfull \hbox (24.56682pt too wide) in paragraph at lines 1239--1243
 txmi/m/it/12.045 l[] >
  []
 
-Missing character: There is no 压 in font nullfont!
-Missing character: There is no 缩 in font nullfont!
-Missing character: There is no 迁 in font nullfont!
-Missing character: There is no 移 in font nullfont!
-Missing character: There is no 关 in font nullfont!
-Missing character: There is no 系 in font nullfont!
-Missing character: There is no 展 in font nullfont!
-Missing character: There is no 开 in font nullfont!
-Missing character: There is no 序 in font nullfont!
-Missing character: There is no 列 in font nullfont!
-Missing character: There is no 的 in font nullfont!
-Missing character: There is no 长 in font nullfont!
-Missing character: There is no 度 in font nullfont!
- [18]
+[18]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1262.
@@ -2036,14 +1694,7 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1262.
 
- [19]
-Missing character: There is no 产 in font nullfont!
-Missing character: There is no 生 in font nullfont!
-Missing character: There is no 解 in font nullfont!
-Missing character: There is no 码 in font nullfont!
-Missing character: There is no 器 in font nullfont!
-Missing character: There is no 函 in font nullfont!
-Missing character: There is no 数 in font nullfont!
+[19]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1350.
@@ -2052,7 +1703,7 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1350.
 
- [20]
+[20]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1417.
@@ -2061,22 +1712,17 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1417.
 
- [21]
-Missing character: There is no 实 in font nullfont!
-Missing character: There is no 验 in font nullfont!
-Missing character: There is no 结 in font nullfont!
-Missing character: There is no 果 in font nullfont!
-
+[21]
 Overfull \hbox (21.47458pt too wide) in paragraph at lines 1513--1536
 [][] 
  []
 
- [22] [23] [24]
+[22] [23] [24]
 Overfull \hbox (21.20982pt too wide) in paragraph at lines 1784--1797
 [][] 
  []
 
- [25]
+[25]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1822.
@@ -2101,7 +1747,7 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1822.
 
- [26]
+[26]
 Overfull \hbox (21.90129pt too wide) in paragraph at lines 1838--1854
 [][] 
  []
@@ -2127,21 +1773,12 @@ Overfull \hbox (25.31247pt too wide) in paragraph at lines 1895--1911
 [][] 
  []
 
- [27]
-Missing character: There is no 相 in font nullfont!
-Missing character: There is no 关 in font nullfont!
-Missing character: There is no 工 in font nullfont!
-Missing character: There is no 作 in font nullfont!
-
+[27]
 Underfull \vbox (badness 3375) has occurred while \output is active []
 
- [28] [29]
-Missing character: There is no 结 in font nullfont!
-Missing character: There is no 论 in font nullfont!
- [30]) [31] [32
+[28] [29] [30]) [31] [32
 
-]
-(C:\THESIS-FINAL\THESIS-FINAL\thesis.bbl
+] (E:\dualsyn_paper\qy_thesis_controlflow\thesis.bbl
 Underfull \hbox (badness 2547) in paragraph at lines 55--60
 []\EU1/TimesNewRoman(0)/m/n/12.045 Abts D, Kim J. High Performance Datacenter N
 etworks [M/OL]. 1st ed.
@@ -2153,7 +1790,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 55--60
 [] [] [] [][] [] [][][] [] [][][] [] [][] [] [][][][] []
  []
 
- [33
+[33
 
 
 ]
@@ -2180,7 +1817,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 130--133
 rification. 2008.
  []
 
- [34] [35]
+[34] [35]
 Underfull \hbox (badness 10000) in paragraph at lines 216--221
 []\EU1/TimesNewRoman(0)/m/n/12.045 Ravi K, Somenzi F. Minimal assignments for b
 ounded model check-
@@ -2192,7 +1829,7 @@ Underfull \hbox (badness 1337) in paragraph at lines 216--221
 ence, TACAS 2004Vol.2988.
  []
 
- [36]
+[36]
 Underfull \hbox (badness 3323) in paragraph at lines 267--271
 []\EU1/TimesNewRoman(0)/m/n/12.045 Chockler H, Ivrii A, Matsliah A. Computing I
 nterpolants without Proof-
@@ -2207,13 +1844,12 @@ BRID
 
 Underfull \vbox (badness 1077) has occurred while \output is active []
 
- [37])
+[37])
 \tf@thm=\write8
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 114.
- [38]
+[38]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 114.
-
-(C:\THESIS-FINAL\THESIS-FINAL\thesis.aux)
+(E:\dualsyn_paper\qy_thesis_controlflow\thesis.aux)
 Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 114.
 Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 114.
 
@@ -2221,11 +1857,11 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 26805 strings out of 430478
- 481742 string characters out of 3191501
- 550166 words of memory out of 3000000
+ 26816 strings out of 430478
+ 482122 string characters out of 3191502
+ 551166 words of memory out of 3000000
  29511 multiletter control sequences out of 15000+200000
- 68134 words of font info for 259 fonts, out of 3000000 for 9000
+ 68230 words of font info for 271 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
  51i,12n,74p,599b,1063s stack positions out of 5000i,500n,10000p,200000b,50000s
 
