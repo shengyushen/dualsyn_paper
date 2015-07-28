@@ -81,21 +81,25 @@
 
 
 \begin{abstract}
-Complementary synthesis automatically generates an encoder's decoder
-that recovers the encoder's inputs from its output,
-even if this encoder contains flow control mechanism that prevents
-its inputs from being uniquely determined by its outputs.
-At the same time,
-most encoders also include pipeline stages used to improve timing.
+Assuming that the encoder's input can be uniquely determined by its output,
+complementary synthesis automatically generates its decoder
+that recovers the encoder's inputs from its output.
+% even if this encoder contains flow control mechanism that prevents
+% its inputs from being uniquely determined by its outputs.
+But the widely employed flow control mechanism
+fails this assumption.
+And most encoders also include pipeline stages used to improve timing.
 \vspace{0.1cm}
 
-This paper proposes a novel algorithm to handle encoders with both pipeline and flow control mechanism.
+Thus,
+this paper proposes the first complementary synthesis algorithm that can generate 
+pipelined decoder for encoders with flow control mechanism.
 First,
-it infers the flow control predicate on inputs with state-of-the-art algorithm.
+it infers the flow control predicate on inputs with existing algorithm.
 Second,
 it finds out the pipeline stages in the encoder by enforcing the inferred flow control predicate.
-Third,
-it infers the flow control predicate for each pipeline stages.
+% Third,
+% it infers the flow control predicate for each pipeline stages.
 Finally,
 the decoder's Boolean functions that recover each pipeline stage and input are characterized with Craig interpolant.
 
@@ -132,15 +136,17 @@ uniquely determined by a bounded sequence of $\vec{o}$.
 However,
 the flow control mechanism \cite{flowcontrol} in many encoders
 fails this assumption.
-As shown in Figure \ref{fig_fc},
+As shown in Figure \ref{fig_fc}a),
 this mechanism prevents faster transmitter from overwhelming slower receiver
 by transmitting idle symbols $I$ when the receiver can not keep up with the transmitter.
-The idle symbol $I$
+As shown in Figure \ref{fig_fc}b),
+the idle symbol $I$
 can only uniquely determine a small subset of inputs $\vec{i}$,
 which is called flow control vector $\vec{f}$.
 While the normally encoded data symbols $D_i$ can
 uniquely determine all inputs, 
 including both $\vec{f}$ and data vector $\vec{d}$.
+
 Qin et al. \cite{QinTODAES15} handle such encoders by
 first finding out all inputs $i\in\vec{f}$ that can by uniquely determined by $\vec{o}$,
 and then inferring a flow control predicate $valid(\vec{f})$ that
@@ -177,7 +183,7 @@ To overcome this problem,
 this paper proposes a novel algorithm to generate pipelined decoders for flow controlled encoder.
 It first applies Qin et al. \cite{QinTODAES15}'s algorithm to find out $\vec{f}$ and infers $valid(\vec{f})$.
 % By assuming that each pipeline stage $\vec{stg}^j$ can be partitioned into flow control vector $\vec{f}^j$ and data vector $\vec{d}^j$,
-It then finds out $\vec{d}^j$ and $\vec{f}^j$ respectively with and without enforcing $valid(\vec{f})$.
+It then finds out all $\vec{d}^j$ and $\vec{f}^j$ in each pipeline stage $\vec{stg}^j$ respectively with and without enforcing $valid(\vec{f})$.
 It finally characterize the Boolean functions that recover each $\vec{stg}^j$ and $\vec{i}$ with 
 Jiang et al. \cite{InterpBoolFunction}'s algorithm.
 
@@ -190,9 +196,9 @@ Section \ref{sec_prem} introduces the background material;
 % Section \ref{sec_findfc} identifies the flow control variables,
 % and infers the predicate that enables $\vec{d}$ 
 % to be uniquely determined by a bounded sequence of $\vec{o}$;
-Section \ref{sec_pipe} finds out the pipeline stages $\vec{stg}^j$,
-while Section \ref{sec_pred} infers  $valid^j(\vec{stg}^j)$ for each pipeline stage and input vector $\vec{i}$;
-Section \ref{sec_char} characterize the decoder's Boolean functions that recover each pipeline stage $\vec{stg}^j$ and the input vector $\vec{i}$.
+Section \ref{sec_framework} introduces the overall framework of our algorithm.
+Section \ref{sec_pipeinfer} finds out $\vec{f}^j$ and $\vec{d}^j$ in each pipeline stages $\vec{stg}^j$,
+while Section \ref{sec_char} characterize the decoder's Boolean functions that recover each pipeline stage $\vec{stg}^j$ and the input vector $\vec{i}$.
 Sections \ref{sec_exp} and \ref{sec_relwork} present the experimental results and related works;
 Finally,
 Section \ref{sec_conclude} sums up the conclusion.
@@ -294,7 +300,7 @@ that computes the next state and output variable vector from the current state a
 % as well as in the remainder of this paper,
 % the state is represented as a gray round corner box,
 % and the transition function $T$ is represented as a white rectangle.
-$M$'s behavior can be reasoned by unrolling transition function.
+The behavior of FSM $M$ can be reasoned by unrolling transition function.
 The state variable $s\in\vec{s}$, input variable $i\in\vec{i}$ and output variable $o\in\vec{o}$ at the $n$-th step 
 are respectively denoted as $s_n$, $i_n$ and $o_n$.
 Furthermore,
@@ -308,14 +314,13 @@ A \textbf{loop} is a path $<\vec{s}_n,\dots,\vec{s}_m>$ with $\vec{s}_n\equiv \v
 \subsection{The algorithm to find out flow control vector $\vec{f}$}\label{subsec_chkextdec}
 
 
-Qin et al. \cite{QinTODAES15} proposed the first algorithm
-to find out $\vec{f}$ by iteratively unrolling the transition function.
-And for each iteration,
-it uses an under-approximative and an over-approximative approaches to determine the answer.
+Qin et al. \cite{QinTODAES15} proposed a halting algorithm
+to find out $\vec{f}$ by iteratively calling 
+an under-approximative and an over-approximative approaches.
 % The first one is an under-approximative one that presented in \ref{subsub_sound},
 % while the second one is an over-approximative one presented in \ref{subsub_complete}.
-We will present these two approaches below and show 
-that they will eventually converge.
+% We will present these two approaches below and show 
+% that they will eventually converge.
 
 \subsubsection{The under-approximative approach}\label{subsub_sound}
 As shown in Figure \ref{fig_pc}a),
@@ -468,7 +473,7 @@ F_{LN}(p,l,r):=\\
 % then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for all larger $p$, $l$ and $r$.
 % \end{proposition}
 
-\subsubsection{Finding out flow control vector $\vec{f}$}\label{subsubsec_findfc}
+\subsubsection{Identifying flow control vector $\vec{f}$ with Algorithm \ref{alg_fofc}}\label{subsubsec_findfc}
 % To facilitate the presentation of our algorithm,
 % We assume that the input variable vector $\vec{i}$ can be partitioned into 
 % the flow control vector $\vec{f}$ and the data vector $\vec{d}$.
@@ -479,7 +484,7 @@ F_{LN}(p,l,r):=\\
 % or else the decoder cannot recognize the validness of $\vec{d}$.
 % 
 % Thus,
-Algorithm \ref{alg_fofc} is proposed to identify $\vec{f}$.
+% Algorithm \ref{alg_fofc} is proposed to identify $\vec{f}$.
 % At Line \ref{initfd},
 % the initial value of $f$ and $d$ are set to empty vector.
 % At Line \ref{initplr},
@@ -487,11 +492,11 @@ Algorithm \ref{alg_fofc} is proposed to identify $\vec{f}$.
 % At Line \ref{while},
 % a while loop is used to iterate on all $i\in\vec{i}$.
 At Line \ref{adduniq},
-the input variable $i$ that can be uniquely determined will be moved to vector $\vec{f}$.
-On the other hand,
-if $F_{LN}(p,l,r)$ is satisfiable at Line \ref{nonuniqres},
-the input variable $i$ that can NOT be uniquely determined will be moved to vector $\vec{d}$.
-Please refer to \cite{QinTODAES15} for the proofs of its termination and correctness.
+the input $i$ that can be uniquely determined will be moved to vector $\vec{f}$.
+% On the other hand,
+If $F_{LN}(p,l,r)$ is satisfiable at Line \ref{nonuniqres},
+the input $i$ that can NOT be uniquely determined will be moved to vector $\vec{d}$.
+Please refer to \cite{QinTODAES15} for its termination and correctness proof.
 
 \begin{algorithm}[t]
 \SetAlgoVlined
@@ -506,13 +511,13 @@ $\vec{f}: = \{\}$;$\vec{d}:= \{\}$;$p$:= 0 ;~$l$:= 0 ;~$r$:= 0 \;
     $\vec{f}:= i\cup\vec{f}$ ; ~
     $\vec{i}:=\vec{i}-i$\;
   }\ShowLnLabel{nonuniqres}
-  \uElseIf {$F_{LN}(p,l,r)$ is satisfiable for  $i$}{
+  \ElseIf {$F_{LN}(p,l,r)$ is satisfiable for  $i$}{
     $\vec{d}:=i\cup\vec{d}$ ; ~
     $\vec{i}:=\vec{i}-i$
   }
 }
 \KwRet ($\vec{f}$, $p$, $l$, $r$)
-\caption{$FindFlow(\vec{i})$:Identifying the flow control vector $\vec{f}$}
+\caption{Identifying the flow control vector $\vec{f}$}
 \label{alg_fofc}
 \end{algorithm}
 
@@ -544,14 +549,15 @@ $\vec{f}: = \{\}$;$\vec{d}:= \{\}$;$p$:= 0 ;~$l$:= 0 ;~$r$:= 0 \;
 % In this section,
 % we will present how to compute the predicate $valid(\vec{f})$ that enables $\vec{d}$ to be uniquely determined.
 
-We first present Algorithm \ref{alg_craigchar} to characterze a function 
-that makes a Boolean formula satisfiable in \ref{subsubsec_craig}.
+This is also proposed by Qin et al. \cite{QinTODAES15}.
+It first introduces Algorithm \ref{alg_craigchar} to characterize a function 
+that makes a Boolean formula satisfiable.
 And then as shown in Figure \ref{fig_mono},
-we use this algorithm to characterize $\neg FSAT_{PC}(p,l,r)$,
-a monotonically growing under-approximation of $valid(\vec{f})$ in \ref{subsub_nonloop}.
-And then we further use this algorithm to characterize $\neg FSAT_{LN}(p,l,r)$,
-a monotonically shrinking over-approximation of $valid(\vec{f})$ in \ref{subsub_loop}.
-And finally we show that they will converge to $valid(\vec{f})$ in \ref{subsub_overal}.
+Algorithm \ref{alg_craigchar} is used to characterize $\neg FSAT_{PC}(p,l,r)$,
+a monotonically growing under-approximation of $valid(\vec{f})$,
+and $\neg FSAT_{LN}(p,l,r)$,
+a monotonically shrinking over-approximation of $valid(\vec{f})$.
+And finally we show that these two approximations will eventually converge to $valid(\vec{f})$.
 % Please refer to \cite{QinTODAES15} for the proof of its correctness and termination.
 
 
@@ -560,9 +566,14 @@ And finally we show that they will converge to $valid(\vec{f})$ in \ref{subsub_o
 
 For a particular Boolean relation $R(\vec{a},\vec{b},t)$, 
 with $R(\vec{a},\vec{b},0)\wedge R(\vec{a},\vec{b},1)$ unsatisfiable.
-We need to characterize a Boolean function $FSAT_R(\vec{a})$,
-which covers and only covers all the valuations of $\vec{a}$ 
+Algorithm \ref{alg_craigchar} characterize a Boolean function $FSAT_R(\vec{a})$
+that covers and only covers all the valuations of $\vec{a}$ 
 that can make $R(\vec{a},\vec{b},1)$ satisfiable.
+Line \ref{testsat} finds out new valuation of $\vec{a}$ that can make $R(\vec{a},\vec{b},1)$ satisfiable,
+but hasn't been covered by $FSAT_R(\vec{a})$.
+Lines \ref{cofact1}, \ref{cofact2} and \ref{ab} enlarge this valuation 
+to an interpolant $ITP(\vec{a})$ with McMillan's algorithm \cite{interp_McMillan}.
+Line \ref{add} adds $ITP(\vec{a})$ to $FSAT_R(\vec{a})$.
 % It is formally defined below:
 
 % we have the following two assumptions:
@@ -615,26 +626,20 @@ that can make $R(\vec{a},\vec{b},1)$ satisfiable.
 % % \end{split}
 % \end{equation}
 
-Assume $A:\vec{a}\cup\vec{b}\cup\{t\}\to \mathbb{B}$ is a satisfying assignment of $R(\vec{a},\vec{b},1)$.
-% Because $R(\vec{a},A(\vec{b}),0)\wedge R(\vec{a},A(\vec{b}),1)$ is unsatisfiable,
-According to Subsection \ref{subsec_SAT},
-the interpolant $ITP(\vec{a})$ of $R(\vec{a},A(\vec{b}),1)$ with respect to $R(\vec{a},A(\vec{b}),0)$ 
-% used as an over-approximation of the set of $\vec{a}$ that makes $R(\vec{a},A(\vec{b}),1)$ satisfiable.
-% At the same time,
-% $ITP(\vec{a})\wedge R(\vec{a},A(\vec{b}),0)$ is unsatisfiable,
-% so $ITP(\vec{a})$ covers nothing that can make $R(\vec{a},A(\vec{b}),0)$ satisfiable.
-% Thus,
-covers all $\vec{a}$ that can make $R(\vec{a},A(\vec{b}),1)$ satisfiable.
+% Assume $A:\vec{a}\cup\vec{b}\cup\{t\}\to \mathbb{B}$ is a satisfying assignment of $R(\vec{a},\vec{b},1)$.
+% % Because $R(\vec{a},A(\vec{b}),0)\wedge R(\vec{a},A(\vec{b}),1)$ is unsatisfiable,
+% According to Subsection \ref{subsec_SAT},
+% the interpolant $ITP(\vec{a})$ of $R(\vec{a},A(\vec{b}),1)$ with respect to $R(\vec{a},A(\vec{b}),0)$ 
+% % used as an over-approximation of the set of $\vec{a}$ that makes $R(\vec{a},A(\vec{b}),1)$ satisfiable.
+% % At the same time,
+% % $ITP(\vec{a})\wedge R(\vec{a},A(\vec{b}),0)$ is unsatisfiable,
+% % so $ITP(\vec{a})$ covers nothing that can make $R(\vec{a},A(\vec{b}),0)$ satisfiable.
+% % Thus,
+% covers all $\vec{a}$ that can make $R(\vec{a},A(\vec{b}),1)$ satisfiable.
 
 
 % Based on the foregoing discussion,
-Thus,
-Algorithm \ref{alg_craigchar} is proposed to characterize $FSAT_R(\vec{a})$.
-Line \ref{testsat} finds out new valuation of $\vec{a}$ that can make $R(\vec{a},\vec{b},1)$ satisfiable,
-but hasn't been covered by $FSAT_R(\vec{a})$.
-Lines \ref{cofact1}, \ref{cofact2} and \ref{ab} enlarge this valuation 
-to an interpolant $ITP(\vec{a})$ with McMillan's algorithm \cite{interp_McMillan}.
-Line \ref{add} adds $ITP(\vec{a})$ to $FSAT_R(\vec{a})$.
+
 % 
 % Each iteration of the while loop in Algorithm \ref{alg_craigchar} adds at least a valuation of $\vec{a}$ to $FSAT_R(\vec{a})$,
 % which means that $FSAT_R(\vec{a})$ is a Boolean function that covers a bounded and strictly increasing set of valuations of $\vec{a}$.
@@ -731,7 +736,7 @@ $FSAT_R(\vec{a}):= 0$ \;
 \end{algorithm}
 
 \subsubsection{Computing monotonically growing under-approximation of $valid(\vec{f})$}\label{subsub_nonloop}
-By replacing $i$ in Equation (\ref{uniqt1}) with $\vec{d}$,
+By replacing $i$ in Equation (\ref{uniqt1}) with $\vec{d}$ inferred in Algorithm \ref{alg_fofc},
 we have:
 
 \begin{equation}\label{uniqt1d}
@@ -875,7 +880,8 @@ FSAT_{PC}(p,l,r):=CharacterizingFormulaSAT(F'^d_{PC}(p,l,r,t),\vec{a},\vec{b},t)
 As shown in Figure \ref{fig_mono},
 % we have:
 % \begin{proposition}\label{prop_pc}
-$\neg FSAT_{PC}(p,l,r)$ is a monotonically growing under-approximation of $valid(\vec{f})$.
+$\neg FSAT_{PC}(p,l,r)$ is an under-approximation of $valid(\vec{f})$ monotonically growing with respect to 
+$p$, $l$ and $r$.
 % \end{proposition}
 
 
@@ -987,7 +993,8 @@ As shown in Figure \ref{fig_mono},
 % we have:
 % 
 % \begin{proposition}\label{prop_ln}
-$\neg FSAT_{LN}(p,l,r)$ is a monotonically shrinking over-approximation of $valid(\vec{f})$.
+$\neg FSAT_{LN}(p,l,r)$ is an over-approximation of $valid(\vec{f})$ monotonically shrinking with respect to
+$p$, $l$ and $r$.
 % \end{proposition}
 
 
@@ -998,7 +1005,7 @@ $\neg FSAT_{LN}(p,l,r)$ is a monotonically shrinking over-approximation of $vali
 % then $\neg FSAT_{LN}(p,l,r)$ is the formula over $\vec{f}_{p+l}$ that makes $\vec{d}_{p+l}$ to be uniquely determined by the encoder's output sequence.
 
 
-\subsubsection{The algorithm to compute $valid(\vec{f})$}\label{subsub_overal}
+\subsubsection{Inferring $valid(\vec{f})$ with Algorithm \ref{algo_infer}}\label{subsub_overal}
 \begin{algorithm}[t]
 \SetAlgoVlined
 % \KwIn{The Boolean formula $R(\vec{a},\vec{b},t)$, 
@@ -1011,13 +1018,12 @@ $p$:= $0$;~$l$:= $0$;~$r$:= $0$ \;
   $p$ ++ ;~$l$ ++ ;~$r$ ++ \;
 }
 \KwRet {$\neg FSAT_{LN}(p,l,r)$}
-\caption{$InferringUniqueFormula$: inferring the predicate $valid(\vec{f}_{p+l})$ 
-that enables $\vec{d}_{p+l}$ to be uniquely determined}
+\caption{Inferring $valid(\vec{f}_{p+l})$}
 \label{algo_infer}
 \end{algorithm}
 
-With these discussion,
-Algorithm \ref{algo_infer} is proposed to infer the predicate $valid(\vec{f}_{p+l})$.
+% With these discussion,
+% Algorithm \ref{algo_infer} is proposed to infer the predicate $valid(\vec{f}_{p+l})$.
 It just iteratively increases the value of $p$, $l$ and $r$, 
 % until $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ is unsatisfiable,
 until $FSAT_{PC}(p,l,r)$ and $FSAT_{LN}(p,l,r)$ converge.
@@ -1025,15 +1031,15 @@ until $FSAT_{PC}(p,l,r)$ and $FSAT_{LN}(p,l,r)$ converge.
 % $\neg FSAT_{PC}(p,l,r)$ is return as $valid(\vec{f})$.
 Please refer to \cite{QinTODAES15} for the proofs of its termination and correctness.
 
+\section{Algorithm Framework}\label{sec_framework}
 
-\section{Inferring the encoder's pipeline structure}\label{sec_pipeinfer}
 
 \subsection{A general model for the encoder}
 As shown in Figure \ref{fig_pipeenc},
 we assume that 
 the encoder has $n$ pipeline stages $\vec{stg}^j$,
 where $0\le j \le n-1$.
-And each pipeline stage $\vec{stg}^j$ can be partitioned into flow control vector $\vec{f}^j$ and data vector $\vec{d}^j$.
+And each pipeline stage $\vec{stg}^j$ can be further partitioned into flow control vector $\vec{f}^j$ and data vector $\vec{d}^j$.
 The input vector $\vec{i}$,
 as in \cite{QinTODAES15},
 can also be partitioned into flow control vector $\vec{f}$ and data vector $\vec{d}$.
@@ -1072,13 +1078,33 @@ $\vec{stg}^j$ is the $j$-th pipeline stage.
 While $\vec{stg}^j_i$ is the value of this $j$-th pipeline stage 
 at the $i$-th step in the unrolled state transition sequence.
 
-\subsection{Inferring $p$, $l$ and $r$}\label{subsec_inferplr}
-Before inferring the pipeline stages,
-we first apply the algorithm of \cite{ShenTCAD11} to infer the value of $p$, $l$ and $r$ that can make the 
-output sequence $<o_{p},\dots,o_{p+l+r}>$ uniquely determine all $i_{p+l}\in \vec{i}_{p+l}$.
-This algorithm iteratively increase a parameter $b$,
-and set $p$, $l$ and $r$ all to $b$,
-until $F_{PC}(p,l,r)$ become unsatisfiable for all $i_{p+l}\in \vec{i}_{p+l}$.
+\subsection{Algorithm framework}
+
+With the encoder model shown in Figure \ref{fig_pipeenc},
+our overall algorithm framework is:
+
+\begin{enumerate}
+ \item Calling Algorithm \ref{alg_fofc} to partition $\vec{i}$ into $\vec{f}$ and $\vec{d}$.
+ \item Calling Algorithm \ref{algo_infer} to infer $valid(\vec{f})$ that enables $\vec{d}$ 
+ to be uniquely determined with parameters $p$, $l$ and $r$.
+ \item In Section \ref{sec_pipeinfer}, 
+ finding out $\vec{f}^j$ and $\vec{d}^j$ in each pipeline stage $\vec{stg}^j$. 
+ \item In Section \ref{sec_char}, 
+ characterizing the decoder's Boolean functions that recover each pipeline stages $\vec{stg}^j$
+ and input vector $\vec{i}$.
+\end{enumerate}
+
+
+
+\section{Inferring the encoder's pipeline structure}\label{sec_pipeinfer}
+
+% \subsection{Inferring $p$, $l$ and $r$}\label{subsec_inferplr}
+% Before inferring the pipeline stages,
+% we first apply the algorithm of \cite{ShenTCAD11} to infer the value of $p$, $l$ and $r$ that can make the 
+% output sequence $<o_{p},\dots,o_{p+l+r}>$ uniquely determine all $i_{p+l}\in \vec{i}_{p+l}$.
+% This algorithm iteratively increase a parameter $b$,
+% and set $p$, $l$ and $r$ all to $b$,
+% until $F_{PC}(p,l,r)$ become unsatisfiable for all $i_{p+l}\in \vec{i}_{p+l}$.
 
 \subsection{Minimizing $r$ and $l$}\label{reduceing}
 
@@ -1086,16 +1112,16 @@ until $F_{PC}(p,l,r)$ become unsatisfiable for all $i_{p+l}\in \vec{i}_{p+l}$.
 \SetAlgoVlined
 \For{$r':=r \to 0$} {
 \ShowLnLabel{testr_1}
-  \If{$r'\equiv 0$ or $F_{PC}(p,l,r'-1)$ is satisfiable for some $i\in \vec{i}$} {
+  \If{$r'\equiv 0$ or $F_{PC}(p,l,r'-1)\wedge valid(\vec{f}_{p+l})$ is satisfiable for some $i\in \vec{i}$} {
     break
   }
 }
 return $r'$
-\caption{$RemoveRedundancy(p,l,r)$}
+\caption{Minimizing $r$}
 \label{algo_remove2}
 \end{algorithm}
 
-As Subsection \ref{subsec_inferplr} increases $p$, $l$ and $r$ simultaneously,
+As Algorithm \ref{algo_infer} increases $p$, $l$ and $r$ simultaneously,
 there may be some redundancy in the value of $l$ and $r$.
 So we need to first minimize $r$ in Algorithm \ref{algo_remove2}.
 
@@ -1103,8 +1129,10 @@ So we need to first minimize $r$ in Algorithm \ref{algo_remove2}.
 % To simplify the presentation,
 % we will only introduce the $r$ case.
 In Line \ref{testr_1},
-when $F_{PC}(p,l,r'-1)$ is satisfiable,
-then $r'$ is the last one that makes $F_{PC}(p,l,r')$ unsatisfiable,
+we enforce the inferred flow control predicate $valid(\vec{f})$ by
+conjugating it with $F_{PC}(p,l,r'-1)$.
+When it is satisfiable,
+then $r'$ is the last one that makes $F_{PC}(p,l,r')\wedge valid(\vec{f}_{p+l})$ unsatisfiable,
 we return it directly.
 On the other hand,
 when $r'\equiv 0$,
@@ -1158,7 +1186,7 @@ Now,
 we have a minimized $r$ from Algorithm \ref{algo_remove2},
 which can make $\vec{i}_{p+l}$ to be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
 
-\begin{figure}[b]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{pc1}
 \end{center}
@@ -1179,7 +1207,8 @@ We further require that :
 \end{enumerate}
 
 Checking these two requirements
-equals to checking the unsatisfiability of the following equation.
+equals to checking the unsatisfiability of $F'_{PC}(p,r)\wedge valid(\vec{f}_{p+l})$,
+with $F'_{PC}(p,r)$ defined below:
 
 \begin{equation}\label{uniqt11}
 % \begin{split}
@@ -1249,87 +1278,101 @@ Obviously,
 when $F''_{PC}(p,r,v,j,\vec{w},k)$ is unsatisfiable,
 $\vec{w}_k$ can uniquely determine $v_j$.
 
-The last pipeline stage $\vec{stg}^{n-1}$ is 
-exactly the set of registers $s\in \vec{s}$ 
-that can be uniquely determined at the $p+r$-th step by $\vec{o}$.
+For $0\le j\le n-1$,
+in the $j$-th pipeline stage $\vec{stg}^j$,
+its flow control vector $\vec{f}^j$ is exactly the set of registers $s\in \vec{s}$ 
+that can be uniquely determined at the $j-((n-1)-(p+r))$-th step by $\vec{o}$ 
+at the $p+r$-th step without enforcing $valid(\vec{f}_p)$.
 % With Equation (\ref{uniqt2}),
 It can be formally defined as:
 
-\begin{equation}\label{stgn_1}
- \vec{stg}^{n-1} := 
-\left\{
+\begin{equation}\label{stgn_fj}
+\vec{f}^{j} := 
+ \left\{
  s\in \vec{s} ~| 
-% \begin{array}{cc}
- F''_{PC}(p,r,
- s,p+r,
- \vec{o},p+r)
+\begin{array}{cc}
+ F''_{PC}(p,r,s,j-D,\vec{o},p+r)\\
  ~is~unsatisfiable
-% \end{array}
+\end{array}
 \right\}
 \end{equation}
 
-% And the second to last pipeline stage $\vec{stg}^{n-2}$ 
-% is exactly the set of registers $s\in \vec{s}/\vec{stg}^{n-1}$
-% that can be uniquely determined at the $p+r-1$-th step by $\vec{stg}^{n-1}$ at $p+r$-th step.
-% 
-% \begin{multline}\label{stgn_2}
-%  \vec{stg}^{n-2} := \\
-%  \left\{
-%  s\in \vec{s}/\vec{stg}^{n-1} ~| 
-% \begin{array}{cc}
-%  F''_{PC}(p,r,s,p+r-1,\vec{stg}^{n-1},p+r)\\
-%  ~is~unsatisfiable
-% \end{array}
-% \right\}
-% \end{multline}
-
-Similarly,
-for $0\le j\le n-2$,
-$\vec{stg}^j$ at $j-((n-2)-(p+r-1))$-th step
-can be uniquely determined by $\vec{stg}^{j+1}$ at $j-((n-2)-(p+r-1))+1$-th step.
-So we can recursively defined $\vec{stg}^j$ as :
+with:
 
 \begin{equation}\label{stgn_def}
 \begin{array}{ccc}
-S             & := & \vec{s}/\bigcup_{j<k\le n-2}\vec{stg}^{k}\\
-D             & := & (n-2)-(p+r-1)\\
+% S             & := & \vec{s}/\bigcup_{j<k\le n-2}\vec{stg}^{k}\\
+D             & := & (n-1)-(p+r)\\
 \end{array}
 \end{equation}
 
-\begin{equation}\label{stgn_j}
-\vec{stg}^{j} := 
+While the data vector $\vec{d}^j$ in the $j$-th pipeline stage $\vec{stg}^j$
+is the set of registers $s\in \vec{s}$ 
+that can be uniquely determined at the same $j-((n-1)-(p+r))$-th step 
+by $\vec{o}$ at the $p+r$-th step by enforcing $valid(\vec{f}_p)$.
+% With Equation (\ref{uniqt2}),
+It can be formally defined as:
+
+\begin{equation}\label{stgn_dj}
+\vec{d}^{j} := 
  \left\{
- s\in S ~| 
-% \begin{array}{cc}
- F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)
+ s\in \vec{s} ~| 
+ \begin{array}{cc}
+ F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)\wedge valid(\vec{f}_p)\\
  ~is~unsatisfiable
-% \end{array}
+ \end{array}
 \right\}
 \end{equation}
 
-With Equation (\ref{stgn_1}) and (\ref{stgn_j}),
-all the pipeline stages can now be inferred.
 
-\subsection{Inferring the pipeline stage that uniquely determines input vector}\label{subsec_inferinput}
 
-According to Figure \ref{fig_pipeenc},
-$\vec{stg}^0$ defined in Equation (\ref{stgn_j}) is
-exactly the pipeline stage that uniquely determined the input vector $\vec{i}$.
+% Similarly,
+% for $0\le j\le n-2$,
+% $\vec{f}^j$ at $j-((n-2)-(p+r-1))$-th step
+% can be uniquely determined at the $p+r$-th step by $\vec{o}$ without enforcing $valid(\vec{f})$.
+% So we can recursively defined $\vec{f}^j$ as :
+% 
+% \begin{equation}\label{stgn_def}
+% \begin{array}{ccc}
+% S             & := & \vec{s}/\bigcup_{j<k\le n-2}\vec{stg}^{k}\\
+% D             & := & (n-2)-(p+r-1)\\
+% \end{array}
+% \end{equation}
+% 
+% \begin{equation}\label{stgn_j}
+% \vec{stg}^{j} := 
+%  \left\{
+%  s\in S ~| 
+% % \begin{array}{cc}
+%  F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)
+%  ~is~unsatisfiable
+% % \end{array}
+% \right\}
+% \end{equation}
+% 
+% With Equation (\ref{stgn_1}) and (\ref{stgn_j}),
+% all the pipeline stages can now be inferred.
 
-But in real encoders,
-this may not be the case.
-So we need to search for the smallest $j$ from $0$ to $n-1$ that can make $\vec{i}$ to be uniquely determined by $\vec{stg}^j$,
-that is,
-the smallest $j$ that can make $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ unsatisfiable for all $i\in \vec{i}$,
-with $D$ defined in Equation (\ref{stgn_def}).
+% \subsection{Inferring the pipeline stage that uniquely determines input vector}\label{subsec_inferinput}
+% 
+% According to Figure \ref{fig_pipeenc},
+% $\vec{stg}^0$ defined in Equation (\ref{stgn_j}) is
+% exactly the pipeline stage that uniquely determined the input vector $\vec{i}$.
+% 
+% But in real encoders,
+% this may not be the case.
+% So we need to search for the smallest $j$ from $0$ to $n-1$ that can make $\vec{i}$ to be uniquely determined by $\vec{stg}^j$,
+% that is,
+% the smallest $j$ that can make $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ unsatisfiable for all $i\in \vec{i}$,
+% with $D$ defined in Equation (\ref{stgn_def}).
 
-\subsection{Finding out the flow control vectors in each pipeline stage}
+% \subsection{Finding out the flow control vectors in each pipeline stage}
 
 \section{Characterizing the Boolean function of input variables and pipeline registers}\label{sec_char}
 \subsection{Characterizing the Boolean function of the last pipeline stage}
 
-According to Equation (\ref{stgn_1}),
-every registers $s\in \vec{stg}^{n-1}$ can be uniquely determined by $\vec{o}$ at the $p+r$-th step,
+According to Equation (\ref{stgn_fj}),
+every registers $s\in \vec{f}^{n-1}$ can be uniquely determined by $\vec{o}$ at the $p+r$-th step,
 that is,
 $F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ is unsatisfiable and can be partitioned into :
 
@@ -1373,7 +1416,7 @@ And the common variables of $\phi_A$ and $\phi_B$ is $\vec{o}_{p+r}$.
 According to \cite{InterpBoolFunction},
 a Craig interpolant $\phi_I$ of $\phi_A$ with respect to $\phi_B$ can be constructed,
 which refer only to $\vec{o}_{p+r}$,
-and covers all the valuation of $\vec{o}_{p+r}$ that can make $s_{p+r}\equiv 1$.
+and covers all the valuations of $\vec{o}_{p+r}$ that can make $s_{p+r}\equiv 1$.
 At the same time,
 $\phi_I\wedge \phi_B$ is unsatisfiable,
 which means $\phi_I$ covers nothing that can make $s_{p+r}\equiv 0$.
@@ -1381,10 +1424,15 @@ which means $\phi_I$ covers nothing that can make $s_{p+r}\equiv 0$.
 Thus,
 $\phi_I$ can be used as the decoder's Boolean function that recovers $s\in \vec{stg}^{n-1}$ from $\vec{o}$.
 
+By replacing $F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ with $F''_{PC}(p,r,s,p+r,\vec{o},p+r)\wedge valid(f_p)$,
+we can similarly characterize the Boolean function that recovers $\vec{d}^{n-1}$.
+
 \subsection{Characterizing the Boolean function of other pipeline stages}
-Similar to last subsection,
-we can partition the unsatisfiable formula $F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)$ 
-in Equation (\ref{stgn_j}) into the following two equations:
+According to Figure \ref{fig_pipeenc},
+% Similar to last subsection,
+$\vec{f}^j$ at the $j-D$-step can be uniquely determined by $\vec{stg}^{j+1}$ at the $j-D+1$-th step.
+So we can partition the unsatisfiable formula $F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)$ 
+ into the following two equations:
 
 \begin{equation}
  \phi_A := 
@@ -1421,14 +1469,18 @@ in Equation (\ref{stgn_j}) into the following two equations:
 
 Again,
 a Craig interpolant $\phi_I$ of $\phi_A$ with respect to $\phi_B$ can be constructed,
-and used as the decoder's Boolean function that recovers $s\in \vec{stg}^{j}$ from $\vec{stg}^{j+1}$.
+and used as the decoder's Boolean function that recovers $\vec{f}^{j}$ from $\vec{stg}^{j+1}$.
+
+Similarly,
+by replacing $F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)$  with 
+$F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)\wedge valid(f_p)$ ,
+we can characterize the Boolean function that recovers $\vec{d}^{j}$ from $\vec{stg}^{j+1}$.
 
 \subsection{Characterizing the Boolean function of the encoder's input variables}
 
-According to Subsection \ref{sec_pipeinfer}.\ref{subsec_inferinput},
-we have found the smallest $j$ that can make $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ unsatisfiable for all $i\in \vec{i}$,
-with $D$ defined in Equation (\ref{stgn_def}).
-$F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ is unsatisfiable and can be partitioned into :
+According to Figure \ref{fig_pipeenc},
+$\vec{f}$ at the $p$-step can be uniquely determined by $\vec{stg}^0$ at the $p$-th step.
+$F''_{PC}(p,r,i,p,\vec{stg}^0,p)$ is unsatisfiable and can be partitioned into :
 
 \begin{equation}
 % \begin{split}
@@ -1458,7 +1510,7 @@ $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ is unsatisfiable and can be partitioned in
 (\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
 \}
 \\
-\wedge&\vec{stg}^j_{j-D}\equiv \vec{stg'}^j_{j-D} \\
+\wedge&\vec{stg}^0_p\equiv \vec{stg'}^0_p \\
 \wedge& i'_{p}\equiv 0 
 % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
 % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
@@ -1467,168 +1519,223 @@ $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ is unsatisfiable and can be partitioned in
 % \end{split}
 \end{equation}
 
-Similar to last subsection,
+Again,
 the Craig interpolant $\phi_I$ of $\phi_A$ with respect to $\phi_B$ 
-can be used as the decoder's Boolean function that recovers $i\in\vec{i}$ from $\vec{stg}^j$.
+can be used as the decoder's Boolean function that recovers $\vec{f}$ from $\vec{stg}^0$.
 
-
-
-
-
-
-
-
-
-
+Similarly,
+by replacing $F''_{PC}(p,r,i,p,\vec{stg}^0,p)$ with $F''_{PC}(p,r,i,p,\vec{stg}^0,p)\wedge valid(\vec{f}_p)$,
+we can characterize the Boolean function that recovers $\vec{d}$ from $\vec{stg}^0$.
 
 
 
 \section{Experimental results}\label{sec_exp}
-\subsection{The usage model}
-All these steps mentioned above are connected together by the standard make tool in Linux.
-To use the synthesis mode,
-the user needs to run the command "make halting" under the bash shell in the benchmark directory.
-To use the inferring mode,
-the user needs to run the command "make infer\_multidec\_not\_charfirst \_nowall".
+We have implemented these algorithms in OCaml language,
+and solved the generated CNF formulas with MiniSat 1.14 \cite{EXTSAT}.
+All experiments have been run on a server with 16 Intel Xeon E5648 processors at 2.67GHz, 
+192GB memory, and CentOS 5.4 Linux.
+% All these experimental results and programs can be downloaded 
+% from https://github.com/shengyushen/compsyn.
 
-\subsection{Benchmarks}
-The benchmarks used in the experiments include several complex encoders from industrial projects,
-\begin{enumerate}
-\item A XGXS encoder compliant to clause 48 of IEEE-802.3ae 2002 standard .
-\item A XFI encoder compliant to clause 49 of the same IEEE standard.
-\item A 66-bit scrambler used to ensure
-that a data sequence has sufficient 0-1 transitions,
-so that it can run through a high-speed
-noisy serial transmission channel.
-\item A PCI-E physical coding module .
-\item The Ethernet module of Sun's OpenSparc T2 processor.
-\end{enumerate}
+% \subsection{Benchmarks}
+%  shows all benchmarks used in this paper.
+% They come from \cite{ShenTCAD12}.
+%  \item The benchmark package sent to us by Liu, the author of \cite{LiuTCAD12}.
+%  So there may be some overlap between (2) and (3).
+% \end{enumerate}
 
-The profiles of these benchmarks are shown in Table \ref{tab_benchmark}.
-Some of these large benchmarks have more than 1000 lines of source code,
-while the XFI encoder has more than 100 state variables and configuration pins.
+Table \ref{tab_bench} shows the benchmarks used in this paper.
+% They are listed in the order of circuit area.
+The 2nd and 3rd column show respectively the number of inputs, outputs and registers of each benchmark.
+The 4th column shows the area of the encoder when mapped to LSI10K library with Design Compiler.
+% We use Design compiler here instead of ABC \cite{ABC} used by other researchers 
+% because ABC can not read in verilog files with registers generated by our algorithms.
+In this paper, 
+all area and delay are obtained in the same setting.
+% we can compare them to that of \cite{LiuTCAD12}.
 
 
-\begin{table}[t]
-\centering
-\caption{Information on Benchmarks}
-\begin{tabular}{|c|c|c|c|c|c|}
+
+\begin{table*}[t]
+\caption{Benchmarks and experimental results}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
-&XGXS&XFI&scrambler&PCIE&T2 Ethernet\\\hline\hline
-Line number&&&&&\\
-of verilog&214&466&24&1139&1073\\
-source code&&&&&\\\hline
-\#state variables&15&135&58&22&48\\\hline
-Data path width&8&64&66&10&10\\\hline
-\end{tabular}\label{tab_benchmark}
-\end{table}
-
-\subsection{The experimental result of the synthesis mode}
-\begin{table}[t]
-\centering
-\caption{Experimental results on the correct and incorrect encoders}
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-&                                        &XGXS     &XFI       &scrambler     &PCI-E    &T2 Ethernet\\ \hline\hline
-% &Time to ch-                           &&&&&\\
-% 
-% &$d,p,l$                                 &1,1,1    &0,3,2     &0,2,2     &2,1,1   &4,1,1         \\ \hline\hline
-For &Time to check the                         &&&&&\\
-correct&decoder's existence(sec)                      &0.29     &17.86     &2.67      &0.47    &29.64\\\cline{2-7}
-%      &improve \%                         &72.64    &74.67     &53.48     &80.42   &55.34 \\\cline{2-7}
-encoder&$d,p,l$                                 &1,2,1    &0,3,2     &0,2,2     &2,2,1   &4,4,1          \\ \hline\hline
-For&Time to check the                          &&&&&\\
-incorrect&decoder's existence(sec)             &0.16     &7.59     &1.17      &0.33    &2.19\\
-encoder&                        &&&&&\\\hline
-
-\end{tabular}\label{tab_prodes}
-\end{table}
-
-According to Table \ref{tab_prodes} and ,
-when given the assertion,
-%no matter correct or not,
-the synthesis mode can determine the existence of the decoders within 40 seconds,
-and builds the decoders within 10 seconds with an algorithm similar to that of Liu et al. .
-
-Moreover,
-we inserted some bugs into these encoders,
-which generated the same output letter for two different input letters.
-CompSyn successfully detected all these bugs within 10 seconds.
-
-\subsection{The experimental result of the inferring mode}
-\begin{table}[b]
-\centering
-\caption{Experimental Results of the inferring mode}
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-                                        &XGXS     &XFI       &scrambler     &PCI-E    &T2 Ethernet\\\hline\hline
-Config                 &&&&&\\
-pin number                              &3        &120       &1             &16      &26\\\hline
-Runtime                                 &3.83     &3841.34   &18.73         &8.51    &1791.22      \\\hline
-$d,p,l$                                 &1,5,1    &0,5,2     &0,4,2         &2,5,1   &4,5,1          \\ \hline
-Number of                               &&&&&          \\
-decoders                                &1        &2         &2             &1       &1          \\ \hline
-\end{tabular}\label{tab_res}
-\end{table}
-
-According to Table 	\ref{tab_res},
-when the assertions are not known,
-the inferring mode can infer assertions, generate decoders and infer these decoders' precondition formulas within 4000 seconds.
-
-The set of inferred assertions are shown below:
-
-\textbf{For XGXS}:
-\texttt{( ( !bad\_code ) )}
-
-\textbf{For XFI}:
-\texttt{( ( TEST\_MODE ) | ( !TEST\_MODE \& RESET ) | ( !TEST\_MODE \& !RESET \& DATA\_VALID ) )}
-
-\textbf{For scrambler}:
-\texttt{True}
-
-\textbf{For PCI-E}:
-\texttt{( ( !TXELECIDLE \& CNTL\_TXEnable\_P0 \& CNTL\_RESETN\_P0 \& !CNTL\_Loopback\_P0 ) )}
-
-\textbf{For T2 ethernet}:
-\texttt{( ( link\_up\_loc \& !reset\_tx \& !txd\_sel[1] \& !jitt er\_study\_pci[1] \& !txd\_sel[0] \& !jitter\_study\_pci[0] ) | ( !link\_up\_l oc \& !reset\_tx \& !txd\_sel[1] \& tx\_enc\_conf\_sel[3] \& tx\_enc\_conf\_sel[2] \& !jitter\_study\_pci[1] \& !txd\_sel[0] \& !jitter\_study\_pci[0] ) | ( !l ink\_up\_loc \& !reset\_tx \& !txd\_sel[1] \& tx\_enc\_conf\_sel[3] \& !tx\_enc\_conf \_sel[2] \& tx\_enc\_conf\_sel[1] \& !jitter\_study\_pci[1] \& !txd\_sel[0] \& !ji tter\_study\_pci[0] ) | ( !link\_up\_loc \& !reset\_tx \& !txd\_sel[1] \& !tx\_ enc\_conf\_sel[3] \& !tx\_enc\_conf\_sel[2] \& tx\_enc\_conf\_sel[1] \& !jitter\_ study\_pci[1] \& !txd\_sel[0] \& !jitter\_study\_pci[0] \& tx\_enc\_conf\_sel[0] ) )}
-
-Moreover,
-only two out of the five benchmarks have two decoders,
-while the other three have only one decoder.
-This means that,
-in most cases,
-our algorithm generates only one decoder.
-For other cases with multiple decoders,
-the user needs to inspect the inferred precondition formulas to select the correct one.
-
-For the two decoders of scrambler,
-their corresponding precondition formulas are $reset$ and $!reset$.
-By inspecting the Verilog source code of scrambler,
-we found that the $reset$ is used to reset the scrambler when it is $True$.
-Thus,
-the scrambler encoder will work in normal mode when $reset$ is $False$.
-Therefore,
-the second decoder is the correct one.
-And the dynamic simulation had confirmed its correctness.
+ Names     & \multicolumn{4}{|c|}{The encoders}                                  &   \multicolumn{3}{|c|}{decoder gener-}             &   \multicolumn{4}{|c|}{decoder gener-} \\    
+           & \multicolumn{4}{|c|}{}                                              &   \multicolumn{3}{|c|}{ated by \cite{ShenTCAD11}}  &   \multicolumn{4}{|c|}{ated by this paper} \\\cline{2-12}
+           &    \#   &   \#    &area  & Description                             &run  &delay&area                                    &run  &delay&area&\#\\
+           & in/out  &  reg    &      &   of Encoders                            &time &(ns) &                                        &time &(ns) &    &reg\\\hline\hline
+ pcie      & 10/11   & 23      & 326  &PCIE 2.0 \cite{pcie21}                    &0.37 &7.20 &624                                     &3.57 & 5.89&652 &9/12\\\hline
+ xgxs      & 10/10   & 16      & 453  &     Ethernet clause 48 \cite{IEEE8023_S4}&0.21 &7.02 &540                                     &1.57 & 5.93&829 &13\\\hline
+ t2eth     & 14/14   & 49      & 2252 &    Ethernet clause 36 \cite{IEEE8023_S4} &12.7 &6.54 &434                                     &47.2 & 6.12&877 &8/8/10/20\\\hline
+scram.     &64/64    & 58      & 1034 & inserting 01 flipping                    &     \multicolumn{7}{|c|}{no pipeline }\\\cline{1-5}
+ xfi       & 72/66   & 72      & 7772 &     Ethernet clause 49 \cite{IEEE8023_S4}&     \multicolumn{7}{|c|}{stages found}\\\hline
+\end{tabular}\label{tab_bench}
+\end{table*}
 
 
-For the two decoders of the most complex XFI encoder ,
-their corresponding precondition formulas are $RESET~\& !TEST\_MODE~\&~!DATA\_VALID$ and $!RESET~\&~!TEST\_MODE~\&~DATA\_VALID$.
-The only differences between them are the value of $RESET$ and $DATA\_VALID$.
-By inspecting the Verilog source code of XFI,
-we found that the $RESET$ is used to reset the XFI encoder when it is $True$,
-and $DATA\_VALID$ means that the input data is valid when it is $True$.
+% \begin{table}[t]
+% \caption{Experimental results}
+% \begin{tabular}{|c|c|c|c|c|c|c|c|}
+% \hline
+%            
+%  Na-       
+%  mes       
+%            
+%  pcie      &0.37 &7.20 &624 &3.57 & 5.89&652 &9/12\\\hline
+%  xgxs      &0.21 &7.02 &540 &1.57 & 5.93&829 &13\\\hline
+%  t2eth     &12.7 &6.54 &434 &47.2 & 6.12&877 &8/8/10/20\\\hline
+%  scr.      &     \multicolumn{7}{|c|}{no pipeline }\\\cline{1-1}
+%  xfi       &     \multicolumn{7}{|c|}{structure found}\\\hline
+% \end{tabular}\label{tab_res}
+% \end{table}
+
+
+% Table \ref{tab_res} compares the old algorithm from \cite{ShenTCAD11} to this paper's algorithm.
+The 6th to 8th columns show respectively the run time of \cite{ShenTCAD11}'s algorithm to generate the decoder without pipeline,
+and the delay and area of the generated decoder.
+While the 9th to 11th columns show respectively the run time of this paper's algorithm to generate the pipelined decoder,
+and the delay and area of the generated decoder.
+The last column shows the number of registers in each pipeline stage.
+
+Comparing the 7th and the 10th column indicates that
+the decoders' delay have been significantly improved.
+And the the last column shows that there actually exist very deep pipeline,
+especially the t2eth with 4 pipeline stages.
+
+One thing that is a little bit surprise is,
+the two largest benchmarks scrambler and xfi do not have pipeline stages inside.
+We study their code and confirm that this is true.
+Their area are so large because they use much wider datapaths with 64 to 72 bits.
+% Please refer to IEEE 802.3ae clause 49 \cite{IEEE8023_S4}  for more details.
+
+\section{RELATED PUBLICATIONS}\label{sec_relwork}
+%\subsection{Complementary Synthesis}
+%%Complementary synthesis is an emerging new research topic,
+%%there are only two papers that discuss this problem.
+%
+%The concept of complementary synthesis was first proposed by us\cite{ShengYuShen:iccad09} in ICCAD 2009.
+%Its major shortcomings are that it is incomplete,
+%and its run-time overhead of building decoder is too large.
+%
+%The incomplete problem has been addressed by \cite{ShengYuShen:fmcad10}, while \cite{ShengYuShen:tcad} addresses the second shortcoming by simplifying the SAT instance with unsatisfiable core extraction before building decoders.
+
+\subsection{Complementary synthesis}\label{subsec_compsyn_relat}
+The first complementary synthesis algorithm was proposed by \cite{ShenICCAD09}.
+It checks the decoder's existence by iteratively increasing the bound of unrolled transition function sequence,
+and generates the decoder's Boolean function by enumerating all satisfying assignments of the decoder's output.
+Its major shortcomings are that it may not halt and that it has large runtime overhead
+in building the decoder.
+
+Shen et al.\cite{ShenTCAD11} and Liu et al.\cite{LiuICCAD11} tackled the halting problem independently by searching for loops in the state sequence,
+while the runtime overhead problem was addressed in \cite{ShenTCAD12,LiuICCAD11} by Craig interpolant\cite{interp_McMillan}.
+
+Shen et al.\cite{ShenTCAD12} automatically inferred an assertion for configuration pins, 
+which can lead to the decoder's existence.
+% It can be seen as a special case of Algorithm \ref{algo_pcln} in Section \ref{sec_infer},
+% with the restriction that the inferred assertion must hold on all cycles,
+% to prevent the encoder from leaving the unique state set.
+
+Qin et al. \cite{QinTODAES15}
+proposed the first algorithm can handle encoder with flow control mechanism.
+
+Tu and Jiang \cite{TuDAC13} proposed a break-through algorithm 
+based on property directed reachability analysis\cite{BradleyVMCAI11,EenFMCAD11} 
+that can take the encoder's initial state into consideration,
+so that the infinite history of the encoder and the decoder can be used to generate the decoder's output.
+This algorithm can handle some special encoders that cannot be handled by the state-of-the-art algorithms.
+But for the encoders with flow control mechanism used in our experiments,
+our algorithm is enough, 
+and therefore we have not implemented their algorithm in our framework.
+
+
+\subsection{Program inversion}\label{subsec_proinv}
+According to Gulwani \cite{dim_syn},
+program inversion involves deriving a program $P^{-1}$
+that negates the computation of a given program $P$.
 So,
-the XFI encoder will work in normal mode when $RESET$ is $False$ and $DATA\_VALID$ is $True$.
-Therefore,
-the second decoder is the correct one.
-The dynamic simulation had also confirmed its correctness.
+the definition of program inversion is very similar to complementary synthesis.
 
-In this process,
-the user only needs to inspect the meaning of two configuration pins,
-instead of all 120 configuration pins of the XFI encoder.
-In this way,
-the human effort in specifying assertion and selecting the correct decoder is significantly reduced.
+The initial work on deriving program inversion used proof-based approaches\cite{prog_inv},
+which could handle only very small programs and very simple syntax structures.
+
+Gl\"{u}ck et al. \cite{mtd_autoProginv} inverted first-order functional programs
+by eliminating nondeterminism with LR-based parsing methods.
+But,
+the use of functional languages in that work is incompatible with our complementary synthesis.
+
+{Srivastava et al. \cite{prog_inv_rev,program_inversion_11} assumed that an inverse program was typically related to the original program,
+and so the space of possible inversions can be inferred by automatically
+mining the original program for expressions, predicates, and control flow.
+This algorithm inductively rules out invalid paths that cannot fulfill the requirement of inversion
+to narrow down the space of candidate programs until only the valid ones remain.
+So,
+it can only guarantee the existence of a solution,
+but not the correctness of this solution if its assumptions do not hold.
+
+% \subsection{The completeness of bounded model checking}\label{subsec_bmc_relate}
+% Bounded model checking(BMC) \cite{bmc_tacas99} is a model checking technology that considers only paths of limited length.
+% So it is an incomplete algorithm.
+% Many researchers have tried to find complete approaches for BMC.
+% 
+% One line of research\cite{bmc_tacas99,RecDiam} tried to find out a bound $b$,
+% which can guarantee the correctness of a specification,
+% if the specification is correct on all paths that are shorter than $b$.
+% Line 8 of Algorithm \ref{algo_pcln} finds out the value of $p$,$d$ and $l$ that can prove the non-existence of the decoder,
+% which is similar to \cite{bmc_tacas99,RecDiam}.
+% 
+% The other line of research\cite{kind_tacas99} tried to find a bound for induction,
+% such that the correctness of a specification within any bound $b$ implies the correctness on bound $b+1$.
+% Our algorithm proves the non-existence of the decoder by unfolding loops.
+% This is similar to finding induction patterns \cite{kind_tacas99}.
+
+% \textbf{This paper achieves completeness without following these two approaches.
+% Instead,
+% it defines two complement uniqueness conditions,
+% $LP$ and $LL$,
+% and find out proper algorithms to check them.}
+
+%\subsection{Temporal Logic Synthesis}
+%%Automatically synthesis of program from logic specification is first identified as Church's problem in 1962\cite{LOGARTHAUTO}.
+%%Some early researches \cite{SLVSQFSS,AUTOINF} solve this problem by reducing it to checking emptiness of tree automata.
+%
+%The temporal logic synthesis was first addressed by Clarke et al.\cite{DSGSYNTMPLG} and Manna et al. \cite{SYNTMPLGSPC}.
+%But Pnueli et al. \cite{SYNRCTVMD} pointed out that the complexity of LTL synthesis is double exponent.
+%%This high complexity drives researchers turning their focus to find smaller but still useful subset of temporal logic,
+%%such that synthesis problem can be solved with lower complexity.
+%
+%One line of research \cite{CNTLSYNTMDAUTO,DTMGENGMELTL,SYNRCTVDES} focuses on the so-called generalized reactive formulas of the form:
+%$(\square \lozenge p_1 \wedge \cdots \square \lozenge p_m) \to (\square \lozenge q_1 \wedge \cdots \square \lozenge q_n)$.
+%Complexity of solving synthesis problem for such formula is $O(N^3)$.
+%
+%The other line of research focuses on finding efficient algorithm \cite{SYNCNTLBNDRPN}
+%for expensive safra determination algorithm \cite{CMPLXAUTO} on an useful formula subset,
+%or just avoiding it\cite{NEWALGSTRGSYN}.
+%
+%%Yet another approach is antichain\cite{ANTICHAIN},
+%%which reduces the expensive state set computation to computation on maximal and minimal elements of lattice.
+%
+%Based on these research works,
+%some tools\cite{ANZU} that can handle small temporal formulas have been developed.
+%
+%All these works assume a hostile environment,
+%which seems too restrictive for many applications.
+%So Fisman et al. \cite{rationalsyn_tacas10}, Chatterjee et al. \cite{assguasyn_tacas07} and Ummels et al. \cite{ralgame_istta06} proposed rational synthesis algorithm,
+%which assumes that each agents act to achieve their own goals instead of failing each other.
+
+
+\subsection{Protocol converter synthesis}
+Protocol converter synthesis is a process that automatically generates a translator between two different communication protocols.
+This is relevant to our work,
+because both focus on synthesizing communication circuits.
+
+Avnit et al. \cite{converter_date08,converter_todeas09} first defined a general model for describing different protocols,
+and then provided an algorithm to decide
+whether there is some functionality of a protocol that cannot be translated into another.
+Finally,
+they synthesized a translator by computing the greatest fixed point for the update function of the buffer's control states.
+Latter, 
+they \cite{converter_date09} improved their algorithm with a more efficient design space exploration algorithm.
+
 
 \section{Conclusions}\label{sec_conclude}
 The CompSyn tool can infer correct assertions and generate decoder circuits for several complex encoders.
