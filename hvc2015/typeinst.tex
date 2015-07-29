@@ -1544,6 +1544,7 @@ All experiments have been run on a server with 16 Intel Xeon E5648 processors at
 %  So there may be some overlap between (2) and (3).
 % \end{enumerate}
 
+\subsection{Comparing timing and area}
 Table \ref{tab_bench} shows the benchmarks used in this paper.
 % They are listed in the order of circuit area.
 The 2nd and 3rd column show respectively the number of inputs, outputs and registers of each benchmark.
@@ -1558,17 +1559,17 @@ all area and delay are obtained in the same setting.
 
 \begin{table*}[t]
 \caption{Benchmarks and experimental results}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
- Names     & \multicolumn{4}{|c|}{The encoders}                                  &   \multicolumn{3}{|c|}{decoder gener-}             &   \multicolumn{4}{|c|}{decoder gener-} \\    
-           & \multicolumn{4}{|c|}{}                                              &   \multicolumn{3}{|c|}{ated by \cite{ShenTCAD11}}  &   \multicolumn{4}{|c|}{ated by this paper} \\\cline{2-12}
-           &    \#   &   \#    &area  & Description                             &run  &delay&area                                    &run  &delay&area&\#\\
-           & in/out  &  reg    &      &   of Encoders                            &time &(ns) &                                        &time &(ns) &    &reg\\\hline\hline
- pcie      & 10/11   & 23      & 326  &PCIE 2.0 \cite{pcie21}                    &0.37 &7.20 &624                                     &3.57 & 5.89&652 &9/12\\\hline
- xgxs      & 10/10   & 16      & 453  &     Ethernet clause 48 \cite{IEEE8023_S4}&0.21 &7.02 &540                                     &1.57 & 5.93&829 &13\\\hline
- t2eth     & 14/14   & 49      & 2252 &    Ethernet clause 36 \cite{IEEE8023_S4} &12.7 &6.54 &434                                     &47.2 & 6.12&877 &8/8/10/20\\\hline
-scram.     &64/64    & 58      & 1034 & inserting 01 flipping                    &     \multicolumn{7}{|c|}{no pipeline }\\\cline{1-5}
- xfi       & 72/66   & 72      & 7772 &     Ethernet clause 49 \cite{IEEE8023_S4}&     \multicolumn{7}{|c|}{stages found}\\\hline
+ Names     & \multicolumn{4}{|c|}{The encoders}                                  &   \multicolumn{3}{|c|}{decoder gener-}             &   \multicolumn{3}{|c|}{decoder gener-} \\    
+           & \multicolumn{4}{|c|}{}                                              &   \multicolumn{3}{|c|}{ated by \cite{ShenTCAD11}}  &   \multicolumn{3}{|c|}{ated by this paper} \\\cline{2-11}
+           &    \#   &   \#    &area  & Description                             &run  &delay&area                                     &run  &delay&area \\
+           & in/out  &  reg    &      &   of Encoders                            &time &(ns) &                                        &time &(ns) &    \\\hline\hline
+ pcie      & 10/11   & 23      & 326  &PCIE 2.0 \cite{pcie21}                    &0.37 &7.20 &624                                     &8.08 & 5.89&652 \\\hline
+ xgxs      & 10/10   & 16      & 453  &     Ethernet clause 48 \cite{IEEE8023_S4}&0.21 &7.02 &540                                     &4.25 & 5.93&829 \\\hline
+ t2eth     & 14/14   & 49      & 2252 &    Ethernet clause 36 \cite{IEEE8023_S4} &12.7 &6.54 &434                                     &430.4& 6.12&877 \\\hline
+scrambler  &64/64    & 58      & 1034 & inserting 01 flipping                    &     \multicolumn{6}{|c|}{no pipeline }\\\cline{1-5}
+ xfi       & 72/66   & 72      & 7772 &     Ethernet clause 49 \cite{IEEE8023_S4}&     \multicolumn{6}{|c|}{stages found}\\\hline
 \end{tabular}\label{tab_bench}
 \end{table*}
 
@@ -1595,7 +1596,7 @@ The 6th to 8th columns show respectively the run time of \cite{ShenTCAD11}'s alg
 and the delay and area of the generated decoder.
 While the 9th to 11th columns show respectively the run time of this paper's algorithm to generate the pipelined decoder,
 and the delay and area of the generated decoder.
-The last column shows the number of registers in each pipeline stage.
+% The last column shows the number of registers in each pipeline stage.
 
 Comparing the 7th and the 10th column indicates that
 the decoders' delay have been significantly improved.
@@ -1607,6 +1608,156 @@ the two largest benchmarks scrambler and xfi do not have pipeline stages inside.
 We study their code and confirm that this is true.
 Their area are so large because they use much wider datapaths with 64 to 72 bits.
 % Please refer to IEEE 802.3ae clause 49 \cite{IEEE8023_S4}  for more details.
+
+\subsection{Inferred pipeline stages of pcie}
+
+For the benchmark pcie,
+there are two pipeline stages,
+whose flow control vector and data vector are respectively shown in Table \ref{tab_pcie}.
+
+\begin{table}[t]
+\centering
+\caption{Inferred pipeline stages of pcie}
+\begin{tabular}{|c|c|c|c|}
+\hline
+                       & input                  & pipeline stage 0          &  pipeline stage 1    \\\hline\hline
+flow control           &CNTL\_TXEnable\_P0      & InputDataEnable\_P0\_reg  & OutputData\_P0\_reg[9:0]\\
+vector                 &                        &                           & OutputElecIdle\_P0\_reg \\\hline
+flow control           &CNTL\_TXEnable\_P0      & InputDataEnable\_P0\_reg  & true \\
+predicate              &                        &                           &  \\\hline
+data vector            &TXDATA[7:0]             & InputData\_P0\_reg[7:0]   & \\
+                       &TXDATAK                 & InputDataK\_P0\_reg       & \\\hline
+\end{tabular}\label{tab_pcie}
+\end{table}
+
+
+One issue to be noticed that is the data vector at pipeline stage 1 is empty,
+while all registers in that stages are recognized as flow control vector.
+We inspect the encoder's source code and find that these registers are 
+directly feed to output.
+So they can actually be uniquely determined by $\vec{o}$.
+This doesn't affect the correctness of the generated decoder,
+because the functionality of flow control vector never depend on the inferred flow control predicate.
+
+
+\subsection{Inferred pipeline stages of xgxs}
+
+
+For the benchmark xgxs,
+there are only 1 pipeline stage,
+whose flow control vector and data vector are respectively shown in Table \ref{tab_xgxs}.
+
+\begin{table}[b]
+\centering
+\caption{Inferred pipeline stages of xgxs}
+\begin{tabular}{|c|c|c|}
+\hline
+                       & input                  &  pipeline stage 0    \\\hline\hline
+flow control vector    &bad\_code               & bad\_code\_reg\_reg\\\hline
+flow control predicate &!bad\_code              & !bad\_code\_reg\_reg \\\hline
+data vector            &encode\_data\_in[7:0]   &ip\_data\_latch\_reg[2:0] \\
+                       &konstant                &plus34\_latch\_reg     \\
+                       &                        &data\_out\_latch\_reg[5:0]\\
+                       &                        &konstant\_latch\_reg   \\
+                       &                        &kx\_latch\_reg         \\
+                       &                        &minus34b\_latch\_reg   \\\hline
+\end{tabular}\label{tab_xgxs} 
+\end{table}
+
+
+\subsection{Inferred pipeline stages of t2ether}
+
+
+\begin{table}[t]
+\centering
+\caption{Inferred pipeline stages of t2ether}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+                       & input                        & pipeline                  &  pipeline          &  pipeline       &  pipeline               \\
+                       &                              & stage 0                   &  stage 1           &  stage 2        &  stage 3                \\\hline\hline
+flow                   & tx\_enc\_ctrl\_sel[3:0]      &qout\_reg\_0\_8            & qout\_reg\_0\_9    &qout\_reg[9:0]\_2&qout\_reg[7:1]\_3        \\
+control                &                              &qout\_reg\_2\_4            & qout\_reg\_1\_5    &                 &qout\_reg\_8\_1          \\
+vector                 &                              &qout\_reg\_1\_4            & qout\_reg\_2\_5    &                 &qout\_reg\_9\_1          \\
+                       &                              &                           & qout\_reg\_0\_10   &                 &qout\_reg\_3\_4          \\
+                       &                              &                           &                    &                 &qout\_reg\_0\_4          \\
+                       &                              &                           &                    &                 &qout\_reg\_3\_5          \\
+                       &                              &                           &                    &                 &qout\_reg\_0\_7          \\
+                       &                              &                           &                    &                 &sync1\_reg1              \\
+                       &                              &                           &                    &                 &sync1\_reg               \\
+                       &                              &                           &                    &                 &Q\_reg1                  \\
+                       &                              &                           &                    &                 &Q\_reg                         \\\hline
+data                   &txd[7:0]                      &qout\_reg[7:0]             &qout\_reg[7:0]\_1   &                 &                         \\
+vector                 &                              &                           &                    &                 &                         \\\hline
+\end{tabular}\label{tab_t2ether}
+\end{table}
+
+
+For the benchmark t2ether,
+there are four pipeline stages shown in Table \ref{tab_t2ether}.
+The control flow predicates are fairly complex, 
+so we list them below instead of in Table \ref{tab_t2ether}:
+The input control flow predicate $f$ is :
+\begin{multline}
+\begin{array}{l}
+( tx\_enc\_ctrl\_sel[2]~\&~tx\_enc\_ctrl\_sel[3] ) | \\
+( tx\_enc\_ctrl\_sel[2]~\&~!tx\_enc\_ctrl\_sel[3]~\&~!tx\_enc\_ctrl\_sel[0]~\&~tx\_enc\_ctrl\_sel[1] ) | \\
+( !tx\_enc\_ctrl\_sel[2]~\&~tx\_enc\_ctrl\_sel[3] ) | \\
+( !tx\_enc\_ctrl\_sel[2]~\&~!tx\_enc\_ctrl\_sel[3]~\&~tx\_enc\_ctrl\_sel[0] )
+\end{array}
+\end{multline}
+
+The flow control predicate $valid(\vec{f}^0)$ for the 0-th pipeline stage is :
+\begin{multline}
+\begin{array}{l}
+( qout\_reg\_2\_4~\&~qout\_reg\_1\_4~\&~!qout\_reg\_0\_8) | \\
+( !qout\_reg\_2\_4~\&~qout\_reg\_0\_8)
+\end{array}
+\end{multline}
+
+The flow control predicate $valid(\vec{f}^1)$ for the 1-th pipeline stage is :
+
+\begin{multline}
+\begin{array}{l}
+( qout\_reg\_2\_5~\&~qout\_reg\_1\_5~\&~qout\_reg\_0\_10~\&~!qout\_reg\_0\_9) | \\
+( qout\_reg\_2\_5~\&~qout\_reg\_1\_5~\&~!qout\_reg\_0\_10) | \\
+( qout\_reg\_2\_5~\&~!qout\_reg\_1\_5~\&~!qout\_reg\_0\_10) | \\
+( !qout\_reg\_2\_5~\&~qout\_reg\_0\_10~\&~qout\_reg\_0\_9) | \\
+( !qout\_reg\_2\_5~\&~!qout\_reg\_0\_10)
+\end{array}
+\end{multline}
+
+
+The flow control predicates $valid(\vec{f}^2)$ and $valid(\vec{f}^3)$ for the last two pipeline stages are all $true$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{RELATED PUBLICATIONS}\label{sec_relwork}
 %\subsection{Complementary Synthesis}
@@ -1623,7 +1774,7 @@ Their area are so large because they use much wider datapaths with 64 to 72 bits
 The first complementary synthesis algorithm was proposed by \cite{ShenICCAD09}.
 It checks the decoder's existence by iteratively increasing the bound of unrolled transition function sequence,
 and generates the decoder's Boolean function by enumerating all satisfying assignments of the decoder's output.
-Its major shortcomings are that it may not halt and that it has large runtime overhead
+Its major shortcomings are that it may not halt and it is too slow
 in building the decoder.
 
 Shen et al.\cite{ShenTCAD11} and Liu et al.\cite{LiuICCAD11} tackled the halting problem independently by searching for loops in the state sequence,
@@ -1637,15 +1788,17 @@ which can lead to the decoder's existence.
 
 Qin et al. \cite{QinTODAES15}
 proposed the first algorithm can handle encoder with flow control mechanism.
+But it can not handle pipeline stages.
 
 Tu and Jiang \cite{TuDAC13} proposed a break-through algorithm 
-based on property directed reachability analysis\cite{BradleyVMCAI11,EenFMCAD11} 
-that can take the encoder's initial state into consideration,
-so that the infinite history of the encoder and the decoder can be used to generate the decoder's output.
-This algorithm can handle some special encoders that cannot be handled by the state-of-the-art algorithms.
-But for the encoders with flow control mechanism used in our experiments,
-our algorithm is enough, 
-and therefore we have not implemented their algorithm in our framework.
+that recover the encoder's input by considering its initial and reachable states.
+% based on property directed reachability analysis\cite{BradleyVMCAI11,EenFMCAD11} 
+% that can take the encoder's initial state into consideration,
+% so that the infinite history of the encoder and the decoder can be used to generate the decoder's output.
+% This algorithm can handle some special encoders that cannot be handled by the state-of-the-art algorithms.
+% But for the encoders with flow control mechanism used in our experiments,
+% our algorithm is enough, 
+% and therefore we have not implemented their algorithm in our framework.
 
 
 \subsection{Program inversion}\label{subsec_proinv}
@@ -1666,11 +1819,12 @@ the use of functional languages in that work is incompatible with our complement
 {Srivastava et al. \cite{prog_inv_rev,program_inversion_11} assumed that an inverse program was typically related to the original program,
 and so the space of possible inversions can be inferred by automatically
 mining the original program for expressions, predicates, and control flow.
+This is somewhat similar to our approach in inferring the pipeline stages.
 This algorithm inductively rules out invalid paths that cannot fulfill the requirement of inversion
 to narrow down the space of candidate programs until only the valid ones remain.
-So,
-it can only guarantee the existence of a solution,
-but not the correctness of this solution if its assumptions do not hold.
+% So,
+% it can only guarantee the existence of a solution,
+% but not the correctness of this solution if its assumptions do not hold.
 
 % \subsection{The completeness of bounded model checking}\label{subsec_bmc_relate}
 % Bounded model checking(BMC) \cite{bmc_tacas99} is a model checking technology that considers only paths of limited length.
@@ -1723,24 +1877,25 @@ but not the correctness of this solution if its assumptions do not hold.
 %which assumes that each agents act to achieve their own goals instead of failing each other.
 
 
-\subsection{Protocol converter synthesis}
-Protocol converter synthesis is a process that automatically generates a translator between two different communication protocols.
-This is relevant to our work,
-because both focus on synthesizing communication circuits.
-
-Avnit et al. \cite{converter_date08,converter_todeas09} first defined a general model for describing different protocols,
-and then provided an algorithm to decide
-whether there is some functionality of a protocol that cannot be translated into another.
-Finally,
-they synthesized a translator by computing the greatest fixed point for the update function of the buffer's control states.
-Latter, 
-they \cite{converter_date09} improved their algorithm with a more efficient design space exploration algorithm.
+% \subsection{Protocol converter synthesis}
+% Protocol converter synthesis is a process that automatically generates a translator between two different communication protocols.
+% This is relevant to our work,
+% because both focus on synthesizing communication circuits.
+% 
+% Avnit et al. \cite{converter_date08,converter_todeas09} first defined a general model for describing different protocols,
+% and then provided an algorithm to decide
+% whether there is some functionality of a protocol that cannot be translated into another.
+% Finally,
+% they synthesized a translator by computing the greatest fixed point for the update function of the buffer's control states.
+% Latter, 
+% they \cite{converter_date09} improved their algorithm with a more efficient design space exploration algorithm.
 
 
 \section{Conclusions}\label{sec_conclude}
-The CompSyn tool can infer correct assertions and generate decoder circuits for several complex encoders.
-Furthermore,
-it can significantly reduce the human effort in specifying assertion and selecting the correct decoder.
+This paper proposes the first complementary synthesis algorithm that
+can handle encoders with pipeline stages and flow control mechanism.
+Experimental result indicates that the proposed algorithm can always 
+correctly generate pipelined decoder with flow control mechanism.
 
 
 % \section*{Acknowledgment}
