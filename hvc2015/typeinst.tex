@@ -87,13 +87,13 @@ that recovers the encoder's inputs from its output.
 % even if this encoder contains flow control mechanism that prevents
 % its inputs from being uniquely determined by its outputs.
 But the widely employed flow control mechanism
-fails this assumption.
-And most encoders also include pipeline stages used to improve timing.
+fails this assumption,
+and most encoders also include pipeline stages  to improve timing.
 \vspace{0.1cm}
 
 Thus,
-this paper proposes the first complementary synthesis algorithm that can generate 
-pipelined decoder for encoders with flow control mechanism.
+this paper proposes the first complementary synthesis algorithm that can handle
+encoders with flow control mechanism and pipeline.
 First,
 it infers the flow control predicate on inputs with existing algorithm.
 Second,
@@ -106,7 +106,7 @@ the decoder's Boolean functions that recover each pipeline stage and input are c
 \vspace{0.1cm}
 
 Experimental results indicate that
-this algorithm can always correctly generate a pipelined decoders with flow control mechanism.
+this algorithm can always correctly generate pipelined decoders with flow control mechanism.
 
 \keywords{Complementary Synthesis, Flow Control Mechanism, Pipeline}
 \end{abstract}
@@ -162,7 +162,7 @@ can make $\vec{d}$ to be uniquely determined by $\vec{o}$.
 
 \begin{figure}[b]
 \centering
-\includegraphics[width=\textwidth]{pipemod1}
+\includegraphics[width=0.9\textwidth]{pipemod1}
 \caption{Encoder with pipeline and flow control mechanism}
 \label{pipemod}
 \end{figure}
@@ -316,13 +316,13 @@ A \textbf{loop} is a path $<\vec{s}_n,\dots,\vec{s}_m>$ with $\vec{s}_n\equiv \v
 
 Qin et al. \cite{QinTODAES15} proposed a halting algorithm
 to find out $\vec{f}$ by iteratively calling 
-an under-approximative and an over-approximative approaches.
+a sound and a complete approaches until they converge.
 % The first one is an under-approximative one that presented in \ref{subsub_sound},
 % while the second one is an over-approximative one presented in \ref{subsub_complete}.
 % We will present these two approaches below and show 
 % that they will eventually converge.
 
-\subsubsection{The under-approximative approach}\label{subsub_sound}
+\subsubsection{The sound approach}\label{subsub_sound}
 As shown in Figure \ref{fig_pc}a),
 on the unrolled transition functions,
 an input variable $i\in\vec{i}$ can be uniquely determined,
@@ -330,6 +330,13 @@ if there exist three integers $p$, $l$ and $r$,
 such that for any particular valuation of the output sequence $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$,
 $i_{p+l}$ cannot be 0 and 1 at the same time.
 This is equal to the unsatisfiability of $F_{PC}(p,l,r)$ in Equation (\ref{uniqt1}).
+Line 1 corresponds to the path in Figure \ref{fig_pc}a),
+while Line 2 is a copy of it.
+% These two paths are of the same length.
+Line 3 forces these two paths' output sequences to be the same,
+while Line 4 forces their $i_{p+l}$ to be different.
+This approach is sound because when (\ref{uniqt1}) is unsatisfiable,
+$i$ is definitely a member of $\vec{f}$.
 
 \begin{equation}\label{uniqt1}
 % \begin{split}
@@ -369,11 +376,7 @@ F_{PC}(p,l,r):=
 % $l$ and $r$ are the lengths of the two output sequences 
 % $<\vec{o}_{p+1},\dots,\vec{o}_{p+l}>$ and $<\vec{o}_{p+l+1},\dots,\vec{o}_{p+l+r}>$
 % used to determine $i_{p+l}$.
-Line 1 of Equation (\ref{uniqt1}) corresponds to the path in Figure \ref{fig_pc}a),
-while Line 2 is a copy of it.
-% These two paths are of the same length.
-Line 3 forces these two paths' output sequences to be the same,
-while Line 4 forces their $i_{p+l}$ to be different.
+
 % Line 5 and 6 are the assertion predicates given 
 % by the user that constrain the valid valuation on $\vec{i}$.
 % PC in $F_{PC}$ is the abbreviation of "parameterized complementary",
@@ -411,7 +414,7 @@ while Line 4 forces their $i_{p+l}$ to be different.
 
 
 
-\subsubsection{The over-approximative approach}\label{subsub_complete}
+\subsubsection{The complete approach}\label{subsub_complete}
 For $F_{PC}(p,l,r)$ presented above,
 there are two possibilities:
 \textbf{(1)}. $i_{p+l}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for some $p$, $l$ and $r$;
@@ -437,9 +440,9 @@ on the three state sequences $<\vec{s}_{0},\dots,\vec{s}_{p}>$, $<\vec{s}_{p+1},
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
 It is formally defined in Equation (\ref{uniqln}) 
 with the last three lines corresponding to the three new constraints.
-If it is satisfiable,
+It is a complete approach because if it is satisfiable,
 then by unrolling these three loops,
-we can prove the 2nd case.
+we can prove the 2nd case and be sure that $i\notin \vec{f}$.
 
 \begin{equation}\label{uniqln}
 % \begin{split}
@@ -1318,7 +1321,7 @@ It can be formally defined as:
  \left\{
  s\in \vec{s} ~| 
  \begin{array}{cc}
- F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)\wedge valid(\vec{f}_p)\\
+ F''_{PC}(p,r,s,j-D,\vec{o},p+r)\wedge valid(\vec{f}_p)\\
  ~is~unsatisfiable
  \end{array}
 \right\}
@@ -1368,8 +1371,8 @@ It can be formally defined as:
 
 % \subsection{Finding out the flow control vectors in each pipeline stage}
 
-\section{Characterizing the Boolean function of input variables and pipeline registers}\label{sec_char}
-\subsection{Characterizing the Boolean function of the last pipeline stage}
+\section{Characterizing the Boolean functions recovering input variables and pipeline registers}\label{sec_char}
+\subsection{Characterizing the Boolean functions recovering the last pipeline stage}
 
 According to Equation (\ref{stgn_fj}),
 every registers $s\in \vec{f}^{n-1}$ can be uniquely determined by $\vec{o}$ at the $p+r$-th step,
@@ -1422,12 +1425,13 @@ $\phi_I\wedge \phi_B$ is unsatisfiable,
 which means $\phi_I$ covers nothing that can make $s_{p+r}\equiv 0$.
 
 Thus,
-$\phi_I$ can be used as the decoder's Boolean function that recovers $s\in \vec{stg}^{n-1}$ from $\vec{o}$.
+$\phi_I$ can be used as the decoder's Boolean function 
+that recovers $s\in \vec{f}^{n-1}$ from $\vec{o}$.
 
 By replacing $F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ with $F''_{PC}(p,r,s,p+r,\vec{o},p+r)\wedge valid(f_p)$,
-we can similarly characterize the Boolean function that recovers $\vec{d}^{n-1}$.
+we can similarly characterize the Boolean function that recovers $s\in\vec{d}^{n-1}$.
 
-\subsection{Characterizing the Boolean function of other pipeline stages}
+\subsection{Characterizing the Boolean functions recovering other pipeline stages}
 According to Figure \ref{fig_pipeenc},
 % Similar to last subsection,
 $\vec{f}^j$ at the $j-D$-step can be uniquely determined by $\vec{stg}^{j+1}$ at the $j-D+1$-th step.
@@ -1469,14 +1473,14 @@ So we can partition the unsatisfiable formula $F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1
 
 Again,
 a Craig interpolant $\phi_I$ of $\phi_A$ with respect to $\phi_B$ can be constructed,
-and used as the decoder's Boolean function that recovers $\vec{f}^{j}$ from $\vec{stg}^{j+1}$.
+and used as the decoder's Boolean function that recovers $s\in\vec{f}^{j}$ from $\vec{stg}^{j+1}$.
 
 Similarly,
 by replacing $F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)$  with 
 $F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)\wedge valid(f_p)$ ,
-we can characterize the Boolean function that recovers $\vec{d}^{j}$ from $\vec{stg}^{j+1}$.
+we can characterize the Boolean function that recovers $s\in\vec{d}^{j}$ from $\vec{stg}^{j+1}$.
 
-\subsection{Characterizing the Boolean function of the encoder's input variables}
+\subsection{Characterizing the Boolean functions recovering the encoder's input variables}
 
 According to Figure \ref{fig_pipeenc},
 $\vec{f}$ at the $p$-step can be uniquely determined by $\vec{stg}^0$ at the $p$-th step.
@@ -1521,11 +1525,11 @@ $F''_{PC}(p,r,i,p,\vec{stg}^0,p)$ is unsatisfiable and can be partitioned into :
 
 Again,
 the Craig interpolant $\phi_I$ of $\phi_A$ with respect to $\phi_B$ 
-can be used as the decoder's Boolean function that recovers $\vec{f}$ from $\vec{stg}^0$.
+can be used as the decoder's Boolean function that recovers $i\in\vec{f}$ from $\vec{stg}^0$.
 
 Similarly,
 by replacing $F''_{PC}(p,r,i,p,\vec{stg}^0,p)$ with $F''_{PC}(p,r,i,p,\vec{stg}^0,p)\wedge valid(\vec{f}_p)$,
-we can characterize the Boolean function that recovers $\vec{d}$ from $\vec{stg}^0$.
+we can characterize the Boolean function that recovers $i\in\vec{d}$ from $\vec{stg}^0$.
 
 
 
@@ -1600,8 +1604,8 @@ and the delay and area of the generated decoder.
 
 Comparing the 7th and the 10th column indicates that
 the decoders' delay have been significantly improved.
-And the the last column shows that there actually exist very deep pipeline,
-especially the t2eth with 4 pipeline stages.
+% And the the last column shows that there actually exist very deep pipeline,
+% especially the t2eth with 4 pipeline stages.
 
 One thing that is a little bit surprise is,
 the two largest benchmarks scrambler and xfi do not have pipeline stages inside.
@@ -1695,7 +1699,7 @@ vector                 &                              &                         
 For the benchmark t2ether,
 there are four pipeline stages shown in Table \ref{tab_t2ether}.
 The control flow predicates are fairly complex, 
-so we list them below instead of in Table \ref{tab_t2ether}:
+so we list them below instead of in Table \ref{tab_t2ether}.
 The input control flow predicate $f$ is :
 \begin{multline}
 \begin{array}{l}
