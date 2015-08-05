@@ -1,13 +1,722 @@
 % !Mode:: "Tex:UTF-8"
-\chapter{路由路径压缩与恢复机制}
+\chapter{面向流水线的对偶综合}
 \label{chap:5}
-第三、四章研究了不依赖位置关系的拓扑骨干提取和虫洞拓扑识别问题，本章研究拓扑压缩的另一项重要研究内容，即路由路径的压缩和恢复技术。在大规模无线传感器网络中，为了提供可靠的数据传输和细粒度的系统管理，追踪数据包的路由路径非常重要。实时的路径记录功能使网络用户能够以细粒度的方式观察数据的传输和分析网络的状态。但由于无线传感器网络中严格的资源限制，要在每个数据包中记录完整的路径信息是非常困难的。很多的研究工作都尝试利用数据包路由路径信息，但都没能做到记录每个数据包的完整路径信息。本章致力于在每个数据包引入较低的常数开销的情况下记录完整和精确的路径路径，提出了基于哈希的路径压缩和恢复机制，命名为PathZip。PathZip的基本思想是将开销从传感器节点转移至能力较强的汇聚节点或基站。在数据包的传输过程中，经过的每个节点执行一次简单的哈希计算，将哈希值作为路径的标识储存在数据包中。汇聚节点获得路径标识后，通过重新计算哈希值重构出完整的路径。另外，PathZip利用了分别基于拓扑和基于几何的技术，通过开发路由路径之间的拓扑和几何相关性来降低算法的开销。本章通过理论分析和大量的仿真实验验证了PathZip方法的有效性和性能。
+
 \section{引言}
-数据收集是无线传感器网络中最基本和重要的功能，因此提高数据收集的可靠性一直是该领域中一个重要的研究热点。随着无线传感器网络的规模日益扩大，近年来出现了一系列大规模实际部署的系统，例如CitySee系统已经部署了超过2000个节点\upcite{CitySee}。日益增长的规模与其它一系列特性相结合，如动态的无线通讯链路、传感器节点的故障易发性，使得无线传感器网络系统的整体行为越来越复杂和难以预测\upcite{raj,post,miao}。系统状态可见性的缺失正日益成为大规模无线传感器网络实际部署所面临的重大挑战。
+在通讯和多媒体芯片设计项目中，
+最困难的一个工作是针对特定的协议，
+如以太网\cite{IEEE8023_S4} 和PCI Express \cite{pcie21}，
+设计相应的编码器和解码器.
+其中编码器负责将输入$\vec{i}$ 映射至输出$\vec{o}$，
+而解码器则负责从$\vec{o}$中恢复$\vec{i}$。
+对偶综合\cite{ShenICCAD09,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+假设$\vec{i}$ 总能够被$\vec{o}$的一个有限序列唯一决定，
+以自动产生相应的解码器。
+其中，
+解码器的布尔函数可以使用Jiang et al. \cite{InterpBoolFunction}提出的算法，
+该算法基于Craig插值\cite{Craig}。
 
-实时地追踪每个数据包的路由路径是一种以细粒度的方式观察网络行为和理解网络动态的重要手段。路径信息在之前的很多研究工作中得到了应用，如PAD\upcite{diagnosis_pad}设计了一种包标记算法来捕获数据包传输路径的变化，并利用这些信息对网络失效的原因进行分析。Sympathy\upcite{diagnosis_sympathy}是另一种网络诊断工具，通过动态地收集运行时的节点邻居表信息对网络的状态进行分析。利用数据包路由路径信息，就可以在基站对网络中很多问题进行分析，例如找出网络中负载较重的节点、检测路由环、检测路由路径的动态改变以判断潜在的节点失效、预测潜在的消息拥塞和网络健康状况等。
+通过研究现有的工业界编码器，我们发现他们都含有流水线结构以提高运行频率。
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{pipeline_pipeline}
+\end{center}
+  \label{fig_pipe}
+\caption{带有流水线的编码器和解码器}
+\end{figure}
 
-尽管利用数据包的路由路径信息可以给网络带来诸多的好处，但要实现以实时的方式记录每个数据包的完整和精确的路径信息是一项非常具有挑战性的任务。之前的很多研究工作虽然在这方面进行了一些尝试，但是都没能实现这一功能。例如，PAD仅在静态的网络中可以恢复出来自每个源节点的数据包的路由路径，当网络动态性较强（如路由路径频繁改变）的实际网络中，该方法的收敛时间变得较长甚至无法收敛。要实现这一目标，一种最原始和简单的想法是每个节点将自身ID存储在转发的每个数据包中，从源节点到汇聚节点的整个路径信息就能够被依次地记录在数据包中。但这种方式将导致数据包的大小显著增加，在数据包大小严格受限的无线传感器网络中并不可行，如802.15.4标准的MAC协议支持的数据包最大仅为127字节。另外，数据包大小的增加也将使数据传输的能量开销显著增加，因此无法应用在能量严格受限的无线传感器网络中。理想情况下，记录路径信息在数据包中占用的存储空间越小越好。因此，一种直观的改进方式就是对路由路径信息的数据进行压缩，将压缩后的路径信息存储在每个数据包中。但由于传统的无损压缩算法的输出随着输入数据量的增加而线性增长，这种方法仍将导致数据包大小随着路径长度的增加而线性增加。另外，路径信息的数据量极小（一般不超过200字节），在这种数据规模下，现有的压缩算法的压缩率较低。例如无线传感器网络中广泛使用的一种数据压缩算法LZW\upcite{compression_sensys}对结构化的传感器数据的压缩率一般不大于3。另外，由于压缩算法需要应用在每个数据包的逐跳的传输过程中，已有的压缩算法的计算开销对于资源、能力均严格受限的传感器节点来说也是难以接受的。综上所述，无线传感器网络的路由路径记录是一项亟需解决，且非常具有挑战性的研究内容，设计一种轻量级的路由路径记录机制已经成为实现大规模网络实际部署需要解决的关键技术问题。
+一个带有流水线的简单编码器如图\ref{fig_pipe}a)所示。
+他的第一级流水线$\vec{stg}^0$ 包含数个寄存器。
+其中输入变量$\vec{i}$ 被用于计算该级流水线$\vec{stg}^0$，
+而流水线$\vec{stg}^0$ 则被用于计算$\vec{o}$。
+根据该结构，
+$\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
+而$\vec{i}$ 能够被$\vec{stg}^0$唯一决定。
+
+因此，
+一个由人类程序员设计的合理解码器,
+应当如图\ref{fig_pipe}b)所示，
+从$\vec{o}$ 中使用组合逻辑$C^1$恢复$\vec{stg}^0$ ，
+并进一步使用组合逻辑$C^0$从$\vec{stg}^0$ 中恢复$\vec{i}$ 。
+在此类解码器中，
+关键路径被流水线级$\vec{stg}^0$切断，
+以改善时序。
+
+
+
+然而，
+目前所有的对偶综合算法\cite{ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+均使用Jiang提出的基于\cite{Craig}的算法 \cite{InterpBoolFunction}。
+如图\ref{fig_pipe}c)所示，
+这些算法从$\vec{o}$中使用一个大型组合逻辑$C^0*C^1$直接恢复$\vec{i}$，
+这使得他们变得不必要的很慢，因为没有流水线寄存器切断这段复杂逻辑。
+
+为了产生如图\ref{fig_pipe}b) 所示的解码器，
+本文提出了一个新颖的算法。首先找到编码器中每一个流水线级$\vec{stg}^j$中的寄存器，
+然后特征化每一个流水线级$\vec{stg}^j$的布尔函数，
+已从下一个流水线级$\vec{stg}^{j+1}$ 或输出$\vec{o}$之中恢复$\vec{stg}^j$。
+最终特征化$\vec{i}$的布尔函数以葱
+第一个流水线级$\vec{stg}^0$中恢复$\vec{i}$。
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{pcln_pipeline}
+\end{center}
+\caption{下估计和上估计算法}
+  \label{fig_pc}
+\end{figure}
+
+在复杂的工业界实际编码器，
+如PCI Express \cite{pcie21} 和以太网\cite{IEEE8023_S4}，
+上的实验表明，
+该算法总能够产生带有流水线级的快速解码器。.
+
+
+\emph{本文剩余的内容安排如下}.
+%Section \ref{sec_casestudy} explains our ideas with a simple example.
+第\ref{sec_prem} 节介绍了背景知识;
+第\ref{sec_pipeinfer} 节推导流水线结构，
+而第\ref{sec_char} 节特征化每一个流水线级和输入的布尔函数;
+第\ref{sec_exp} 和\ref{sec_relwork} 节给出实验结果和相关工作;
+最后，
+第\ref{sec_conclude} 节给出结论。
+
+
+
+\section{背景知识}\label{sec_prem}
+
+% \subsection{Flow control mechanism}\label{subsec_fc}
+
+
+
+\subsection{命题逻辑可满足}\label{subsec_SAT}
+布尔集合为$\mathbb{B}=\{0,1\}$。
+变量向量表示为$\vec{v}=(v,\dots)$。
+向量$\vec{v}$ 中的变量个数表示为$|\vec{v}|$。
+若一个变量$v$ 是$\vec{v}$的成员，
+则记为$v\in\vec{v}$；
+否则$v\notin\vec{v}$.
+$v\cup\vec{v}$ 是包含$v$ 和$\vec{v}$的所有成员的新向量。
+$\vec{v}/\vec{w}$ 是一个包含$\vec{v}$ 的所有成员但是不包含$\vec{w}$的任意成员的新向量。
+$\vec{a}\cup\vec{b}$ 是包含$\vec{a}$ 和$\vec{b}$的所有成员的新向量。
+$\vec{v}$ 的赋值集合记为$[\![\vec{v}]\!]$，
+比如，
+$[\![(v_1,v_2)]\!]=\{(0,0),(0,1),(1,0),(1,1)\}$。
+
+
+对于变量集合$V$上的公式$F$，
+起命题逻辑可满足(SAT)  问题是指
+如何找到$V$的一个赋值函数$A:V\to \mathbb{B}$，
+使得$F$ 能够被赋值为$1$。
+若$A$ 存在，则$F$ 是可满足的；
+否则，
+是不可满足的。
+
+对于公式$\phi_A$ 和$\phi_B$，
+若$\phi_A\wedge \phi_B$ 不可满足，
+则存在公式$\phi_I$ 仅包含$\phi_A$ 和$\phi_B$ 的共同变量，
+并使得$\phi_A\Rightarrow \phi_I$
+且$\phi_I\wedge \phi_B$ 不可满足。
+$\phi_I$ 称为$\phi_A$ 相对于$\phi_B$的Craig插值\cite{Craig}。
+$\phi_I$ 可以使用McMillan提出的算法\cite{interp_McMillan}进行计算，
+并应用于从一个布尔关系特征化出一个布尔函数\cite{InterpBoolFunction}。
+
+
+
+\subsection{游有限状态机}\label{subsec_fsm}
+
+
+编码器使用有限状态机模型(FSM) $M=(\vec{s},\vec{i},\vec{o},T)$，
+其中$\vec{s}$为状态变量向量，
+$\vec{i}$为输入变量向量，
+$\vec{o}$为输出变量向量，
+$T: [\![\vec{s}]\!]\times [\![\vec{i}]\!]\to [\![\vec{s}]\!]\times [\![\vec{o}]\!]$
+是一个状态迁移函数，
+用于从当前状态和输入变量向量，
+计算出下一状态和输出变量向量。
+
+$M$的行为可以通过展开迁移关系进行推导。
+在第$n$步的$s\in\vec{s}$，$i\in\vec{i}$ 和$o\in\vec{o}$ 
+分别表示为$s_n$, $i_n$ 和$o_n$。
+另外，
+在第$n$步的单个状态，输入和输出变量分别表示为$\vec{s}_n$，$\vec{i}_n$ 和$\vec{o}_n$。
+一个路径是指$<\vec{s}_n,\dots,\vec{s}_m>$，
+其中对于$n\le j< m$，
+有$\exists \vec{i}_j\vec{o}_j (\vec{s}_{j+1},\vec{o}_j)\equiv T(\vec{s}_j,\vec{i}_j)$ 。
+一个环是一个路径$<\vec{s}_n,\dots,\vec{s}_m>$ 满足$\vec{s}_n\equiv \vec{s}_m$。
+
+\subsection{用于确定一个输入变量能否被输出向量的有限序列唯一决定的停机算法}\label{subsec_chkextdec}
+
+该算法\cite{ShenTCAD11} 迭代的展开迁移函数。
+对于每次迭代，
+其分别调用一个下估计和一个上估计算法已给出确定的答案。
+这两个算法分别在\ref{subsub_sound} 和\ref{subsub_complete}中给出。
+我们酱紫啊\ref{subsub_algo} 中指出
+这两者将最终收敛。
+
+\subsubsection{下估计算法}\label{subsub_sound}
+
+如图\ref{fig_pc}a)所示，
+在展开的迁移函数序列上，
+输入变量$i\in\vec{i}$ 能够被唯一决定的充分条件是，
+存在$p$，$l$ 和$r$，
+使得对于输出向量序列$<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$的任意值，
+$i_{p+l}$不能同时为0和1。
+折等价于公式(\ref{uniqt1})中定义的$F_{PC}(p,l,r)$ 的不可满足性。
+
+\begin{multline}\label{uniqt1}
+% \begin{split}
+F_{PC}(p,l,r):=\\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge&\bigwedge_{m=0}^{p+l+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
+\wedge& i_{p+l}\equiv 1 \wedge  i'_{p+l}\equiv 0
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+
+
+其中，
+$p$ 是前置状态序列的长度，
+$l$ 和$r$是两个用于唯一决定输入$i_{p+l}$的输出变量序列
+$<\vec{o}_{p+1},\dots,\vec{o}_{p+l}>$ 和$<\vec{o}_{p+l+1},\dots,\vec{o}_{p+l+r}>$
+的长度。
+行2对应于图\ref{fig_pc}a)中的路径，
+行3 是他的一个拷贝。
+他们的长度是一样的。
+行4 强制两者的输出序列具有相同的赋值，
+而行5 强制他们的输入$i_{p+l}$ 不同。
+
+根据公式(\ref{uniqt1})，
+对于 $p'\ge p$， $l'\ge l$ 和$r'\ge r$，
+$F_{PC}(p',l',r')$ 的短句集合是$F_{PC}(p,l,r)$的超集。
+因此,
+$F_{PC}(p,l,r)$的不可满足性
+可以扩展到任意更大的$p'\ge p$， $l'\ge l$ 和$r'\ge r$。
+
+
+\begin{proposition}\label{prop_pc1}
+若$F_{PC}(p,l,r)$ 不可满足，
+则对任意更大的$p$, $l$ 和$r$，
+$i_{p+l}$ 可以被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
+\end{proposition}
+
+
+\subsubsection{上估计算法}\label{subsub_complete}
+
+若上一节定义的$F_{PC}(p,l,r)$ 可满足，
+则存在两种可能性：
+\begin{enumerate}
+ \item
+$i_{p+l}$ 可以在更大的$p$, $l$ 和$r$时，
+被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定；
+ \item
+$i_{p+l}$ 不能被任何$p$, $l$ 和$r$情况下的$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
+\end{enumerate}
+
+如果是第一种情况，
+则通过迭代的增大$p$, $l$ 和$r$，
+$F_{PC}(p,l,r)$ 总能够变成不可满足。
+而如果是第二种情况，
+则该算法不停机。
+
+
+
+\begin{algorithm}[t]
+\begin{algorithmic}[1]
+\STATE{输入 :输入变量$i\in\vec{i}$.}
+\STATE{输出: $i\in\vec{i}$ 是否能够被$\vec{o}$唯一决定,$p$, $l$ 和$r$的取值}
+\STATE $p$:= 0; ~$l$:= 0;~$r$:= 0\;
+\WHILE {$1$}
+\STATE   $p$++;~$l$++;~$r$++\;\label{linepc1}
+   \IF{$F_{PC}(p,l,r)$ 不可满足}
+    \RETURN (yes, $p$, $l$, $r$);
+   \label{lnsat}\ELSIF{$F_{LN}(p,l,r)$ 可满足} 
+    \RETURN (no, $p$, $l$, $r$);
+   \ENDIF
+\ENDWHILE
+\caption{$CheckUniqueness(i)$: 检查
+$i\in\vec{i}$ 能否被$\vec{o}$唯一决定的停机算法}
+\label{alg_pcln}
+\end{algorithmic}
+\end{algorithm}
+
+
+
+因此,
+为了得到停机算法
+我们需要区分上述两种情形。
+该方法如图\ref{fig_pc}b)所示，
+该图类似于图\ref{fig_pc}a)，
+不过增加了三个新的约束用于检测在$<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ 和
+$<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$上的环。
+其形式化的定义如公式(\ref{uniqln}) 
+其中最后三行对应于新增加的三个环检测约束。
+
+\begin{multline}\label{uniqln}
+% \begin{split}
+F_{LN}(p,l,r):=\\
+\left\{
+\begin{array}{cc}
+&F_{PC}(p,l,r)\\
+\wedge&\bigvee_{x=0}^{p-1}\bigvee_{y=x+1}^{p} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
+\wedge&\bigvee_{x=p+1}^{p+l-1}\bigvee_{y=x+1}^{p+l} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
+\wedge&\bigvee_{x=p+l+1}^{p+l+r-1}\bigvee_{y=x+1}^{p+l+r} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\}
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+
+
+当$F_{LN}(p,l,r)$ 可满足时，
+则$i_{p+l}$ 不能被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$唯一决定。
+更重要的是，
+通过展开这三个环
+我们可以把$F_{LN}(p,l,r)$ 的可满足性推广到更大的$p$, $l$ 和$r$上。
+这意味着：
+
+
+\begin{proposition}\label{prop_ln1}
+如果$F_{LN}(p,l,r)$ 可满足，
+则$i_{p+l}$ 对于任意更大的$p$, $l$ 和$r$，
+不能被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
+\end{proposition}
+
+其正确性证明的细节见\cite{ShenTCAD11}。
+
+\subsubsection{完全算法}\label{subsub_algo}
+
+基于Propositions \ref{prop_pc1} 和\ref{prop_ln1}，
+我们有如下算法\ref{alg_pcln}。
+该算法搜索$p$, $l$ 和$r$ 使得
+输入变量$i_{p+l}$ 能够被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$唯一决定。
+\begin{enumerate}
+ \item
+一方面，
+如果存在这样的$p$, $l$ 和$r$，
+则令$p':=max(p,l,r)$, $l':=max(p,l,r)$ 和$r':=max(p,l,r)$。
+从Propositions \ref{prop_pc1}，
+我们知道$F_{PC}(p',l',r')$ 不可满足。
+因此$F_{PC}(p,l,r)$ 总能在行\ref{linepc1}称为不可满足；
+ \item
+另一方面，
+如果不存在$p$, $l$ 和$r$，
+则$p$, $l$ 和$r$ 总会变得比最长的无环路径更长，
+这意味着在$<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ 和
+$<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$上存在环。
+这将使得$F_{LN}(p,l,r)$ 在行\ref{lnsat}变得可满足。
+\end{enumerate}
+
+两种情况都将导致上述算法停机。
+其正确性和停机性证明的细节见\cite{ShenTCAD11} 。
+
+
+
+\section{推导编码器的流水线结构}\label{sec_pipeinfer}
+
+\subsection{流水线的一般性模型}
+如图\ref{fig_pipeenc}所示，
+我们假设
+编码器有$n$ 几流水线。
+如果我们把组合逻辑$C^j$ 视为一个函数，
+则编码器可以用下列的公式表示：
+
+\begin{equation}\label{equ_genpipe}
+\begin{array}{cccc}
+\vec{stg}^0   & := & C^0(\vec{i})         &\\
+\vec{stg}^j   & := & C^j(\vec{stg}^{j-1}) & 1\le j\le n-1\\
+\vec{o}       & := & C^n(\vec{stg}^{n-1}) &
+\end{array}
+\end{equation}
+
+
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{pipemod_pipeline}
+\end{center}
+\caption{编码器的一般性结构}
+  \label{fig_pipeenc}
+\end{figure}
+
+
+因此,
+每个$C^j$ 可以视为一个小型的编码器用于从$\vec{stg}^{j-1}$或$\vec{i}$中计算$\vec{stg}^j$ 或$\vec{o}$。
+
+
+在本文的剩余部分，
+上标始终表示特定的流水线级，,
+而下标则如小节\ref{subsec_fsm}所述，
+表示在展开的迁移关系序列中的步数。
+例如,
+$\vec{stg}^j$ 是第$j$个流水线级。
+而$\vec{stg}^j_i$ 则是该第$j$流水线级
+在展开的迁移函数序列中的第$i$步的值。
+
+\subsection{推导$p$, $l$ 和$r$}\label{subsec_inferplr}
+在推导之前，
+我们首先使用算法\ref{alg_pcln} 以得到$p$, $l$ 和$r$ 。
+
+因为存在多于一个$i\in \vec{i}$，
+我们需要为每一个$i\in \vec{i}$使用算法\ref{alg_pcln} 
+以得到他们对用的$p$, $l$ 和$r$ 。
+
+然后我们将最终的$p$,$l$ 和$r$ 设置为所有$i\in \vec{i}$中最大的$p$, $l$ 和$r$ 。
+根据公式\ref{uniqt1}，
+这些$p$, $l$ 和$r$ 能够使得$<o_{p},\dots,o_{p+l+r}>$ 唯一决定所有$i_{p+l}\in \vec{i}_{p+l}$。
+
+
+\subsection{压缩$r$ 和$l$}\label{reduceing}
+
+\begin{algorithm}[t]
+\begin{algorithmic}[1]
+\FOR{$r':=r \to 0$} 
+\label{testr_1}
+  \IF{$r'\equiv 0$ or $F_{PC}(p,l,r'-1)$ 对于某些$i\in \vec{i}$是可满足的} 
+  \STATE  break;
+  \ENDIF
+\ENDFOR
+\RETURN $r'$;
+\caption{$RemoveRedundancy(p,l,r)$}
+\label{algo_remove2}
+\end{algorithmic}
+\end{algorithm}
+
+
+
+算法\ref{alg_pcln} 同步增长$p$, $l$ 和$r$ ，
+因此在$l$ 和$r$中可能存在冗余。
+因此我们需要首先在算法\ref{algo_remove2}中压缩$r$。
+
+
+在行\ref{testr_1}，
+当$F_{PC}(p,l,r'-1)$ 可满足时，
+则$r'$ 是最有一个使得$F_{PC}(p,l,r')$ 不可满足的，
+我们将其直接返回。
+另一方面，
+当$r'\equiv 0$，
+$F_{PC}(p,l,0)$ 已经在上一次迭代中被测试过,
+且结果必然是不可满足。
+在这种情况下我们返回$0$。
+
+
+如此,
+我们从算法\ref{algo_remove2}获得了一个压缩后的$r$ ，
+它能使$\vec{i}_{p+l}$ 被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$唯一决定。
+
+我们进一步要求：
+\begin{enumerate}
+ \item 如图\ref{fig_pc1}所示，
+ $l$ 可以被压缩为0,
+ 这意味着$\vec{i}_{p}$ 能够被$<\vec{o}_{p},\dots,\vec{o}_{p+r}>$唯一决定，
+ 也就是说，
+ 所有的将来输出。
+ \item 上述的序列$<\vec{o}_{p},\dots,\vec{o}_{p+r}>$
+ 可以被进一步压缩为$\vec{o}_{p+r}$.
+ 这意味着$\vec{o}_{p+r}$ 是在恢复$\vec{i}_p$时唯一被需要的输出。
+\end{enumerate}
+
+检查上述两个要求等价于下式的不可满足：
+
+\begin{multline}\label{uniqt11}
+% \begin{split}
+F'_{PC}(p,r):=\\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\vec{o}_{p+r}\equiv \vec{o'}_{p+r} \\
+\wedge& i_{p}\equiv 1 \wedge  i'_{p}\equiv 0
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+
+该等式看起来似乎远强于等式(\ref{uniqt1})。
+我们将在实验结果中指出，
+该等式总能称为不满足。
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.25\textwidth]{pc1}
+\end{center}
+\caption{从压缩的输出序列中恢复输入}
+  \label{fig_pc1}
+\end{figure}
+
+\subsection{推导流水线}\label{subsec_inferstage}
+
+基于上述的$p$ 和$r$,
+我们将上述公式(\ref{uniqt11})中的$F'_{PC}$ 推广到下述公式
+以便能够检查 $v$在第$j$步
+是否能够被$\vec{w}$ 在第$k$步唯一决定。
+现在$v$ 和$\vec{w}$ 可以使输入，输出和状态变量向量。
+
+\begin{multline}\label{uniqt2}
+% \begin{split}
+F''_{PC}(p,r,v,j,\vec{w},k):=\\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\vec{w}_{k}\equiv \vec{w'}_{k} \\
+\wedge& v_{j}\equiv 1 \wedge  v'_{j}\equiv 0
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+很显然,
+当$F''_{PC}(p,r,v,j,\vec{w},k)$ 不可满足时，
+$\vec{w}_k$ 能够唯一决定$v_j$.
+
+最后一集流水线$\vec{stg}^{n-1}$ 就是
+所有能够被
+在第$p+r$步的$\vec{o}$唯一决定的$s\in \vec{s}$。
+其定义为：
+
+\begin{multline}\label{stgn_1}
+ \vec{stg}^{n-1} :=
+\left\{
+ s\in \vec{s} ~|
+\begin{array}{cc}
+ F''_{PC}(p,r,
+ s,p+r,
+ \vec{o},p+r)\\
+ ~is~unsatisfiable
+\end{array}
+\right\}
+\end{multline}
+
+
+类似的,
+对于$0\le j\le n-2$,
+$\vec{stg}^j$ 在第$j-((n-2)-(p+r-1))$步
+可以被$\vec{stg}^{j+1}$ 在第$j-((n-2)-(p+r-1))+1$步唯一决定。
+我们可以定义$\vec{stg}^j$ 为：
+
+\begin{multline}\label{stgn_def}
+\begin{array}{ccc}
+S             & := & \vec{s}/\bigcup_{j<k\le n-2}\vec{stg}^{k}\\
+D             & := & (n-2)-(p+r-1)\\
+\end{array}
+\end{multline}
+
+\begin{multline}\label{stgn_j}
+\vec{stg}^{j} := \\
+ \left\{
+ s\in S ~|
+\begin{array}{cc}
+ F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)\\
+不可满足
+\end{array}
+\right\}
+\end{multline}
+
+基于等式(\ref{stgn_1}) 和(\ref{stgn_j}),
+所有的流水线几都能够被推导出来。
+
+\subsection{推导唯一决定输入的流水线级}\label{subsec_inferinput}
+
+根据图\ref{fig_pipeenc},
+ 定义于(\ref{stgn_j}) 的$\vec{stg}^0$是唯一决定$\vec{i}$的流水线级。
+
+然而在实际的解码器中，
+并不一定是这种情形。
+因此我们需要从$0$ 到$n-1$，
+搜索最小的$j$ 使得
+$\vec{i}$ 能够被$\vec{stg}^j$唯一决定。
+即,
+最小的能够使得$F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ 对所有$i\in \vec{i}$不可满足的$j$。
+其中$D$ 定义于等式(\ref{stgn_def})。
+
+\section{特征化输入向量和流水线级的布尔函数}\label{sec_char}
+\subsection{特征化最后一个流水线级的布尔函数}
+
+根据等式(\ref{stgn_1}),
+每个寄存器$s\in \vec{stg}^{n-1}$ 都能够被$\vec{o}$ 在第$p+r$步唯一决定。
+即,
+$F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 不可满足，且可以被划分为：
+
+\begin{multline}
+ \phi_A := \\
+ \left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge& s_{p+r}\equiv 1
+\end{array}
+\right\}
+\end{multline}
+
+\begin{multline}
+% \begin{split}
+\phi_B := \\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\vec{o}_{p+r}\equiv \vec{o'}_{p+r} \\
+\wedge& s'_{p+r}\equiv 0
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+由于$F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 等价于$\phi_A \wedge \phi_B$,
+so $\phi_A \wedge \phi_B$ is unsatisfiable.
+And the common variables of $\phi_A$ and $\phi_B$ is $\vec{o}_{p+r}$.
+
+According to \cite{InterpBoolFunction},
+a Craig interpolant $\phi_I$ of $\phi_A$ with respect to $\phi_B$ can be constructed,
+which refer only to $\vec{o}_{p+r}$,
+and covers all the valuation of $\vec{o}_{p+r}$ that can make $s_{p+r}\equiv 1$.
+At the same time,
+$\phi_I\wedge \phi_B$ is unsatisfiable,
+which means $\phi_I$ covers nothing that can make $s_{p+r}\equiv 0$.
+
+Thus,
+$\phi_I$ can be used as the decoder's Boolean function that recovers $s\in \vec{stg}^{n-1}$ from $\vec{o}$.
+
+\subsection{Characterizing the Boolean function of other pipeline stages}
+Similar to last subsection,
+we can partition the unsatisfiable formula $F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)$
+in Equation (\ref{stgn_j}) into the following two equations:
+
+\begin{multline}
+ \phi_A := \\
+ \left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge& s_{j-D}\equiv 1
+\end{array}
+\right\}
+\end{multline}
+
+\begin{multline}
+% \begin{split}
+\phi_B := \\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\vec{stg}^{j+1}_{j-D+1}\equiv \vec{stg'}^{j+1}_{j-D+1} \\
+\wedge& s'_{j-D}\equiv 0
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+Again,
+a Craig interpolant $\phi_I$ of $\phi_A$ with respect to $\phi_B$ can be constructed,
+and used as the decoder's Boolean function that recovers $s\in \vec{stg}^{j}$ from $\vec{stg}^{j+1}$.
+
+\subsection{Characterizing the Boolean function of the encoder's input variables}
+
+According to Subsection \ref{sec_pipeinfer}.\ref{subsec_inferinput},
+we have found the smallest $j$ that can make $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ unsatisfiable for all $i\in \vec{i}$,
+with $D$ defined in Equation (\ref{stgn_def}).
+$F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ is unsatisfiable and can be partitioned into :
+
+\begin{multline}
+% \begin{split}
+\phi_A:=\\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge& i_{p}\equiv 1
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+\begin{multline}
+% \begin{split}
+\phi_B:=\\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\vec{stg}^j_{j-D}\equiv \vec{stg'}^j_{j-D} \\
+\wedge& i'_{p}\equiv 0
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+Similar to last subsection,
+the Craig interpolant $\phi_I$ of $\phi_A$ with respect to $\phi_B$
+can be used as the decoder's Boolean function that recovers $i\in\vec{i}$ from $\vec{stg}^j$.
+
+
+
+
+
+
+
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.8\textwidth]{fig501}
@@ -15,7 +724,7 @@
 \label{fig:501}
 \end{figure}
 
-本章提出了PathZip方法，在每个数据包中引入较低的固定开销的情况下，实时地追踪网络中每个数据包的路由路径。PathZip的基本思想是将计算开销从编码端（即传感器节点）转移至解码端（基站），并通过挖掘传感器节点和基站共有的先验知识（如网络拓扑、几何信息）来最小化需要从节点传输至基站的信息量。PathZip提供了一种灵活的框架，主要包括路径压缩和路径重构（或路径恢复）两个组件，如图\ref{fig:501}所示。路径压缩由作为编码端的传感器节点完成，以一种实时和被动的方式对所转发的数据包进行标记。具体来讲，在数据包传输过程中，经过的每个节点调用一个定制的哈希函数执行一次简单的哈希计算。哈希函数以当前节点的ID及数据包中记录的来自前一个节点的哈希值作为输入，通过计算得到一个新的哈希值。该哈希值作为路由路径的标识被记录在数据包中。基站作为解码端，利用路径验证过程对路由路径进行重构，通过遍历连接源节点和基站的所有可能的路径，重新计算出匹配的哈希值来确定初始的路由路径。网络拓扑信息作为一种有效的约束，被利用来降低路径验证过程的开销。另外，作为对PathZip的增强，本章还提出了几何辅助的路径重构机制，称为PathZip-G。PathZip-G利用几何信息（即节点位置）来进一步地降低路径重构过程的计算复杂度。具体来讲，PathZip-G设计了一种虚拟路径机制，使用较低的存储开销来记录数据包通过的近似几何区域。借此，路径验证过程的输入空间受到近似几何区域的约束，计算复杂度显著地降低。
+本章提出了PathZip方法，在每个数据包中引入较低的固定开销的情况下，实时地追踪网络中每个数据包的路由路径。PathZip的基本思想是将计算开销从编码端（即传感器节点）转移至解码端（基站），并通过挖掘传感器节点和基站共有的先验知识（如网络拓扑、几何信息）来最小化需要从节点传输至基站的信息量。PathZip提供了一种灵活的框架，主要包括路径压缩和路径重构（或路径恢复）两个组件，如图\ref{fig:501} 所示。路径压缩由作为编码端的传感器节点完成，以一种实时和被动的方式对所转发的数据包进行标记。具体来讲，在数据包传输过程中，经过的每个节点调用一个定制的哈希函数执行一次简单的哈希计算。哈希函数以当前节点的ID及数据包中记录的来自前一个节点的哈希值作为输入，通过计算得到一个新的哈希值。该哈希值作为路由路径的标识被记录在数据包中。基站作为解码端，利用路径验证过程对路由路径进行重构，通过遍历连接源节点和基站的所有可能的路径，重新计算出匹配的哈希值来确定初始的路由路径。网络拓扑信息作为一种有效的约束，被利用来降低路径验证过程的开销。另外，作为对PathZip的增强，本章还提出了几何辅助的路径重构机制，称为PathZip-G。PathZip-G利用几何信息（即节点位置）来进一步地降低路径重构过程的计算复杂度。具体来讲，PathZip-G设计了一种虚拟路径机制，使用较低的存储开销来记录数据包通过的近似几何区域。借此，路径验证过程的输入空间受到近似几何区域的约束，计算复杂度显著地降低。
 
 就本文所知，本章是首次正式地提出并系统地研究无线传感器网络的路由路径记录问题。PathZip建立了一种解决路由路径记录问题的灵活的框架，设计了一种轻量级的定制的哈希函数，称为SPH（sensor path hash）。SPH致力于最小化每个数据包的传输和计算开销，其输出长度仅为8字节，计算复杂度是常用的哈希函数MD5的1/8。网络拓扑信息被充分地挖掘来降低基站在路径重构过程中的计算复杂度。本章还设计了基于分段线性近似（piece-wise linear approximation，PLA）的虚拟路径机算法PLA-VP，利用节点位置信息来进一步降低路径重构过程的计算复杂度。本章通过理论分析和大量的仿真实验验证了PathZip的有效性和性能，结果显示PathZip能够有效地记录无线传感器网络中每个数据包的精确路由路径，同时又保证了额外的计算和存储开销均比较合理。
 
@@ -44,7 +753,7 @@
 
 首先，我们通过利用网络的拓扑信息来开发路由路径之间的拓扑相关性，从而降低路径信息的数据量。网络中的一条$k$跳路径，可以被看作是包含$k+1$个节点的序列。这$k+1$个节点之间并不是毫无关联的，而是受到网络通讯图的约束，节点之间存在一定的拓扑关联性。因此，本章提出一种简单且有效的机制，开发路由路径之间的拓扑相关性。具体来讲，每个节点为自己的直接邻居建立局部的ID，则索引任意的一个邻居仅需最多$\log\Delta$位，其中$\Delta$表示最大节点度。当一个节点转发数据包时，就可以通过局部ID来记录下一跳节点，而无需记录节点的全局ID。因此，完整地记录一条$k$跳路径，仅需最多$k{\log\Delta}$位存储开销，远低于使用全局ID需要的$k{\log{N}}$位。
 
-然后，PathZip方法采用了一种基于哈希的技术，进一步将变化的存储开销转化为固定长度的压缩输出。哈希函数是一种确定性的过程，能够将一个任意长度的位串数据映射成一个固定长度的输出位串。另外，哈希函数的另外一个重要的优势是哈希值的计算过程非常简单。因此，本章巧妙地利用哈希函数的这些特性，将其应用在无线传感器网络的路由路径记录问题中，设计了基于哈希的路径压缩机制。下面介绍其基本原理和过程。源节点产生一个数据包后，调用哈希函数，以自身ID和一个预设的初始化串作为输入，计算得到一个哈希值，并将该哈希值保存在数据包中。随后，数据包每到达一个新的节点，调用同一个哈希函数，以自身ID和数据包中保存的上一跳节点计算得到的哈希值作为输入，计算得到一个新的哈希值。该哈希值作为一个动态变化的标签，实时地记录下数据包的路径信息，并随着数据包一起被发送至基站。至此，仍然有两个问题需要解决：第一，传统的通用哈希函数的计算尽管非常简单，但应用于无线传感器网络中每个数据包的逐跳传输中，其计算开销和存储开销仍然太高；第二，由于哈希函数的计算过程是不可逆的，要得到初始的路由路径，还需要设计一种机制从哈希值恢复出初始的路径信息。
+然后，PathZip方法采用了一种基于哈希的技术，进一步将变化的存储开销转化为固定长度的压缩输出。哈希函数是一种确定性的过程，能够将一个任意长度的位串数据映射成一个固定长度的输出位串。另外，哈希函数的另外一个重要的优势是哈希值的计算过程非常简单。因此，本章巧妙地利用哈希函数的这些特性，将其应用在无线传感器网络的路由路径记录问题中，设计了基于哈希的路径压缩机制。下面介绍其基本原理和过程。源节点产生一个数据包后，调用哈希函数，以自身ID和一个预设的初始化串作为输入，计算得到一个哈希值，并将该哈希值保存在数据包中。随后，数据包每到达一个新的节点，调用同一个哈希函数，以自身ID 和数据包中保存的上一跳节点计算得到的哈希值作为输入，计算得到一个新的哈希值。该哈希值作为一个动态变化的标签，实时地记录下数据包的路径信息，并随着数据包一起被发送至基站。至此，仍然有两个问题需要解决：第一，传统的通用哈希函数的计算尽管非常简单，但应用于无线传感器网络中每个数据包的逐跳传输中，其计算开销和存储开销仍然太高；第二，由于哈希函数的计算过程是不可逆的，要得到初始的路由路径，还需要设计一种机制从哈希值恢复出初始的路径信息。
 
 为了解决第一个问题，本章设计了一种定制的轻量级的哈希函数SPH。SPH的输出长度为64位，而计算开销仅为常用的哈希函数MD5的1/8，从而有效地降低了路径压缩过程的计算和存储开销。本节后面的内容将对SPH的设计进行具体的介绍。
 
@@ -62,13 +771,13 @@ PathZip方法主要具有三个方面的优势。第一，PathZip将大部分的
 \IF {当前节点是源节点}                                       \label{alg:501:01}
     \STATE 将$IV$切割成4个16位的块$A,B,C,D$；                \label{alg:501:02}
 \ELSE                                                        \label{alg:501:03}
-    \STATE 从数据包中读取上一跳节点的哈希值$H$；       \label{alg:501:04}
+    \STATE 从数据包中读取上一跳节点的哈希值$H$；             \label{alg:501:04}
     \STATE 将$H$切割成4个16位的块$A,B,C,D$；                 \label{alg:501:05}
 \ENDIF                                                       \label{alg:501:06}
 \STATE 将$M$切割成两个16位的块$M[0],M[1]$；                  \label{alg:501:07}
 \STATE $a:=A, b:=B, c:=C, d:=D$；                            \label{alg:501:08}
 \FOR {$i=1$ to 8}                                            \label{alg:501:09}
-    \IF {$\leq{i}\leq{2}$}                                   \label{alg:501:10}
+    \IF {$1\leq{i}\leq{2}$}                                  \label{alg:501:10}
         \STATE $f:={(b\land{c})}\lor{(\neg{b}\land{d})}$；   \label{alg:501:11}
     \ELSIF {$3\leq{i}\leq{4}$}                               \label{alg:501:12}
         \STATE $f:={(b\land{d})}\lor{(c\land{\neg{d}})}$；   \label{alg:501:13}
@@ -78,7 +787,7 @@ PathZip方法主要具有三个方面的优势。第一，PathZip将大部分的
         \STATE $f:=c\oplus{(b\lor{\neg{d}})}$；              \label{alg:501:17}
     \ENDIF                                                   \label{alg:501:18}
     \STATE $temp:=d,d:=c,c:=b$；                             \label{alg:501:19}
-    \STATE $b:=b+$leftrotate$((a+f+M[i\bmod2]+T[i],s[i])$；  \label{alg:501:20}
+    \STATE $b:=b+$leftrotate$(a+f+M[i\bmod2]+T[i],s[i])$；   \label{alg:501:20}
     \STATE $a:=temp$；                                       \label{alg:501:21}
 \ENDFOR                                                      \label{alg:501:22}
 \STATE $A:=A+a, B:=B+b, C:=C+c, D:=D+d$；                    \label{alg:501:23}
@@ -88,7 +797,7 @@ PathZip方法主要具有三个方面的优势。第一，PathZip将大部分的
 \subsection{SPH哈希函数设计}
 PathZip设计了一种轻量级、抗冲突的哈希函数SPH。首先以MD5为例分析为什么通用的哈希函数无法应用在路由路径记录问题中。MD5将一个任意长度的输入切割成一系列512位的块，经过计算得到一个128位的哈希值。虽然MD5已经被普遍认为是计算非常简单的，但仍无法直接应用于无线传感器网络的路由路径记录问题。原因主要包括三个方面：第一，PathZip以节点ID作为哈希函数的输入，若采用MD5则需要将节点ID转化成512位的输入块，这将引起不必要的存储和计算开销；第二，MD5是集中式计算方式，而PathZip需要一种分布式的方案，因为路由路径是随着数据包的传输实时地产生的；第三，路径压缩问题的输入空间相对于MD5无限大的输入空间是非常有限的，因此无需采用MD5中128位的较长输出。较短的输出足以提供充分的抗冲突性，同时又可以节约数据包的存储空间。基于以上分析，PathZip设计了SPH哈希函数，采用更短的输入和输出，且具有更低的计算复杂度。具体来讲，SPH采用32位输入（由每个节点的ID转换得到），并将任意长度的路径信息映射为64位的哈希值。
 
-SPH的具体执行流程如算法\ref{alg:501}所示，主要分为两个过程：设计压缩函数，利用压缩函数构建哈希函数。压缩函数以两个长度分别为64位和32位的二进制串作为输入，其中64位串来自一个预设的初始化向量$IV$（或数据包中储存的上一跳节点计算的哈希值），32位串由当前节点的ID转换得到。SPH将64位输入串切割成4个16 位的块$A,B,C,D$（第\ref{alg:501:01}-\ref{alg:501:06}行），将32位输入块$M$切割成2个16位的块$M[0],M[1]$（第\ref{alg:501:07}行）。输入块的处理包括四轮，每轮包括两次相似的操作。每一轮调用一个不同的非线性函数$f$（第\ref{alg:501:10}-\ref{alg:501:18} 行），结合$M[0]$和$M[1]$进行计算（第\ref{alg:501:19}-\ref{alg:501:21}行）。最后，算法得到一个64位串作为哈希计算的结果（第\ref{alg:501:24}行）。因此，SPH对每次输入执行8次运算，而MD5需要执行64次计算。
+SPH的具体执行流程如算法\ref{alg:501}所示，主要分为两个过程：设计压缩函数，利用压缩函数构建哈希函数。压缩函数以两个长度分别为64位和32位的二进制串作为输入，其中64位串来自一个预设的初始化向量$IV$（或数据包中储存的上一跳节点计算的哈希值），32位串由当前节点的ID转换得到。SPH将64位输入串切割成4个16 位的块$A,B,C,D$（第\ref{alg:501:01}-\ref{alg:501:06}行），将32位输入块$M$切割成2个16 位的块$M[0],M[1]$（第\ref{alg:501:07}行）。输入块的处理包括四轮，每轮包括两次相似的操作。每一轮调用一个不同的非线性函数$f$（第\ref{alg:501:10}-\ref{alg:501:18} 行），结合$M[0]$和$M[1]$进行计算（第\ref{alg:501:19}-\ref{alg:501:21}行）。最后，算法得到一个64位串作为哈希计算的结果（第\ref{alg:501:24}行）。因此，SPH对每次输入执行8次运算，而MD5需要执行64次计算。
 
 接着，我们采用Merkle-Damgard结构\upcite{damgard}，利用上述的压缩函数构造出SPH哈希函数，如图\ref{fig:502}所示。每个节点调用压缩函数，以当前节点的ID 和前一个节点的输出作为输入，计算得到新的值，并保存在数据包中。在数据包的传输过程中，该值被不断地更新，并随着数据包被发送至基站。在数据包的整个传输过程，迭代的计算过程就构成了SPH哈希函数，而最终的计算结果就代表了路径的哈希值。
 \begin{figure}[h]
@@ -130,7 +839,7 @@ PLA问题在过去的几十年中得到深入地研究，并被广泛应用于�
 给定一条路径$P$，误差测量函数$err()$，以及误差上限值$\varepsilon$，利用PLA算法找出点集$P^{'}$，使得$err(P,P^{'})\leq\varepsilon$，则$P^{'}$即为路径$P$的虚拟路径。当$P^{'}$中点的数量$|P^{'}|$达到最小化时，$P^{'}$为最优的虚拟路径。比值$|P|/|P^{'}|$为虚拟路径的压缩率。
 \end{definition}
 \subsection{PLA虚拟路径算法}
-PathZip-G利用虚拟路径机制来简化路径恢复过程。但为了储存虚拟路径信息，PathZip-G必须在数据包中引入额外的存储开销。实现额外存储开销的最小化就成为虚拟路径算法设计的主要目标。因此，在进行基于PLA的虚拟路径算法设计时，要尽量减少虚拟路径中节点的数量。另外，由于路由路径是随着数据包的传输而实时和增量式地产生的，因此必须设计一种实时的在线算法。
+PathZip-G利用虚拟路径机制来简化路径恢复过程。但为了储存虚拟路径信息，PathZip-G必须在数据包中引入额外的存储开销。实现额外存储开销的最小化就成为虚拟路径算法设计的主要目标。因此，在进行基于PLA 的虚拟路径算法设计时，要尽量减少虚拟路径中节点的数量。另外，由于路由路径是随着数据包的传输而实时和增量式地产生的，因此必须设计一种实时的在线算法。
 \begin{figure}[t]
   \centering
   \subfloat[虚拟路径由真实节点构成]{
@@ -282,7 +991,7 @@ PathZip方法的计算开销主要包括两个部分，第一部分来自于节�
 \subsubsection{计算复杂度}
 PathZip-G的主要目的是进一步降低PathZip的计算复杂度。下面对PathZip-G的计算复杂度进行评估，并与PathZip进行比较。实验结果如图\ref{fig:508}所示。
 
-首先分析PathZip-G在不同的误差上限设置下的计算复杂度。仿真网络部署在圆形区域内，包含2500个节点，平均节点度为5，基站位于部署区域的中心位置，网络的直径（定义为网络中所有节点到基站的最短距离的最大值）为50跳。我们找出所有的到基站最短距离为6的节点，计算这些节点到基站的长度为10的所有路径的数量，并计算其平均值。图\ref{fig:508a}给出了不同的误差上限设置下PathZip-G的计算复杂度，其中$x$轴表示不同的误差上限，单位为节点的通讯半径，$y$轴表示长度为10 的所有路径的数量的平均值。实验结果显示，误差上限越小PathZip-G的计算复杂度越低。这是因为采用更小的误差上限使得生成的近似几何区域更狭窄，因此候选路径的数量越少。另外，为了直观地将PathZip-G与PathZip进行比较，图中也给出了PathZip的结果。可见，PathZip-G能够有效地降低PathZip方法的计算复杂度。具体来讲，在本组实验中PathZip的计算复杂度为4440，而在误差上限设置为节点通讯半径的1/2时，PathZip-G的计算复杂度仅为44.8。
+首先分析PathZip-G在不同的误差上限设置下的计算复杂度。仿真网络部署在圆形区域内，包含2500个节点，平均节点度为5，基站位于部署区域的中心位置，网络的直径（定义为网络中所有节点到基站的最短距离的最大值）为50跳。我们找出所有的到基站最短距离为6的节点，计算这些节点到基站的长度为10的所有路径的数量，并计算其平均值。图\ref{fig:508a}给出了不同的误差上限设置下PathZip-G的计算复杂度，其中$x$ 轴表示不同的误差上限，单位为节点的通讯半径，$y$轴表示长度为10 的所有路径的数量的平均值。实验结果显示，误差上限越小PathZip-G的计算复杂度越低。这是因为采用更小的误差上限使得生成的近似几何区域更狭窄，因此候选路径的数量越少。另外，为了直观地将PathZip-G与PathZip进行比较，图中也给出了PathZip的结果。可见，PathZip-G能够有效地降低PathZip方法的计算复杂度。具体来讲，在本组实验中PathZip 的计算复杂度为4440，而在误差上限设置为节点通讯半径的1/2时，PathZip-G的计算复杂度仅为44.8。
 
 下面评估节点到基站的距离对PathZip-G的计算复杂度的影响。实验网络中包含400个节点，部署在正方形区域中，平均节点度为4，基站位于部署区域的中心位置。我们从网络中找出到基站的最短距离为指定值的所有节点，计算它们到基站的所有10跳路径的数量，并计算平均值。实验结果如图\ref{fig:508b}所示，其中$x$轴表示节点到基站的最短距离，$y$轴表示所有10跳路径的数量的平均值。实验结果显示，PathZip-G的计算复杂度首先随着节点到基站的距离的增加而增加，当最短距离增加至一定的值后，计算复杂度反而随着节点到基站的距离的增加而降低。这一现象与节点到基站的距离对PathZip的计算复杂度的影响是一致的，其原因也是一致的，这里不再赘述。另外，图\ref{fig:508b}所示的结果再次验证了PathZip-G对PathZip的改进作用，同时也验证了误差上限对PathZip-G的计算复杂度的影响。
 \begin{figure}[t]
@@ -339,7 +1048,7 @@ PathZip-G的主要目的是进一步降低PathZip的计算复杂度。下面对P
 \end{figure}
 下面评估PathZip-G在不同规模网络中的压缩率。该项性能决定了方法在大规模网络中的可扩展性。
 
-首先，我们构造了不同规模的网络，其节点数量分别是100、400、900、1600、2500、3600、4900、6400、8100、10000，均部署在正方形区域中，基站位于部署区域的中心位置。对于每个网络，我们随机地选择1000个节点对，找出它们之间的最短路径，分别计算对应的虚拟路径的压缩率并计算平均值。在该组实验中，误差上限始终设置为节点的通讯半径。实验结果如图\ref{fig:510b}所示，其中$x$轴表示网络的半径，$y$轴表示不同网络中得到的平均压缩率。可见，PathZip-G的压缩率随着网络规模的增加而显著地提高。下面分析出现这一结果的原因。首先，虚拟路径中始终包含源节点和基站。在规模较小的网络中，实际的路由路径普遍比较短，因此虚拟路径中固有的这两个节点限制了虚拟路径的压缩率。假设网络的直径为10，则由于虚拟路径最短为2，因此压缩率不可能超过5。而在大规模的网络中，由于真实路径的平均长度比较大，这一约束作用将会减弱，而压缩率则相应地提高。因此，PathZip-G在大规模网络中具有良好的可扩展性。
+首先，我们构造了不同规模的网络，其节点数量分别是100、400、900、1600、2500、3600、4900、6400、8100、10000，均部署在正方形区域中，基站位于部署区域的中心位置。对于每个网络，我们随机地选择1000 个节点对，找出它们之间的最短路径，分别计算对应的虚拟路径的压缩率并计算平均值。在该组实验中，误差上限始终设置为节点的通讯半径。实验结果如图\ref{fig:510b}所示，其中$x$轴表示网络的半径，$y$轴表示不同网络中得到的平均压缩率。可见，PathZip-G的压缩率随着网络规模的增加而显著地提高。下面分析出现这一结果的原因。首先，虚拟路径中始终包含源节点和基站。在规模较小的网络中，实际的路由路径普遍比较短，因此虚拟路径中固有的这两个节点限制了虚拟路径的压缩率。假设网络的直径为10，则由于虚拟路径最短为2，因此压缩率不可能超过5。而在大规模的网络中，由于真实路径的平均长度比较大，这一约束作用将会减弱，而压缩率则相应地提高。因此，PathZip-G在大规模网络中具有良好的可扩展性。
 
 3. 网络密度的影响
 
