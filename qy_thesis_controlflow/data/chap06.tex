@@ -88,21 +88,17 @@ $d$是无意义的，可以无需考虑。
 基于上述讨论，
 本文提出了首个能够处理流控机制的对偶综合算法。
 该算法分为三步：
-\textbf{首先},
-它使用经典的对偶综合算法\upcite{ShenTCAD11}
-以识别那些能够被唯一决定的输入变量，
-并称他们为流控变量$\vec{f}$。
-而其他不能被唯一决定的变量称为数据变量$\vec{d}$。
-\textbf{第二}，该算法推导一个充分必要谓词$valid(\vec{f})$使得$\vec{d}$能够被
-输出变量$\vec{o}$的一个有限长度序列唯一决定。
-\textbf{第三},
-对于每一个流控变量$f\in\vec{f}$，
-该算法使用Craig插值算法\upcite{interp_McMillan}特征化其解码器函数。
-同时，
-对于数据变量$\vec{d}$，
-他们的值只有在$valid(\vec{f}) \equiv 1$时才有意义。
-因此每个$d\in\vec{d}$的解码器函数可以类似的使用Craig插值算法得到，
-唯一的不同在于必须首先应用谓词$valid(\vec{f}) \equiv 1$。
+First,
+it identifies all input variables that can be uniquely determined,
+and takes them as flow control variables.
+Second,
+it infers a predicate over these flow control variables
+that enables all other input variables to be uniquely determined.
+Third,
+it characterizes the decoder's Boolean function with Craig interpolant.
+% For other input variables,
+% their decoder's Boolean function can also be characterized similarly but the inferred predicate must be enforced first.
+
 
 该算法的第二步类似于\upcite{ShenTCAD12}，
 因为他们都试图得到使得$\vec{d}$或者$\vec{i}$被唯一决定的谓词。

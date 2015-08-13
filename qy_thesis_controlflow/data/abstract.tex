@@ -1,35 +1,192 @@
 % !Mode:: "Tex:UTF-8"
 \begin{cabstract}
-拓扑压缩是无线传感器网络研究中的重要问题。拓扑结构是信息的采集、处理和传输等关键网络功能和协议的基本前提和重要保障。拓扑压缩技术致力于从全局或局部的网络拓扑中提取出具有某种特性的拓扑结构，并进一步利用其开发高效的算法和协议。现有的拓扑结构研究大部分依赖于较强的假设条件，如精确的节点位置信息、均匀密集部署的网络等，在实际网络中这些假设条件很难满足，因此限制了方法的实际可用性。
+在通讯和多媒体芯片设计中，
+一个最为困难且容易出错的工作就是设计该协议的的编码器和解码器。
+其中编码器将输入变量$\vec{i}$映射到输出变量$\vec{o}$。
+而解码器则从$\vec{o}$中恢复$\vec{i}$。
+对偶综合算法
+\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+通过自动生成特定编码器的解码器以降低该工作的复杂度并提高结果的可靠性。
 
-不依赖位置信息的拓扑技术放松了传统拓扑结构研究方法对位置信息的严格依赖。如何提高方法在节点位置信息不可用或部分可用、不精确情况下的可用性，成为近年来拓扑结构的热点研究方向。但是在缺乏精确位置信息的情况下，通常的几何化方法无法使用。因此，如何利用低质量的网络连通性信息，尽量抽取出能够逼近网络部署区域几何特征的高效拓扑结构，是非常具有挑战性的研究课题。本文以放松系统的假设条件、提高方法的可用性和效能为出发点，以抽取低几何失真率的拓扑结构作为贯穿始终的优化目标，系统地研究了拓扑压缩技术中的一些重要问题。本文的主要研究内容及创新点包括以下几方面：
+而另一方面，
+现代复杂通讯协议的编码器中，广泛采用了流控\cite{flowcontrol}和流水线等复杂内部结构，
+以提升编码器的性能和对复杂应用环境的适应性。
+而目前在对偶综合方面的所有研究工作\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+均基于黑盒模型，
+从而无法发挥上述内部结构在性能和适应性方面的优势。
 
-第一，研究了不依赖位置信息的拓扑骨干提取问题。拓扑骨干提取是拓扑压缩的重要问题。目前已有的不依赖位置信息的拓扑骨干提取算法往往依赖于特殊的网络假设，或无法提取出确定性的、严格符合实际网络形状的拓扑骨干。本文针对现有方法的局限性，提出了一种仅利用局部连通性信息，具有广泛鲁棒性的拓扑骨干提取算法。算法利用了仅依赖局部连通性信息的基于MDS的边界识别算法，提出了骨干带网络构建方法以及高效的图变换工具HPT，并设计了一种灵活有效的骨干叶节点判定方法。算法能够适用于各种不同形状的网络，提取出具有良好连通性和形状的拓扑骨干，且对多种关键的网络参数具有良好的鲁棒性。
+为了克服上述问题，
+本文基于白盒模型，
+探索了如何在对偶综合中发掘编码器的内部结构信息，
+如流控和流水线结构，
+以自动产生支持相应结构的解码器。
+本文的主要研究内容及创新点包括以下几方面：
 
-第二，研究了不依赖位置信息的虫洞拓扑检测问题。虫洞攻击是无线自组织与传感器网络中一种严重的攻击。现有的大部分虫洞检测方法依赖于特殊的硬件设备或理想的网络假设，从而在很大程度上限制了这些方法的可用性。而现有的基于网络连通性的检测方法都是基于在离散域捕获局部的虫洞症状，或者在连续域分析全局的虫洞特征。针对现有方法的局限性，本文深入挖掘虫洞攻击对全局的拓扑结构造成的本质影响，发现一种虫洞攻击的新症状，即虫洞攻击对网络平面化造成的影响，并提出了一种仅利用局部连通性信息的虫洞检测方法，称为WormPlanar。WormPlanar首次实现了直接从离散域捕获虫洞造成的全局拓扑症状。该方法能够准确地检测和定位不同网络条件下的虫洞攻击，包括之前基于连通性的检测方法均无法处理的多虫洞攻击。
+第一，研究了基于余因子(Cofactoring)和Craig插值的迭代特征化算法。
+在发掘编码器内部结构和自动产生解码器的过程中，
+一个必须而且对性能要求非常苛刻的步骤，
+是特征化满足特定命题逻辑关系$R$的布尔函数$f$。
+传统的算法包括基于SAT或BDD的完全解遍历和和量词削减。
+然而这些算法通常受到解空间不规则的困扰，
+导致性能低下。
+为此，
+我们创造性的提出了一个迭代的特征化算法框架。
+在每一次迭代中，
+为每一个尚未被遍历的解$A$，
+利用其对应的余因子化简$R$以满足产生Craig插值要求。
+而该插值是$A$的一个充分扩展。
+该迭代过程是停机的，
+且其性能比传统的完全解遍历算法有巨大的提升。
 
-第三，研究了路由路径记录问题。路由路径记录是无线传感器网络中重要的功能，对于细粒度的网络状态诊断和管理具有重要的作用。现有的路径记录方法均无法在大规模网络中实现对网络中每个数据包完整路径信息的追踪。本文首次正式地提出并系统地研究无线传感器网络的路由路径记录问题，提出了一种轻量级的、在实际的大规模网络中可用的路由路径压缩和恢复方法，称为PathZip。本文设计了基于哈希的路径压缩和恢复机制，将大部分的计算和存储开销从传感器节点转移至基站。另外，PathZip利用了分别基于拓扑和基于几何的技术，有效地降低了路径恢复的开销。PathZip能够实时地记录每个数据包的完整传输路径，且计算复杂度和存储开销均低于相关的数据压缩算法。
+第二，研究了针对流控机制的对偶综合算法。
+传统对偶综合算法的\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}的一个基本假设是，
+编码器的输入变量$\vec{i}$总能够被输出变量$\vec{o}$的一个有限长度序列唯一决定。
+基于该假设方可构造满足Craig插值的不可满足公式。
+然而，
+许多高速通讯系统的编码器所带有流控机制\upcite{flowcontrol}，
+直接违反了上述假设。
+该机制将$\vec{i}$划分为有待编码的数据向量$\vec{d}$和用以表达$\vec{d}$有效性的流控向量$\vec{f}$，
+并在$\vec{f}$上定义一个有效性谓词$valid(\vec{f})$。
+只有在$valid(\vec{f})\eq true$的情形下，
+$\vec{d}$才能够被$\vec{o}$唯一决定。
+为此，
+我们创造性的提出了能够处理流控机制的对偶综合算法：
+\textbf{首先},
+它使用经典的对偶综合算法\upcite{ShenTCAD11}
+以识别那些能够被唯一决定的输入变量，
+并称他们为流控变量$\vec{f}$。
+而其他不能被唯一决定的变量称为数据变量$\vec{d}$。
+\textbf{第二}，该算法推导一个充分必要谓词$valid(\vec{f})$使得$\vec{d}$能够被
+输出变量$\vec{o}$的一个有限长度序列唯一决定。
+\textbf{第三},
+对于每一个流控变量$f\in\vec{f}$，
+该算法使用Craig插值算法\upcite{interp_McMillan}特征化其解码器函数。
+同时，
+对于数据变量$\vec{d}$，
+他们的值只有在$valid(\vec{f}) \equiv 1$时才有意义。
+因此每个$d\in\vec{d}$的解码器函数可以类似的使用Craig插值算法得到，
+唯一的不同在于必须首先应用谓词$valid(\vec{f}) \equiv 1$。
 
-第四，研究了不精确位置信息下的层次式贪婪地理路由问题。贪婪地理路由由于其简单高效性在无线传感器网络中得到了广泛的研究和应用，但其固有的局部最小问题使得纯粹的贪婪地理路由无法提供传输保证。为了克服局部最小问题，研究者提出了大量的解决方案。这些方法具有各自的优势和适用范围，在一定的假设条件下有效地克服了局部最小问题。本文结合已有的各类方法的优势，提出了一种细粒度的层次式贪婪地理路由方法，称为FLYER。FLYER不依赖精确的位置信息或全局的状态信息，在节点位置误差率不超过一定上限值时具有传输保证。FLYER方法以完全分布式的方法运行，计算和存储开销均非常低；在贪婪路由成功率、路径长度、负载均衡性等各项性能指标上，FLYER均优于之前的设计。
 
-综上所述，本文对无线传感器网络拓扑压缩的若干关键问题进行了深入的研究，提出了具有高可用性、低几何失真率的解决方案，并通过理论分析和大量的仿真实验验证了所提出算法的有效性和性能，对于促进无线传感器网络的实用化及其在物联网技术中的应用具有一定的理论意义和应用价值。
+
+第三，研究了针对流水线结构的对偶综合算法。
+现代集成电路中的编码器，
+为了提升工作频率，
+通常包含多个流水线级，
+以将关键的数据路径划分为多级。
+而传统的对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+完全无视这种流水线结构，
+从而导致生成的解码器无法保持和编码器匹配的频率和性能。
+为此，
+我们创造性的提出了能够产生流水解码器的对偶综合算法：
+首先将传统对偶综合算法推广到非输入输出情形，
+以找到编码器中每一个流水线级$\vec{stg}^j$中的寄存器集合；
+然后使用迭代Craig插值算法特征化每一个流水线级$\vec{stg}^j$的布尔函数，
+以从下一个流水线级$\vec{stg}^{j+1}$ 或输出$\vec{o}$之中恢复$\vec{stg}^j$。
+最终特征化$\vec{i}$的布尔函数以从
+第一个流水线级$\vec{stg}^0$中恢复$\vec{i}$。
+
+第四，结合上述研究成果，研究了能够同时处理流控和流水线结构的对偶综合算法。
+该算法首先使用秦et al. \cite{QinTODAES15}的算法来寻找$\vec{f}$ 并推导$valid(\vec{f})$。
+然后分别通过强制和不强制$valid(\vec{f})$，
+已从所有寄存器集合中找到每一个寄存器级$\vec{stg}^j$的$\vec{d}^j$ 和$\vec{f}^j$。
+最后通过Jiang et al. \cite{InterpBoolFunction}的算法特征化$\vec{stg}^j$ 和$\vec{i}$的布尔函数。
+
+综上所述，
+本文对基于白盒模型的对偶综合算法中若干关键问题进行了深入的研究，
+提出了针对流控和流水线结构的解决方案。
+理论分析和实验结果验证了所提出算法的有效性和性能，
+对于进一步促进对偶综合算法的发展和应用具有一定的理论意义和应用价值。
 \end{cabstract}
-\ckeywords{无线传感器网络；拓扑压缩；不依赖位置；连通性；拓扑骨干；虫洞攻击；路径记录；贪婪地理路由}
+\ckeywords{对偶综合；流控；流水线；余因子；Craig插值}
 
 \begin{eabstract}
-Topology compression is an important issue in wireless sensor networks (WSNs). Topology provides necessary infrastructures for many basic network operations, e.g. data gathering, in-network processing and communication. Topology compression techniques focus on extracting specific structures from network topology, which can be further utilized to improve efficiency of various protocols. Most existing studies on topology issues depend on rigorous network assumptions, e.g. accurate location information of nodes, uniformly and densely deployed networks, etc. Such assumptions significantly limit the applicability of those methods.
+One of the most difficult jobs in designing communication
+and multimedia chips is to design and verify complex encoder and decoder pairs.
+The encoder maps its input variables $\vec{i}$ to its output variables $\vec{o}$,
+while the decoder recovers $\vec{i}$ from $\vec{o}$.
+Complementary synthesis
+\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+eases this job by
+automatically generating a decoder from an encoder,
+with the assumption that $\vec{i}$ can always be
+uniquely determined by a bounded sequence of $\vec{o}$.
 
-Recently, location-free methods are proposed to relax the limitations of location-based methods and receive great attentions. When location information is missing, uncertain or only partially available, we have to exploit connectivity information and face with great challenges to construct high-quality topological structures that can maximally preserving the geometrical features of global network topology. Aiming at relaxing the limitations of existing work and providing better applicability and robustness, this dissertation systematically investigates several important topology compression issues, and manages to extract network structures with high geometrical fidelity. The main contents and contributions of this thesis are as follows.
+On the other hand,
+The encoders of modern communication protocols
+widely employ flow control\cite{flowcontrol} and pipeline mechanism to boost performance and their ability of adopting to complex application environment.
+But state-of-the-art research works on complementary synthesis\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+are all based on black box model,
+so can not take full advantage of these mechanisms.
 
-First, location-free skeleton extraction problem is investigated, which is crucial and critical for many fundamental network functions. Most existing algorithms either depend on rigorous assumptions, or cannot guarantee to extract deterministic skeleton that exactly preserve the geometrical shape of the network field. We relax the limitations of previous methods, and propose a robust skeleton extraction algorithm by exploiting only local connectivity. Our algorithm is built upon several novel techniques, including an efficient graph theoretical tool called HPT, a method to construct skeleton bands, a MDS-based boundary recognition algorithm, and a flexible mechanism to detect leaf skeleton nodes. We conduct extensive simulations and verify that our algorithm is able to extract well-connected skeleton from networks with various shapes, and is robust to some critical network parameters.
+To overcome these problems,
+based on white box model,
+this paper propose new complementary synthesis algorithms to handle flow control and pipeline mechanism:
 
-Second, we further investigate the abnormal topological features caused by wormhole attack that is a severe threat to WSNs. Most existing wormhole countermeasures heavily depend on special hardware devices or ideal network assumptions, which significantly limit their applicability. Recently, some connectivity-based solutions are proposed. These solutions either capture local wormhole symptoms directly in discrete domain, or analyze global wormhole features in continuous domain. In this thesis, we exploit the essential topological changes caused by wormholes, and make the first successful attempt to propose a wormhole detection algorithm that is able to capture global wormhole symptoms directly in discrete domain. This design, called WormPlanar, novelly leverages network planarization mechanism, and is able to accurately identify wormholes under various network conditions, including multiple wormholes that cannot be handled by previous connectivity-based methods.
+First, 
+this thesis proposes an iterative characterizing algorithm based on cofactoring and Craig interpolant.
+In inferring the encoder's internal structure and generating its decoder,
+one of the most critical algorithm is to characterize a Boolean function $f$
+that covers a Boolean relation $R$.
+State-of-the-art algorithms are satisfying assignment enumeration and quantifier elimination with SAT or BDD.
+But these algorithms are very inefficient because of irregular solution space.
+Thus we propose an iterative characterizing algorithm.
+In each iteration of this algorithm,
+for each satisfying assignment not yet enumerated $A$,
+$R$ is simplified with $A$'s cofactor,
+and then is used to generated a Craig interpolant,
+which can be used as an enlarged cube of $A$.
+This algorithm is a halting one and is much faster than naive satisfying assignment enumeration.
 
-Third, route path tracing is a crucial issue that is of great benefit to fine-grained network diagnosis and management. However, it is difficult, if not impossible, to integrate into each packet with its full path information in large-scale resource-constrained WSNs. All previous work fails to fully record the path information of every packet. To our best knowledge, this thesis is the first work that formally proposes and systematically investigates route path tracing problem in WSNs. We propose a lightweight path tracing scheme, called PathZip, which shifts major cost from sensor nodes to sink by leveraging a novel hash-based path compression and reconstruction mechanism. Furthermore, topology-aware and geometry-assistant techniques are adopted to exploit different network knowledge and to reduce the complexity of proposed algorithm. PathZip is able to record the full packet path in real time, and outperforms the state-of-the-art methods by inducing less computation and storage overhead.
+Second,
+this thesis proposes a novel complementary synthesis algorithm to handle flow control mechanism.
+One assumption of State-of-the-art complementary algorithms\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13} is that,
+$\vec{i}$can always be uniquely determined by a bounded sequence of $\vec{o}$.
+Only in this way the unsatisfiable formula for computing Craig interpolant can be constructed.
+But the flow control mechanism \upcite{flowcontrol} in many modern encoders fail this assumption.
+This mechanism partition $\vec{i}$ into the data vector $\vec{d}$ to be encoded and the flow control vector $\vec{f}$ used to express the validness of $\vec{d}$.
+And a validness predicate $valid(\vec{f})$ is defined on $\vec{f}$.
+$\vec{d}$ can be uniquely determined by $\vec{o}$ only when $valid(\vec{f})\eq true$.
+Thus this thesis propose a novel complementary synthesis algorithm to handle flow control mechanism：
+First,
+it identifies all input variables that can be uniquely determined,
+and takes them as flow control variables.
+Second,
+it infers a predicate over these flow control variables
+that enables all other input variables to be uniquely determined.
+Third,
+it characterizes the decoder's Boolean function with Craig interpolant.
 
-Finally, we investigate greedy geographic routing under uncertain locations. Greedy geographic routing is widely studied due to its simplicity. However, greedy geographic routing alone cannot guarantee delivery of messages due to suffering the local minimum problem. A number of effective solutions have been proposed to address this issue under specific network assumptions. In this thesis, we combine advantages of solutions in various categories, and present an efficient routing scheme, called FLYER, which is based on a macroscopic variant of geographic greedy routing and a planarization of the macroscopic landmark graph. FLYER does not depend on exact node locations or global state information, and is able to guarantee the delivery of messages when an upper bound on the location error is available. FLYER outperforms previous methods by providing higher success rate of greedy forwarding, shorter path length and better load-balancing property.
 
-In summary, this thesis proposes solutions to several important topology compression issues. Theoretical analysis and extensive simulations demonstrate the great applicability and performance of proposed algorithms. Thus, the design of this thesis is of great theoretical significance, hopefully advances the development of location-free topology compression methods, and can be potentially applied to practical WSNs and internet of things.
+
+Third,
+this thesis proposes a novel complementary synthesis algorithm to handle pipeline structure.
+Modern encoders often include multiple pipeline stages that cut the critical datapath into multiple segments
+to boost frequency and thus performance,
+State-of-the-art complementary algorithms \upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+all ignore such structure,
+which make the generated decoder can not keep up with the encoder on frequency and performance.
+Thus this thesis proposes a novel algorithm to first find out the encoder's pipeline registers in each pipeline stage,
+and then characterize all Boolean functions that recover each of these pipeline registers
+from the registers in the next pipeline stage,
+and finally characterize the Boolean functions that recover the encoder's input variables
+from the first pipeline stage.
+
+
+Finally,
+with all above researches,
+this thesis proposes a final algorithm to handle flow control mechanism and pipeline structure at the same time.
+First,
+it infers the flow control predicate on inputs with Qin et al. \cite{QinTODAES15}'s algorithm.
+Second,
+it finds out the pipeline stages in the encoder by enforcing the inferred flow control predicate.
+% Third,
+% it infers the flow control predicate for each pipeline stages.
+Finally,
+the decoder's Boolean functions that recover each pipeline stage and input are characterized with Jiang et al. \cite{InterpBoolFunction}'s algorithm based on Craig interpolant.
+
+This thesis proposes several algorithm to exploit the encoder's internal structure in complementary synthesis.
+Theoretical analysis and experimental result indicate that these algorithm are useful and efficient.
 \end{eabstract}
-\ekeywords{Wireless Sensor Network; Topology Compression; Location-Free; Connectivity; Skeleton Extraction; Wormhole Detection; Path Tracing; Greedy Geographic Routing}
+\ekeywords{Complementary synthesis; Flow control mechanism; Pipeline structure; Cofactoring ; Craig interpolant}
 

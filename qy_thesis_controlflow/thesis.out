@@ -1,20 +1,12 @@
-\BOOKMARK [0][-]{chapter.1}{面向流水线的对偶综合}{}% 1
-\BOOKMARK [1][-]{section.1.1}{引言}{chapter.1}% 2
-\BOOKMARK [1][-]{section.1.2}{背景知识}{chapter.1}% 3
-\BOOKMARK [2][-]{subsection.1.2.1}{命题逻辑可满足}{section.1.2}% 4
-\BOOKMARK [2][-]{subsection.1.2.2}{游有限状态机}{section.1.2}% 5
-\BOOKMARK [2][-]{subsection.1.2.3}{用于确定一个输入变量能否被输出向量的有限序列唯一决定的停机算法}{section.1.2}% 6
-\BOOKMARK [1][-]{section.1.3}{推导编码器的流水线结构}{chapter.1}% 7
-\BOOKMARK [2][-]{subsection.1.3.1}{流水线的一般性模型}{section.1.3}% 8
-\BOOKMARK [2][-]{subsection.1.3.2}{推导p, l 和r}{section.1.3}% 9
-\BOOKMARK [2][-]{subsection.1.3.3}{压缩r 和l}{section.1.3}% 10
-\BOOKMARK [2][-]{subsection.1.3.4}{推导流水线}{section.1.3}% 11
-\BOOKMARK [2][-]{subsection.1.3.5}{推导唯一决定输入的流水线级}{section.1.3}% 12
-\BOOKMARK [1][-]{section.1.4}{特征化输入向量和流水线级的布尔函数}{chapter.1}% 13
-\BOOKMARK [2][-]{subsection.1.4.1}{特征化最后一个流水线级的布尔函数}{section.1.4}% 14
-\BOOKMARK [2][-]{subsection.1.4.2}{特征化其他流水线级的布尔函数}{section.1.4}% 15
-\BOOKMARK [2][-]{subsection.1.4.3}{特征化输入变量的布尔函数}{section.1.4}% 16
-\BOOKMARK [1][-]{section.1.5}{实验结果}{chapter.1}% 17
-\BOOKMARK [1][-]{section.1.6}{相关工作}{chapter.1}% 18
-\BOOKMARK [1][-]{section.1.7}{结论}{chapter.1}% 19
-\BOOKMARK [0][-]{section*.10}{参考文献}{}% 20
+\BOOKMARK [0][-]{section*.4}{摘 要}{}% 1
+\BOOKMARK [0][-]{section*.5}{ABSTRACT}{}% 2
+\BOOKMARK [0][-]{chapter.1}{绪论}{}% 3
+\BOOKMARK [1][-]{section.1.1}{无线传感器网络研究概述}{chapter.1}% 4
+\BOOKMARK [2][-]{subsection.1.1.1}{基本概念和特点}{section.1.1}% 5
+\BOOKMARK [2][-]{subsection.1.1.2}{研究现状}{section.1.1}% 6
+\BOOKMARK [1][-]{section.1.2}{无线传感器网络拓扑压缩}{chapter.1}% 7
+\BOOKMARK [2][-]{subsection.1.2.1}{研究意义}{section.1.2}% 8
+\BOOKMARK [2][-]{subsection.1.2.2}{研究挑战}{section.1.2}% 9
+\BOOKMARK [1][-]{section.1.3}{研究内容与创新点}{chapter.1}% 10
+\BOOKMARK [1][-]{section.1.4}{论文组织结构}{chapter.1}% 11
+\BOOKMARK [0][-]{section*.11}{参考文献}{}% 12
