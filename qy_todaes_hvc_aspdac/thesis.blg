@@ -1,0 +1,20 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: thesis.aux
+The style file: bstutf8.bst
+Database file #1: ref/refs.bib
+-- BUPTThesis.bst version 1.0 Beta 1 (2009/05/31) by Yu Zhang.
+-- http://code.google.com/p/buptthesis/
+-- See the "userguide.pdf" manual for usage information.
+Warning--The editor in ShenICCAD09 is missing.
+Warning--empty editor in ShenICCAD09
+Warning--The refdate in ShenTCAD11 is missing.
+Warning--The refdate in ShenTCAD12 is missing.
+Warning--The editor in LiuICCAD11 is missing.
+Warning--empty editor in LiuICCAD11
+Warning--The refdate in LiuTCAD12 is missing.
+Warning--The editor in TuDAC13 is missing.
+Warning--empty editor in TuDAC13
+Warning--The editor in InterpBoolFunction is missing.
+Warning--empty editor in InterpBoolFunction
+
+Done.
+(There were 11 warnings)

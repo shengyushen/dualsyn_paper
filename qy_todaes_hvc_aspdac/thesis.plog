@@ -1,0 +1,33 @@
+Chikrii Softlab pseudoTeX 3.0 report.
+http://www.chikrii.com, mailto: support@chikrii.com
+
+thesis.tex (Ln 45) Warning: Can't find pseudoTeX definition for class/package (nudtpaper)
+thesis.tex (Ln 46) Warning: Can't find pseudoTeX definition for class/package (mynudt)
+thesis.tex (Ln 50) Syntax Error: Undefined control sequence (\confidentiality)
+thesis.tex (Ln 51) Syntax Error: Undefined control sequence (\UDC)
+thesis.tex (Ln 69) Syntax Error: Runaway argument
+thesis.tex (Ln 69) Syntax Error: paragraph ended before macro definition was complete
+thesis.tex (Ln 71) Syntax Error: Undefined control sequence (\graphicspath)
+thesis.tex (Ln 77) Syntax Error: Undefined control sequence (\@title) within (\maketitle)
+thesis.tex (Ln 77) Syntax Error: Undefined control sequence (\@author) within (\maketitle)
+thesis.tex (Ln 78) Syntax Error: Undefined control sequence (\frontmatter)
+thesis.tex (Ln 79) Syntax Error: Undefined control sequence (\tableofcontents)
+thesis.tex (Ln 80) Syntax Error: Undefined control sequence (\listoftables)
+thesis.tex (Ln 81) Syntax Error: Undefined control sequence (\listoffigures)
+thesis.tex (Ln 83) Syntax Error: Undefined control sequence (\midmatter)
+thesis.tex (Ln 84) Confusion: \input doesn't works, can't open file (abstract)
+thesis.tex (Ln 88) Syntax Error: Undefined control sequence (\mainmatter)
+thesis.tex (Ln 89) Confusion: \input doesn't works, can't open file (chap01)
+thesis.tex (Ln 90) Confusion: \input doesn't works, can't open file (chap02)
+thesis.tex (Ln 91) Confusion: \input doesn't works, can't open file (chap03)
+thesis.tex (Ln 92) Confusion: \input doesn't works, can't open file (chap04)
+thesis.tex (Ln 93) Confusion: \input doesn't works, can't open file (chap05)
+thesis.tex (Ln 94) Confusion: \input doesn't works, can't open file (chap06)
+thesis.tex (Ln 95) Confusion: \input doesn't works, can't open file (chap07)
+thesis.tex (Ln 96) Confusion: \input doesn't works, can't open file (ack)
+thesis.tex (Ln 98) Syntax Error: Undefined control sequence (\cleardoublepage)
+thesis.tex (Ln 99) Syntax Error: Undefined control sequence (\phantomsection)
+thesis.tex (Ln 100) Syntax Error: Undefined control sequence (\addcontentsline)
+thesis.tex (Ln 104) Confusion: \input doesn't works, can't open file (resume)
+thesis.tex (Ln 106) Syntax Error: Undefined control sequence (\appendix)
+thesis.tex (Ln 107) Syntax Error: Undefined control sequence (\backmatter)

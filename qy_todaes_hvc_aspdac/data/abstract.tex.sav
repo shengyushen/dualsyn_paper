@@ -1,0 +1,52 @@
+% !Mode:: "Tex:UTF-8"
+\begin{cabstract}
+近年来，随着互联网和Web 2.0技术的飞速发展，社会网络作为沟通现实人类世界的桥梁，已经成为交互沟通、知识共享和信息传播的重要媒介和平台。其中，影响最大化问题作为社会网络分析领域的一个关键问题，在市场营销、广告发布、舆情预警、水质监测、疫情监控等重要场景中有着广泛的应用，具有很高的研究价值和应用价值。
+
+许多影响最大化应用策略的制定和部署对于算法求解时间十分敏感，因此，高效的求解算法是
+设计影响最大化算法的核心优化目标
+之一
+当前，学术界和工业界对于大规模社会网络中影响最大化问题开展了大量的研究工作，针对已有算法求解速度慢、计算效率低的问题，研究成果主要集中于一些贪心算法和启发式算法。
+然而，当今社会网络的数据规模海量、数据耦合度高、网络结构动态变化。当面对大规模社会网络时，暴露出许多难以克服的问题：
+第一，社会网络中节点影响值计算的可并行性问题。现有算法专注于降低算法的复杂度，没有充分利用已有的并行计算架构来加速问题求解。而实际社会网络中存在大量的节点影响值计算可由并行计算架构并发执行。因此，在挖掘算法的并行性方面，影响最大化算法的执行速度仍有很大的提升空间。
+第二，影响最大化算法效率与精度需求的折衷问题。社会网络中节点的度分布服从典型的幂律分布。然而，现有贪心算法大多采用精确计算的方式来计算所有节点的影响值，导致大度数节点的计算复杂度十分高，成为算法执行的瓶颈。
+第三，社会网络的动态计算问题。现有影响最大化问题研究专注于静态网络；当网络动态变化时，大都需要针对全网进行重新计算，会造成大量冗余计算，导致性能无法满足大规模社会网络的需求。
+
+针对上述技术瓶颈，本文系统地研究了社会网络影响最大化问题的高效处理技术，从以下几个方面展开研究：
+
+针对现有方法并行度差、算法复杂度高，从而导致运行时间过长的问题，本文基于CPU+GPU的异构并行计算框架
+设计了一种具有高并行度的影响最大化算法BUTA，并将BUTA算法映射到CPU+GPU的异构并行计算框架，以充分利用GPU的并行计算能力进行影响最大化求解。本文通过深入分析社会网络中节点之间的层次依赖关系，发现了节点影响值计算的可并行性。经过转换有向无环图和自底向上逐层扫描，BUTA算法可以一方面可以在保证算法精度的同时大幅度降低算法复杂度，另一方面BUTA充分利用了节点的层次分布，以高并行度计算节点的影响值。为了使BUTA算法更加适配CPU+GPU的异构并行计算框架，本文设计了三种优化方法：$K$层合并、数据重组和合并访存，分别用以降低运行时分支，减少访存次数和提高算法并行度。
+
+针对影响最大化算法效率与精度需求的折衷问题，本文提出了一种基于蒙特卡洛理论的采样估计算法ESMCE，以损失有限的精度为代价，获取了计算效率的大幅提升。本文分析了社会网络中节点的分布特性；针对大度数节点计算时间长的问题，通过蒙特卡洛采样方法来估计节点的影响值。ESMCE首先根据目标社会网络的幂律指数来指导采样节点的个数，之后根据估计误差同精度要求之间的差距，利用灰度预测模型来预测后续采样节点个数，并通过多次迭代采样来提高算法精度直至采样误差满足设定的精度要求。
+
+针对社会网络的动态计算问题，本文设计了一种基于增量计算的影响最大化算法IncInf。通过深入挖掘社会网络拓扑结构的演化特征。本文发现社会网络的拓扑变化满足优先连接原则，同时最有影响力节点的度数要明显大于普通节点。基于上述发现，IncInf算法根据结构变化前社会网络的最有影响力节点以及网络拓扑的变化量，通过影响局部化来高效计算各节点的影响力变化值。同时，IncInf算法设计了剪枝策略，将候选节点范围有效缩小到影响值增长迅速、度排名靠前的节点集合，从而大幅度降低了算法复杂度，减少了程序运行时间。
+
+针对当前内容分发方法忽略了社会网络中的用户关联关系、地理位置等社会信息的问题，本文设计了一种基于影响最大化的内容分发方法SCORE。同已有的内容分发方法不同，SCORE方法充分利用了社会网络中的用户信息，基于影响最大化算法来快速定位未来访问频率较高的关键内容。之后为了最小化访问延迟，SCORE方法通过挖掘用户之间的关联关系和地理位置信息，利用K-MEANS聚类算法和加权球面平均计算方法来选择目标边缘服务器，从而将关键内容预先分发到离潜在访问用户最近的边缘服务器，以便于就近响应用户请求。实验结果表明，SCORE方法可以大幅度降低用户访问延迟，提升用户体验质量，同时减轻网络流量压力。
+
+综上所述，本文针对社会网络影响最大化问题的高效处理技术提出了有效的解决方案，并通过在真实数据集上进行实验验证了所提算法的有效性，对于推进社会网络影响最大化问题的研究和实用化具有一定的理论意义和应用价值。
+
+\end{cabstract}
+\ckeywords{大规模社会网络; 影响最大化; 异构并行计算; 蒙特卡洛采样; 动态社会网络; 内容分发方法}
+
+\begin{eabstract}
+In recent years, with the in-depth research of Internet and Web 2.0 techniques, social network, serving as an important medium for communication, knowledge sharing and information spreading, has been widely used for bridging the human world. Influence maximization, as one of the key issues in the filed of social network analysis, has been extensively applied to many crucial scenarios, such as viral marketing, advertisement publishing, public sentiment warning, water quality and epidemic monitoring, which shows substantial research and application importance.
+
+Currently, many researchers in academia and industry work on the influence maximization problem, and propose lots of greedy algorithms and heuristics, which fairly improve the efficiency of influence maximization algorithms. Nevertheless, modern social networks are mostly large-scale, highly complicated and essentially dynamic, which pose serious challenges to the high efficient processing of influential user identification. Most existing algorithms suffer the following problems:
+
+First, existing algorithms only focus on designing algorithms with low computation complexity, while ignoring the parallelism of influence spread computation. They also take no advantage of existing heterogeneous parallel computing frameworks, such as CPU+GPU, for acceleration. In fact, the influence spread computation of many nodes in social network can be performed in parallel to overlap the running time and thus the efficiency can be dramatically improved.
+Second, they take no consideration of the node distribution characteristics in social network. Existing works mainly focus on computing the exact influence spread, leading to low computational efficiency and limiting their application to real-world social networks.
+Third, previous studies overlook the dynamic characteristics exhibited during the evolution of real-world social networks. Most of them are proposed to deal with static social network. While, as a matter of fact, real-world social networks keep evolving over time. When confronting dynamic social networks, existing works will suffer from computing from scratch.
+
+To well address the above challenges, this thesis systematically investigates some key issues of influence maximization in large-scale social networks, especially on the high efficient processing techniques. The research mainly focuses on the following aspects.
+
+For parallel computation of influence spread, this thesis in-depth investigates the dependency relationship among nodes in social networks. To improve the parallelism and reduce the complexity of existing algorithms, we propose a bottom-up traversal algorithm with inherent parallelism. On the one hand, BUTA can greatly reduce the time complexity through DAG conversion and bottom-up traversal. On the other hand, BUTA is designed with sufficient parallelism and can be mapped to modern heterogeneous parallel computing frameworks. For this reason, we map BUTA to GPU to exploit the parallel processing capability of GPU, thus further reducing the execution time. To best fit BUTA with the GPU architecture, we further develop an adaptive $K$-Level combination method to maximize the parallelism and reorganize the influence graph to minimize the potential divergence.
+
+In this thesis, we also exploit Monte-Carlo estimation to significantly improve the efficiency at only negligible cost of precision. We first analyze the node distribution characteristics in social network. To address the key bottleneck of influence spread computation for nodes with large degree, we design a power-law exponent supervised Monte-Carlo estimation method, named ESMCE. ESMCE exploits the power-law exponent of the social network to guide the initial sampling. Then, based on the disparity of estimation error and precision requirement, ESMCE utilizes the grey forecasting method to forecast the number of child nodes needed in further iteration. Multiple iterative steps run until the precision requirement is finally achieved.
+
+To deal with the influence maximization problem in dynamic social networks, we investigate the dynamic characteristics of social networks and observe from real-world traces that the evolution of social network follows the preferential attachment rule and the influential nodes are mainly selected from high-degree nodes. Such observations shed light on the design of IncInf, an incremental approach that can efficiently locate the top-$K$ influential individuals based on previous information instead of calculation from scratch. In particular, IncInf quantitatively analyzes the influence spread changes of nodes by localizing the impact of topology evolution to only local regions, and a pruning strategy is proposed to effectively narrow the search space into nodes experiencing major increases or with high degrees.
+
+None of previous content distribution methods comprehensively exploits the valuable social information of social network, such as social relationship and user geographic information. In this thesis, we propose SCORE, a social-aware content distribution method based on influence maximization problem. SCORE fast locates the contents that are potential to trigger large cascades. Then SCORE leverages the social relationship and geographic information, and selects target servers by K-MEANS clustering algorithm and weighted spherical mean calculation. Through this, SCORE effectively pushes selected content to geo-located servers before potential users actually request the content so as to reduce user latency, improve quality of experience, and alleviate network traffic pressure.
+
+To summarize, our works present solutions to several essential issues of influence maximization which are key requirements in social networks. Comprehensive experiments demonstrate that proposed algorithms can properly achieve their design goals.
+\end{eabstract}
+\ekeywords{Large-scale Social Network; Influence Maximization; CPU+GPU Heterogeneous Parallel Computing; Monte-Carlo Sampling Estimation; Dynamic Social Network; Content Distribution Method}
+
