@@ -22,7 +22,7 @@
 以自动产生支持相应结构的解码器。
 本文的主要研究内容及创新点包括以下几方面：
 
-第一，研究了基于余因子(Cofactoring)和Craig插值的迭代特征化算法。
+第一，研究了基于余因子(Cofactoring)和Craig插值\upcite{Craig}的迭代特征化算法。
 在发掘编码器内部结构和自动产生解码器的过程中，
 一个必须而且对性能要求非常苛刻的步骤，
 是特征化满足特定命题逻辑关系$R$的布尔函数$f$。
@@ -47,7 +47,7 @@
 直接违反了上述假设。
 该机制将$\vec{i}$划分为有待编码的数据向量$\vec{d}$和用以表达$\vec{d}$有效性的流控向量$\vec{f}$，
 并在$\vec{f}$上定义一个有效性谓词$valid(\vec{f})$。
-只有在$valid(\vec{f})\eq true$的情形下，
+只有在$valid(\vec{f})\equiv 1$的情形下，
 $\vec{d}$才能够被$\vec{o}$唯一决定。
 为此，
 我们创造性的提出了能够处理流控机制的对偶综合算法：
@@ -123,7 +123,7 @@ To overcome these problems,
 based on white box model,
 this paper propose new complementary synthesis algorithms to handle flow control and pipeline mechanism:
 
-First, 
+First,
 this thesis proposes an iterative characterizing algorithm based on cofactoring and Craig interpolant.
 In inferring the encoder's internal structure and generating its decoder,
 one of the most critical algorithm is to characterize a Boolean function $f$
@@ -146,7 +146,7 @@ Only in this way the unsatisfiable formula for computing Craig interpolant can b
 But the flow control mechanism \upcite{flowcontrol} in many modern encoders fail this assumption.
 This mechanism partition $\vec{i}$ into the data vector $\vec{d}$ to be encoded and the flow control vector $\vec{f}$ used to express the validness of $\vec{d}$.
 And a validness predicate $valid(\vec{f})$ is defined on $\vec{f}$.
-$\vec{d}$ can be uniquely determined by $\vec{o}$ only when $valid(\vec{f})\eq true$.
+$\vec{d}$ can be uniquely determined by $\vec{o}$ only when $valid(\vec{f})\equiv true$.
 Thus this thesis propose a novel complementary synthesis algorithm to handle flow control mechanism：
 First,
 it identifies all input variables that can be uniquely determined,

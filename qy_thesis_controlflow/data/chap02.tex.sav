@@ -1,229 +1,244 @@
 % !Mode:: "Tex:UTF-8"
-\chapter{相关研究}
+\chapter{基于余因子和Craig插值的迭代特征化算法}
 \label{chap:2}
-影响最大化问题是社会网络中的基本问题和重要支撑技术，其目的是定位社会网络中最有影响力的用户从而保证影响传播范围最大化。当前影响最大化问题已经成为社会网络分析领域的研究热点，有大量文献对其展开研究，取得了许多令人瞩目的成果。本章首先给出了社会网络基本的形式化定义，然后详细介绍了社会网络的影响传播模型，包括独立级联模型和线性阈值模型。之后重点解析了现有的影响最大化贪心算法及其优化方法、启发式策略，分析现有工作存在的不足。最后介绍了由影响最大化延伸和变形出的研究问题。
 
-\section{社会网络基本定义}
-\label{sec:21}
-社会网络是一个由社会个体成员以及个体成员之间的社会关系所组成的一种复杂网络结构\upcite{snwiki}。在社会网络相关研究中，社会网络通常用图$G=(V,E,W)$来建模，其中社会个体成员为图$G$ 的节点集合，以集合$V=\{v_1,v_2,\cdots,v_n\}$来表征；社会个体之间的关联关系为图$G$的边集合，以集合$E\subseteq V\times V$来表征；社会个体的权重以集合$W=\{w_1,w_2,\cdots,w_n\}$来表征，其中各个节点的权重初始化为1，以用于节点影响值计算。社会个体成员可以是个人、组织等不同含义的实体或虚拟个体；而个体成员之间的社会关系可以是价值观、理念、合作、朋友、血缘、敌对等各种类型的关系。图\ref{fig:201} 给出了社会网络结构的简单示意图。
 
-\begin{figure}[htbp] % use float package if you want it here
-  \centering
-  \includegraphics[width=3in]{fig2011}
-  \caption{社会网络结构示意图}
-  \label{fig:201}
-\end{figure}
 
-为了形式化描述影响最大化问题，社会网络中每个节点有两种状态，分别是0和1，其中0为非活跃状态，1为活跃状态。当节点$v_i$从非活跃状态转变为活跃状态后，该节点$v_i$会试图影响其处于非活跃状态的邻居节点。如果激活成功，则其邻居从非活跃状态转变为活跃状态。如图\ref{fig:201}中，初始时节点$a$ 为活跃状态，故其有能力去试图影响其相邻的非活跃节点$b$和节点$c$。此时有两种情况：例如节点$a$激活节点$c$未成功，则节点$c$仍然处于非活跃状态；另一种情况下，节点$a$激活节点$b$成功，故节点$b$从非活跃状态转变为活跃状态，此时节点$b$也具备影响其他节点的能力，例如节点$b$可以激活节点$d$。这种影响节点从非活跃状态变为活跃状态的过程称为影响的传播。需要注意的是整个传播过程是不可逆的，即：一个节点可以从非活跃状态被影响从而进入活跃状态，但反之则不可。
+\section{问题描述}
 
-社会网络中用户之间的关系大致分为两种，例如Facebook社交网站中的好友关系以及Twitter社交网站中的关注关系。两者的不同在于，好友关系是双向的，节点之间互为好友，因此适合于用无向图表示；而另一种关注关系为单向的，假设节点$a$关注节点$b$，但节点$b$并不一定关注节点$a$，因此这种关系适合于用有向图表示。由于无向图中节点$a$和节点$b$之间的边可以利用有向图中两条有向边$(a,b)$和$(b,a)$表示，而反之不成立，因此在社会网络研究中有向图的表达能力和适用性更好，故在本文我们采用有向图来表征社会网络。基于此，我们定义以下概念：
-\begin{definition}  \label{def:201}
-有向图$G=(V,E,W)$中，如果存在有向边$e=(v_i,v_j)\in E$，则称节点$v_i$为边$e$的始点，节点$v_j$为边$e$的终点。边$e$为节点$v_i$的出边，同时为节点$v_j$的入边。另外，节点$v_i$为节点$v_j$的先驱节点或者父节点，相反节点$v_j$为节点$v_i$的后继节点或者子节点。
-\end{definition}
-\begin{definition}  \label{def:202}
-对于节点$v_i$，称以$v_i$作为始点的边的个数为节点$v_i$ 的出度，以$v_i$作为终点的边的个数为节点$v_i$的入度。如果节点$v_i$的出度为0，则称节点$v_i$为sink节点；如果节点$v_i$的入度为0，则称节点$v_i$为source节点。
-\end{definition}
-\begin{definition}  \label{def:203}
-有向图$G=(V,E,W)$中，对于节点$v_{i_0}$和$v_{i_j}$，如果存在节点和边的交替序列$\{v_{i_0}e_{i_1}v_{i_1}e_{i_2}\cdots e_{i_j}v_{i_j}\}$，其中$e_{i_k}$是从节点$v_{i_{k-1}}$到节点$v_{i_k}$的有向边，则称节点$v_{i_0}$可达节点$v_{i_j}$，同时节点$v_{i_j}$由节点$v_{i_0}$可达，记作路径$v_{i_0} \rightsquigarrow v_{i_j}$。如果$v_{i_0}=v_{i_j}$，则称为环。如果有向图$G$中不包含环，则称图$G$为有向无环图（Directed Acyclic Graph，DAG）。
-\end{definition}
-\begin{definition}  \label{def:204}
-有向图$G=(V,E,W)$中，对于节点$v_i$和$v_j$，如果同时存在两条有向路径$v_{i} \rightsquigarrow v_{j}$和$v_{j} \rightsquigarrow v_{i}$，则称节点$v_i$和$v_j$ 强连通。图$G$中的极大强连通子图，称为强连通分量（Strongly Connected Component，SCC）。
-\end{definition}
-\section{影响传播模型}
-\label{sec:22}
-影响传播模型定义了社会网络中影响力进行传播的方式和机制，它是研究社会网络影响最大化问题的基础。目前学术界已经对影响传播模型有了深入的研究，其中被广为研究的影响传播模型有两个，独立级联模型（Independent Cascade Model，IC）和线性阈值模型（Linear Threshold Model，LT）。它们分别从概率和阈值的角度阐述了影响传播的过程。下面进行详细论述。
-\subsection{独立级联模型}\label{sec:221}
-独立级联模型是由Goldenberg、Libai和Muller提出的概率传播模型\upcite{goldenberg2001,goldenberg2001using}，它主要来源于市场营销模型研究。独立级联模型基于概率，每个节点在自身转变为活跃状态之后都以一定的概率去试图激活其后继结点，并且多个活跃节点试图影响同一邻居节点的行为是相互独立的，故谓之独立级联模型。
+在形式化验证和综合领域，
+对于两个存在某种内在联系的逻辑向量$\vec{a}$和$\vec{b}$，
+有两种不同的方式表达他们之间的联系：关系和函数。
 
-给定初始活跃节点集合$S$，独立级联模型的影响传播过程如下：在时间$0$，仅仅活跃集合$S$中的节点为活跃状态，其余节点皆为非活跃状态；如果节点$v$在时间$t$从非活跃状态变为活跃状态，则节点$v$ 试图以一定概率去激活其处于非活跃状态的后继节点。节点$v$成功激活其后继节点$w$的概率为$p(v,w)$。 如果节点$v$成功激活节点$w$，则节点$w$在时间$t+1$变为活跃状态。如果节点$v$ 没有成功激活节点$w$，则节点$w$在时间$t+1$仍为非活跃状态。该过程延续到没有能被激活的节点为止。需要注意的是，上述过程中节点$v$只有一次机会去试图激活其每个邻居，而且节点$w$ 一旦被激活则不能从活跃状态恢复到非活跃状态。
+其中，
+关系$R(\vec{a},\vec{b})$更具一般性，
+能够表达$\vec{a}$和$\vec{b}$之间的任意对应关系。
+这种一般性在形式化验证中广泛用于描述非确定性行为以扩展描述能力，
+以及构造抽象模型\upcite{DBLP:conf/cav/ClarkeGJLV00}以削减计算复杂性等。
 
-\subsection{线性阈值模型}\label{sec:222}
-线性阈值模型是由Granovetter和Schelling提出的阈值模型\upcite{lt1978}，它主要来源于节点特异性阈值研究。线性阈值模型基于阈值，并且多个活跃节点试图影响同一后继节点的行为是非独立的，影响是否成功取决于所有活跃节点对后继节点影响权重的和是否超过后继节点的阈值。
+而另一方面，
+函数是关系的一种受限形式。
+如果$R(\vec{a},\vec{b})$满足以下要求，
+则能将其转换为相应的函数$\vec{b}:=f(\vec{a})$：
+对$\vec{a}$的任意取值$x\in[\![\vec{a}]\!]$，
+均存在且仅存在唯一的$y\in[\![\vec{b}]\!]$，
+使得$R(\vec{a},\vec{b})$。
+在实际的软硬件设计与验证领域，
+存在大量的情况需要从一个关系中获得相应的函数。
+如在自动激励生成算法中从约束描述产生相应的激励函数\upcite{DBLP:conf/dac/YuanAAP03}，
+证明导引抽象中的抽象模型构造\upcite{DBLP:conf/fmcad/AmlaM04}，
+以及本文中推导控制流谓词和特征化解码器等。
 
-在线性阈值模型中，定义$N(v)$为节点$v$的先驱节点集合，节点$v$受其活跃的先驱节点$w$影响的程度由权重$b_{wv}$来表征，并且满足下式：
-\begin{equation}\label{equ:201}
-\sum_w {b_{wv}}\leq 1
+在本章中，
+我们首先在小节\ref{sec_craigimp}描述Craig插值的基本原理，
+然后在小节\ref{sec_iterativecraig}中将其扩展到包含额外变量$\vec{c}$ 的更一般情形$R(\vec{a},\vec{b},\vec{c})$。
+
+\section{Craig插值的原理和实现}\label{sec_craigimp}
+注意本小节描述的Craig插值基本原理不是我们的原创，
+而是为了方便上下文的叙述从\upcite{DBLP:conf/cav/McMillan03} 移植至此。
+\subsection{相关背景知识和记法}
+在通常的SAT求解器，
+包括本文使用的MiniSat\upcite{EXTSAT}中，
+要求待求解的公式被表示为CNF格式。
+其中一个公式是多个短句的合取(conjunction)，
+而每一个短句是多个文字的析取(disjunction)，
+而每个文字是一个布尔变量$v$或者其反$\neg v$。
+如公式$(v_0\vee\neg v_1\vee v_2)\wedge(v_1\vee v_2)\wedge(\neg v_0\vee v_2)$，
+包含短句$v_0\vee\neg v_1\vee v_2$,$v_1\vee v_2$和$\neg v_0\vee v_2$。
+而短句$v_0\vee\neg v_1\vee v_2$包含文字$v_0$, $\neg v_1$和$v_2$。
+
+当存在一个变量$v$，
+使得一个短句$c$中同时包含两个文字$v$和$\neg v$，
+则称$c$为tautological的。
+我们通常假设有待SAT求解器求解的公式中所有的短句都是非tautological的。
+
+当存在一个假设公式$F$的布尔变量全集为$V$。
+若存在对$V$的赋值函数$A:V\to \{0,1\}$，
+使得$F$中的每个短句均能取值为1，
+则称$F$是可满足的，
+且SAT求解器能够找到赋值函数$A$。
+否则称$F$为不可满足的。
+
+\subsection{不可满足证明}
+对于两个短句$c_1=v\vee B$和$c_2=\neg v\vee C$，
+当$A\vee B$是非tautological的时，
+$A\vee B$称为他们的resolvant。
+而$v$称为他们的pivot。
+易知以下事实：
+
+\begin{equation}
+\begin{array}{ccc}
+&resolvant(c_1,c_2) = \exists v, c_1\wedge c_2 &\\
+&c_1\wedge c_2 \to resolvant(c_1,c_2)&
+\end{array}
 \end{equation}
-其中$w\in N(v)$。另外，每个节点$v$都有一个阈值$\theta _v$，$\theta _v\in [0,1]$。该阈值表明了节点受影响的难易程度；阈值越小越容易受影响，反之亦然。同独立级联模型类似，在时间$0$，仅仅活跃集合$S$中的节点为活跃状态，其余节点皆为非活跃状态；如果节点$v$在时间$t$变为活跃状态，则节点$v$将其影响权重$b_{vu}$施加到其处于非活跃状态的后继节点$u$ 上。如果节点$u$ 满足下式：
-\begin{equation}\label{equ:202}
-\sum_v {b_{vu}}\geq \theta _u
-\end{equation}
-其中$v$是$N(u)$中处于活跃状态的节点，则节点$u$在时间$t+1$变为活跃状态。该过程延续到没有能被激活的节点为止。
-
-线性阈值模型体现了影响累积的特性，即节点$v$对其后继节点$u$的影响效果会被累积；当节点$u$的活跃前驱节点对其累积影响超过了其相应的阈值之后，节点$u$从非活跃状态转变为活跃状态。
-
-\subsection{其它影响传播模型}\label{sec:223}
-由于独立级联模型和线性阈值模型适用范围广，能很好地反映了许多真实情况下影响传播的方式，因此受到了学者的广泛关注和研究\upcite{kempe2003,jure2007,chen2009,chen2010}。然而，除此之外还存在一些其他的影响传播模型，本节对其简要描述如下：
-\begin{enumerate}
-  \item 触发模型（Triggering Model）由Kempe等人在2003年提出\upcite{kempe2003}。在触发模型中，每个节点$v$对应一个触发节点集合$T_v$。在时间$t$，一个未激活节点$v$会被激活当且仅当至少一个节点$v$的先驱节点$u$在时间$t-1$处于活跃状态，并且$u\in T_v$。
-  \item 递减级联模型（Decreasing Cascade Model）同样是Kempe等人提出的一种概率模型，它同独立级联模型的不同在于：在独立级联模型中节点$v$激活后继节点$w$的概率为常量$p(v,w)$，而且传播概论是独立的。然而递减级联模型认为，节点$v$激活其后继节点$w$的概率并非独立，而是函数$p_w (v,S)$，其中$S$是已经尝试激活$w$（但失败）的前驱节点集合，并且该概率函数满足当$S\subseteq T$时，$p_w (v,S)\geq p_w (v,T)$。
-  \item 加权级联模型（Weighted Cascade Model）是一种特殊的独立级联模型\upcite{chen2009}。在加权级联模型中，节点$v$成功激活后继节点$w$的概率$p(v,w)=1/d_w$，其中$d_w$ 是节点$w$ 的入度。
-  \item 选举模型（Voter Model）是一种广泛应用于统计物理和粒子系统的概率模型\upcite{even2007}。在选举模型中，每个节点每一步均从其前驱节点集合中随机选择一个节点，并以被选择节点的状态作为自己的状态。
-\end{enumerate}
-
-在社会网络影响力模型及相关算法的研究领域，通常用符号$\sigma(S)$来代表节点集合S的影响值，其中$\sigma(S)$是指将$S$作为初始活跃节点，在给定的影响传播模型下，经过上述影响传播过程，最终网络中被激活的节点个数。基于此，影响力最大化问题可以形式化描述为：
-\paragraph{\textbf{给定：}}社会网络图$G=(V,E,W)$，设定的影响力传播模型以及一个正整数$K$；
-\paragraph{\textbf{目标：}}从网络图$G$中选取初始活跃节点集合$S$，使得$\sigma(S)$最大；
-\paragraph{\textbf{约束：}}$S\subset V$ 且$|S|=K$；
-
-\section{影响最大化算法}\label{sec:23}
-本节首先介绍影响最大化算法相关理论，之后分两方面详细论述影响最大化问题的求解方法：贪心算法和启发式。
-\subsection{算法相关理论}\label{sec:231}
-在本节我们分别介绍影响值函数的边际收益（Marginal Gain）以及子模（Submodular）函数定义。
 
 \begin{definition}
-\textbf{边际收益：}在影响最大化问题中，影响值函数$\sigma(\cdot)$的边际收益是指在当前活跃节点集合$S$的基础上，额外增加一个节点$v_i$作为初始活跃节点，所能带来的最终影响值的增加量。即：
-\begin{equation}\label{equ:203}
-\sigma_{v_i}(S)=\sigma(S\cup \{v_i\})-\sigma(S)
-\end{equation}
+对于不可满足公式$F$，
+假设其短句集合为$C$，
+则其不可满足证明$\Pi$是一个有向无环图$(V_{\Pi},E_{\Pi})$，
+其中$V_{\Pi}$是短句集合，
+满足如下要求：
+\begin{enumerate}
+\item 对于节点$c\in V_{\Pi}$：
+  \begin{enumerate}
+    \item 要么$c\in C$，此时称$c$为$\Pi$的根
+    \item 或者$c$有且仅有两个predecessors $c_1$和$c_2$，
+    使得$c$是$c_1$和$c_2$的resolvant。
+  \end{enumerate}
+\item 空短句是$\Pi$的唯一一个叶节点。
+\end{enumerate}
 \end{definition}
+
+直观的说，
+$\Pi$就是一棵树，
+以短句集合$C$的子集为根，
+以空短句为唯一叶节点。
+而每个节点的两个扇入边代表了一个resolving关系。
+
+包括本文使用的MiniSat求解器\upcite{EXTSAT}在内的许多SAT求解器，
+当公式不可满足时都将产生一个不可满足证明$\Pi$。
+
+\subsection{Craig插值算法}
+
+假设我们有一对公式$(A,B)$。
+已知$A\cup B$不可满足，
+而$\Pi$是SAT求解器给出的不可满足证明。
+当一个变量$v$同时出现在$A$和$B$中时，
+我们称其为全局变量。
+若$v$只出现在$A$中，
+则称其为$A$本地变量。
+
+对于文字$v$或者$\neg v$，
+当变量$v$是全局变量或者$A$本地变量时，
+称该文字为全局文字或者$A$本地文字。
+
+对于短句$c$，
+令$g(c)$为$c$中所有全局文字的析取，
+而$l(c)$为$c$中所有$A$本地文字的析取。
+
+例如，
+假设有两个短句$c_1=(a\veeb\vee\neg c)$ 和
+$c_2=(b\vee c\vee\neg d)$。
+并假设$A=\{c_1\}$和$B=\{c_2\}$。
+则$g(c_1)=(b\vee\neg c)$，
+$l(c_1)=(a)$，
+$g(c_2)=(b\vee c)$，
+$l(c_2)=FALSE$。
+
 
 \begin{definition}
-\textbf{子模函数：}对于任一函数$f(\cdot)$将有限集合$U$的子集映射为非负实数，如果函数$f(\cdot)$满足收益递减，则函数$f(\cdot)$为子模函数。此处收益递减是指增加任一元素$v_i$到集合$S$所带来的边际收益不低于增加元素$v_i$到$S$的超集$T\supseteq S$所带来的边际收益，即形式化描述为：
-\begin{equation}\label{equ:204}
-f_{v_i}(S)\geq f_{v_i}(S)
-\end{equation}
-或者
-\begin{equation}\label{equ:205}
-f(S\cup \{v_i\})-f(S)\geq f(T\cup \{v_i\})-f(T)
-\end{equation}
+令$(A,B)$为一对公式，
+而$\Pi$是$A\cup B$的不可满足证明，
+且其叶节点是$FALSE$。
+对于所有的节点$c\in V_{\Pi}$，
+令$p(c)$为一个
+
 \end{definition}
 
-需要注意的是在文献\upcite{corn1977,nem1978}中，美国学者Nemhauser、Wolsey 和Fisher 证明：如果函数$f(\cdot)$ 是子模函数同时是单调函数（即对于所有的集合$S$和元素$v_i$均满足$f(S\cup \{v_i\})\geq f(S)$），当试图定位大小为$K$的元素集合$S$以使得$f(S)$最大时，通过爬山贪心算法可以得到\begin{math}1-1/e-\varepsilon\end{math}的近似最优解，其中$e$是自然对数的底，$\varepsilon$是任意正实数。
 
-\subsection{影响最大化问题求解算法}\label{sec:232}
-影响最大化算法在近几年受到了学术界的广泛研究和关注。由于影响最大化问题被证明是NP-Hard问题\upcite{kempe2003}，因此，对于影响最大化问题的研究方法主要可以分为两个方向求近似解：
-\begin{enumerate}
-  \item 贪心算法。贪心算法的研究基本上都是基于爬山贪心算法（Hill-Climbing Greedy Algorithm）\upcite{kempe2003}，每一次选择能提供最大影响值的节点，通过局部最优解来近似全局最优解。贪心算法的优点是其精度相对较高，可以达到\begin{math}1-1/e-\varepsilon\end{math}。然而贪心算法存在严重的效率问题，即算法复杂度高，执行时间长，从而导致在真实的大规模社会网络中难以应用。针对贪心算法的效率问题有大量的研究和优化，是当前研究的热点问题。
-  \item 启发式。启发式不同于贪心算法，由于启发式算法基于启发策略来选择最有影响力节点，而不需要精确计算节点影响值，因此启发式算法运行时间短、效率高，然而其算法精度较差，无法跟贪心算法相比。
-\end{enumerate}
 
-下面我们分别对影响最大化问题的贪心算法和启发式算法相关研究进行阐述。
+\section{迭代的特征化算法}\label{sec_iterativecraig}
+假设$R(\vec{a},\vec{b},t)$是一个使得$R(\vec{a},\vec{b},0)\wedge R(\vec{a},\vec{b},1)$ 不可满足的布尔公式。
 
-\subsubsection{贪心算法研究}\label{sec:2321}
-Domingos等人首次将影响力最大化问题作为算法问题进行研究\upcite{domingos2001,richardson2002}。最早的方法是将市场看作是社会网络，对个体购买行为、营销后的总体盈利提升建模为马尔可夫随机域模型(Markov Random Field)，并提出了一遍扫描算法（Single Pass）和贪心搜索算法（Greedy Search）求近似解。
+其中$\vec{a}$ 和$\vec{b}$ 被分别称为重要和非重要变量子集。
+而$t$ 是目标变量。
+我们进一步假设$R(\vec{a},\vec{b},t)$ 是可满足的。
 
-在上面工作的基础上，康奈尔大学的David Kempe等人\cite{kempe2003}首先将该问题提炼为在传播模型基础上寻找$K$个能使影响范围最大化的节点的离散优化问题，并证明该优化问题在独立级联模型和线性阈值模型下均是NP-Hard问题。之后作者证明了影响值函数$\sigma (\cdot)$在两种影响传播模型下均满足子模特性和单调特性，因此，提出了一种贪心爬山近似算法BasicGreedy，该算法可以保证\begin{math}1-1/e-\varepsilon\end{math}的近似最优。Kempe等人提出的贪心爬山算法如算法\ref{alg:201}所示。算法从$S$为空集开始（第\ref{alg:basicgreedy:1}行），之后执行$K$ 轮（第\ref{alg:basicgreedy:2}行），每轮选择能提供最大边际收益的节点$v$（第\ref{alg:basicgreedy:10}行）并将其加入到初始节点集合$S$中（第\ref{alg:basicgreedy:11}行）。为了计算图$G$各个节点的边际收益$s_v$（第\ref{alg:basicgreedy:3}行），Kempe等人设计通过$R$轮模拟（第\ref{alg:basicgreedy:5} - \ref{alg:basicgreedy:7}行），计算每轮模拟中以集合$S\cup \{v\}$ 作为初始活跃节点可以最终影响的节点个数，最后求平均值（第\ref{alg:basicgreedy:8}行）并选出最大边际收益的节点加入集合$S$。
-\begin{algorithm}
-\caption{贪心爬山近似算法BasicGreedy}
-\label{alg:201}
+我们需要特征化一个布尔函数$FSAT_R(\vec{a})$，
+覆盖且仅覆盖了所有能够使得$R(\vec{a},\vec{b},1)$ 可满足的$\vec{a}$。
+形式化的定义是：
+
+\begin{equation}\label{fchar}
+% \begin{split}
+FSAT_R(\vec{a}):=
+\left\{
+\begin{array}{rcl}
+1 & & \exists\vec{b}.R(\vec{a},\vec{b},1) \\
+0 & & otherwise
+\end{array}
+\right.
+% \end{split}
+\end{equation}
+%% HAHA come to here
+
+因此，
+一个计算$FSAT_R(\vec{a})$ 的简单算法是：
+逐一遍历并收集所有使得$R(\vec{a},\vec{b},1)$ 可满足的$\vec{a}$的赋值。
+然而该算法需要处理$2^{|\vec{a}|}$中情况。
+对于很长的$\vec{a}$，时间开销将会很大。
+
+使用cofactoring \upcite{EFFSATUSMCCO} 和Craig 插值\upcite{interp_McMillan}，
+可以将每一个$\vec{a}$ 扩展为一个更大的集合，
+从而极大的提高算法运行速度。
+直观的，
+假设$R(\vec{a},\vec{b},1)$ 的一个满足赋值是$A:\vec{a}\cup\vec{b}\cup\{t\}\to\{0,1\}$，
+通过cofactoring\upcite{EFFSATUSMCCO}可以构造以下公式：
+
+\begin{algorithm}[t]
+\caption{$CharacterizingFormulaSAT(R,\vec{a},\vec{b},t)$: 特征化使得$R(\vec{a},\vec{b},1)$ 可满足的$\vec{a}$ 集合}
+\label{alg_craigchar}
+%\KwIn{The Boolean formula $R(\vec{a},\vec{b},t)$,
+%its important variable vector $\vec{a}$,
+%its non-important variable vector $\vec{b}$,
+%and its target variable $t$.}
+%\KwOut{$FSAT_R(\vec{a})$ that makes $R(\vec{a},\vec{b},1)$ satisfiable.}
 \begin{algorithmic}[1]
-\REQUIRE ~~\
-社会网络 $G=(V,E,W)$, 参数 $K$
-\ENSURE ~~\
-大小为$K$的最有影响力节点集合$S$
-\STATE 初始化$S=\emptyset $；\label{alg:basicgreedy:1}
-\FOR{$i=1$ to $K$}\label{alg:basicgreedy:2}
-    \FOR{集合$V\backslash S$中的任意节点$v$}\label{alg:basicgreedy:3}
-        \STATE $s_v=0$；\label{alg:basicgreedy:4}
-        \FOR{$i=1$ to $R$}\label{alg:basicgreedy:5}
-            \STATE $s_v=s_v+|RanCas(S\cup \{v\})|$；\label{alg:basicgreedy:6}
-        \ENDFOR\label{alg:basicgreedy:7}
-        \STATE $s_v=s_v/R$；\label{alg:basicgreedy:8}
-    \ENDFOR\label{alg:basicgreedy:9}
-    \STATE $v = \arg\max _ {v\in (V\backslash S)} \{s_v\}$；\label{alg:basicgreedy:10}
-    \STATE $S = S \cup \{v\}$；\label{alg:basicgreedy:11}
-\ENDFOR\label{alg:basicgreedy:12}
+\label{initcondition}
+\STATE $FSAT_R(\vec{a}):= 0$ ;
+\WHILE { $R(\vec{a},\vec{b},1)\wedge\neg FSAT_R(\vec{a})$ 是可满足的}
+\label{testsat}
+  \STATE 假设 $A:\vec{a}\cup\vec{b}\cup\{t\}\rightarrow \{0,1\}$ 可满足赋值函数;
+  \STATE $\phi_A(\vec{a}):= R(\vec{a},A(\vec{b}),1)$ ;
+\label{cofact1}
+  \STATE $\phi_B(\vec{a}):= R(\vec{a},A(\vec{b}),0)$ ;
+\label{cofact2}
+  \STATE 假设 $ITP(\vec{a})$ 是$\phi_A$ 针对$\phi_B$的Craig插值 ;
+\label{ab}
+  \STATE $FSAT_R(\vec{a}):= ITP(\vec{a}) \vee FSAT_R(\vec{a})$ ;
+\label{add}
+\ENDWHILE
+\RETURN $FSAT_R(\vec{a})$
 \end{algorithmic}
 \end{algorithm}
 
-然而，贪心爬山近似算法BasicGreedy算法复杂度很高，达到$O(KnRm)$，其中$n$和$m$分别是图$G$中节点数目和边数目，$R$是模拟次数，一般取值20000\upcite{kempe2003}。因此BasicGreedy算法执行时间很长，不适用于大规模社会网络。造成其耗时长的主要原因是：（1）该算法每轮需要为所有节点计算边际收益；（2）为每个节点计算边际收益时均需要进行$R$次模拟。所以虽然贪心爬山近似算法精度上有较好保障，但计算效率低成为其亟待解决的问题。而后续贪心算法演技基本上都是解决其效率问题。
+\begin{equation}
+% \begin{split}
+R(\vec{a},A(\vec{b}),1):=R(\vec{a},\vec{b},1)_{b\equiv A(b)}
+% \end{split}
+\end{equation}
 
-卡内基梅隆大学的Jure Leskovec等人于2007年提出了BasicGreedy的优化方法CELF（Cost-Effective Lazy Forward）方法\upcite{jure2007}。由于影响值函数$\sigma(\cdot)$满足子模特性，因此随着初始活跃节点集合$S$的增大，任意节点$v$带来的影响值边际收益只能越来越小。基于此，CELF不需要像BasicGreedy算法那样在每轮计算所有节点的影响值边际收益。如果节点$u$在之前轮次时计算的影响值边际收益小于节点$v$在当前轮次的影响值边际收益，则节点$u$在当前轮次的影响值边际收益必定小于节点$v$的影响值边际收益，因此节点$u$在当前轮次不可能成为边际收益最大的节点，其此轮的影响值边际收益不需要计算。CELF优化方案正是运用影响力最大化目标函数的子模特性，大大降低每轮节点影响值边际收益的计算个数，减少节点的选择范围，从而降低了整体计算复杂度。实验结果表明，使用CELF优化方案在精确度上和BasicGreedy算法基本一致，但是其计算效率远远高于BasicGreedy算法，可获得高达700 倍的加速\upcite{jure2007}。然而即便如此，CELF 算法在拥有3.7 万节点的数据集上定位最有影响的50个节点仍需要花费数小时，其效率仍难以满足当代社会网络对于实时性的要求。
+因为$R(\vec{a},A(\vec{b}),0)\wedge R(\vec{a},A(\vec{b}),1)$ 是不可满足的，
+$R(\vec{a},A(\vec{b}),1)$针对$R(\vec{a},A(\vec{b}),0)$的Craig插值$ITP(\vec{a})$ 可以用作$\vec{a}$ 使得$R(\vec{a},A(\vec{b}),1)$ 可满足的上估计。
+同时，
+$ITP(\vec{a})\wedge R(\vec{a},A(\vec{b}),0)$ 是不可满足的，
+因此$ITP(\vec{a})$ 没有覆盖任何使得$R(\vec{a},A(\vec{b}),0)$ 可满足的情况。
+因此，
+$ITP(\vec{a})$ 覆盖且仅覆盖了所有使得$R(\vec{a},A(\vec{b}),1)$ 可满足的$\vec{a}$。
 
-微软亚洲研究院的Wei Chen等人在文章\upcite{chen2009}中提出了新型的改进贪心算法NewGreedy和MixGreedy。在原来的BasicGreedy贪心算法中，为了计算每一个节点的影响值边际收益需要进行$R$次模拟，因此总共需要$nR$次模拟，因此导致计算量大。NewGreedy算法正是基于此进行改进提升了算法效率。NewGreedy算法的核心改进思想在于在每次模拟中为所有节点计算影响值边际收益，因此NewGreedy算法将BasicGreedy贪心算法的$nR$次模拟减少到$R$次模拟。具体实现为在每次模拟中，从原始网络中删除那些影响未成功的边，得到网络传播图，然后从网络传播图中对每个节点进行宽度优先搜索（Breadth First Search，BFS）即得到各节点的影响值。考虑到为各个节点进行宽度优先搜索比较耗时，NewGreedy算法采用了Cohen等人提出的随机算法\upcite{cohen1997}对网络传播图中各节点可达的节点个数进行估计。采用Cohen随机算法一方面使得NewGreedy算法复杂度明显下降，从BasicGreedy的$O(KnRm)$下降到$O(KnTm)$，其中$T$是Cohen随机算法的迭代次数。但是另一方面由于Cohen随机算法采用估计方式无法得到节点精确的影响值，因此其精度相应有所下降。NewGreedy算法设计如算法\ref{alg:202}所示。
-\begin{algorithm}
-\caption{NewGreedy算法}
-\label{alg:202}
-\begin{algorithmic}[1]
-\REQUIRE ~~\
-社会网络 $G=(V,E,W)$, 参数 $K$
-\ENSURE ~~\
-大小为$K$的最有影响力节点集合$S$
-\STATE 初始化集合为空集$S=\emptyset $；\label{alg:newgreedy:1}
-\FOR{$i=1$ to $K$}\label{alg:newgreedy:2}
-    \STATE 将图$G$中所有节点的影响值$s_v$设置为0；\label{alg:newgreedy:3}
-    \FOR{$j=1$ to $R$}\label{alg:newgreedy:4}
-        \STATE 将图$G$按照IC模型删除影响不成功的边，得到图$G'$；\label{alg:newgreedy:5}
-        \FOR{图$G$中任意节点$v$} \label{alg:newgreedy:6}
-            \STATE 计算节点$v$的影响值边际收益$MG(G',v)$；\label{alg:newgreedy:7}
-            \STATE $s_v = s_v+MG(G',v)$； \label{alg:newgreedy:8}
-        \ENDFOR\label{alg:newgreedy:9}
-    \ENDFOR\label{alg:newgreedy:10}
-    \STATE $v_{max} = \arg\max _ {v\in (V\backslash S)} s_v/R$；\label{alg:newgreedy:11}
-    \STATE $S = S \cup \{v_{max}\}$；\label{alg:newgreedy:12}
-\ENDFOR\label{alg:newgreedy:13}
-\end{algorithmic}
-\end{algorithm}
 
-MixGreedy算法\upcite{chen2009}是NewGreedy算法和CELF算法的集合体。CELF算法的第一轮需要计算所有节点的影响值边际收益，因此计算量较大；但在第一轮之后由于子模特性，有部分节点影响值边际收益不需计算，计算量下降。而NewGreedy算法则需要每轮进行$R$次模拟以计算各节点的影响值边际收益。NewGreedy和CELF两种算法的优点正交不冲突，因此MixGreedy算法取两个算法优点之和，在第一轮采用NewGreedy算法减少计算量，而在之后各轮采用CELF算法减少计算量，从而进一步降低了整体算法复杂度。实验结果表明，NewGreedy和MixGreedy两个算法能显著加速在社会网络中有影响力用户的定位，同时保证同BasicGreedy基本一致的精度。
+基于上述讨论，
+我们提出了算法\ref{alg_craigchar} 以特征化等式(\ref{fchar})中的$FSAT_R(\vec{a})$。
+行\ref{testsat}检测是否仍然存在尚未被$FSAT_R(\vec{a})$覆盖的$\vec{a}$ ，
+使得$R(\vec{a},\vec{b},1)$ 可满足。
+行\ref{cofact1} 和\ref{cofact2} 将可满足赋值中$\vec{b}$的取值分别赋予
+$R(\vec{a},\vec{b},1)$ 和$R(\vec{a},\vec{b},0)$ 。
+这将使得$\vec{b}$ 不在出现在这两个公式中。
 
-Yu Wang等作者于2010年提出一种基于社区的影响力最大化问题的求解算法CGA（Community-based Greedy Algorithm）\upcite{cga}。由于社会网络体现出良好的社区特性，即社区内部成员之间交互紧密，因此更可能相互影响，相反，不同社区的成员之间联系相对稀疏，故其相互影响概率较低。正是基于此社区特性，Yu Wang等提出了CGA算法，以社区内部的最有影响力用户去近似全局网络的最有影响力用户，从而降低了计算复杂度。CGA算法执行分为两个阶段。第一阶段，针对现有社区划分算法没有考虑信息传播因素的问题，作者设计了新的基于影响传播的组合熵社区划分算法。第二阶段，CGA算法利用动态规划（Dynamic Programming ）方法来从划分的社区中选择最有影响力用户。假设在前$k-1$轮已经得到了$k-1$个有影响力节点，在第$k$轮，分别以各个社区为研究对象，在各个社区利用MixGreedy算法选择出最有影响力的节点，之后选择影响力最大的节点作为第$k$轮全局最有影响力节点。作者通过在移动社交网络上实验证明，CGA相比于MixGreedy算法，运行速度上获得了显著的提升。然而，很明显，这些速度的提升是以精度损失为代价的，因为CGA算法以节点在社区内部的影响力来近似作为节点的全局影响力，导致精度下降。
+因此，
+$\phi_A\wedge \phi_B$ 在行\ref{ab} 是不可满足的。
+且$\phi_A$ 和$\phi_B$ 的共同变量是$\vec{a}$。
+因此可以使用McMillian算法\upcite{interp_McMillan} 计算Craig 插值$ITP(\vec{a})$。
 
-英属哥伦比亚大学大学的Amit Goyal等人深入分析了CELF算法，并提出了针对CELF算法的优化方法CELF++\upcite{celf++}。CELF++算法再次利用了影响值函数$\sigma(\cdot)$的子模特性，为所有节点分别记录了在当前迭代中该节点计算之后影响力最大的节点ID：$prev\_best$。如果在本轮迭代后，节点$v_i$的$prev\_best$节点被选为本轮影响力最大的节点，则在下一轮迭代中节点$v_i$ 的影响值不需要计算，因此可以避免CELF算法中许多不必要的影响值重新计算。作者通过实验证明，CELF++算法比CELF算法可以减少35\%到55\%的运行时间。
+$ITP(\vec{a})$ 将在行\ref{add}被加入$FSAT_R(\vec{a})$  并在行\ref{testsat} 被排除。
 
-\subsubsection{启发式算法研究}\label{sec:2322}
-上一节主要关注于社会网络中影响最大化问题的贪心算法，然而由于贪心算法计算复杂度很高，因此后续改进虽然有了十分明显的加速，然而其运行时间依然难以满足目前大规模社会网络对于实时性的要求。与此同时，为了追求更高的算法效率，许多优秀的启发式算法被提出以降低影响最大化问题求解时间。下面对启发式算法相关研究进行介绍。
+算法\ref{alg_craigchar} 的每一个循环将向$FSAT_R(\vec{a})$ 中加入至少一个$\vec{a}$ 的赋值。
+这意味着$FSAT_R(\vec{a})$ 覆盖了$\vec{a}$的一个有界并且单调增长的赋值集合。
+因此算法\ref{alg_craigchar} 是停机的。
 
-最基本的启发式算法是David Kempe等人提出的Random、Degree和Centrality启发式\upcite{kempe2003}。其中Random启发式没有考虑任何影响度和影响传播的因素，而仅仅是从目标社会网络$G$中所有节点集合$V$ 中随机选择$K$个节点。相比之下，Degree和Centrality启发式更优，两者均依据节点的一些网络拓扑特性来定位网络中影响最大节点。Degree启发式借鉴了社会性研究中\upcite{albert2000}以节点的度数来衡量节点影响力的思想，因此Degree启发式将网络中所有节点按照度数排序，选择度数最大的$K$个节点。同Degree启发式类似，Centrality启发式认为网络中同其他节点平均距离最近的节点有更大的几率可以影响其他节点，因此Centrality启发式按照节点同网络中其他节点的平均距离进行排序，选择平均距离最近的$K$个节点。很明显，上述三种基本启发式算法思路简单，因此执行时间很短，仅仅需要几秒钟，甚至几毫秒。然而由于它们没有考虑节点的实际影响值以及影响传播的因素，因此其算法精度十分差。
+\section{本章小结}
+本章综述了Craig插值算法的原理及其实现，
+以及基于该实现的迭代是特征化算法。
+这些算法将在本文的剩余部分被其他算法频繁调用。
 
-基于Degree启发式，Wei Chen等人于2009年提出了一种针对独立级联模型的启发式算法DegeeDiscount。该启发式的核心思想是：如果节点$v$的邻居节点中存在节点$u$被选为有影响力的种子节点，则由于两者之间影响力的重叠，需要对节点$v$的度数进行定量折扣。具体折扣方式如算法\ref{alg:203}所示。实验结果表明，DegeeDiscount启发式的算法精度比Degree启发式有大幅度改进，然而仍然无法同上述贪心算法相提并论。
-\begin{algorithm}
-\caption{DegeeDiscount算法}
-\label{alg:203}
-\begin{algorithmic}[1]
-\REQUIRE ~~\
-社会网络 $G=(V,E,W)$, 参数 $K$
-\ENSURE ~~\
-大小为$K$的最有影响力节点集合$S$
-\STATE 初始化集合为空集$S=\emptyset $；\label{alg:DegeeDiscount:1}
-\FOR{图$G$中任意节点$v$} \label{alg:DegeeDiscount:2}
-    \STATE $dd_v=d_v$；\label{alg:DegeeDiscount:3}
-    \STATE $t_v =0$； \label{alg:DegeeDiscount:4}
-\ENDFOR\label{alg:DegeeDiscount:5}
-\FOR{$i=1$ to $K$}\label{alg:DegeeDiscount:6}
-    \STATE $u = \arg\max _v \{dd_v | v\in {V\backslash S} \}$；\label{alg:DegeeDiscount:7}
-    \STATE $S = S \cup \{u\}$；\label{alg:DegeeDiscount:8}
-    \FOR{节点$u$的任意邻居$v\in {V\backslash S}$} \label{alg:DegeeDiscount:9}
-        \STATE $t_v =t_v+1$；\label{alg:DegeeDiscount:10}
-        \STATE $dd_v =d_v-2t_v-(d_v-t_v)\cdot t_v\cdot p$；\label{alg:DegeeDiscount:11}
-    \ENDFOR\label{alg:DegeeDiscount:12}
-\ENDFOR\label{alg:DegeeDiscount:13}
-\end{algorithmic}
-\end{algorithm}
 
-2010年的SIGKDD国际会议上，Wei Chen等人在文章\upcite{chen2010}中提出了针对独立级联模型的启发式算法PMIA。首先Wei Chen等人证明在独立级联模型下，计算给定初始活跃集合的影响值是\#P-Hard问题，之后作者提出了一种基于局部影响的启发式算法PMIA。PMIA之所以计算效率高并具有良好可扩展性是因为PMIA启发式以节点在其周边局部区域的影响值来近似其全局影响值，通过最大影响路径来构建最大影响子树（Maximum Influence Arborescence，MIA）模型，并通过调控最大影响子树的大小来达到算法执行效率和算法精度之间的折衷。作者证明在MIA模型下影响函数依然符合子模特性，因此贪心算法可以达到\begin{math}1-1/e-\varepsilon\end{math}的近似最优。为了追求更高的执行效率，作者提出了基于MIA模型的的启发式PMIA。PMIA 仅仅需要计算节点在局部区域的影响值，并对局部相关的节点进行影响值更新，因此计算效率更高。不过，很明显PMIA启发式以局部近似最优的方式虽然提高了效率，但是另一方面却损失了精度，造成了算法精度过低。
-
-同年，Wei Chen等人在ICDM国际会议上发表文章\upcite{ldag}，并在文章中首次提出了针对线性阈值模型的LDAG启发式。同文章\upcite{chen2010}类似，作者首先证明了在线性阈值模型下计算给定初始活跃集合的影响值是\#P-Hard问题。作者发现在有向无环图（DAG）中可以快速得到节点的影响值，因此，作者提出了基于DAG图的高效LDAG启发式。该启发式首先基于局部性原理通过删除部分权重低的边为社会网络中各个节点建立局部DAG 图，之后在构建的有向无环图中计算各个节点的影响值，选择影响值最大的节点作为算法结果。实验证明，LDAG算法可以显著加速线性阈值模型下的影响最大化问题求解。然而同PMIA启发式一样，LDAG获得的速度提升同样是以牺牲算法精度的代价的。
-
-Qingye Jiang等人\upcite{sa}利用模拟退火（Simulated Annealing）原理设计了SA算法去求解影响最大化问题。SA算法的核心思想是：最初在整个网络图中随机选择$K$个节点作为初始节点，之后通过多轮迭代，在每轮迭代中随机更改任意一个节点，计算新节点集合的影响值。如果新的节点集合影响值大，则采用新的节点集合，否则基于模拟退火原理以一定概率接受新节点集合。该迭代过程的迭代次数由初始温度、最终温度、温度变化量和内部迭代次数四个变量确定。在此基础上，作者还提出两种优化算法SADEV和SASH。SADEV算法的改进同样基于局部性原理，在每次计算节点集合影响值的时候只考虑节点一跳范围内的影响力，从而减少计算量。而SASH算法则利用两个启发式来提高模拟退火过程的收敛速度：（1）选择节点的时候只选择固定阈值之外可达的节点，（2）选择节点的时候考虑仅仅单个节点的影响值。实验结果证明两种优化方法可以显著提高SA算法的运行速度。
-
-2011年，Amit Goyal等人对LDAG启发式进行了深入分析，发现其存在以下缺点：（1）采用贪心策略构建有向无环图，从而影响了算法精度；（2）LDAG仅仅考虑了在LDAG之内的影响传播，然而实际中存在很多路线，这些影响传播被忽略；（3）需要存储所有的有向无环图，存储空间占用大。针对上述问题，作者设计了SIMPATH启发式。该启发式通过技术从种子节点开始的简单路径来准确估计节点的影响值。除此之外，作者还提出了节点覆盖优化（Vertex Cover OPTIMIZATION）方法和前瞻优化（Look Ahead OPTIMIZATION）方法。其中节点覆盖优化方法用于降低在第一轮迭代中影响值计算的次数，从而降低了算法复杂度和第一轮的算法执行时间。之后前瞻优化方法在后续轮次的影响值计算过程中通过参数$l$来进一步降低算法执行时间。通过在真实数据集上进行实验证明，SIMAPTH启发式在算法运行时间、算法精度和内存使用率等各方面均比LDAG等启发式更优。
-
-Kyomin Jung等人于2012年基于独立级联模型设计了新的IRIE启发式\upcite{irie}。传统的启发式和PMIA算法需要通过多轮模拟或者局部影响值计算的方式得到节点的影响值，从而选择出影响值最大的节点。然而针对大规模社会网络，计算所有节点的影响值是十分耗时的。因此，IRIE算法的新颖之处在于IRIE不需要计算各节点的影响值，而是基于信任传播（Belief Propagation）方法，仅需要很少轮迭代即可对全局节点的影响值进行排序，之后选择排序最高的节点作为最有影响力的节点。同时IRIE集合影响力估计方法，在每轮排序完成之后，估计最有影响力节点对网络中其他节点的影响，之后根据结果调整下一轮影响力排序。IRIE集合了影响力排序（Influence Ranking）和影响力估计（Influence Estimation）两种方法，因此同独立级联模型启发式PMIA比起来，其速度更快，平均高出两个数量级。同时其精度跟PMIA持平。
-
-通过上述大量启发式研究，影响最大化问题的效率问题得到了很好地改进。但是这些启发式算法虽然在有效缩短了算法的执行时间，但同时也带来了严重的精度下降的问题。这是因为这些启发式算法通过近似估计节点影响值，甚至根本不计算节点影响值的方式选择最有影响力节点。故其算法复杂度低、运行时间短，但其精度无法得到保障，不能同前述贪心算法相媲美。
-
-\section{影响最大化问题延伸与变形} \label{sec:24}
-随着学术界对于影响最大化问题研究的不断深入，影响最大化问题自身被不断地延伸、变形和扩展，被不断用于解决社会网络一级其他研究领域的更多研究问题。在本节，我们对于影响最大化问题的延伸与变形相关研究进行详细阐述。
-\subsection{影响最大化问题延伸}\label{sec:241}
-基本的影响最大化问题中影响传播的主体为单一主题，例如在社会网络中对某一种商品进行市场营销；以及在网络中进行某一条信息的传播。然而在现实世界中，同一社会网络中往往同时传播的主体有多种。在传播过程中多种主体之间可能互不影响，不过更有趣的情况是两种或者多种主体之间相互竞争、各自争取最大传播范围；或者相互帮助、共同争取最大的传播范围。其中，竞争环境下的影响最大化问题有更多的应用场景，因此吸引了更多的关注和研究\upcite{carnes2007,bharathi2007,budak2011,he2011,tsai2012}。
-
-竞争环境下的影响最大化问题按照问题目标的不同主要分为两种：其一是最大化自己的影响传播范围；其二是最小化对手的影响传播范围。两个目标看似一致、相辅相成，但其实质不同。因为最大化自己影响传播范围的同时，不一定会最小化甚至影响对手的传播范围；反之亦然。
-
-最早的竞争环境下的影响最大化问题研究来自于2007年康奈尔大学的Tim Carnes等人\upcite{carnes2007}以及南加利福尼亚大学的Shishir Bharathi等人\upcite{bharathi2007}，两者目标均是是自身影响最大化。在文章\upcite{bharathi2007} 中，Bharathi 等人基于扩展的独立级联模型以融入竞争因素，不过作者仅仅给出了基于一种特殊的双向树（Bi-directed Tree）网络结构下的近似算法FPTAS。 同年，Carnes等人\upcite{carnes2007}提出了两种距离模型和波浪传播两种竞争传播模型，并证明了在两种模型下，竞争影响最大化问题是NP-Hard问题，同时使用贪心爬山算法可以达到\begin{math}1-1/e-\varepsilon\end{math}的近似最优。另外，Wanshiou Yang等人\upcite{yang2012}借鉴了群体智能（Swarm Intelligence）的思想，采用了蚁群优化算法（Ant Colony Optimization Algorithm）来解决竞争影响最大化问题。Nam P. Nguyen等人\upcite{nguyen2012c}的研究目标同上述研究不同。他们的研究目标是如何定位最少数量的初始活跃节点，通过扩散传播，最终使得竞争对手的最终影响范围少于给定的比例。作者首先提出了爬山贪心算法并证明贪心算法可以\begin{math}1-1/e-\varepsilon\end{math}地近似最优结果，另一方面为了追求更好的求解速度，作者提出了一种基于社区的启发式策略。作者通过实验验证了所提出方法的有效性。
-
-在使对方影响最大化问题方面，加州大学圣巴巴拉分校的Ceren Budak等人于2011年首先进行了相关研究。在文章\upcite{budak2011}中，Budak等人基于扩展的独立级联模型证明了竞争影响最小化问题是NP-Hard问题，并将贪心贪心算法同三种启发式算法进行了性能比较。而在文献\upcite{he2011}中，Xinran He等人在线性阈值模型中考虑了多主题竞争因素，并证明在此模型下竞争影响最小化问题中的目标函数符合子模特性，因此使用贪心爬山策略可以达到\begin{math}1-1/e-\varepsilon\end{math}的近似最优；为了改进贪心爬山方法的计算效率问题，He等人提出了一种高效启发式CLDAG 来弥补贪心算法运行时间长的不足。2012年，Jason Tsai等学者\upcite{tsai2012}基于博弈论（Game Theory）方法研究了竞争影响最小化问题，并设计了一种启发式混合策略用于问题求解。
-
-\subsection{影响最大化问题变形}\label{sec:241}
-传统的影响最大户问题视图定位$K$个初始活跃节点从而达到最大的影响范围，而在文章\upcite{long2011,goyal2012mini}中，作者考虑为了最终影响给定数量的节点，如何选择最小数量的初始活跃节点的问题。在文章\upcite{goyal2012mini} 中，Amit Goyal 等人证明了该问题的目标函数符合子模特性，因此可以采用贪心爬山算法进行近似求解。除此之外，Cheng Long等人在文章\upcite{long2011}中证明了该问题为NP-Hard问题。另外，作者考虑了当目标节点集合为整体网络时，并提出了相应的求解算法。
-
-英属哥伦比亚大学的Amit Goyal等人还研究了影响传播的时间最小化问题\upcite{goyal2012mini}，即为了最终影响给定数量的节点，如何定位$k$个节点才能使得在最短的时间内激活社会网络中给定数量的节点。同样作者提供了基本的贪心算法用于该问题的求解。
-
-另外，在文章\upcite{lappas2010}中，作者提出了一个新的k-Effector问题，即如果已知网络$(V,E)$中某节点集合$S$，如何选择大小为$K$的起始活跃节点集合，使得经过影响传播，最终的活跃节点和集合$S$一致程度最高。作者证明了在独立级联模型下，该问题是NP-Hard；并给出了一种基于树形结构的动态规划算法来求解k-Effector问题。
-
-基于影响最大化问题，在文章\upcite{lappas2009}中，Theodoros Lappas等人研究了团队组成（Team Formation）问题，即给定任务$T$（需要不同的技能组合才能完成）；备选人才集合$X$ （每个人都有自己的技能储备）以及人才集合的社会网络（人与人之间边的权重代表了两者间的交互代价，代价越小则两者能更加有效地合作）。如何从集合$X$中进行团队组织，找到人才集合$X'$ 来执行该任务T使得集合$X'$中交互代价之和最小。作者基于图直径和最小生成树来定义了两种不同的交互代价确定方法，证明了在两种方法下，团队组成问题均为NP-hard，并针对两种方法设计了相应的求解算法。
-
-\section{小结}
-
-本章对社会网络的基本概念、以及社会网络中影响最大化问题的主要研究方法进行了综述。在算法方面，现有工作重点研究了贪心算法和启发式策略，在这两个方面取得了很多突破性成果。但是通过分析，我们发现已有的改进工作仍然存在各自的不足之处，因而为进一步的研究和改进留下了充足的空间。本文将以大规模社会网络影响最大化问题的实时处理技术为出发点，针对贪心算法计算效率低和启发式算法精度差的问题，展开深入研究。

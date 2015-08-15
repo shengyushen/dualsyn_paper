@@ -1,12 +1,111 @@
 \BOOKMARK [0][-]{section*.4}{摘 要}{}% 1
 \BOOKMARK [0][-]{section*.5}{ABSTRACT}{}% 2
 \BOOKMARK [0][-]{chapter.1}{绪论}{}% 3
-\BOOKMARK [1][-]{section.1.1}{无线传感器网络研究概述}{chapter.1}% 4
-\BOOKMARK [2][-]{subsection.1.1.1}{基本概念和特点}{section.1.1}% 5
-\BOOKMARK [2][-]{subsection.1.1.2}{研究现状}{section.1.1}% 6
-\BOOKMARK [1][-]{section.1.2}{无线传感器网络拓扑压缩}{chapter.1}% 7
-\BOOKMARK [2][-]{subsection.1.2.1}{研究意义}{section.1.2}% 8
-\BOOKMARK [2][-]{subsection.1.2.2}{研究挑战}{section.1.2}% 9
-\BOOKMARK [1][-]{section.1.3}{研究内容与创新点}{chapter.1}% 10
-\BOOKMARK [1][-]{section.1.4}{论文组织结构}{chapter.1}% 11
-\BOOKMARK [0][-]{section*.11}{参考文献}{}% 12
+\BOOKMARK [1][-]{section.1.1}{背景知识}{chapter.1}% 4
+\BOOKMARK [2][-]{subsection.1.1.1}{基本记法}{section.1.1}% 5
+\BOOKMARK [2][-]{subsection.1.1.2}{命题逻辑可满足性问题}{section.1.1}% 6
+\BOOKMARK [2][-]{subsection.1.1.3}{MiniSat 求解器的递增求解机制}{section.1.1}% 7
+\BOOKMARK [2][-]{subsection.1.1.4}{有限状态机}{section.1.1}% 8
+\BOOKMARK [1][-]{section.1.2}{对偶综合研究现状}{chapter.1}% 9
+\BOOKMARK [2][-]{subsection.1.2.1}{早期的充分非完备算法}{section.1.2}% 10
+\BOOKMARK [2][-]{subsection.1.2.2}{完备停机算法}{section.1.2}% 11
+\BOOKMARK [2][-]{subsection.1.2.3}{在对偶综合领域的其他的相关工作}{section.1.2}% 12
+\BOOKMARK [1][-]{section.1.3}{基于白盒模型的对偶综合}{chapter.1}% 13
+\BOOKMARK [2][-]{subsection.1.3.1}{研究意义}{section.1.3}% 14
+\BOOKMARK [1][-]{section.1.4}{研究内容与创新点}{chapter.1}% 15
+\BOOKMARK [1][-]{section.1.5}{论文组织结构}{chapter.1}% 16
+\BOOKMARK [0][-]{chapter.2}{基于余因子和Craig插值的迭代特征化算法}{}% 17
+\BOOKMARK [1][-]{section.2.1}{问题描述}{chapter.2}% 18
+\BOOKMARK [1][-]{section.2.2}{Craig插值的原理和实现}{chapter.2}% 19
+\BOOKMARK [2][-]{subsection.2.2.1}{相关背景知识和记法}{section.2.2}% 20
+\BOOKMARK [2][-]{subsection.2.2.2}{不可满足证明}{section.2.2}% 21
+\BOOKMARK [2][-]{subsection.2.2.3}{Craig插值算法}{section.2.2}% 22
+\BOOKMARK [1][-]{section.2.3}{非迭代的特征化算法}{chapter.2}% 23
+\BOOKMARK [1][-]{section.2.4}{迭代的特征化算法}{chapter.2}% 24
+\BOOKMARK [1][-]{section.2.5}{本章小结}{chapter.2}% 25
+\BOOKMARK [0][-]{chapter.3}{面向流控机制的对偶综合}{}% 26
+\BOOKMARK [1][-]{section.3.1}{ 引言}{chapter.3}% 27
+\BOOKMARK [1][-]{section.3.2}{背景知识}{chapter.3}% 28
+\BOOKMARK [2][-]{subsection.3.2.1}{命题逻辑可满足问题}{section.3.2}% 29
+\BOOKMARK [2][-]{subsection.3.2.2}{MiniSat 求解器的递增求解机制}{section.3.2}% 30
+\BOOKMARK [2][-]{subsection.3.2.3}{有限状态机}{section.3.2}% 31
+\BOOKMARK [2][-]{subsection.3.2.4}{确认一个输入变量是否能够被输出变量的有限长序列唯一决定的停机算法}{section.3.2}% 32
+\BOOKMARK [1][-]{section.3.3}{识别流控变量}{chapter.3}% 33
+\BOOKMARK [2][-]{subsection.3.3.1}{识别流控变量}{section.3.3}% 34
+\BOOKMARK [2][-]{subsection.3.3.2}{使用增量SAT求解加速识别算法}{section.3.3}% 35
+\BOOKMARK [1][-]{section.3.4}{推导使得数据变量向量被唯一决定的谓词}{chapter.3}% 36
+\BOOKMARK [2][-]{subsection.3.4.1}{特征化使得特定CNF公式被满足的谓词}{section.3.4}% 37
+\BOOKMARK [2][-]{subsection.3.4.2}{推导使得 被唯一决定的谓词valid\(\)}{section.3.4}% 38
+\BOOKMARK [2][-]{subsection.3.4.3}{停机和正确性证明}{section.3.4}% 39
+\BOOKMARK [1][-]{section.3.5}{压缩迁移关系展开序列的长度}{chapter.3}% 40
+\BOOKMARK [2][-]{subsection.3.5.1}{压缩l 和r}{section.3.5}% 41
+\BOOKMARK [2][-]{subsection.3.5.2}{另一种可能的算法结构}{section.3.5}% 42
+\BOOKMARK [1][-]{section.3.6}{产生解码器函数}{chapter.3}% 43
+\BOOKMARK [2][-]{subsection.3.6.1}{产生的解码器函数}{section.3.6}% 44
+\BOOKMARK [2][-]{subsection.3.6.2}{产生的解码函数}{section.3.6}% 45
+\BOOKMARK [1][-]{section.3.7}{实验结果}{chapter.3}% 46
+\BOOKMARK [2][-]{subsection.3.7.1}{测试集}{section.3.7}% 47
+\BOOKMARK [2][-]{subsection.3.7.2}{PCI Express 2.0 编码器}{section.3.7}% 48
+\BOOKMARK [2][-]{subsection.3.7.3}{10G 以太网编码器XGXS}{section.3.7}% 49
+\BOOKMARK [2][-]{subsection.3.7.4}{UltraSPARC T2 以太网编码器}{section.3.7}% 50
+\BOOKMARK [2][-]{subsection.3.7.5}{针对不具备流控机制的编码器比较我们的算法和现有算法}{section.3.7}% 51
+\BOOKMARK [2][-]{subsection.3.7.6}{比较两种可能性：同时增长p, l 和r 或者单独增长}{section.3.7}% 52
+\BOOKMARK [2][-]{subsection.3.7.7}{在压缩和不压缩l 和r的两种算法之间比较运行时间，电路面积和延迟}{section.3.7}% 53
+\BOOKMARK [2][-]{subsection.3.7.8}{在我们的算法和手工书写的解码器之间比较电路面积和延迟}{section.3.7}% 54
+\BOOKMARK [1][-]{section.3.8}{相关工作}{chapter.3}% 55
+\BOOKMARK [2][-]{subsection.3.8.1}{对偶综合}{section.3.8}% 56
+\BOOKMARK [2][-]{subsection.3.8.2}{程序求反}{section.3.8}% 57
+\BOOKMARK [2][-]{subsection.3.8.3}{协议转换}{section.3.8}% 58
+\BOOKMARK [2][-]{subsection.3.8.4}{可满足赋值遍历}{section.3.8}% 59
+\BOOKMARK [2][-]{subsection.3.8.5}{基于Craig插值的逻辑综合算法}{section.3.8}% 60
+\BOOKMARK [1][-]{section.3.9}{结论}{chapter.3}% 61
+\BOOKMARK [0][-]{chapter.4}{面向流水线的对偶综合}{}% 62
+\BOOKMARK [1][-]{section.4.1}{引言}{chapter.4}% 63
+\BOOKMARK [1][-]{section.4.2}{背景知识}{chapter.4}% 64
+\BOOKMARK [2][-]{subsection.4.2.1}{命题逻辑可满足}{section.4.2}% 65
+\BOOKMARK [2][-]{subsection.4.2.2}{游有限状态机}{section.4.2}% 66
+\BOOKMARK [2][-]{subsection.4.2.3}{用于确定一个输入变量能否被输出向量的有限序列唯一决定的停机算法}{section.4.2}% 67
+\BOOKMARK [1][-]{section.4.3}{推导编码器的流水线结构}{chapter.4}% 68
+\BOOKMARK [2][-]{subsection.4.3.1}{流水线的一般性模型}{section.4.3}% 69
+\BOOKMARK [2][-]{subsection.4.3.2}{推导p, l 和r}{section.4.3}% 70
+\BOOKMARK [2][-]{subsection.4.3.3}{压缩r 和l}{section.4.3}% 71
+\BOOKMARK [2][-]{subsection.4.3.4}{推导流水线}{section.4.3}% 72
+\BOOKMARK [2][-]{subsection.4.3.5}{推导唯一决定输入的流水线级}{section.4.3}% 73
+\BOOKMARK [1][-]{section.4.4}{特征化输入向量和流水线级的布尔函数}{chapter.4}% 74
+\BOOKMARK [2][-]{subsection.4.4.1}{特征化最后一个流水线级的布尔函数}{section.4.4}% 75
+\BOOKMARK [2][-]{subsection.4.4.2}{特征化其他流水线级的布尔函数}{section.4.4}% 76
+\BOOKMARK [2][-]{subsection.4.4.3}{特征化输入变量的布尔函数}{section.4.4}% 77
+\BOOKMARK [1][-]{section.4.5}{实验结果}{chapter.4}% 78
+\BOOKMARK [1][-]{section.4.6}{相关工作}{chapter.4}% 79
+\BOOKMARK [1][-]{section.4.7}{结论}{chapter.4}% 80
+\BOOKMARK [0][-]{chapter.5}{面向流控机制和流水线的对偶综合}{}% 81
+\BOOKMARK [1][-]{section.5.1}{引言}{chapter.5}% 82
+\BOOKMARK [1][-]{section.5.2}{背景知识}{chapter.5}% 83
+\BOOKMARK [2][-]{subsection.5.2.1}{命题逻辑可满足}{section.5.2}% 84
+\BOOKMARK [2][-]{subsection.5.2.2}{有限状态机}{section.5.2}% 85
+\BOOKMARK [2][-]{subsection.5.2.3}{寻找的停机算法}{section.5.2}% 86
+\BOOKMARK [2][-]{subsection.5.2.4}{推导使得 被唯一决定的valid\(\) }{section.5.2}% 87
+\BOOKMARK [1][-]{section.5.3}{算法框架}{chapter.5}% 88
+\BOOKMARK [2][-]{subsection.5.3.1}{编码器的一般性模型}{section.5.3}% 89
+\BOOKMARK [2][-]{subsection.5.3.2}{算法框架}{section.5.3}% 90
+\BOOKMARK [1][-]{section.5.4}{推导流水线结构}{chapter.5}% 91
+\BOOKMARK [2][-]{subsection.5.4.1}{压缩r 和l}{section.5.4}% 92
+\BOOKMARK [2][-]{subsection.5.4.2}{推导流水线结构}{section.5.4}% 93
+\BOOKMARK [1][-]{section.5.5}{特征化流水线级和输入的布尔函数}{chapter.5}% 94
+\BOOKMARK [2][-]{subsection.5.5.1}{特征化最后一个流水线级的布尔函数}{section.5.5}% 95
+\BOOKMARK [2][-]{subsection.5.5.2}{特征化恢复其他流水线级的布尔函数}{section.5.5}% 96
+\BOOKMARK [2][-]{subsection.5.5.3}{特征化从第0级流水线恢复输入向量的布尔函数}{section.5.5}% 97
+\BOOKMARK [1][-]{section.5.6}{实验结果}{chapter.5}% 98
+\BOOKMARK [2][-]{subsection.5.6.1}{比较时间和面积}{section.5.6}% 99
+\BOOKMARK [2][-]{subsection.5.6.2}{PCIE推导的流水线结构}{section.5.6}% 100
+\BOOKMARK [2][-]{subsection.5.6.3}{xgxs推导的流水线结构}{section.5.6}% 101
+\BOOKMARK [2][-]{subsection.5.6.4}{t2ether推导的流水线结构}{section.5.6}% 102
+\BOOKMARK [1][-]{section.5.7}{相关工作}{chapter.5}% 103
+\BOOKMARK [2][-]{subsection.5.7.1}{对偶综合}{section.5.7}% 104
+\BOOKMARK [2][-]{subsection.5.7.2}{程序取反}{section.5.7}% 105
+\BOOKMARK [1][-]{section.5.8}{结论}{chapter.5}% 106
+\BOOKMARK [0][-]{chapter.6}{结束语}{}% 107
+\BOOKMARK [1][-]{section.6.1}{工作总结}{chapter.6}% 108
+\BOOKMARK [1][-]{section.6.2}{研究展望}{chapter.6}% 109
+\BOOKMARK [0][-]{chapter*.46}{致谢}{}% 110
+\BOOKMARK [0][-]{section*.47}{参考文献}{}% 111
