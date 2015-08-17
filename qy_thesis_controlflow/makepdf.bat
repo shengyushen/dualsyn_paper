@@ -5,3 +5,4 @@ bibtex thesis
 bibtex thesis
 xelatex thesis -c-style-errors --quiet
 xelatex thesis -c-style-errors --quiet
+acrobat thesis.pdf

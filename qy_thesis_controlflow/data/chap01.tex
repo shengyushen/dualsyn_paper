@@ -6,7 +6,7 @@
 这两个领域日新月异的发展，
 带来了对传输带宽永无止境的追求。
 常见的高性能传输协议，
-如以太网、InfiniBand和PCI Express等，
+如以太网\upcite{IEEE8023_S4}、InfiniBand\upcite{InfiniBand}和PCI Express\upcite{pcie21}等，
 其单通道带宽从本世纪初的3.125Gbps增长到目前的25Gbps。
 
 为了克服在高频信号衰减方面的挑战，
@@ -18,10 +18,10 @@
 并使用动态模拟器进行验证的阶段。
 
 而随着传输带宽的进一步提升，
-对于编码后信号白平衡性能的要求也日益严格(加一个注释)。
+对于编码后信号01平衡和游程长度的统计特性要求也日益严格\upcite{encode6466}。
 这就导致了在编码器中引进了更为复杂的，
 包含大量异或操作的线性移位寄存器组，
-如以太网标准clause 49的64/66加扰器和PCI Express标准的128/130编码器。
+如以太网标准clause 49的64/66加扰器\upcite{encode6466}和PCI Express标准的128/130编码器\upcite{pcie}。
 大量的异或操作使得编码器的映射表非常不规则，
 包含的corner case的数量随编码长度指数增长。
 这就对传统的动态模拟验证方法的完备性提出了严峻挑战。
@@ -33,11 +33,13 @@
 以此为起点，
 集成电路设计自动化领域的研究者们在该领域取得了大量的研究成果\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}。
 
-我们将在本章的剩余部分中首先介绍相关的背景知识，
-然后详细描述目前在该领域的研究成果。
+在本章的剩余部分中，
+我们将首先在小节\ref{sec_back}介绍相关的背景知识。
+然后在小节\ref{sec_now}详细描述目前在该领域的研究成果。
+然后在小节\ref{sec_whiteboxtodo}介绍基于白盒模型的对偶综合的研究意义和所面临的挑战。
+最后在小节\ref{sec_contest_innov}介绍本文的研究内容和创新点。
 
-
-\section{背景知识}
+\section{背景知识}\label{sec_back}
 本节将给出相关的背景知识。
 
 \subsection{基本记法}
@@ -59,7 +61,7 @@ $\vec{v}$中的变量个数记为$|\vec{v}|$。
 $[\![(v_1,v_2)]\!]=\{(0,0),(0,1),(1,0),(1,1)\}$。
 
 在变量集合$V$上的布尔逻辑公式$F$是通过以下连接符连接$V$上的变量得到的：
-包括$\neg$, $\wedge$, $\vee$和$\Rightarrow$，
+包括$\neg$， $\wedge$，$\vee$和$\Rightarrow$，
 他们分别代表着求反，与，或和蕴含操作。
 
 \subsection{命题逻辑可满足性问题}
@@ -90,8 +92,8 @@ SAT 求解器要求有待求解的公式使用合取范式(CNF)表示，
 
 从文献\upcite{EFFSATUSMCCO}可知，
 对于函数$f(v_1\dots v\dots v_n)$，
-针对变量$v$的正cofactor和负cofactor分别是$f_{v\equiv 1}=f(v_1\dots 1\dots v_n)$和$f_{v\equiv 0}=f(v_1\dots 0\dots v_n)$。
-而Cofactoring则代表着将1或者0赋予$v$以得到$f_{v\equiv 1}$ 和$f_{v\equiv 0}$。
+针对变量$v$的\textbf{正余因子}(cofactor)和\textbf{负余因子}分别是$f_{v\equiv 1}=f(v_1\dots 1\dots v_n)$ 和$f_{v\equiv 0}=f(v_1\dots 0\dots v_n)$。
+而\textbf{余因子化}则代表着将1或者0赋予$v$以得到$f_{v\equiv 1}$ 和$f_{v\equiv 0}$。
 
 给定两个布尔逻辑公式$\phi_A$ 和$\phi_B$，
 若$\phi_A\wedge \phi_B$ 不可满足，
@@ -130,7 +132,7 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 \end{enumerate}
 
 
-\subsection{有限状态机}
+\subsection{有限状态机}\label{subsec_fsm}
 
 如图\ref{c2_fsm}a)所示，
 本文中编码器使用有限状态机$M=(\vec{s},\vec{i},\vec{o},T)$作为模型。
@@ -158,17 +160,16 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 \end{figure}
 
 
-\section{对偶综合研究现状}
-本节将简述到目前为止，
-对偶综合领域取得的研究成果。
+\section{对偶综合研究现状}\label{sec_now}
+本节将简述对偶综合领域取得的研究成果。
 由于其中的若干算法也将在本论文的主要章节中被使用，
 因此其描述方式根据本论文的需要进行了修改。
 因此有可能和原始论文的描述方式有轻微出入。
 在阅读本论文是应以本小节的描述为准。
 
-\subsection{早期的充分非完备算法}
+\subsection{早期的充分非完备算法}\label{subsec_sound}
 
-国防科技大学的沈胜宇\upcite{ShenICCAD09}首次提出了对偶综合的概念和初步算法实现。
+国防科技大学的Shen et al.\upcite{ShenICCAD09}首次提出了对偶综合的概念和初步算法实现。
 该算法是充分非完备的，
 这意味着当特定编码器对应的解码器存在时，
 该算法总能找到其实现；
@@ -177,7 +178,7 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 
 对于每一个$i\in\vec{i}$，
 在展开的迁移函数序列上，
-如果存在三个参数$p$, $l$ 和$r$，
+如果存在三个参数$p$， $l$ 和$r$，
 使得对于输出序列$<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$的任意取值，
 $i_{p+l}$不能同时取值为0和1，
 则输入变量$i\in\vec{i}$可以被唯一决定。
@@ -207,12 +208,12 @@ F_{PC}(p,l,r):=
 % \end{split}
 \end{equation}
 
-\begin{figure}[b]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=\textwidth]{pc}
 \end{center}
 \caption{用于检查$i_{p+l}$ 是否能够被唯一决定的下估计算法}
-  \label{fig_pc}
+  \label{fig_pc_double}
 \end{figure}
 
 
@@ -221,19 +222,19 @@ $p$是前置迁移函数序列的长度，
 $l$ 和$r$则是两个用于唯一决定$i_{p+l}$的输出序列
 $<\vec{o}_{p+1},\dots,\vec{o}_{p+l}>$ 和$<\vec{o}_{p+l+1},\dots,\vec{o}_{p+l+r}>$
 的长度。
-等式(\ref{uniqt1}) 的行1对应于图\ref{fig_pc}左边的路径，
-而行2对应于图\ref{fig_pc}右边的路径。
+等式(\ref{uniqt1}) 的行1对应于图\ref{fig_pc_double}左边的路径，
+而行2对应于图\ref{fig_pc_double}右边的路径。
 他们的长度是相同的。
 行3强制这两条路径的输出是相同的。
 而行4要求他们的输入$i_{p+l}$ 是不同的。
 行5和6则是用户给出的断言，
 用于约束合法的输入模式。
 $F_{PC}$ 中的PC是"parameterized complementary"的缩写，
-意味着$F_{PC}(p,l,r)$ 被用于检查在三个参数 $p$,$l$ 和 $r$的情况下，
+意味着$F_{PC}(p,l,r)$ 被用于检查在三个参数 $p$，$l$ 和 $r$的情况下，
 $i_{p+l}$能否被唯一决定。
 
 
-从图\ref{fig_pc}可知，
+从图\ref{fig_pc_double}可知，
 等式(\ref{uniqt1}) 的前三行代表了两个具有相同输出的迁移函数展开序列。
 因此他们总是可满足的。
 而最后两行是对合法输入模式的约束。
@@ -241,31 +242,31 @@ $i_{p+l}$能否被唯一决定。
 所以$F_{PC}(p,l,r)$ 的不可满足意味着$i_{p+l}\equiv i'_{p+l}$，
 即输入被唯一决定。
 
-从图\ref{fig_pc}可知，
+从图\ref{fig_pc_double}可知，
 如果$F_{PC}(p,l,r)$ 不可满足
-则$F_{PC}(p',l',r')$ 对于更大的$p'\ge p$, $l'\ge l$ 和$r'\ge r$也不可满足。
+则$F_{PC}(p',l',r')$ 对于更大的$p'\ge p$， $l'\ge l$ 和$r'\ge r$也不可满足。
 从等式(\ref{uniqt1})中可知，
 $F_{PC}(p',l',r')$ 的短句集合是$F_{PC}(p,l,r)$的超集。
 这也指向了同一个结论。
 
 这意味着，
 $F_{PC}(p,l,r)$的不可满足性的限界证明可以被扩展到
-任意$p$, $l$ 和$r$上，
+任意$p$， $l$ 和$r$上，
 从而成为非限界的证明。
 
 \begin{proposition}\label{prop_pc1}
 如果$F_{PC}(p,l,r)$ 不可满足，
-则对于任意更大的$p$, $l$ 和$r$，
+则对于任意更大的$p$， $l$ 和$r$，
 $i_{p+l}$ 能够被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
 \end{proposition}
 
 
 上述命题仅考虑了输入向量$\vec{i}$中的一个输入变量$i$。
 当需要讨论整个$\vec{i}$时，
-我们需要将整体的$p$, $l$ 和$r$设置为最大值。
+我们需要将整体的$p$， $l$ 和$r$设置为最大值。
 即，
 假设对于$i\in\vec{i}$，
-其对应的唯一决定参数为$p_i$, $l_i$ 和$r_i$，
+其对应的唯一决定参数为$p_i$， $l_i$ 和$r_i$，
 则对于整个$\vec{i}$，
 其对应的唯一决定参数为：
 \begin{equation}\label{equ_maxplr}
@@ -304,44 +305,44 @@ r & :=  & max_{i\in\vec{i}} \{r_i\}
 这种极端情况也没有出现过。
 
 
-\subsection{完备停机算法}
+\subsection{完备停机算法}\label{subsec_complete}
 
 
 在上一小节，
 我讨论了当$F_{PC}(p,l,r)$ 不可满足时，
-$i_{p+l}$能够针对任意$p$, $l$ 和$r$被唯一决定。
+$i_{p+l}$能够针对任意$p$， $l$ 和$r$被唯一决定。
 另一方面，
 如果$F_{PC}(p,l,r)$ 是可满足的，
-则$i_{p+l}$ 不能在特定的$p$, $l$ 和$r$情况下被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$唯一决定。
+则$i_{p+l}$ 不能在特定的$p$， $l$ 和$r$情况下被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$唯一决定。
 此时存在两种可能性：
 \begin{enumerate}
  \item
-在更大的$p$, $l$ 和$r$情况下$i_{p+l}$能够被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
+在更大的$p$， $l$ 和$r$情况下$i_{p+l}$能够被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
  \item
-对任意$p$, $l$ 和$r$，$i_{p+l}$ 都不能够被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
+对任意$p$， $l$ 和$r$，$i_{p+l}$ 都不能够被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
 \end{enumerate}
 
 如果是第一种情况，
-则通过迭代的增长$p$, $l$ 和$r$，
+则通过迭代的增长$p$， $l$ 和$r$，
 $F_{PC}(p,l,r)$ 总能够变成不可满足。
 然而对于第二种情况，
-迭代的递增$p$, $l$ 和$r$将导致不停机。
+迭代的递增$p$， $l$ 和$r$将导致不停机。
 
-\begin{figure}[b]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=\textwidth]{ln}
 \end{center}
 \caption{用于检查$i_{p+l}$ 是否不能被唯一决定的上估计算法}
-  \label{fig_ln}
+  \label{fig_ln_double}
 \end{figure}
 
 因此，
 为了得到一个停机算法，
 我们需要区分上述两种情形的手段。
-国防科技大学的沈胜宇\upcite{ShenTCAD11}和Liu et al.\upcite{LiuICCAD11}分别独立提出了类似的全新的解决方案。
-该方案如图\ref{fig_ln}所示，
-该图类似于图\ref{fig_pc}，
-但是增加了三个约束用于检测三个路径$<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ 和
+国防科技大学的Shen et al.\upcite{ShenTCAD11}和Liu et al.\upcite{LiuICCAD11}分别独立提出了类似的全新的解决方案。
+该方案如图\ref{fig_ln_double}所示，
+该图类似于图\ref{fig_pc_double}，
+但是增加了三个约束用于检测三个路径$<\vec{s}_{0},\dots,\vec{s}_{p}>$，$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ 和
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$上的环。
 该方法被形式化的定义于等式(\ref{uniqln}) 中。
 
@@ -366,23 +367,27 @@ $F_{LN}$ 中的LN意味着环形非对偶。
 则$i_{p+l}$ 不能被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$唯一决定。
 更重要的，
 通过展开这三个环，
-我们能将这个结论扩展到任意更大的$p$, $l$ 和$r$上。
+我们能将这个结论扩展到任意更大的$p$， $l$ 和$r$上。
 这意味着：
 
 \begin{proposition}\label{prop_ln1}
 当$F_{LN}(p,l,r)$ 可满足时，
-$i_{p+l}$ 针对任意$p$, $l$ 和$r$都不能被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
+$i_{p+l}$ 针对任意$p$， $l$ 和$r$都不能被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
 \end{proposition}
 
 
 
 \begin{algorithm}[t]
 \caption{$CheckUniqueness(i)$:用于检测$i\in\vec{i}$是否能够被$\vec{o}$的有限长度序列唯一决定的停机算法}
-\label{alg_pcln}
+\label{alg_pcln_chap1}
 \begin{algorithmic}[1]
-\STATE $p$:= 0; ~$l$:= 0;~$r$:= 0
+\STATE $p$:= 0;
+\STATE $l$:= 0;
+\STATE $r$:= 0;
 \WHILE {$1$}
-\STATE $p$++;~$l$++;~$r$++ ;
+\STATE $p$++;
+\STATE $l$++;
+\STATE $r$++ ;
 \IF{$F_{PC}(p,l,r)$ 不可满足}\label{linepc1}
 \RETURN ($1$,$p$,$l$,$r$)\label{lineln1};
 \ELSIF{$F_{LN}(p,l,r)$ 可满足}\label{lnsat}
@@ -399,23 +404,23 @@ $i_{p+l}$ 针对任意$p$, $l$ 和$r$都不能被$<\vec{o}_{p},\dots,\vec{o}_{p+
 
 
 
-根据命题\ref{prop_pc1} 和\ref{prop_ln1},
-我们能将针对特定$p$, $l$ 和$r$的限界证明扩展到针对任意$p$, $l$ 和$r$的非限界情形。
-这使得我们得到停机算法\ref{alg_pcln}，
+根据命题\ref{prop_pc1} 和\ref{prop_ln1}，
+我们能将针对特定$p$， $l$ 和$r$的限界证明扩展到针对任意$p$， $l$ 和$r$的非限界情形。
+这使得我们得到停机算法\ref{alg_pcln_chap1}，
 用于检测$i\in\vec{i}$是否能被$\vec{o}$的有限长度序列唯一决定。
 \begin{enumerate}
  \item
 一方面，
-如果确实存在$p$, $l$ 和$r$，使得输入能被输出唯一决定，
-令$p':=max(p,l,r)$,$l':=max(p,l,r)$ 和$r':=max(p,l,r)$。
+如果确实存在$p$， $l$ 和$r$，使得输入能被输出唯一决定，
+令$p':=max(p,l,r)$，$l':=max(p,l,r)$ 和$r':=max(p,l,r)$。
 从命题\ref{prop_pc1}，
 可知$F_{PC}(p',l',r')$ 是不可满足的。
-因此$F_{PC}(p,l,r)$ 总能够在算法\ref{alg_pcln}行\ref{linepc1}成为不可满足的并退出循环；
+因此$F_{PC}(p,l,r)$ 总能够在算法\ref{alg_pcln_chap1}行\ref{linepc1}成为不可满足的并退出循环；
  \item
 另一方面，
-如果不存在这样的$p$, $l$ 和$r$，
-则$p$, $l$ 和$r$ 在不断的递增之后最终总能够大于有限状态机的最大无环路径长度。
-这意味着在$<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ 和
+如果不存在这样的$p$， $l$ 和$r$，
+则$p$， $l$ 和$r$ 在不断的递增之后最终总能够大于有限状态机的最大无环路径长度。
+这意味着在$<\vec{s}_{0},\dots,\vec{s}_{p}>$，$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ 和
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$上都存在环。
 这将使得$F_{LN}(p,l,r)$ 在行\ref{lnsat}被满足。这样将导致退出循环。
 \end{enumerate}
@@ -427,12 +432,12 @@ $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$上都存在环。
 
 \subsection{在对偶综合领域的其他的相关工作}
 
-沈胜宇\upcite{ShenTCAD12}和Liu et al.\upcite{LiuICCAD11} 独立的发现可以通过Craig插值加速解码器的生成。
+Shen et al.\upcite{ShenTCAD12}和Liu et al.\upcite{LiuICCAD11} 独立的发现可以通过Craig 插值加速解码器的生成。
 该算法还将作为下一章的一部分单独介绍，
 因此不在这里展开描述。
 
-沈胜宇\upcite{ShenTCAD12} 自动的发掘能够使得解码器存在的前提条件。
-并首次发现在同一个前提条件下，
+Shen et al.\upcite{ShenTCAD12} 自动的发掘能够使得解码器存在的前提条件，
+首次发现在同一个前提条件下，
 存在多个不同的解码器。
 为了方便用户区分和选择，
 该文还提出了单独的算法来寻找所有这些解码器，
@@ -446,23 +451,124 @@ Tu et al.\upcite{TuDAC13}提出了一个突破性的算法，
 
 
 
-\section{基于白盒模型的对偶综合}
-本节阐述基于白盒模型的对偶综合技术的重要研究意义，并讨论从事该研究所面临的主要挑战。
+\section{基于白盒模型的对偶综合}\label{sec_whiteboxtodo}
+本节阐述基于白盒模型的对偶综合技术的重要研究意义
+%，并讨论从事该研究所面临的主要挑战
+。
+
+
+
 \subsection{研究意义}
 
-现代复杂通讯协议的编码器中，广泛采用了流水线和流控机制\cite{flowcontrol}技术。
+现代复杂通讯协议的编码器中，广泛采用了流水线和流控机制\upcite{flowcontrol}技术。
 以提高性能并增强对环境的适应能力。
 而目前在对偶综合方面的所有研究工作\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 均基于黑盒模型，
 完全忽视上述的内部结构，
 从而无法发挥上述内部结构在性能和适应性方面的优势。
 
+\subsubsection{流控机制}
+首先，
+目前所有对偶综合算法算法\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}的一个前提假设是，
+编码器的输入变量$\vec{i}$总能够被输出变量$\vec{o}$的一个有限长度序列唯一决定。
+
+然而，
+许多高速通讯系统的编码器带有流控机制\upcite{flowcontrol}，
+而该机制直接违反了上述假设。
+图\ref{fig_nonuniq_chap1}a)展示了一个带有流控机制的通讯系统的结构。
+其中一个传输器(transmitter)和一个接收器(receiver)通过一个编码器(encoder)和一个解码器(decoder)连接在一起。
+从传输器到编码器有两个输入变量：
+有待编码的数据位$d$，
+和代表$d$的有效性的有效位$f$。
+图\ref{fig_nonuniq_chap1}b)给出了编码器如何将
+$f$和$d$映射到输出变量$\vec{o}$的编码表。
+
+流控机制的工作原理为：
+\begin{enumerate}
+\item
+当接收器能够跟上发送器的速度时，
+发送器将$f$设为1，
+这使得编码器按照$d$的值发送$D_d$。
+从图\ref{fig:nonuniq}b)的编码表可知，
+解码器总能够根据$D_d$恢复$f$和$d$。
+\item
+而当接收器无法跟上发送器的速度时，
+发送器将$f$设为0以阻止编码器继续发送$D_d$，
+转而在不考虑$d$的情况下发送空闲符号$I$。
+而解码器应当识别并淘汰$I$，
+并将$f\equiv 0$发送给接收器。
+此时$d$的具体值并不重要。
+\end{enumerate}
+
+上述流控机制能够防止快速发送器发送过多数据以至于接收器无法处理。
+然而该机制违反了迄今为止所有对偶综合算法
+\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+的基本假设，
+因为$d$无法被$I$唯一决定。
+
+
+\begin{figure}
+\centerline{\includegraphics[width=\textwidth]{nonuniq}}
+\caption{带有流控机制的通讯系统及其编码器}
+\label{fig_nonuniq_chap1}
+\end{figure}
+
+因此，
+如何在对偶综合算法中处理流控机制，
+是一件非常有意义的研究工作。
+
+\subsubsection{流水线结构}
+
+通过研究现有的工业界编码器，我们发现他们都含有流水线结构以提高运行频率。
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=\textwidth]{pipeline_pipeline}
+\end{center}
+\caption{带有流水线的编码器和解码器}
+  \label{fig_pipe_chap1}
+\end{figure}
+
+一个带有流水线的简单编码器如图\ref{fig_pipe_chap1}a)所示。
+他的关键数据路径被第一级流水线切割成为两段，
+从而使得运行频率得到两倍的提升。
+
+他的第一级流水线$\vec{stg}^0$ 包含数个寄存器。
+其中输入变量$\vec{i}$ 被用于计算该级流水线$\vec{stg}^0$，
+而流水线$\vec{stg}^0$ 则被用于计算$\vec{o}$。
+根据该结构，
+$\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
+而$\vec{i}$ 能够被$\vec{stg}^0$唯一决定。
+
+因此，
+一个由人类程序员设计的合理解码器，
+应当如图\ref{fig_pipe_chap1}b)所示，
+从$\vec{o}$ 中使用组合逻辑$C^1$恢复$\vec{stg}^0$ ，
+并进一步使用组合逻辑$C^0$从$\vec{stg}^0$ 中恢复$\vec{i}$ 。
+在此类解码器中，
+关键路径被流水线级$\vec{stg}^0$切断，
+以改善时序。
+
+然而，
+目前所有的对偶综合算法\cite{ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+均使用Jiang提出的基于\cite{Craig}的算法 \cite{InterpBoolFunction}。
+如图\ref{fig_pipe_chap1}c)所示，
+这些算法从$\vec{o}$中使用一个大型组合逻辑$C^0*C^1$直接恢复$\vec{i}$，
+这使得他们变得不必要的很慢，因为没有流水线寄存器切断这段复杂逻辑。
+
+因此，
+如何在对偶综合算法中，
+产生具有流水线结构的解码器，
+是另一件非常有意义的研究工作。
+
+
+
+%\subsection{面临的挑战}
 
 
 
 
 
-\section{研究内容与创新点}
+\section{研究内容与创新点}\label{sec_contest_innov}
 为了克服上述问题，
 本文基于白盒模型，
 探索了如何在对偶综合中发掘编码器的内部结构信息，
@@ -503,14 +609,14 @@ Tu et al.\upcite{TuDAC13}提出了一个突破性的算法，
 $\vec{d}$才能够被$\vec{o}$唯一决定。
 为此，
 我们创造性的提出了能够处理流控机制的对偶综合算法：
-\textbf{首先},
+\textbf{首先}，
 它使用经典的对偶综合算法\upcite{ShenTCAD11}
 以识别那些能够被唯一决定的输入变量，
 并称他们为流控变量$\vec{f}$。
 而其他不能被唯一决定的变量称为数据变量$\vec{d}$。
 \textbf{第二}，该算法推导一个充分必要谓词$valid(\vec{f})$使得$\vec{d}$能够被
 输出变量$\vec{o}$的一个有限长度序列唯一决定。
-\textbf{第三},
+\textbf{第三}，
 对于每一个流控变量$f\in\vec{f}$，
 该算法使用Craig插值算法\upcite{interp_McMillan}特征化其解码器函数。
 同时，

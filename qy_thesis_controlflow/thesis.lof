@@ -1,21 +1,17 @@
 \contentsline {figure}{\numberline {1.1}{\ignorespaces 有限状态机及其迁移关系的展开\relax }}{3}{figure.caption.7}
 \contentsline {figure}{\numberline {1.2}{\ignorespaces 用于检查$i_{p+l}$ 是否能够被唯一决定的下估计算法\relax }}{4}{figure.caption.8}
 \contentsline {figure}{\numberline {1.3}{\ignorespaces 用于检查$i_{p+l}$ 是否不能被唯一决定的上估计算法\relax }}{6}{figure.caption.9}
-\contentsline {figure}{\numberline {2.1}{\ignorespaces 关系和函数的布尔映射\relax }}{12}{figure.caption.11}
-\contentsline {figure}{\numberline {3.1}{\ignorespaces 带有流控机制的通讯系统及其编码器\relax }}{18}{figure.caption.13}
-\contentsline {figure}{\numberline {3.2}{\ignorespaces 用于检查$i_{p+l}$ 是否能够被唯一决定的下估计算法\relax }}{21}{figure.caption.14}
-\contentsline {figure}{\numberline {3.3}{\ignorespaces 用于检查$i_{p+l}$ 是否不能被唯一决定的上估计算法\relax }}{22}{figure.caption.15}
-\contentsline {figure}{\numberline {3.4}{\ignorespaces $FSAT_{PC}(p,l,r)$ 和$FSAT_{LN}(p,l,r)$的单调性\relax }}{28}{figure.caption.16}
-\contentsline {figure}{\numberline {3.5}{\ignorespaces 通过将第$(p'+l')$步对准第$(p+l)$步映射$F'^d_{PC}(p',l',r',1)$ 到$F'^d_{PC}(p,l,r,1)$。\relax }}{33}{figure.caption.17}
-\contentsline {figure}{\numberline {3.6}{\ignorespaces 通过将第$(p+l)$步对准$(p'+l')$步并展开三个环，从而映射$F'^d_{LN}(p,l,r,1)$ 到$F'^d_{LN}(p',l',r',1)$ 。\relax }}{33}{figure.caption.18}
-\contentsline {figure}{\numberline {4.1}{\ignorespaces 带有流水线的编码器和解码器\relax }}{48}{figure.caption.29}
-\contentsline {figure}{\numberline {4.2}{\ignorespaces 下估计和上估计算法\relax }}{48}{figure.caption.30}
-\contentsline {figure}{\numberline {4.3}{\ignorespaces 编码器的一般性结构\relax }}{51}{figure.caption.31}
-\contentsline {figure}{\numberline {4.4}{\ignorespaces 从压缩的输出序列中恢复输入\relax }}{53}{figure.caption.32}
-\contentsline {figure}{\numberline {5.1}{\ignorespaces 带有流控机制的编码器\relax }}{60}{figure.caption.35}
-\contentsline {figure}{\numberline {5.2}{\ignorespaces 带有流水线和流控机制的编码器\relax }}{60}{figure.caption.36}
-\contentsline {figure}{\numberline {5.3}{\ignorespaces sound和complete方法\relax }}{61}{figure.caption.37}
-\contentsline {figure}{\numberline {5.4}{\ignorespaces The monotonicity of $FSAT_{PC}(p,l,r)$ and $FSAT_{LN}(p,l,r)$\relax }}{64}{figure.caption.38}
-\contentsline {figure}{\numberline {5.5}{\ignorespaces 包含流水线级和流控机制的一般性编码器模型\relax }}{66}{figure.caption.39}
-\contentsline {figure}{\numberline {5.6}{\ignorespaces 使用削减的输出序列恢复输入\relax }}{67}{figure.caption.40}
+\contentsline {figure}{\numberline {1.4}{\ignorespaces 带有流控机制的通讯系统及其编码器\relax }}{9}{figure.caption.10}
+\contentsline {figure}{\numberline {1.5}{\ignorespaces 带有流水线的编码器和解码器\relax }}{9}{figure.caption.11}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces 关系和函数的布尔映射\relax }}{16}{figure.caption.14}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces 带有流控机制的通讯系统及其编码器\relax }}{22}{figure.caption.16}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces $FSAT_{PC}(p,l,r)$ 和$FSAT_{LN}(p,l,r)$的单调性\relax }}{26}{figure.caption.17}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces 通过将第$(p'+l')$步对准第$(p+l)$步映射$F'^d_{PC}(p',l',r',1)$ 到$F'^d_{PC}(p,l,r,1)$。\relax }}{30}{figure.caption.18}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces 通过将第$(p+l)$步对准$(p'+l')$步并展开三个环，从而映射$F'^d_{LN}(p,l,r,1)$ 到$F'^d_{LN}(p',l',r',1)$ 。\relax }}{30}{figure.caption.19}
+\contentsline {figure}{\numberline {5.1}{\ignorespaces 带有流水线的编码器和解码器\relax }}{44}{figure.caption.30}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces 编码器的一般性结构\relax }}{44}{figure.caption.31}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces 从压缩的输出序列中恢复输入\relax }}{46}{figure.caption.32}
+\contentsline {figure}{\numberline {6.1}{\ignorespaces 带有流控机制的编码器\relax }}{52}{figure.caption.35}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces 带有流水线和流控机制的编码器\relax }}{52}{figure.caption.36}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces 使用削减的输出序列恢复输入\relax }}{53}{figure.caption.37}
 \contentsfinish 

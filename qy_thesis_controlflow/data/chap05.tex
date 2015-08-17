@@ -1,535 +1,342 @@
-
-
-
 % !Mode:: "Tex:UTF-8"
-\chapter{面向流控机制和流水线的对偶综合}
-\label{chap:4}
+\chapter{面向流水线的对偶综合}
+\label{chap:5}
 
-\section{引言}\label{sec_intro}
+\section{引言}
 在通讯和多媒体芯片设计项目中，
-一个最困难的工作之一是为不同的协议设计编码器和解码器。
-其中编码器负责将输入向量$\vec{i}$ 映射到输出向量$\vec{o}$，
-而解码器负责从$\vec{o}$中恢复$\vec{i}$。
+最困难的一个工作是针对特定的协议，
+如以太网\cite{IEEE8023_S4} 和PCI Express \cite{pcie21}，
+设计相应的编码器和解码器.
+其中编码器负责将输入$\vec{i}$ 映射至输出$\vec{o}$，
+而解码器则负责从$\vec{o}$中恢复$\vec{i}$。
 对偶综合\cite{ShenICCAD09,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
-假设$\vec{i}$ 总能够被 $\vec{o}$唯一决定，
-并自动产生相应的解码器。
+假设$\vec{i}$ 总能够被$\vec{o}$的一个有限序列唯一决定，
+以自动产生相应的解码器。
+其中，
+解码器的布尔函数可以使用Jiang et al. \cite{InterpBoolFunction}提出的算法，
+该算法基于Craig插值\cite{Craig}。
 
-然而,
-许多编码器中采用的留空机制\cite{flowcontrol}
-不能满足该要求。
-如图\ref{fig_fc}a)所示，
-当接收器无法跟上发送器时，
-该机制通过发送空闲字符$I$ 以防止快速发送器充爆慢速接收器。
-如图\ref{fig_fc}b)所示，
-空闲字符$I$
-只能唯一决定$\vec{i}$的一部分而非全部，
-我们称之为流控向量$\vec{f}$。
-而正常的编码结果$D_i$ 能
-唯一决定所有输入
-包括流控向量$\vec{f}$ 和数据向量$\vec{d}$。
-
-秦et al. \cite{QinTODAES15} 首次提出了能够处理流控机制的对偶综合算法。
-该算法首先找到所有的能够被$\vec{o}$唯一决定的$i\in\vec{f}$。
-然后推导一个能使得$\vec{d}$ 被$\vec{o}$唯一决定的谓词$valid(\vec{f})$。
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\textwidth]{nonuniq_pred}
-\caption{带有流控机制的编码器}
-\label{fig_fc}
-\end{figure}
-
-\begin{figure}[b]
-\centering
-\includegraphics[width=0.9\textwidth]{pipemod1_pred}
-\caption{带有流水线和流控机制的编码器}
-\label{pipemod}
-\end{figure}
-
-
-
-同时，
-如图\ref{pipemod}所示，
-许多编码器
-包含流水线级$\vec{stg}^j$ 已将关键的数据路径划分为多个子段$C^j$,
-这样有助于提高性能。
-类似于$\vec{i}$,
-每个流水线级$\vec{stg}^j$ 也可以划分为留空向量$\vec{f}^j$ 和数据向量$\vec{d}^j$。
-
-然而由秦et al. 的算法\cite{QinTODAES15} 产生的解码器并不包含流水线。
-这使得其运行速度远低于相应的编码器。
-为了解决该问题，
-本文提出了一个全新的算法以为此类编码器产生带有流控机制和流水线的解码器。
-该算法首先使用秦et al. \cite{QinTODAES15}的算法来寻找$\vec{f}$ 并推导$valid(\vec{f})$。
-然后分别通过强制和不强制$valid(\vec{f})$，
-已从所有寄存器集合中找到每一个寄存器级$\vec{stg}^j$的$\vec{d}^j$ 和$\vec{f}^j$。
-最后通过Jiang et al. \cite{InterpBoolFunction}的算法特征化$\vec{stg}^j$ 和$\vec{i}$的布尔函数。
-
-实验结果表明，
-该算法能够为多个工业界的真实编码器正确的产生带有流控和流水线的解码器。
-
-本文剩余部分如下组织。
-小节\ref{sec_prem} 介绍相关的背景知识；
-小节\ref{sec_framework} 介绍本文算法的整体结构；
-小节\ref{sec_pipeinfer} 找到每一个流水线级$\vec{stg}^j$中的$\vec{f}^j$ 和$\vec{d}^j$ 。
-小节\ref{sec_char} 为$\vec{stg}^j$ 和$\vec{i}$特征化布尔函数。
-小节\ref{sec_exp} 和\ref{sec_relwork} 分别给出实验结果和相关工作。
-最后小节\ref{sec_conclude} 给出结论。
-
-
-\section{背景知识}\label{sec_prem}
-
-% \subsection{Flow control mechanism}\label{subsec_fc}
-
-
-
-\subsection{命题逻辑可满足}\label{subsec_SAT}
-布尔集合记为$\mathbb{B}=\{0,1\}$。
-多个变量组成的向量记为$\vec{v}=(v,\dots)$。
-$\vec{v}$ 中的变量个数记为$|\vec{v}|$。
-若一个变量$v$ 是$\vec{v}$的成员，
-则记为$v\in\vec{v}$；
-否则记为$v\notin\vec{v}$。
-对于一个变量$v$ 和一个向量$\vec{v}$，
-若$v\notin\vec{v}$，
-则一个同时包含$v$ 和所有$\vec{v}$ 的成员的新变量记为$v\cup\vec{v}$。
-若$v\in \vec{v}$，
-则一个包含$\vec{v}$ 的所有成员，但是不包含$v$的
-新变量记为$\vec{v}-v$。
-对于两个向量$\vec{a}$ 和$\vec{b}$，
-则同时包含$\vec{a}$ 和$\vec{b}$ 的所有成员的新向量记为$\vec{a}\cup\vec{b}$。
-
-对于变量集合$V$上的公式$F$，
-其命题逻辑可满足问题(SAT)
-的目的在于巡展赋值函数$A:V\to \mathbb{B}$，
-使得$F$ 能够取值为$1$。
-若$A$ 存在则$F$ 是可满足的；
-否则是不可满足的。
-
-对于两个布尔命题逻辑公式$\phi_A$ 和$\phi_B$，
-若$\phi_A\wedge \phi_B$ 不可满足，
-则存在仅引用$\phi_A$ 和$\phi_B$共同变量的公式$\phi_I$ ，
-使得$\phi_A\Rightarrow \phi_I$
-且$\phi_I\wedge \phi_B$ 不可满足。
-$\phi_I$ 称为$\phi_A$ 相对于$\phi_B$的Craig 插值\cite{Craig} 。
-可以使用McMillan算法 \cite{interp_McMillan} 产生该插值。
-
-
-
-
-\subsection{有限状态机}\label{subsec_fsm}
-
-
-
-编码器使用有限状态机$M=(\vec{s},\vec{i},\vec{o},T)$作为模型，
-其中包含状态向量$\vec{s}$。
-输入向量$\vec{i}$，
-输出向量$\vec{o}$，
-状态迁移函数$T: \vec{s}\times \vec{i}\to \vec{s}\times \vec{o}$
-从当前状态向量和输入向量计算出下一状态向量和输出向量。
-
-$M$ 的行为可以通过展开状态迁移函数进行推导。
-状态变量$s\in\vec{s}$, 输入变量$i\in\vec{i}$ 和输出变量$o\in\vec{o}$ 在上述展开序列的第$n$步中
-分别记为$s_n$, $i_n$ 和$o_n$。
-更进一步的，
-在第$n$步中的状态向量，输入向量和输出向量分别记为$\vec{s}_n$, $\vec{i}_n$ 和$\vec{o}_n$。
-一个路径是一个序列$<\vec{s}_n,\dots,\vec{s}_m>$ 使得对于所有$n\le j< m$，
-有$\exists \vec{i}_j\vec{o}_j (\vec{s}_{j+1},\vec{o}_j)\equiv T(\vec{s}_j,\vec{i}_j)$ 。
-而一个环是一个路径$<\vec{s}_n,\dots,\vec{s}_m>$ 使得$\vec{s}_n\equiv \vec{s}_m$。
-
-
-
-\subsection{寻找$\vec{f}$的停机算法}\label{subsec_chkextdec}
-
-
-秦et al. \cite{QinTODAES15} 提出了一个寻找$\vec{f}$ 的停机算法。
-该算法通过迭代的调用一个sound和一个complete的算法以最终得到收敛的答案。.
-% The first one is an under-approximative one that presented in \ref{subsub_sound},
-% while the second one is an over-approximative one presented in \ref{subsub_complete}.
-% We will present these two approaches below and show
-% that they will eventually converge.
-
-\subsubsection{sound算法}\label{subsub_sound}
-如图\ref{fig_pc}a)所示，
-在展开的迁移关系上，
-一个输入变量$i\in\vec{i}$ 能够被唯一决定，
-是指存在$p$, $l$ 和$r$，
-使得对于输出序列$<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$的每一个取值，
-$i_{p+l}$ 不能同时为0和1。
-折等价于公式(\ref{uniqt1})中的$F_{PC}(p,l,r)$的不可满足性。
-行1 对应于图\ref{fig_pc}a)中的路径，
-而行2 是其拷贝
-行3 强制这两个路径的输出相等。
-而行4 强制$i_{p+l}$ 不等。
-该算法是sound的因为当(\ref{uniqt1}) 不可满足
-$i$ 肯定是$\vec{f}$的成员。
-
-\begin{equation}\label{uniqt1}
-% \begin{split}
-F_{PC}(p,l,r):=
-\left\{
-\begin{array}{cc}
-&\bigwedge_{m=0}^{p+l+r}
-\{
-(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
-\}
-\\
-\wedge&\bigwedge_{m=0}^{p+l+r}
-\{
-(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
-\}
-\\
-\wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
-\wedge& i_{p+l}\equiv 1 \wedge  i'_{p+l}\equiv 0
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
-\end{array}
-\right\}
-% \end{split}
-\end{equation}
-
+通过研究现有的工业界编码器，我们发现他们都含有流水线结构以提高运行频率。
 \begin{figure}[t]
 \begin{center}
-\includegraphics[width=\textwidth]{pc}
+\includegraphics[width=\textwidth]{pipeline_pipeline}
 \end{center}
-\caption{sound和complete方法}
-  \label{fig_pc}
+\caption{带有流水线的编码器和解码器}
+  \label{fig_pipe}
 \end{figure}
+
+一个带有流水线的简单编码器如图\ref{fig_pipe}a)所示。
+他的关键数据路径被第一级流水线切割成为两段，
+从而使得运行频率得到两倍的提升。
+
+他的第一级流水线$\vec{stg}^0$ 包含数个寄存器。
+其中输入变量$\vec{i}$ 被用于计算该级流水线$\vec{stg}^0$，
+而流水线$\vec{stg}^0$ 则被用于计算$\vec{o}$。
+根据该结构，
+$\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
+而$\vec{i}$ 能够被$\vec{stg}^0$唯一决定。
+
+因此，
+一个由人类程序员设计的合理解码器，
+应当如图\ref{fig_pipe}b)所示，
+从$\vec{o}$ 中使用组合逻辑$C^1$恢复$\vec{stg}^0$ ，
+并进一步使用组合逻辑$C^0$从$\vec{stg}^0$ 中恢复$\vec{i}$ 。
+在此类解码器中，
+关键路径被流水线级$\vec{stg}^0$切断，
+以改善时序。
+
+
+
+然而，
+目前所有的对偶综合算法\cite{ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+均使用Jiang提出的基于\cite{Craig}的算法 \cite{InterpBoolFunction}。
+如图\ref{fig_pipe}c)所示，
+这些算法从$\vec{o}$中使用一个大型组合逻辑$C^0*C^1$直接恢复$\vec{i}$，
+这使得他们变得不必要的很慢，因为没有流水线寄存器切断这段复杂逻辑。
+
+为了产生如图\ref{fig_pipe}b) 所示的解码器，
+本文提出了一个新颖的算法。首先找到编码器中每一个流水线级$\vec{stg}^j$中的寄存器，
+然后特征化每一个流水线级$\vec{stg}^j$的布尔函数，
+已从下一个流水线级$\vec{stg}^{j+1}$ 或输出$\vec{o}$之中恢复$\vec{stg}^j$。
+最终特征化$\vec{i}$的布尔函数以葱
+第一个流水线级$\vec{stg}^0$中恢复$\vec{i}$。
+
+%\begin{figure}[t]
+%\begin{center}
+%\includegraphics[width=\textwidth]{pcln_pipeline}
+%\end{center}
+%\caption{下估计和上估计算法}
+%  \label{fig_pc}
+%\end{figure}
+
+在复杂的工业界实际编码器，
+如PCI Express \cite{pcie21} 和以太网\cite{IEEE8023_S4}，
+上的实验表明，
+该算法总能够产生带有流水线级的快速解码器。.
+
+
+\emph{本文剩余的内容安排如下}.
+%Section \ref{sec_casestudy} explains our ideas with a simple example.
+%第\ref{sec_prem} 节介绍了背景知识;
+第\ref{sec_pipeinfer_chap4} 节推导流水线结构，
+而第\ref{sec_char_chap4} 节特征化每一个流水线级和输入的布尔函数;
+第\ref{sec_exp_chap4} 和\ref{sec_conclude_chap4} 节给出实验结果和结论。
 
 
 %
+%
+%\section{背景知识}\label{sec_prem}
+%
+%% \subsection{Flow control mechanism}\label{subsec_fc}
+%
+%
+%
+%\subsection{命题逻辑可满足}\label{subsec_SAT}
+%布尔集合为$\mathbb{B}=\{0,1\}$。
+%变量向量表示为$\vec{v}=(v,\dots)$。
+%向量$\vec{v}$ 中的变量个数表示为$|\vec{v}|$。
+%若一个变量$v$ 是$\vec{v}$的成员，
+%则记为$v\in\vec{v}$；
+%否则$v\notin\vec{v}$.
+%$v\cup\vec{v}$ 是包含$v$ 和$\vec{v}$的所有成员的新向量。
+%$\vec{v}/\vec{w}$ 是一个包含$\vec{v}$ 的所有成员但是不包含$\vec{w}$的任意成员的新向量。
+%$\vec{a}\cup\vec{b}$ 是包含$\vec{a}$ 和$\vec{b}$的所有成员的新向量。
+%$\vec{v}$ 的赋值集合记为$[\![\vec{v}]\!]$，
+%比如，
+%$[\![(v_1,v_2)]\!]=\{(0,0),(0,1),(1,0),(1,1)\}$。
+%
+%
+%对于变量集合$V$上的公式$F$，
+%起命题逻辑可满足(SAT)  问题是指
+%如何找到$V$的一个赋值函数$A:V\to \mathbb{B}$，
+%使得$F$ 能够被赋值为$1$。
+%若$A$ 存在，则$F$ 是可满足的；
+%否则，
+%是不可满足的。
+%
+%对于公式$\phi_A$ 和$\phi_B$，
+%若$\phi_A\wedge \phi_B$ 不可满足，
+%则存在公式$\phi_I$ 仅包含$\phi_A$ 和$\phi_B$ 的共同变量，
+%并使得$\phi_A\Rightarrow \phi_I$
+%且$\phi_I\wedge \phi_B$ 不可满足。
+%$\phi_I$ 称为$\phi_A$ 相对于$\phi_B$的Craig插值\cite{Craig}。
+%$\phi_I$ 可以使用McMillan提出的算法\cite{interp_McMillan}进行计算，
+%并应用于从一个布尔关系特征化出一个布尔函数\cite{InterpBoolFunction}。
+%
+%
+%
+%\subsection{游有限状态机}\label{subsec_fsm}
+%
+%
+%编码器使用有限状态机模型(FSM) $M=(\vec{s},\vec{i},\vec{o},T)$，
+%其中$\vec{s}$为状态变量向量，
+%$\vec{i}$为输入变量向量，
+%$\vec{o}$为输出变量向量，
+%$T: [\![\vec{s}]\!]\times [\![\vec{i}]\!]\to [\![\vec{s}]\!]\times [\![\vec{o}]\!]$
+%是一个状态迁移函数，
+%用于从当前状态和输入变量向量，
+%计算出下一状态和输出变量向量。
+%
+%$M$的行为可以通过展开迁移关系进行推导。
+%在第$n$步的$s\in\vec{s}$，$i\in\vec{i}$ 和$o\in\vec{o}$
+%分别表示为$s_n$, $i_n$ 和$o_n$。
+%另外，
+%在第$n$步的单个状态，输入和输出变量分别表示为$\vec{s}_n$，$\vec{i}_n$ 和$\vec{o}_n$。
+%一个路径是指$<\vec{s}_n,\dots,\vec{s}_m>$，
+%其中对于$n\le j< m$，
+%有$\exists \vec{i}_j\vec{o}_j (\vec{s}_{j+1},\vec{o}_j)\equiv T(\vec{s}_j,\vec{i}_j)$ 。
+%一个环是一个路径$<\vec{s}_n,\dots,\vec{s}_m>$ 满足$\vec{s}_n\equiv \vec{s}_m$。
+%
+%\subsection{用于确定一个输入变量能否被输出向量的有限序列唯一决定的停机算法}\label{subsec_chkextdec}
+%
+%该算法\cite{ShenTCAD11} 迭代的展开迁移函数。
+%对于每次迭代，
+%其分别调用一个下估计和一个上估计算法已给出确定的答案。
+%这两个算法分别在\ref{subsub_sound} 和\ref{subsub_complete}中给出。
+%我们酱紫啊\ref{subsub_algo} 中指出
+%这两者将最终收敛。
+%
+%\subsubsection{下估计算法}\label{subsub_sound}
+%
+%如图\ref{fig_pc}a)所示，
+%在展开的迁移函数序列上，
+%输入变量$i\in\vec{i}$ 能够被唯一决定的充分条件是，
+%存在$p$，$l$ 和$r$，
+%使得对于输出向量序列$<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$的任意值，
+%$i_{p+l}$不能同时为0和1。
+%折等价于公式(\ref{uniqt1})中定义的$F_{PC}(p,l,r)$ 的不可满足性。
+%
+%\begin{multline}\label{uniqt1}
+%% \begin{split}
+%F_{PC}(p,l,r):=\\
+%\left\{
+%\begin{array}{cc}
+%&\bigwedge_{m=0}^{p+l+r}
+%\{
+%(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+%\}
+%\\
+%\wedge&\bigwedge_{m=0}^{p+l+r}
+%\{
+%(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+%\}
+%\\
+%\wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
+%\wedge& i_{p+l}\equiv 1 \wedge  i'_{p+l}\equiv 0
+%% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+%% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+%\end{array}
+%\right\}
+%% \end{split}
+%\end{multline}
+%
+%
+%
+%其中，
+%$p$ 是前置状态序列的长度，
+%$l$ 和$r$是两个用于唯一决定输入$i_{p+l}$的输出变量序列
+%$<\vec{o}_{p+1},\dots,\vec{o}_{p+l}>$ 和$<\vec{o}_{p+l+1},\dots,\vec{o}_{p+l+r}>$
+%的长度。
+%行2对应于图\ref{fig_pc}a)中的路径，
+%行3 是他的一个拷贝。
+%他们的长度是一样的。
+%行4 强制两者的输出序列具有相同的赋值，
+%而行5 强制他们的输入$i_{p+l}$ 不同。
+%
+%根据公式(\ref{uniqt1})，
+%对于 $p'\ge p$， $l'\ge l$ 和$r'\ge r$，
+%$F_{PC}(p',l',r')$ 的短句集合是$F_{PC}(p,l,r)$的超集。
+%因此,
+%$F_{PC}(p,l,r)$的不可满足性
+%可以扩展到任意更大的$p'\ge p$， $l'\ge l$ 和$r'\ge r$。
+%
+%
+%\begin{proposition}\label{prop_pc1}
+%若$F_{PC}(p,l,r)$ 不可满足，
+%则对任意更大的$p$, $l$ 和$r$，
+%$i_{p+l}$ 可以被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
+%\end{proposition}
+%
+%
+%\subsubsection{上估计算法}\label{subsub_complete}
+%
+%若上一节定义的$F_{PC}(p,l,r)$ 可满足，
+%则存在两种可能性：
+%\begin{enumerate}
+% \item
+%$i_{p+l}$ 可以在更大的$p$, $l$ 和$r$时，
+%被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定；
+% \item
+%$i_{p+l}$ 不能被任何$p$, $l$ 和$r$情况下的$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
+%\end{enumerate}
+%
+%如果是第一种情况，
+%则通过迭代的增大$p$, $l$ 和$r$，
+%$F_{PC}(p,l,r)$ 总能够变成不可满足。
+%而如果是第二种情况，
+%则该算法不停机。
+%
+%
+%
+%\begin{algorithm}[t]
+%\begin{algorithmic}[1]
+%\STATE{输入 :输入变量$i\in\vec{i}$.}
+%\STATE{输出: $i\in\vec{i}$ 是否能够被$\vec{o}$唯一决定,$p$, $l$ 和$r$的取值}
+%\STATE $p$:= 0; ~$l$:= 0;~$r$:= 0\;
+%\WHILE {$1$}
+%\STATE   $p$++;~$l$++;~$r$++\;\label{linepc1}
+%   \IF{$F_{PC}(p,l,r)$ 不可满足}
+%    \RETURN (yes, $p$, $l$, $r$);
+%   \label{lnsat}\ELSIF{$F_{LN}(p,l,r)$ 可满足}
+%    \RETURN (no, $p$, $l$, $r$);
+%   \ENDIF
+%\ENDWHILE
+%\caption{$CheckUniqueness(i)$: 检查
+%$i\in\vec{i}$ 能否被$\vec{o}$唯一决定的停机算法}
+%\label{alg_pcln}
+%\end{algorithmic}
+%\end{algorithm}
+%
+%
+%
+%因此,
+%为了得到停机算法
+%我们需要区分上述两种情形。
+%该方法如图\ref{fig_pc}b)所示，
+%该图类似于图\ref{fig_pc}a)，
+%不过增加了三个新的约束用于检测在$<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ 和
+%$<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$上的环。
+%其形式化的定义如公式(\ref{uniqln})
+%其中最后三行对应于新增加的三个环检测约束。
+%
+%\begin{multline}\label{uniqln}
+%% \begin{split}
+%F_{LN}(p,l,r):=\\
+%\left\{
+%\begin{array}{cc}
+%&F_{PC}(p,l,r)\\
+%\wedge&\bigvee_{x=0}^{p-1}\bigvee_{y=x+1}^{p} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
+%\wedge&\bigvee_{x=p+1}^{p+l-1}\bigvee_{y=x+1}^{p+l} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
+%\wedge&\bigvee_{x=p+l+1}^{p+l+r-1}\bigvee_{y=x+1}^{p+l+r} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\}
+%\end{array}
+%\right\}
+%% \end{split}
+%\end{multline}
+%
+%
+%
+%当$F_{LN}(p,l,r)$ 可满足时，
+%则$i_{p+l}$ 不能被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$唯一决定。
+%更重要的是，
+%通过展开这三个环
+%我们可以把$F_{LN}(p,l,r)$ 的可满足性推广到更大的$p$, $l$ 和$r$上。
+%这意味着：
+%
+%
+%\begin{proposition}\label{prop_ln1}
+%如果$F_{LN}(p,l,r)$ 可满足，
+%则$i_{p+l}$ 对于任意更大的$p$, $l$ 和$r$，
+%不能被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
+%\end{proposition}
+%
+%其正确性证明的细节见\cite{ShenTCAD11}。
+%
+%\subsubsection{完全算法}\label{subsub_algo}
+%
+%基于Propositions \ref{prop_pc1} 和\ref{prop_ln1}，
+%我们有如下算法\ref{alg_pcln}。
+%该算法搜索$p$, $l$ 和$r$ 使得
+%输入变量$i_{p+l}$ 能够被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$唯一决定。
+%\begin{enumerate}
+% \item
+%一方面，
+%如果存在这样的$p$, $l$ 和$r$，
+%则令$p':=max(p,l,r)$, $l':=max(p,l,r)$ 和$r':=max(p,l,r)$。
+%从Propositions \ref{prop_pc1}，
+%我们知道$F_{PC}(p',l',r')$ 不可满足。
+%因此$F_{PC}(p,l,r)$ 总能在行\ref{linepc1}称为不可满足；
+% \item
+%另一方面，
+%如果不存在$p$, $l$ 和$r$，
+%则$p$, $l$ 和$r$ 总会变得比最长的无环路径更长，
+%这意味着在$<\vec{s}_{0},\dots,\vec{s}_{p}>$,$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ 和
+%$<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$上存在环。
+%这将使得$F_{LN}(p,l,r)$ 在行\ref{lnsat}变得可满足。
+%\end{enumerate}
+%
+%两种情况都将导致上述算法停机。
+%其正确性和停机性证明的细节见\cite{ShenTCAD11} 。
+%
 
 
+\section{推导编码器的流水线结构}\label{sec_pipeinfer_chap4}
 
-\subsubsection{complete算法}\label{subsub_complete}
-对于上述的$F_{PC}(p,l,r)$ ，
-有两种可能性:
-\textbf{(1)}. 存在$p$, $l$ 和$r$，使得$i_{p+l}$ 能够被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定;
-或者\textbf{(2)}. $i_{p+l}$ 对于任意$p$, $l$ 和$r$都不能被唯一决定。
-
-
-对于第一种情形，
-通过迭代的增加$p$, $l$ 和$r$，
-$F_{PC}(p,l,r)$ 总能够变成不可满足。
-而对于第二种情形，
-该算法将永不停机。
-因此,
-为了得到一个停机算法，
-我们需要如图\ref{fig_pc}b) 所示的方法去检查第二种情形。
-该方法类似于\ref{fig_pc}a) ，
-但是在三个状态序列$<\vec{s}_{0},\dots,\vec{s}_{p}>$, $<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ 和
-$<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$上增加了三个约束用于检测环。
-该方法形式化的定义于公式(\ref{uniqln})中。
-其中最后三行即为我们新加的三个约束。
-该方法是complete，
-因为当其是可满足的时候，
-我们可以通过展开
-这三个环来证明第二种情形并断定 $i\notin \vec{f}$。
-
-\begin{equation}\label{uniqln}
-% \begin{split}
-F_{LN}(p,l,r):=\\
-\left\{
-\begin{array}{cc}
-&F_{PC}(p,l,r)\\
-\wedge&\bigvee_{x=0}^{p-1}\bigvee_{y=x+1}^{p} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
-\wedge&\bigvee_{x=p+1}^{p+l-1}\bigvee_{y=x+1}^{p+l} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
-\wedge&\bigvee_{x=p+l+1}^{p+l+r-1}\bigvee_{y=x+1}^{p+l+r} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\}
-\end{array}
-\right\}
-% \end{split}
-\end{equation}
-
-
-\subsubsection{通过算法\ref{alg_fofc}找到$\vec{f}$ }\label{subsubsec_findfc}
-
-在行\ref{adduniq},
-所有能够被唯一决定的输入$i$ 将被移到$\vec{f}$。
-若$F_{LN}(p,l,r)$ 在行\ref{nonuniqres}是可满足的，
-所有可满足的输入$i$ 将被移到$\vec{d}$.
-该算法的正确性和停机性证明请见\cite{QinTODAES15} 。
-
-\begin{algorithm}[t]
-\begin{algorithmic}[1]
-\STATE{输入：输入向量$\vec{i}$.}
-\STATE{输出：$\vec{f}\subset \vec{i}$, 在此次搜索中找到的最大$p$, $l$ 和$r$ }
-\STATE $\vec{f}: = \{\}$;$\vec{d}:= \{\}$;$p$:= 0 ;~$l$:= 0 ;~$r$:= 0 \;
-\label{while}\WHILE{$\vec{i}\ne \{\}$}
-  \STATE 假设$i\in\vec{i}$\;
-  \STATE $p++$; ~ $l++$; ~ $r++$\;
-  \IF {$F_{PC}(p,l,r)$ 对于$i$不可满足}
-    \label{adduniq}
-    \STATE $\vec{f}:= i\cup\vec{f}$ ; ~
-    \STATE $\vec{i}:=\vec{i}-i$\;
-  \label{nonuniqres}
-  \ELSIF {$F_{LN}(p,l,r)$ 对于$i$可满足}
-    \STATE $\vec{d}:=i\cup\vec{d}$ ; ~
-    \STATE $\vec{i}:=\vec{i}-i$
-  \ENDIF
-\ENDWHILE
-\RETURN ($\vec{f}$, $p$, $l$, $r$)
-\caption{Identifying the flow control vector $\vec{f}$}
-\label{alg_fofc}
-\end{algorithmic}
-\end{algorithm}
-
-
-
-
-
-\subsection{推导使得$\vec{d}$ 被唯一决定的$valid(\vec{f})$ }\label{subsec_infer}
-
-该算法也是由秦et al. \cite{QinTODAES15}提出的。
-它首先给出算法\ref{alg_craigchar}，
-该算法用于特征化一个函数，覆盖所有能够使得一个布尔关系满足的赋值集合。
-然后如图\ref{fig_mono}所示，
-算法\ref{alg_craigchar} 被用于特征化函数$\neg FSAT_{PC}(p,l,r)$，
-$valid(\vec{f})$的单调递增下估计，
-和$\neg FSAT_{LN}(p,l,r)$,
-$valid(\vec{f})$的单调递减上估计。
-最终我们指出这两者将收敛到$valid(\vec{f})$。
-% Please refer to \cite{QinTODAES15} for the proof of its correctness and termination.
-
-
-
-\subsubsection{特征化使得一个布尔关系可满足的布尔函数}\label{subsubsec_craig}
-
-对于一个布尔关系$R(\vec{a},\vec{b},t)$，
-有$R(\vec{a},\vec{b},0)\wedge R(\vec{a},\vec{b},1)$ 不可满足。
-算法\ref{alg_craigchar} 特征化一个布尔寒素$FSAT_R(\vec{a})$，
-该函数覆盖且仅覆盖了能使得
-$R(\vec{a},\vec{b},1)$ 可满足的所有$\vec{a}$。
-行\ref{testsat} 找到$\vec{a}$ 的一个赋值，
-尚未被 $FSAT_R(\vec{a})$ 覆盖而且能够使得$R(\vec{a},\vec{b},1)$ 可满足。
-行\ref{cofact1}, \ref{cofact2} 和\ref{ab} 使用
-McMillan算法\cite{interp_McMillan} 将该赋值放大为$ITP(\vec{a})$。
-行\ref{add} 将$ITP(\vec{a})$ 加入$FSAT_R(\vec{a})$。
-
-
-\begin{algorithm}[t]
-\begin{algorithmic}[1]
-\STATE{输入：布尔关系$R(\vec{a},\vec{b},t)$}
-\STATE{输出：能够使得$R(\vec{a},\vec{b},1)$ 可满足的$FSAT_R(\vec{a})$ }
-\label{initcondition}
-\STATE $FSAT_R(\vec{a}):= 0$ ;
-\label{testsat}
-\WHILE { $R(\vec{a},\vec{b},1)\wedge\neg FSAT_R(\vec{a})$ 可满足}
-  \STATE 假设$A:\vec{a}\cup\vec{b}\cup\{t\}\rightarrow \{0,1\}$ 是一个可满足赋值;
-\label{cofact1}
-  \STATE $\phi_A(\vec{a}):= R(\vec{a},A(\vec{b}),1)$ ;
-\label{cofact2}
-  \STATE $\phi_B(\vec{a}):= R(\vec{a},A(\vec{b}),0)$ ;
-\label{ab}
-  \STATE 假设$ITP(\vec{a})$ 是$\phi_A$ 相对于$\phi_B$ 的Craig插值 ;
-\label{add}
-  \STATE $FSAT_R(\vec{a}):= ITP(\vec{a}) \vee FSAT_R(\vec{a})$ ;
-\ENDWHILE
-\RETURN $FSAT_R(\vec{a})$
-\caption{$CharacterizingFormulaSAT(R,\vec{a},\vec{b},t)$}
-\label{alg_craigchar}
-\end{algorithmic}
-\end{algorithm}
-
-\subsubsection{计算$valid(\vec{f})$的单调递增下估计}\label{subsub_nonloop}
-通过将公式(\ref{uniqt1}) 中的$i$替换为算法\ref{alg_fofc}中推导的$\vec{d}$ ，
-我们有:
-
-\begin{equation}\label{uniqt1d}
-% \begin{split}
-F^d_{PC}(p,l,r):=
-\left\{
-\begin{array}{cc}
-&\bigwedge_{m=0}^{p+l+r}
-\{
-(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
-\}
-\\
-\wedge&\bigwedge_{m=0}^{p+l+r}
-\{
-(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
-\}
-\\
-\wedge&\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
-\wedge& \vec{d}_{p+l}\ne \vec{d}'_{p+l} \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
-\end{array}
-\right\}
-% \end{split}
-\end{equation}
-
-% Here,
-% $\vec{d}_{p+l}\ne \vec{d}'_{p+l}$ means some bit in $\vec{d}_{p+l}$
-% isn't equal to the corresponding bit in $\vec{d}'_{p+l}$.
-若$F^d_{PC}(p,l,r)$ 可满足，
-则$\vec{d}_{p+l}$ 不能被$<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$唯一决定。
-通过收集公式 (\ref{uniqt1d})的第三行，
-我们定义$T_{PC}(p,l,r)$ :
-
-\begin{equation}\label{tpc}
-% \begin{split}
-T_{PC}(p,l,r):=\\
-\left\{
-\begin{array}{cc}
-      &\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
-\end{array}
-\right\}
-% \end{split}
-\end{equation}
-
-\begin{figure}[b]
-\begin{center}
-\includegraphics[width=0.5\textwidth]{mono}
-\end{center}
-\caption{The monotonicity of $FSAT_{PC}(p,l,r)$ and $FSAT_{LN}(p,l,r)$}
-  \label{fig_mono}
-\end{figure}
-
-通过将$T_{PC}(p,l,r)$ 替换回$F^d_{PC}(p,l,r)$，
-我们有：
-
-\begin{equation}\label{fpcq}
-% \begin{split}
-F'^d_{PC}(p,l,r,t):=
-\left\{
-\begin{array}{cc}
-&\bigwedge_{m=0}^{p+l+r}
-\{
-(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
-\}
-\\
-\wedge&\bigwedge_{m=0}^{p+l+r}
-\{
-(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
-\}
-\\
-\wedge& t\equiv T_{PC}(p,l,r)\\
-\wedge& \vec{d}_{p+l}\ne \vec{d'}_{p+l} \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
-\end{array}
-\right\}
-% \end{split}
-\end{equation}
-
-
-很明显$F^d_{PC}(p,l,r)$ 和$F'^d_{PC}(p,l,r,1)$ 是等价的，
-我们进一步定义：
-
-\begin{equation}\label{pcdef1}
-\vec{a}:=\vec{f}_{p+l}
-\end{equation}
-
-\begin{equation}\label{pcdef2}
-\vec{b}:=\vec{d}_{p+l}\cup \vec{d'}_{p+l}\cup \vec{s}_0\cup \vec{s'}_0\cup\bigcup_{0\le x\le p+l+r,x\neq (p+l)}(\vec{i}_{x}\cup\vec{i'}_{x})
-\end{equation}
-
-因此,
-向量$\vec{a}\cup\vec{b}$ 包含所有步的输入向量$<\vec{i}_0,\dots,\vec{i}_{p+l+r}>$ 和$<\vec{i'}_0,\dots,\vec{i'}_{p+l+r}>$。
-它同时也包含两个初始状态$\vec{s}_0$ 和$\vec{s'}_0$。
-因此$\vec{a}$ 和$\vec{b}$ 能唯一决定$F'^d_{PC}(p,l,r,t)$中$t$ 的取值。
-这意味着$R(\vec{a},\vec{b},1)\wedge R(\vec{a},\vec{b},0)$ 是不可满足的。
-因此,
-对于$p$, $l$ 和$r$的特定组合，
-在$\vec{f}_{p+l}$ 上定义且能够使$F'^d_{PC}(p,l,r,1)$ 满足的函数可以通过使用$F'^d_{PC}(p,l,r,t)$, $\vec{a}$ 和$\vec{b}$ 调用算法定义如下：
-
-\begin{equation}\label{fsat_pc}
-FSAT_{PC}(p,l,r):=CharacterizingFormulaSAT(F'^d_{PC}(p,l,r,t),\vec{a},\vec{b},t)
-\end{equation}
-
-如图\ref{fig_mono}所示，
-$\neg FSAT_{PC}(p,l,r)$ 是$valid(\vec{f})$ 的针对
-$p$, $l$ 和$r$
-单调递增的下估计。
-% \end{proposition}
-
-
-
-
-\subsubsection{计算$valid(\vec{f})$的单调递减上估计}\label{subsub_loop}
-类似的,
-我们定义:
-
-\begin{equation}\label{tln}
-% \begin{split}
-T_{LN}(p,l,r):=\\
-\left\{
-\begin{array}{cc}
-      &\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
-\wedge&\bigvee_{x=0}^{p-1}\bigvee_{y=x+1}^{p} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
-\wedge&\bigvee_{x=p+1}^{p+l-1}\bigvee_{y=x+1}^{p+l} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
-\wedge&\bigvee_{x=p+l+1}^{p+l+r-1}\bigvee_{y=x+1}^{p+l+r} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\}
-\end{array}
-\right\}
-% \end{split}
-\end{equation}
-
-
-
-\begin{equation}\label{lndef1}
-F'^d_{LN}(p,l,r,t):=
-\left\{
-\begin{array}{cc}
-&\bigwedge_{m=0}^{p+l+r}
-\{
-(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
-\}
-\\
-\wedge&\bigwedge_{m=0}^{p+l+r}
-\{
-(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
-\}
-\\
-% \wedge& \vec{f}_{p+l}\equiv \vec{f'}_{p+l}\\
-\wedge& t\equiv T_{LN}(p,l,r)\\
-\wedge& \vec{d}_{p+l}\ne \vec{d'}_{p+l} \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
-\end{array}
-\right\}
-\end{equation}
-
-
-\begin{equation}\label{fsat_ln}
-FSAT_{LN}(p,l,r):=CharacterizingFormulaSAT(F'^d_{LN}(p,l,r,t),\vec{a},\vec{b},t)
-\end{equation}
-
-如图\ref{fig_mono}所示，
-$\neg FSAT_{LN}(p,l,r)$ 是$valid(\vec{f})$ 相对于$p$, $l$ 和$r$.的一个单调递减的上估计。
-
-
-
-\subsubsection{使用算法\ref{algo_infer}推导$valid(\vec{f})$ }\label{subsub_overal}
-\begin{algorithm}[t]
-\begin{algorithmic}[1]
-\STATE $p$:= $0$;~$l$:= $0$;~$r$:= $0$ \;
-\WHILE{ $\neg FSAT_{LN}(p,l,r)\wedge FSAT_{PC}(p,l,r)$ 可满足}
-  \STATE $p$ ++ ;~$l$ ++ ;~$r$ ++ ;
-\ENDWHILE
-\RETURN {$\neg FSAT_{LN}(p,l,r)$}
-\caption{推导$valid(\vec{f}_{p+l})$}
-\label{algo_infer}
-\end{algorithmic}
-\end{algorithm}
-
-该算法迭代的增加$p$, $l$ 和$r$，
-直到$FSAT_{PC}(p,l,r)$ 和$FSAT_{LN}(p,l,r)$ 收敛。
-其正确性和停机性见\cite{QinTODAES15} 。
-
-
-\section{算法框架}\label{sec_framework}
-
-
-\subsection{编码器的一般性模型}
-如图\ref{fig_pipeenc}所示，
-我们假设编码器包含$n$ 流水线级$\vec{stg}^j$,
-其中$0\le j \le n-1$。
-每一个流水线级$\vec{stg}^j$ 能够被进一步划分为流控向量$\vec{f}^j$ 和数据向量$\vec{d}^j$。
-而输入向量$\vec{i}$，
-和\cite{QinTODAES15}一样，
-也能被划分为留空向量$\vec{f}$ 和数据向量$\vec{d}$。
-如果将组合逻辑块$C^j$ 视为一个函数，
-则该编码器可以使用下列等式定义：
+\subsection{流水线的一般性模型}
+如图\ref{fig_pipeenc_chap4}所示，
+我们假设
+编码器有$n$ 级流水线。
+如果我们把组合逻辑$C^j$ 视为一个函数，
+则编码器可以用下列的公式表示：
 
 \begin{equation}\label{equ_genpipe}
 \begin{array}{cccc}
@@ -542,43 +349,37 @@ $\neg FSAT_{LN}(p,l,r)$ 是$valid(\vec{f})$ 相对于$p$, $l$ 和$r$.的一个�
 
 \begin{figure}[b]
 \begin{center}
-\includegraphics[width=\textwidth]{pipemod1}
+\includegraphics[width=\textwidth]{pipemod_pipeline}
 \end{center}
-\caption{包含流水线级和流控机制的一般性编码器模型}
-  \label{fig_pipeenc}
+\caption{编码器的一般性结构}
+  \label{fig_pipeenc_chap4}
 \end{figure}
 
 
+因此，
+每个$C^j$ 可以视为一个小型的编码器用于从$\vec{stg}^{j-1}$或$\vec{i}$中计算$\vec{stg}^j$ 或$\vec{o}$。
 
-在本文中，
-上标始终意味着流水线级,
-而下标，,
-如小节\ref{subsec_fsm}指出,
-始终意味着在展开的迁移关系序列中的步。
-例如,
+
+在本文的剩余部分，
+上标始终表示特定的流水线级，
+而下标则如小节\ref{subsec_fsm}所述，
+表示在展开的迁移关系序列中的步数。
+例如，
 $\vec{stg}^j$ 是第$j$个流水线级。
-而$\vec{stg}^j_i$ 该第$j$流水线级
-在第$i$步的取值。
+而$\vec{stg}^j_i$ 则是该第$j$流水线级
+在展开的迁移函数序列中的第$i$步的值。
 
-\subsection{算法框架}
+\subsection{推导$p$， $l$ 和$r$}\label{subsec_inferplr}
+在推导之前，
+我们首先使用算法\ref{alg_pcln_chap1} 以得到$p$， $l$ 和$r$ 。
 
-基于图\ref{fig_pipeenc}所示的编码器结构，
-我们算法的框架为：
+因为存在多于一个$i\in \vec{i}$，
+我们需要为每一个$i\in \vec{i}$使用算法\ref{alg_pcln_chap1}
+以得到他们对用的$p$， $l$ 和$r$ 。
 
-\begin{enumerate}
- \item 调用算法\ref{alg_fofc} 已将$\vec{i}$ 划分为$\vec{f}$ 和$\vec{d}$。
- \item 调用算法\ref{algo_infer} 以推导能够使得$\vec{d}$
- 被唯一决定的$valid(\vec{f})$和其对应的$p$, $l$ 和$r$。
- \item 在小节\ref{sec_pipeinfer},
- 找到每一个流水线级$\vec{stg}^j$中的$\vec{f}^j$ 和$\vec{d}^j$ 。
- \item 在小节\ref{sec_char},
- 为每一个流水线级$\vec{stg}^j$
- 和输入向量 $\vec{i}$特征化布尔函数。
-\end{enumerate}
-
-
-
-\section{推导流水线结构}\label{sec_pipeinfer}
+然后我们将最终的$p$，$l$ 和$r$ 设置为所有$i\in \vec{i}$中最大的$p$， $l$ 和$r$ 。
+根据公式\ref{uniqt1}，
+这些$p$， $l$ 和$r$ 能够使得$<o_{p},\dots,o_{p+l+r}>$ 唯一决定所有$i_{p+l}\in \vec{i}_{p+l}$。
 
 
 \subsection{压缩$r$ 和$l$}\label{reduceing}
@@ -587,61 +388,53 @@ $\vec{stg}^j$ 是第$j$个流水线级。
 \begin{algorithmic}[1]
 \FOR{$r':=r \to 0$}
 \label{testr_1}
-  \IF{$r'\equiv 0$ or $F_{PC}(p,l,r'-1)\wedge valid(\vec{f}_{p+l})$ 对于某些$i\in \vec{i}$可满足}
-    \STATE break
+  \IF{$r'\equiv 0$ or $F_{PC}(p,l,r'-1)$ 对于某些$i\in \vec{i}$是可满足的}
+  \STATE  break;
   \ENDIF
 \ENDFOR
-\RETURN $r'$
-\caption{压缩$r$}
-\label{algo_remove2}
+\RETURN $r'$;
+\caption{$RemoveRedundancy(p,l,r)$}
+\label{algo_remove2_chap4}
 \end{algorithmic}
 \end{algorithm}
 
-由于算法\ref{algo_infer} 同时增加$p$, $l$ 和$r$ ，
-因此$l$ 和$r$存在一定程度的冗余。
-因此我们需要首先在算法\ref{algo_remove2}中压缩$r$。
+
+
+算法\ref{alg_pcln_chap1} 同步增长$p$， $l$ 和$r$ ，
+因此在$l$ 和$r$中可能存在冗余。
+因此我们需要首先在算法\ref{algo_remove2_chap4}中压缩$r$。
 
 
 在行\ref{testr_1}，
-我们将推导的谓词$valid(\vec{f})$ 和$F_{PC}(p,l,r'-1)$与在一起。
-当该公式可满足时，
-则$r'$ 是最后一个使得$F_{PC}(p,l,r')\wedge valid(\vec{f}_{p+l})$ 不可满足的值，
-我们将其直接直接返回。
+当$F_{PC}(p,l,r'-1)$ 可满足时，
+则$r'$ 是最有一个使得$F_{PC}(p,l,r')$ 不可满足的，
+我们将其直接返回。
 另一方面，
 当$r'\equiv 0$，
-$F_{PC}(p,l,0)$ 肯定已经在上一个迭代中被测试，
-且结果为不可满足。
-此时我们直接返回$0$。
+$F_{PC}(p,l,0)$ 已经在上一次迭代中被测试过，
+且结果必然是不可满足。
+在这种情况下我们返回$0$。
 
 
-这样,
-我们从算法\ref{algo_remove2}得到了一个压缩的$r$，
-使得$\vec{i}_{p+l}$ 可以被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$唯一决定。
+如此，
+我们从算法\ref{algo_remove2_chap4}获得了一个压缩后的$r$ ，
+它能使$\vec{i}_{p+l}$ 被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$唯一决定。
 
-\begin{figure}[t]
-\begin{center}
-\includegraphics[width=0.5\textwidth]{pc1}
-\end{center}
-\caption{使用削减的输出序列恢复输入}
-  \label{fig_pc1}
-\end{figure}
-
-我们进一步要求:
+我们进一步要求：
 \begin{enumerate}
- \item 如图\ref{fig_pc1}所示,
- $l$ 可以被削减为0。
- 这意味着$\vec{i}_{p}$ 可以被$<\vec{o}_{p},\dots,\vec{o}_{p+r}>$唯一决定。
- 即所有的未来输出。
- \item 上述的输出序列$<\vec{o}_{p},\dots,\vec{o}_{p+r}>$
- 能被进一步压缩为$\vec{o}_{p+r}$。
- 这意味着只需$\vec{o}_{p+r}$ 即可唯一决定$\vec{i}_p$。
+ \item 如图\ref{fig_pc1_chap4}所示，
+ $l$ 可以被压缩为0，
+ 这意味着$\vec{i}_{p}$ 能够被$<\vec{o}_{p},\dots,\vec{o}_{p+r}>$唯一决定，
+ 也就是说，
+ 所有的将来输出。
+ \item 上述的序列$<\vec{o}_{p},\dots,\vec{o}_{p+r}>$
+ 可以被进一步压缩为$\vec{o}_{p+r}$.
+ 这意味着$\vec{o}_{p+r}$ 是在恢复$\vec{i}_p$时唯一被需要的输出。
 \end{enumerate}
 
-检验这两个要求等价于
-检查$F'_{PC}(p,r)\wedge valid(\vec{f}_{p+l})$的不可满足性
-其中$F'_{PC}(p,r)$ 定义如下：
+检查上述两个要求等价于下式的不可满足：
 
-\begin{equation}\label{uniqt11}
+\begin{equation}\label{uniqt11_chap4}
 % \begin{split}
 F'_{PC}(p,r):=
 \left\{
@@ -666,19 +459,25 @@ F'_{PC}(p,r):=
 \end{equation}
 
 
-该要求看起来远远强于(\ref{uniqt1})。
-我们将在实验结果中指出他们总能够满足。
+该等式看起来似乎远强于等式(\ref{uniqt1})。
+我们将在实验结果中指出，
+该等式总能称为不满足。
 
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=0.4\textwidth]{pc1_pipeline}
+\end{center}
+\caption{从压缩的输出序列中恢复输入}
+  \label{fig_pc1_chap4}
+\end{figure}
 
+\subsection{推导流水线}\label{subsec_inferstage}
 
-\subsection{推导流水线结构}\label{subsec_inferstage}
-
-现在,
-基于上述推导的$p$ 和$r$,
-我们将公式(\ref{uniqt11}) 中的$F'_{PC}$推广到下面定义的更广泛的形式。
-它能够检查任意变量$v$ 在步$j$
-能否被向量$\vec{w}$ 在步$k$唯一决定。
-现在$v$ 和$\vec{w}$ 可以使输入，输出或者状态向量。
+基于上述的$p$ 和$r$，
+我们将上述公式(\ref{uniqt11_chap4})中的$F'_{PC}$ 推广到下述公式
+以便能够检查 $v$在第$j$步
+是否能够被$\vec{w}$ 在第$k$步唯一决定。
+现在$v$ 和$\vec{w}$ 可以使输入，输出和状态变量向量。
 
 \begin{equation}\label{uniqt2}
 % \begin{split}
@@ -704,63 +503,77 @@ F''_{PC}(p,r,v,j,\vec{w},k):=
 % \end{split}
 \end{equation}
 
-很明显,
+很显然，
 当$F''_{PC}(p,r,v,j,\vec{w},k)$ 不可满足时，
-$\vec{w}_k$ 能唯一决定$v_j$.
+$\vec{w}_k$ 能够唯一决定$v_j$.
 
-对于$0\le j\le n-1$,
-在第$j$流水线级$\vec{stg}^j$,
-其留空向量$\vec{f}^j$ 包含所有的
-能够在第$j-((n-1)-(p+r))$-th 步被$\vec{o}$
-在第$p+r$步唯一决定的状态变量$s\in \vec{s}$。
-注意在这里不需要约束$valid(\vec{f}_p)$。
-这可以形式化的定义为:
+最后一集流水线$\vec{stg}^{n-1}$ 就是
+所有能够被
+在第$p+r$步的$\vec{o}$唯一决定的$s\in \vec{s}$。
+其定义为：
 
-\begin{equation}\label{stgn_fj}
-\vec{f}^{j} :=
- \left\{
+\begin{equation}\label{stgn_1}
+ \vec{stg}^{n-1} :=
+\left\{
  s\in \vec{s} ~|
 \begin{array}{cc}
- F''_{PC}(p,r,s,j-D,\vec{o},p+r)\\
+ F''_{PC}(p,r,
+ s,p+r,
+ \vec{o},p+r)\\
  ~is~unsatisfiable
 \end{array}
 \right\}
 \end{equation}
 
-其中:
 
-\begin{equation}\label{stgn_def}
+类似的，
+对于$0\le j\le n-2$，
+$\vec{stg}^j$ 在第$j-((n-2)-(p+r-1))$步
+可以被$\vec{stg}^{j+1}$ 在第$j-((n-2)-(p+r-1))+1$步唯一决定。
+我们可以定义$\vec{stg}^j$ 为：
+
+\begin{equation}\label{stgn_def_chap4}
 \begin{array}{ccc}
-% S             & := & \vec{s}/\bigcup_{j<k\le n-2}\vec{stg}^{k}\\
-D             & := & (n-1)-(p+r)\\
+S             & := & \vec{s}/\bigcup_{j<k\le n-2}\vec{stg}^{k}\\
+D             & := & (n-2)-(p+r-1)\\
 \end{array}
 \end{equation}
 
-而在第$j$流水线级$\vec{stg}^j$中的数据向量$\vec{d}^j$
-包含能够在第$j-((n-1)-(p+r))$步被
-$\vec{o}$ 在第$p+r$步唯一决定的所有$s\in \vec{s}$。
-注意这里我们需要强制$valid(\vec{f}_p)$。
-这可以被形式化的定义为:
-
-\begin{equation}\label{stgn_dj}
-\vec{d}^{j} :=
+\begin{equation}\label{stgn_j}
+\vec{stg}^{j} :=
  \left\{
- s\in \vec{s} ~|
- \begin{array}{cc}
- F''_{PC}(p,r,s,j-D,\vec{o},p+r)\wedge valid(\vec{f}_p)\\
- ~is~unsatisfiable
- \end{array}
+ s\in S ~|
+\begin{array}{cc}
+ F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)\\
+不可满足
+\end{array}
 \right\}
 \end{equation}
 
+基于等式(\ref{stgn_1}) 和(\ref{stgn_j})，
+所有的流水线几都能够被推导出来。
 
-\section{特征化流水线级和输入的布尔函数}\label{sec_char}
+\subsection{推导唯一决定输入的流水线级}\label{subsec_inferinput}
+
+根据图\ref{fig_pipeenc_chap4}，
+ 定义于(\ref{stgn_j}) 的$\vec{stg}^0$是唯一决定$\vec{i}$的流水线级。
+
+然而在实际的解码器中，
+并不一定是这种情形。
+因此我们需要从$0$ 到$n-1$，
+搜索最小的$j$ 使得
+$\vec{i}$ 能够被$\vec{stg}^j$唯一决定。
+即，
+最小的能够使得$F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ 对所有$i\in \vec{i}$不可满足的$j$。
+其中$D$ 定义于等式(\ref{stgn_def_chap4})。
+
+\section{特征化输入向量和流水线级的布尔函数}\label{sec_char_chap4}
 \subsection{特征化最后一个流水线级的布尔函数}
 
-从公式(\ref{stgn_fj})可知,
-每个寄存器$s\in \vec{f}^{n-1}$ 能过被$\vec{o}$ 在第$p+r$步唯一决定。
-也就是,
-$F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 不可满足且可以划分为:
+根据等式(\ref{stgn_1})，
+每个寄存器$s\in \vec{stg}^{n-1}$ 都能够被$\vec{o}$ 在第$p+r$步唯一决定。
+即，
+$F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 不可满足，且可以被划分为：
 
 \begin{equation}
  \phi_A :=
@@ -795,31 +608,25 @@ $F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 不可满足且可以划分为:
 % \end{split}
 \end{equation}
 
-因为$F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 等价于$\phi_A \wedge \phi_B$,
-所以$\phi_A \wedge \phi_B$ 不可满足
+由于$F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 等价于$\phi_A \wedge \phi_B$，
+因此$\phi_A \wedge \phi_B$ 也是不可满足的。
 而$\phi_A$ 和$\phi_B$ 的共同变量集合是$\vec{o}_{p+r}$。
 
-根据\cite{InterpBoolFunction},
-$\phi_A$ 相对于$\phi_B$ 的Craig插值$\phi_I$可以被计算出来，
-只引用$\vec{o}_{p+r}$，
-并且覆盖所有能使$s_{p+r}\equiv 1$的$\vec{o}_{p+r}$ 。
-同时,
-$\phi_I\wedge \phi_B$ 不可满足
-这意味着$\phi_I$ 并不覆盖任何使得$s_{p+r}\equiv 0$的$\vec{o}_{p+r}$ 。
+根据文献\upcite{InterpBoolFunction}，
+$\phi_A$ 相对于$\phi_B$的Craig插值$\phi_I$  可以构造出来，
+其中仅包含$\vec{o}_{p+r}$，
+并覆盖所有使$s_{p+r}\equiv 1$得$\vec{o}_{p+r}$ 的赋值。
+同时，
+$\phi_I\wedge \phi_B$  不可满足，
+这意味着$\phi_I$ 不能使$s_{p+r}\equiv 0$。
 
-因此,
-$\phi_I$ 可以作为
-从$\vec{o}$恢复$s\in \vec{f}^{n-1}$的布尔函数。
+因此，
+$\phi_I$ 能作为解码器的布尔函数以从$\vec{o}$中恢复$s\in \vec{stg}^{n-1}$ 。
 
-通过将$F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 替换为$F''_{PC}(p,r,s,p+r,\vec{o},p+r)\wedge valid(f_p)$，
-我们可以类似的特征化恢复$s\in\vec{d}^{n-1}$的布尔函数。
-
-\subsection{特征化恢复其他流水线级的布尔函数}
-根据图\ref{fig_pipeenc},
-% Similar to last subsection,
-$\vec{f}^j$ 在第$j-D$步可以被$\vec{stg}^{j+1}$ 在第$j-D+1$步唯一决定。
-因此我们将不可满足公式$F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)$
-划分为下列两个公式：
+\subsection{特征化其他流水线级的布尔函数}
+类似于上一小节，
+我们可以将公式(\ref{stgn_j})中的不可满足公式$F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)$
+划分如下：
 
 \begin{equation}
  \phi_A :=
@@ -854,20 +661,15 @@ $\vec{f}^j$ 在第$j-D$步可以被$\vec{stg}^{j+1}$ 在第$j-D+1$步唯一决�
 % \end{split}
 \end{equation}
 
-再一次,
-$\phi_A$ 相对于$\phi_B$ 的Craig插值$\phi_I$可以被构造出来,
-并用做从$\vec{stg}^{j+1}$恢复$s\in\vec{f}^{j}$的布尔函数。
+$\phi_A$ 相对于$\phi_B$的Craig 插值$\phi_I$  能够被构造出来，
+并作为从$\vec{stg}^{j+1}$恢复$s\in \vec{stg}^{j}$的布尔函数。
 
-类似的,
-将$F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)$  替换为
-$F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)\wedge valid(f_p)$ ，
-我们能特征化从$\vec{stg}^{j+1}$恢复$s\in\vec{d}^{j}$的布尔函数。
+\subsection{特征化输入变量的布尔函数}
 
-\subsection{特征化从第0级流水线恢复输入向量的布尔函数}
-
-根据图\ref{fig_pipeenc},
-$\vec{f}$ 在第$p$步能够被$\vec{stg}^0$ 在第$p$步唯一决定。
-$F''_{PC}(p,r,i,p,\vec{stg}^0,p)$ 不可满足并可以划分为以下两个公式：
+根据小节\ref{sec_pipeinfer_chap4}，
+我们找到了使得$F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ 对所有$i\in \vec{i}$都不满足的$j$，
+其中$D$ 在的公式(\ref{stgn_def_chap4})中定义。
+$F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ 是不可满足的并可划分为:
 
 \begin{equation}
 % \begin{split}
@@ -897,7 +699,7 @@ $F''_{PC}(p,r,i,p,\vec{stg}^0,p)$ 不可满足并可以划分为以下两个公�
 (\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
 \}
 \\
-\wedge&\vec{stg}^0_p\equiv \vec{stg'}^0_p \\
+\wedge&\vec{stg}^j_{j-D}\equiv \vec{stg'}^j_{j-D} \\
 \wedge& i'_{p}\equiv 0
 % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
 % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
@@ -906,254 +708,235 @@ $F''_{PC}(p,r,i,p,\vec{stg}^0,p)$ 不可满足并可以划分为以下两个公�
 % \end{split}
 \end{equation}
 
-再一次,
-$\phi_A$ 相对于$\phi_B$的Craig插值$\phi_I$
-可以被用作从$\vec{stg}^0$恢复$i\in\vec{f}$的布尔函数。
-
-类似的,
-通过替换$F''_{PC}(p,r,i,p,\vec{stg}^0,p)$ 为$F''_{PC}(p,r,i,p,\vec{stg}^0,p)\wedge valid(\vec{f}_p)$，
-我们可以特征化从$\vec{stg}^0$恢复$i\in\vec{d}$的布尔函数。
+和上一小节类似，
+$\phi_A$ 相对于$\phi_B$的Craig 插值$\phi_I$
+可以作为从$\vec{stg}^j$中恢复$i\in\vec{i}$的布尔函数。
 
 
 
-\section{实验结果}\label{sec_exp}
-我们使用OCaml 语言实现了上述算法，
-并使用MiniSat 1.14 \cite{EXTSAT}求解产生的CNF公式。
-所有的实验使用一台包含16 个Intel Xeon E5648 2.67GHz处理器，
-192GB 内存, 和CentOS 5.4 Linux操作系统的服务器上。
+\section{实验结果}\label{sec_exp_chap4}
+我们在OCaml 语言中实现了上述算法，
+并使用MiniSat 1.14 \cite{EXTSAT}求解相应的公式。
+使用一台包含16 个Intel Xeon E5648 2.67GHz处理器，
+192GB 存储器， 和CentOS 5.4 Linux操作系统的服务器。
 
-\subsection{比较时间和面积}
-表\ref{tab_bench} 给出本文中使用的benchmark。
-第2和3分别给出输入,输出和寄存器个数。
-第4列给出了将编码器映射至LSI10K 库所得到的面积。
-本文中,
-所有的面积和延迟使用同样的设置得到。
+表\ref{tab_bench_chap4} 给出了本文使用的benchmarks 。
+第2和3列分别给出了每个benchmark的输入， 输出和寄存器数量。
+第4列将这些编码器映射至LSI10K 库的面积。
+本文中，
+所有的面积和延时都是在相同的设定下得到的。
+
 
 
 \begin{table*}[t]
-\caption{Benchmark和实验结果}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\caption{Benchmarks and experimental results}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
- Names     & \multicolumn{4}{|c|}{编码器}                                        &   \multicolumn{3}{|c|}{\cite{ShenTCAD11}产生}      &   \multicolumn{3}{|c|}{本文产生} \\
-           & \multicolumn{4}{|c|}{}                                              &   \multicolumn{3}{|c|}{的解码器}                   &   \multicolumn{3}{|c|}{的解码器} \\\cline{2-11}
-           &    \#   &   \#    &面积  & 解码器                                   &运行 &延迟 &面积                                    &运行 &延迟 &面积\\
-           & in/out  &  reg    &      &   藐视                                   &时间 &(ns) &                                        &时间 &(ns) &    \\\hline\hline
- pcie      & 10/11   & 23      & 326  &PCIE 2.0 \cite{pcie21}                    &0.37 &7.20 &624                                     &8.08 & 5.89&652 \\\hline
- xgxs      & 10/10   & 16      & 453  &     以太网   clause 48 \cite{IEEE8023_S4}&0.21 &7.02 &540                                     &4.25 & 5.93&829 \\\hline
- t2eth     & 14/14   & 49      & 2252 &    以太网   clause 36 \cite{IEEE8023_S4} &12.7 &6.54 &434                                     &430.4& 6.12&877 \\\hline
-scrambler  &64/64    & 58      & 1034 & inserting 01 flipping                    &     \multicolumn{6}{|c|}{no pipeline }\\\cline{1-5}
- xfi       & 72/66   & 72      & 7772 &     以太网   clause 49 \cite{IEEE8023_S4}&     \multicolumn{6}{|c|}{stages found}\\\hline
-\end{tabular}\label{tab_bench}
+ Names     & \multicolumn{4}{|c|}{编码器}                                  &   \multicolumn{3}{|c|}{由\cite{ShenTCAD11}产生}             &   \multicolumn{4}{|c|}{本文产生} \\
+           & \multicolumn{4}{|c|}{}                                              &   \multicolumn{3}{|c|}{的解码器}  &   \multicolumn{4}{|c|}{的解码器} \\\cline{2-12}
+           &    \#   &   \#    &面积& 编码器&运行&延迟&面积                                       &运行&延迟&面积&寄存器\\
+           & in/out  &  reg    &      &   描述&时间&(ns) &                                        &时间 &(ns) &    &个数\\\hline\hline
+ pcie      & 10/11   & 23      & 326  &PCIE 2.0 \cite{pcie21}                    &0.37 &7.20 &624                                     &3.57 & 5.89&652 &9/12\\\hline
+ xgxs      & 10/10   & 16      & 453  &     以太网clause 48 \cite{IEEE8023_S4}&0.21 &7.02 &540                                     &1.57 & 5.93&829 &13\\\hline
+ t2eth     & 14/14   & 49      & 2252 &    以太网clause 36 \cite{IEEE8023_S4} &12.7 &6.54 &434                                     &47.2 & 6.12&877 &8/8/10/20\\\hline
+scrambler  &64/64    & 58      & 1034 & inserting 01 flipping                    &     \multicolumn{7}{|c|}{no pipeline }\\\cline{1-5}
+ xfi       & 72/66   & 72      & 7772 &     以太网clause 49 \cite{IEEE8023_S4}&     \multicolumn{7}{|c|}{stages found}\\\hline
+\end{tabular}\label{tab_bench_chap4}
 \end{table*}
 
 
 
 
 
-第6到8列分别给出了论文\cite{ShenTCAD11}的算法产生非流水解码器的运行时间，
-以及该解码器的延迟和面积。
-而第9到11列分别给出了本文算法的类似信息。
-
-比较第7和10列可知
-延迟得到了明显的改善。
-
-一个比较令人惊讶的事实是，
-两个最大的benchmarks scrambler 和xfi 并不包含流水线。
-我们研究并确认了这一点。
-他们的面积如此之大是因为使用了很宽的64到72 位数据路径。
-
-\subsection{PCIE推导的流水线结构}
-
-对于benchmark pcie，
-存在两个流水线级,
-其中包含的流控向量和数据向量如图\ref{tab_pcie}所示。
-
-\begin{table}[t]
-\centering
-\caption{pcie推导的流水线结构}
-\begin{tabular}{|c|c|c|c|}
-\hline
-                       & input                  & pipeline stage 0          &  pipeline stage 1    \\\hline\hline
-流控                   &CNTL\_TXEnable\_P0      & InputDataEnable\_P0\_reg  & OutputData\_P0\_reg[9:0]\\
-向量                   &                        &                           & OutputElecIdle\_P0\_reg \\\hline
-流控                   &CNTL\_TXEnable\_P0      & InputDataEnable\_P0\_reg  & true \\
-谓词                   &                        &                           &  \\\hline
-数据                   &TXDATA[7:0]             & InputData\_P0\_reg[7:0]   & \\
-向量                   &TXDATAK                 & InputDataK\_P0\_reg       & \\\hline
-\end{tabular}\label{tab_pcie}
-\end{table}
-
-
-有一个有趣的事实是流水线级1的数据向量是空集。
-而所有的流水线寄存器都被识别成为流控向量。
-我们研究了源代码，
-发现这些流水线寄存器全部都被直接送给输出向量。
-因此他们很明显都能够被$\vec{o}$唯一决定。
-伊霓裳这并不影响所产生的解码器的正确性。
-
-
-
-\subsection{xgxs推导的流水线结构}
+第6到8列分别给出了\cite{ShenTCAD11}算法在产生误流水线的解码器时的运行时间，延迟和面积。
+而第9到11列分别给出了本文算法的运行时间，延迟和面积。
+而最后一列给出了每一级流水线包含的寄存器个数。
+
+比较第7和10列可以看到
+解码器的延迟得到了较大的改善，
+而最后一列指出确实存在很深的流水线，
+其中t2ether包含4级流水线。
+
+有一点非常有意思的是，
+两个最大的benchmarks scrambler 和xfi 没有检测到流水线。
+我们研究了其代码，并确认了这一点。
+他们的面积如此之大是因为使用了64 到72 位宽的数据路径。
+
+%\section{相关工作}\label{sec_relwork_chap4}
+%沈等\cite{ShenICCAD09} 提出了第一个对偶综合算法。
+%他通过迭代的展开迁移函数来检测解码器的存在性。
+%并通过遍历可满足赋值了产生解码器函数。
+%但是该算法是不停机的，并且在产生解码器时非常慢。
+%
+%沈 et al.\cite{ShenTCAD11} 和刘at al.\cite{LiuICCAD11} 分别独立处理了停机问题，
+%方法是在状态序列中检测环形路径。
+%而解码器构造中运行时间太长的问题则在\cite{ShenTCAD12,LiuICCAD11} 中通过Craig插值\cite{InterpBoolFunction}解决。
+%
+%沈et al. \cite{ShenTCAD12} 推导了能够使得解码器存在的配置断言。
+%
+%屠et al.\cite{TuDAC13} 提出了一个突破性的算法能够在构造解码器时考虑整个无限的输入历史。
+
+% This algorithm can handle some encoders that cannot be handled by the state-of-the-art algorithms.
+% Their work is orthogonal to ours.
+
+% \subsection{Program inversion}\label{subsec_proinv}
+% % According to \cite{dim_syn},
+% Program inversion derives a program $P^{-1}$
+% that negates the computation of a given program $P$.
+% So
+% it is very similar to complementary synthesis.
+%
+% The initial work on program inversion \cite{prog_inv} used proof-based approaches,
+% which could handle only very small programs and very simple syntax structures.
+%
+% \cite{mtd_autoProginv} inverted first-order functional programs
+% by eliminating nondeterminism with LR-based parsing methods.
+% But
+% the use of functional languages in that work is incompatible with our complementary synthesis.
+%
+% \cite{program_inversion_11} assumed that an inverse program was related to the original program,
+% so the space of possible inversions can be inferred by automatically
+% mining the original program for expressions, predicates, and control flow.
+% This algorithm inductively rules out invalid paths that can't fulfill the requirement of inversion
+% % to narrow down the space of candidate programs
+% until only the valid ones remain.
+% So,
+% it can't guarantee the correctness of its solution if its assumptions don't hold.
+
+% \subsection{The completeness of bounded model checking}\label{subsec_bmc_relate}
+% Bounded model checking(BMC) \cite{bmc_tacas99} is a model checking technology that considers only paths of limited length.
+% So it is an incomplete algorithm.
+% Many researchers have tried to find complete approaches for BMC.
+%
+% One line of research\cite{bmc_tacas99,RecDiam} tried to find out a bound $b$,
+% which can guarantee the correctness of a specification,
+% if the specification is correct on all paths that are shorter than $b$.
+% Line 8 of Algorithm \ref{algo_infer} finds out the value of $p$,$d$ and $l$ that can prove the non-existence of the decoder,
+% which is similar to \cite{bmc_tacas99,RecDiam}.
+%
+% The other line of research\cite{kind_tacas99} tried to find a bound for induction,
+% such that the correctness of a specification within any bound $b$ implies the correctness on bound $b+1$.
+% Our algorithm proves the non-existence of the decoder by unfolding loops.
+% This is similar to finding induction patterns \cite{kind_tacas99}.
+
+% \textbf{This paper achieves completeness without following these two approaches.
+% Instead,
+% it defines two complement uniqueness conditions,
+% $LP$ and $LL$,
+% and find out proper algorithms to check them.}
+
+%\subsection{Temporal Logic Synthesis}
+%%Automatically synthesis of program from logic specification is first identified as Church's problem in 1962\cite{LOGARTHAUTO}.
+%%Some early researches \cite{SLVSQFSS,AUTOINF} solve this problem by reducing it to checking emptiness of tree automata.
+%
+%The temporal logic synthesis was first addressed by Clarke et al.\cite{DSGSYNTMPLG} and Manna et al. \cite{SYNTMPLGSPC}.
+%But Pnueli et al. \cite{SYNRCTVMD} pointed out that the complexity of LTL synthesis is double exponent.
+%%This high complexity drives researchers turning their focus to find smaller but still useful subset of temporal logic,
+%%such that synthesis problem can be solved with lower complexity.
+%
+%One line of research \cite{CNTLSYNTMDAUTO,DTMGENGMELTL,SYNRCTVDES} focuses on the so-called generalized reactive formulas of the form:
+%$(\square \lozenge p_1 \wedge \cdots \square \lozenge p_m) \to (\square \lozenge q_1 \wedge \cdots \square \lozenge q_n)$.
+%Complexity of solving synthesis problem for such formula is $O(N^3)$.
+%
+%The other line of research focuses on finding efficient algorithm \cite{SYNCNTLBNDRPN}
+%for expensive safra determination algorithm \cite{CMPLXAUTO} on an useful formula subset,
+%or just avoiding it\cite{NEWALGSTRGSYN}.
+%
+%%Yet another approach is antichain\cite{ANTICHAIN},
+%%which reduces the expensive state set computation to computation on maximal and minimal elements of lattice.
+%
+%Based on these research works,
+%some tools\cite{ANZU} that can handle small temporal formulas have been developed.
+%
+%All these works assume a hostile environment,
+%which seems too restrictive for many applications.
+%So Fisman et al. \cite{rationalsyn_tacas10}, Chatterjee et al. \cite{assguasyn_tacas07} and Ummels et al. \cite{ralgame_istta06} proposed rational synthesis algorithm,
+%which assumes that each agents act to achieve their own goals instead of failing each other.
+
+
+% \subsection{Protocol converter synthesis}
+% Protocol converter synthesis is a process that automatically generates a translator between two different communication protocols.
+% This is relevant to our work,
+% because both focus on synthesizing communication circuits.
+%
+% In \cite{converter_date08,converter_todeas09},
+% Avnit et al. first defined a general model for describing different protocols,
+% and then provided an algorithm to decide
+% whether there is some functionality of a protocol that cannot be translated into another.
+% Finally,
+% they synthesized a translator by computing the greatest fixed point for the update function of the buffer's control states.
+% Latter in \cite{converter_date09},
+% they improved their algorithm with a more efficient design space exploration algorithm.
+
+% \subsection{Satisfying Assignments Enumeration}\label{subsec_relallsat}
+%
+% Some algorithms try to enumerate all satisfying assignments faster
+% by enlarging each complete satisfying assignment.
+% % so that a large state set that contains more complete satisfying assignments can be obtained.
+% \cite{SATUNBMC} constructs an alternative implication graph in SAT solver,
+% which records the reasoning relation that leads to the assignment of a particular variable.
+% All variables outside this graph can be ruled out from the complete assignment.
+% In \cite{MINASS} and \cite{REPARAM},
+% those variables whose absence can't make $obj\equiv 0$ satisfiable are removed one by one.
+% In \cite{MINCEX} and \cite{PRIMECLAUSE},
+% conflict analysis based approaches are used
+% to remove multiple irrelevant variables in one SAT run.
+% In \cite{MEMEFFALLSAT},
+% the variable set is divided into an important subset and an unimportant subset.
+% Variables in the important subset have higher decision priority than those unimportant ones.
+% Thus,
+% the important subset forms a search tree,
+% with each leaf being another search tree for the unimportant set.
+% %Tobias Nopper et al.\cite{CMPMINCEX} propose an counterexample minimization algorithm for incomplete designs that contain black box.
+% \cite{EFFSATUSMCCO} qualifies out unimportant variables by setting them to constant value returned by the SAT solver.
+%
+% Other algorithms constructs interpolations to cover more satisfying assignments.
+% \cite{InterpBoolFunction}
+% constructs a first formula that contradicts with another formula,
+% from which an interpolation can be derived and used as an over-approximation of the first formula.
+% \cite{interpNoProof} generates
+% interpolation with a framework similar to the iterative enumerating and
+% enlarging approaches mentioned above.
+% But there are two enlarging steps for each enumerated assignment,
+% in which the assignments are enlarged with respect to the two formulas involved in constructing interpolant.
+% It is the first paper that constructs interpolant without proof.
+
+% \subsection{Logic synthesis with Craig interpolation}
+% In \cite{scalableFuncDep,Bidecomp},
+% the functional dependency and logic decomposition problems are solved
+% by formulating the base Boolean functions' output bits as the input bits to an unknown Boolean function,
+% and characterize this unknown function by Craig interpolation.
+% This algorithm is also used in our paper \cite{ShenTCAD12} to find out all the possible decoders.
+%
+% % In \cite{ecoInterp},
+% % an ECO is generated with Craig interpolation.
+%
+% In \cite{InterpBoolFunction},
+% the first algorithm to characterize a Boolean function from a Boolean Relation was proposed.
+% It includes two different algorithms:
+% The first one handle a general  non-deterministic Boolean relation that can't uniquely determined its output,
+% The second one is a special case of the first one
+% that handles a deterministic relation that can uniquely determine its output by Craig interpolation.
+% The second one is used in \cite{ShenTCAD12}.
+%
+% This paper also need to handle a non-deterministic Boolean relation,
+% which seems to be similar to that one handled by the first algorithm of \cite{InterpBoolFunction}.
+% But our case is much more complicated,
+% because the Boolean relation to be handled is an unrolled transition function with unknown length.
+% That is,
+% we must first find out the value of $p$, $l$ and $r$.
+% But these value must be determine together with finding out the flow control vector $\vec{f}$.
+% So the way we handle non-determinism is significantly different from that of \cite{InterpBoolFunction}.
+% But after we got the value of $p$, $l$ and $r$,
+% together with the flow control vector $\vec{f}$ and the predicate $valid(\vec{f})$,
+% we can characterize the decoder's Boolean function with an algorithm similar to the second one in \cite{InterpBoolFunction}.
+
+\section{结论}\label{sec_conclude_chap4}
+
+本文提出了第一个能够处理流水线的对偶综合算法。
+实验结果表明，
+本算法能够针对多个复杂的实际工业界编码器，
+正确的推导流水线结构并生成对应的流水线解码器。.
 
 
-对于benchmark xgxs,
-只有一级流水线，
-其中的流控和数据向量如图\ref{tab_xgxs}所示。
-
-\begin{table}[b]
-\centering
-\caption{xgxs推导的流水线结构}
-\begin{tabular}{|c|c|c|}
-\hline
-                       & input                  &  pipeline stage 0    \\\hline\hline
-流控向量               &bad\_code               & bad\_code\_reg\_reg\\\hline
-流控谓词               &!bad\_code              & !bad\_code\_reg\_reg \\\hline
-数据向量               &encode\_data\_in[7:0]   &ip\_data\_latch\_reg[2:0] \\
-                       &konstant                &plus34\_latch\_reg     \\
-                       &                        &data\_out\_latch\_reg[5:0]\\
-                       &                        &konstant\_latch\_reg   \\
-                       &                        &kx\_latch\_reg         \\
-                       &                        &minus34b\_latch\_reg   \\\hline
-\end{tabular}\label{tab_xgxs}
-\end{table}
-
-
-\subsection{t2ether推导的流水线结构}
-
-
-\begin{table}[t]
-\centering
-\caption{t2ether推导的流水线结构}
-\begin{tabular}{|c|c|c|c|c|c|}
-\hline
-                       & input                        & pipeline                  &  pipeline          &  pipeline       &  pipeline               \\
-                       &                              & stage 0                   &  stage 1           &  stage 2        &  stage 3                \\\hline\hline
-流控                   & tx\_enc\_ctrl\_sel[3:0]      &qout\_reg\_0\_8            & qout\_reg\_0\_9    &qout\_reg[9:0]\_2&qout\_reg[7:1]\_3        \\
-向量                   &                              &qout\_reg\_2\_4            & qout\_reg\_1\_5    &                 &qout\_reg\_8\_1          \\
-                       &                              &qout\_reg\_1\_4            & qout\_reg\_2\_5    &                 &qout\_reg\_9\_1          \\
-                       &                              &                           & qout\_reg\_0\_10   &                 &qout\_reg\_3\_4          \\
-                       &                              &                           &                    &                 &qout\_reg\_0\_4          \\
-                       &                              &                           &                    &                 &qout\_reg\_3\_5          \\
-                       &                              &                           &                    &                 &qout\_reg\_0\_7          \\
-                       &                              &                           &                    &                 &sync1\_reg1              \\
-                       &                              &                           &                    &                 &sync1\_reg               \\
-                       &                              &                           &                    &                 &Q\_reg1                  \\
-                       &                              &                           &                    &                 &Q\_reg                         \\\hline
-数据                   &txd[7:0]                      &qout\_reg[7:0]             &qout\_reg[7:0]\_1   &                 &                         \\
-向量                   &                              &                           &                    &                 &                         \\\hline
-\end{tabular}\label{tab_t2ether}
-\end{table}
-
-
-对于benchmark t2ether,
-有3级流水线，如图\ref{tab_t2ether}所示。
-流控谓词比较复杂，
-因此我们将他们单独列在下面而不是图\ref{tab_t2ether}中。
-输入流控谓词$f$ 为：
-\begin{multline}
-\begin{array}{l}
-( tx\_enc\_ctrl\_sel[2]~\&~tx\_enc\_ctrl\_sel[3] ) | \\
-( tx\_enc\_ctrl\_sel[2]~\&~!tx\_enc\_ctrl\_sel[3]~\&~!tx\_enc\_ctrl\_sel[0]~\&~tx\_enc\_ctrl\_sel[1] ) | \\
-( !tx\_enc\_ctrl\_sel[2]~\&~tx\_enc\_ctrl\_sel[3] ) | \\
-( !tx\_enc\_ctrl\_sel[2]~\&~!tx\_enc\_ctrl\_sel[3]~\&~tx\_enc\_ctrl\_sel[0] )
-\end{array}
-\end{multline}
-
-第零级流控谓词$valid(\vec{f}^0)$ ：
-\begin{multline}
-\begin{array}{l}
-( qout\_reg\_2\_4~\&~qout\_reg\_1\_4~\&~!qout\_reg\_0\_8) | \\
-( !qout\_reg\_2\_4~\&~qout\_reg\_0\_8)
-\end{array}
-\end{multline}
-
-第一级流控谓词$valid(\vec{f}^1)$ 为：
-
-\begin{multline}
-\begin{array}{l}
-( qout\_reg\_2\_5~\&~qout\_reg\_1\_5~\&~qout\_reg\_0\_10~\&~!qout\_reg\_0\_9) | \\
-( qout\_reg\_2\_5~\&~qout\_reg\_1\_5~\&~!qout\_reg\_0\_10) | \\
-( qout\_reg\_2\_5~\&~!qout\_reg\_1\_5~\&~!qout\_reg\_0\_10) | \\
-( !qout\_reg\_2\_5~\&~qout\_reg\_0\_10~\&~qout\_reg\_0\_9) | \\
-( !qout\_reg\_2\_5~\&~!qout\_reg\_0\_10)
-\end{array}
-\end{multline}
-
-
-最后两级的流控谓词$valid(\vec{f}^2)$ 和$valid(\vec{f}^3)$ 均为$true$。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\section{相关工作}\label{sec_relwork}
-
-\subsection{对偶综合}\label{subsec_compsyn_relat}
-第一个对偶综合算法由沈\cite{ShenICCAD09}提出。
-他通过迭代的展开迁移函数来检查解码器的存在性，
-并通过遍历所有的输出向量取值来特征化解码器的布尔函数。
-其主要弱点在于该算法不停机，
-而且特征化解码器函数时速度太慢。
-
-沈et al.\cite{ShenTCAD11} 和Liu et al.\cite{LiuICCAD11} 通过在状态序列上搜索环来解决停机问题。
-而\cite{ShenTCAD12,LiuICCAD11} 通过Craig插值\cite{interp_McMillan}高效的特征化解码器函数。
-
-沈et al.\cite{ShenTCAD12} 自动推导使得解码器存在的配置断言。
-
-秦et al. \cite{QinTODAES15}
-提出了第一个能处理流控机制的对偶综合算法。
-
-Tu 和Jiang \cite{TuDAC13} 提出了一个突破性的算法以在恢复编码器输入时考虑其非限界的历史。
-
-
-\subsection{程序取反}\label{subsec_proinv}
-根据Gulwani \cite{dim_syn},
-程序取反意味着为
-特定程序$P$
-生成一个具有反功能的程序$P^{-1}$。
-因此,
-程序取反非常类似于我们的对偶综合。
-
-最早的程序取反算法基于proof的算法\cite{prog_inv},
-只能处理非常小的程序和非常简单的语法。
-
-Gl\"{u}ck et al. \cite{mtd_autoProginv} 取反一阶函数语言的程序，
-通过基于LR的算法来去除非确定性。.
-然而使用函数语言使得其应用场景和我们有很大的差别。
-
-{Srivastava et al. \cite{prog_inv_rev,program_inversion_11} 假设反程序和原始程序的结构是类似的,
-因此可能的反程序结构可以通过挖掘原始程序中的谓词，表达式和控制流得到。
-这和本文发掘流水线级和流控机制类似。
-该算法迭代的去掉不满足要求的解空间直至剩下正确的解。
-
-
-\section{结论}\label{sec_conclude}
-本文提出了第一个能同时处理流控机制和流水线的对偶综合算法。
-实验结果表明本文算法总能够正确的产生带有流控机制和流水线的解码器。
 

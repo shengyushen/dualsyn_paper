@@ -9,7 +9,7 @@
 通过自动生成特定编码器的解码器以降低该工作的复杂度并提高结果的可靠性。
 
 而另一方面，
-现代复杂通讯协议的编码器中，广泛采用了流控\cite{flowcontrol}和流水线等复杂内部结构，
+现代复杂通讯协议的编码器中，广泛采用了流控\upcite{flowcontrol}和流水线等复杂内部结构，
 以提升编码器的性能和对复杂应用环境的适应性。
 而目前在对偶综合方面的所有研究工作\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 均基于黑盒模型，
@@ -22,7 +22,7 @@
 以自动产生支持相应结构的解码器。
 本文的主要研究内容及创新点包括以下几方面：
 
-第一，研究了基于余因子(Cofactoring)和Craig插值的迭代特征化算法。
+第一，研究了基于余因子(Cofactoring)和Craig插值\upcite{Craig}的迭代特征化算法。
 在发掘编码器内部结构和自动产生解码器的过程中，
 一个必须而且对性能要求非常苛刻的步骤，
 是特征化满足特定命题逻辑关系$R$的布尔函数$f$。
@@ -87,7 +87,7 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 第一个流水线级$\vec{stg}^0$中恢复$\vec{i}$。
 
 第四，结合上述研究成果，研究了能够同时处理流控和流水线结构的对偶综合算法。
-该算法首先使用秦et al. \cite{QinTODAES15}的算法来寻找$\vec{f}$ 并推导$valid(\vec{f})$。
+该算法首先使用秦et al. \upcite{QinTODAES15}的算法来寻找$\vec{f}$ 并推导$valid(\vec{f})$。
 然后分别通过强制和不强制$valid(\vec{f})$，
 已从所有寄存器集合中找到每一个寄存器级$\vec{stg}^j$的$\vec{d}^j$ 和$\vec{f}^j$。
 最后通过Jiang et al. \cite{InterpBoolFunction}的算法特征化$\vec{stg}^j$ 和$\vec{i}$的布尔函数。

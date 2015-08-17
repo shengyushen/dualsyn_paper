@@ -15,7 +15,7 @@
 能够表达$\vec{a}$和$\vec{b}$之间的任意对应。
 尤其是一对多的对应，
 这是关系比函数具有更强描述能力的地方。
-这种一般性在形式化验证中广泛用于描述非确定性行为以扩展描述能力，
+这种一般性在形式化验证中广泛用于描述非确定性行为以扩展描述能力\upcite{nda}，
 以及构造抽象模型\upcite{DBLP:conf/cav/ClarkeGJLV00}以削减计算复杂性等。
 
 而另一方面，
@@ -126,7 +126,19 @@ $\Pi$就是一棵树，
 
 \subsection{Craig插值算法}
 
-假设我们有一对公式$(A,B)$。
+根据文献\upcite{Craig}，
+给定两个布尔逻辑公式$A$ 和$B$，
+若$A\wedge B$ 不可满足，
+则存在仅使用了$A$ 和$B$共同变量的公式$I$ ，
+使得$A\Rightarrow I$且
+$I\wedge B$不可满足。
+$I$ 被称为$A$针对$B$的Craig插值\upcite{Craig}。
+
+目前最常见且最高效的产生Craig插值的算法是
+McMillan算法\upcite{interp_McMillan} 。
+其基本原理描述如下。
+
+对于上述公式$A$和$B$，
 已知$A\cup B$不可满足，
 而$\Pi$是SAT求解器给出的不可满足证明。
 当一个变量$v$同时出现在$A$和$B$中时，
@@ -152,7 +164,7 @@ $g(c_2)=(b\vee c)$，
 $l(c_2)=FALSE$。
 
 
-\begin{definition}
+\begin{definition}\label{def_gencraig}
 令$(A,B)$为一对公式，
 而$\Pi$是$A\cup B$的不可满足证明，
 且其叶节点是$FALSE$。
@@ -170,13 +182,52 @@ $l(c_2)=FALSE$。
     \item 否则$p(c)=p(c_1)\wedge p(c_2)$。
   \end{enumerate}
 \end{enumerate}
-则$A$相对于$B$的Craig插值，
-即为$p(FALSE)$。
 \end{definition}
 
+上述定义\ref{def_gencraig}是构造性的，
+已经给出了从$\Pi$得到最终的插值的算法，
+即以$\Pi$的根节点为起点，
+为每一个$c$计算相应的$p(c)$，
+直至到达最终的唯一叶节点$FALSE$。
+我们有以下定理：
+
+\begin{theorem}
+定义\ref{def_gencraig}为唯一叶节点$FALSE$产生的$p(FALSE)$即为
+$A$相对于$B$的Craig插值。
+\end{theorem}
+
+该定理的详细证明可见文献\upcite{DBLP:journals/tcs/McMillan05}。
+
+计算$A$相对于$B$的Craig插值的时间复杂性为$O(N+L)$，
+其中$N$是$\Pi$中包含的节点个数$|V_{\Pi}|$，
+而$L$是$\Pi$中的文字个数$\sigma_{c\in V_{\Pi}}|c|$。
+而所产生的插值可以视为一个电路，
+其空间复杂性为$|O(N+L)|$。
+当然，
+$\Pi$的尺寸在最坏情况下也是$A\cup B$的尺寸的指数。
+
+
+
+\section{非迭代的特征化算法}
+
+假设有布尔关系$R(t,\vec{a})$使得
+$R(1,\vec{a})\wedge R(0,\vec{a})$不可满足。
+而我们需要从$R$中特征化函数$f$，
+使得$t=f(\vec{a})$。
+则根据上述的讨论，
+可以简单的令$A=R(1,\vec{a})$而$B=R(0,\vec{a})$。
+此时$A$相对于$B$的Craig插值，
+即为函数$f$的一个实现。
+
+该算法在本文的后继章节中被广泛应用于构造解码器的布尔函数。
 
 
 \section{迭代的特征化算法}\label{sec_iterativecraig}
+上一小节讨论了如何从关系$R(a,\vec{b})$特征化函数$a=f(\vec{b})$。
+然而在更一般的情形下，我们需要从$R(\vec{a},\vec{b},t)$特征化函数$t=f(\vec{a})$。
+相比之下，此时多了一个需要进行存在性量化的$\vec{b}$。
+为此我们需要将上述算法进行以下扩展。
+
 假设$R(\vec{a},\vec{b},t)$是一个使得$R(\vec{a},\vec{b},0)\wedge R(\vec{a},\vec{b},1)$ 不可满足的布尔公式。
 
 其中$\vec{a}$ 和$\vec{b}$ 被分别称为重要和非重要变量子集。
