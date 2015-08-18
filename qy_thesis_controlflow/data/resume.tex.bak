@@ -5,9 +5,11 @@
 
   \begin{enumerate}[{[}1{]}]
   \addtolength{\itemsep}{-.36\baselineskip}% 缩小条目之间的间距，下面类似
-  \item LU Xiaopei, DONG Dezun, LIAO Xiangke, PENG Shaoliang. P-Zone: Connectivity-based Packet Path Tracing in Wireless Sensor Networks. Chinese Journal of Electronics, 2013, 22(CJE-3): 477-482.（SCI检索，WOS：000321481000008，IDS：178XP）
+  \item Qin Y, Shen S, Wu Q, et al. Complementary Synthesis for Encoder with Flow
+Control Mechanism [J]. accepted by ACM Transactions on Design Automation of
+Electronic Systems.（SCI检索，WOS：000321481000008，IDS：178XP）
   \item Xiaopei Lu, Dezun Dong, Xiangke Liao. MDS-Based Wormhole Detection Using Local Topology in Wireless Sensor Networks. International Journal of Distributed Sensor Networks, vol. 2012, Article ID 145702, 9 pages, 2012.（SCI检索，WOS：000313170700001，IDS：065SZ）
-  \item Xiaopei Lu, Dezun Dong, Xiangke Liao, Shanshan Li. PathZip: Packet Path Tracing in Wireless Sensor Networks. The 9th IEEE International Conference on Mobile Ad hoc and Sensor Systems (MASS2012), Las Vegas, NV, USA, October, 2012.（EI检索，WOS：000318874900043，IDS：BEZ33）
+  \item Xiaopei Lu, Dezun Dong, Xiangke Liao, Shanshan Li. PathZip: Packet Path Tracing in Wireless Sensor Networks. The 9th IEEE International Conference on Mobile Ad hoc and Sensor Systems (MASS2012), Las Vegas, NV, USA, October, 2012, 9 pages.（EI检索，WOS：000318874900043，IDS：BEZ33）
   \item Xiaopei Lu, Dezun Dong, Xiangke Liao. WormPlanar: Topological Planarization based Wormhole Detection in Wireless Networks. The 42nd International Conference on Parallel Processing (ICPP2013), Lyon, France, October, 2013, 6 pages.（EI检索）
   \item Xiaopei Lu, Dezun Dong, Xiangke Liao. Fine-Grained Landmark based Greedy Geographic Routing with Guaranteed Delivery under Uncertain Locations. The 10th IEEE International Conference on Mobile Ad-hoc and Sensor Systems (MASS2013), Hangzhou, China, October, 2013, 2 pages.（EI检索）
   \item Xiaopei Lu, Dezun Dong, Xiangke Liao, Shanshan Li, Xiaodong Liu. PathZip: A Lightweight Scheme for Tracing Packet Path in Wireless Sensor Networks. submitted to IEEE Transactions on Parallel and Distributed Systems.（已投稿，SCI检索）

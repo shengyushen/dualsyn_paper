@@ -560,7 +560,7 @@ $\vec{stg}^j$ 是第$j$个流水线级。
 而$\vec{stg}^j_i$ 该第$j$流水线级
 在第$i$步的取值。
 
-\subsection{算法框架}
+\subsection{算法框架}\label{algo_algoframework}
 
 基于图\ref{fig_pipeenc}所示的编码器结构，
 我们算法的框架为：
@@ -618,7 +618,7 @@ $F_{PC}(p,l,0)$ 肯定已经在上一个迭代中被测试，
 我们从算法\ref{algo_remove2}得到了一个压缩的$r$，
 使得$\vec{i}_{p+l}$ 可以被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$唯一决定。
 
-\begin{figure}[t]
+\begin{figure}[b]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{pc1_pred}
 \end{center}
@@ -671,7 +671,7 @@ F'_{PC}(p,r):=
 
 
 
-\subsection{推导流水线结构}\label{subsec_inferstage}
+\subsection{寻找流控向量$\vec{f}^j$和数据向量$\vec{d}^j$}\label{subsec_inferstage}
 
 现在，
 基于上述推导的$p$ 和$r$，
@@ -710,7 +710,7 @@ $\vec{w}_k$ 能唯一决定$v_j$.
 
 对于$0\le j\le n-1$，
 在第$j$流水线级$\vec{stg}^j$，
-其留空向量$\vec{f}^j$ 包含所有的
+其流控向量$\vec{f}^j$ 包含所有的
 能够在第$j-((n-1)-(p+r))$-th 步被$\vec{o}$
 在第$p+r$步唯一决定的状态变量$s\in \vec{s}$。
 注意在这里不需要约束$valid(\vec{f}_p)$。
@@ -752,6 +752,141 @@ $\vec{o}$ 在第$p+r$步唯一决定的所有$s\in \vec{s}$。
  \end{array}
 \right\}
 \end{equation}
+
+
+\subsection{推导每一级流水线上的控制流谓词$valid(\vec{f}^j)$}\label{subsec_inferstage}
+本节目的在于，
+为每一个流水线级$\vec{stg}^j$上的流控向量$\vec{f}^j$，
+推导一个使得$\vec{d}^j$能够被唯一决定的谓词$valid(\vec{f}^j)$。
+
+在这里$valid(\vec{f}^j)$的作用类似于输入向量$\vec{i}$上的$valid(\vec{f})$。
+其中后者用于表示输入的数据向量$\vec{d}$的有效性。
+因此$valid(\vec{f}^j)$被用于表示流水线级$\vec{stg}^j$上的数据向量$\vec{d}^j$的有效性。
+
+在小节\ref{subsub_overal}中，
+我们给出了一个迭代的复杂算法\ref{algo_infer}以推导$valid(\vec{f})$。
+而在这里，
+我们并不需要一个类似的迭代算法，
+因为该算法所需要的$p$，$l$和$r$已经在小节\ref{algo_algoframework}的第2步中被算法\ref{algo_infer}推导得到了。
+
+因此，我们在这里可以简单的使用如下算法：
+
+首先构造如下公式：
+
+\begin{equation}\label{uniqt1d_chap6}
+% \begin{split}
+F^f_{PC}(p,l,r):=
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\vec{o}_{p+r}\equiv \vec{o'}_{p+r} \\
+\wedge& \vec{f}^j_{j-D}\equiv \vec{f}'^j_{j-D} \\
+\wedge& \vec{d}^j_{j-D}\ne \vec{d}'^j_{j-D} \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\end{array}
+\right\}
+% \end{split}
+\end{equation}
+
+该公式的前两行分别是两个展开的迁移函数序列组成的路径。
+第三行约束它们的输出在$p+r$步相等。
+第四行约束它们在第j级流水线的流控向量$\vec{f}^j$在第$j-D$步相等。
+这里的$D$定义于公式$\ref{stgn_def}$。
+第五行约束它们在第j级流水线的数据向量$\vec{d}^j$在第$j-D$步不等。
+
+如果上述$F^f_{PC}(p,l,r)$ 是可满足的，
+则$\vec{d}^j_{j-D}$ 无法被$\vec{o}_{p+r}$唯一决定。
+通过收集等式(\ref{uniqt1d_chap6})的第三行，我们得到$T_{PC}(p,l,r)$：
+
+\begin{equation}\label{tpc_chap6}
+% \begin{split}
+T_{PC}(p,l,r):=\\
+\left\{
+\begin{array}{cc}
+      &\vec{o}_{p+r}\equiv \vec{o'}_{p+r} \\
+\end{array}
+\right\}
+% \end{split}
+\end{equation}
+
+通过将$T_{PC}(p,l,r)$ 代入到$F^f_{PC}(p,l,r)$，
+我们得到一个新的公式：
+\begin{equation}\label{fpcq_chap6}
+% \begin{split}
+F'^f_{PC}(p,l,r):=
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge& t\equiv T_{PC}(p,l,r)\\
+\wedge& \vec{f}^j_{j-D}\equiv \vec{f}'^j_{j-D} \\
+\wedge& \vec{d}^j_{j-D}\ne \vec{d}'^j_{j-D} \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\end{array}
+\right\}
+% \end{split}
+\end{equation}
+
+
+很明显$F^f_{PC}(p,l,r)$ 和$F'^f_{PC}(p,l,r,1)$ 是等价的。
+我们进一步定义：
+
+\begin{equation}\label{pcdef1_chap6}
+\vec{a}:=\vec{f}^j_{j-D}
+\end{equation}
+
+\begin{equation}\label{pcdef2_chap6}
+\vec{b}:=\vec{d}^j_{j-D}\cup \vec{d'}^j_{j-D}\cup \bigcup_{j-D\le i\le p+r}(\vec{i}_{x}\cup\vec{i'}_{x})
+\end{equation}
+
+% $\vec{f}_{p+l}$ can be uniquely determined,
+% so we do not need to consider $\vec{f'}_{p+l}$.
+则$\vec{a}\cup\vec{b}$ 包含了两个迁移函数展开序列上从第$j-D$步开始的所有输入向量$<\vec{i}_{j-D},\dots,\vec{i}_{p+r}>$ and $<\vec{i'}_{j-D},\dots,\vec{i'}_{p+r}>$。
+他同时也包含了两个展开序列的在第$j-D$步的状态$\vec{d}^j_{j-D}$ 和 $\vec{d'}^j_{j-D}$。
+进一步的，
+等式(\ref{fpcq_chap6})前两行的迁移关系$T$
+能够从输入序列和初始状态唯一的计算出输出序列。
+因此$\vec{a}$ 和$\vec{b}$ 能够唯一决定$F'^f_{PC}(p,l,r,t)$中$t$ 的取值。
+因此，
+对于特定$p$，$l$ 和$r$，
+以$\vec{f}^j_{j-D}$ 为输入并使得$F'^f_{PC}(p,l,r,1)$ 可满足的函数可以通过以$F'^d_{PC}(p,l,r,t)$, $\vec{a}$ 和$\vec{b}$ 为参数调用算法\ref{alg_craigchar}得到：
+
+\begin{equation}\label{fsat_pc_chap6}
+FSAT^j_{PC}(p,l,r):=CharacterizingFormulaSAT(F'^f_{PC}(p,l,r,t),\vec{a},\vec{b},t)
+\end{equation}
+
+因此$FSAT^j_{PC}(p,l,r)$ 覆盖了
+使得$F^f_{PC}(p,l,r)$ 可满足的$\vec{f}^j_{j-D}$赋值集合。
+因此，
+其反$\neg FSAT^j_{PC}(p,l,r)$ 是使得
+$F^f_{PC}(p,l,r)$ 不可满足的$\vec{f}^j_{j-D}$集合。
+因此有：
+
+\begin{equation}
+valid(\vec{f}^j):=\neg FSAT^j_{PC}(p,l,r)
+\end{equation}
+
+
+
 
 
 \section{特征化流水线级和输入的布尔函数}\label{sec_char}

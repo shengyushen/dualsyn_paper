@@ -79,20 +79,22 @@
 \contentsline {subsection}{\numberline {6.2.2}算法框架}{52}{subsection.6.2.2}
 \contentsline {section}{\numberline {6.3}推导流水线结构}{53}{section.6.3}
 \contentsline {subsection}{\numberline {6.3.1}压缩$r$ 和$l$}{53}{subsection.6.3.1}
-\contentsline {subsection}{\numberline {6.3.2}推导流水线结构}{54}{subsection.6.3.2}
-\contentsline {section}{\numberline {6.4}特征化流水线级和输入的布尔函数}{55}{section.6.4}
-\contentsline {subsection}{\numberline {6.4.1}特征化最后一个流水线级的布尔函数}{55}{subsection.6.4.1}
-\contentsline {subsection}{\numberline {6.4.2}特征化恢复其他流水线级的布尔函数}{55}{subsection.6.4.2}
-\contentsline {subsection}{\numberline {6.4.3}特征化从第0级流水线恢复输入向量的布尔函数}{56}{subsection.6.4.3}
-\contentsline {section}{\numberline {6.5}实验结果}{56}{section.6.5}
-\contentsline {subsection}{\numberline {6.5.1}比较时间和面积}{56}{subsection.6.5.1}
-\contentsline {subsection}{\numberline {6.5.2}PCIE推导的流水线结构}{57}{subsection.6.5.2}
-\contentsline {subsection}{\numberline {6.5.3}xgxs推导的流水线结构}{57}{subsection.6.5.3}
-\contentsline {subsection}{\numberline {6.5.4}t2ether推导的流水线结构}{58}{subsection.6.5.4}
-\contentsline {section}{\numberline {6.6}结论}{59}{section.6.6}
-\contentsline {chapter}{\numberline {7}结束语}{61}{chapter.7}
-\contentsline {section}{\numberline {7.1}工作总结}{61}{section.7.1}
-\contentsline {section}{\numberline {7.2}研究展望}{62}{section.7.2}
-\contentsline {chapter}{致谢}{65}{chapter*.43}
-\contentsline {chapter}{参考文献}{67}{section*.44}
+\contentsline {subsection}{\numberline {6.3.2}寻找流控向量$\mathaccentV {vec}17E{f}^j$和数据向量$\mathaccentV {vec}17E{d}^j$}{54}{subsection.6.3.2}
+\contentsline {subsection}{\numberline {6.3.3}推导每一级流水线上的控制流谓词$valid(\mathaccentV {vec}17E{f}^j)$}{55}{subsection.6.3.3}
+\contentsline {section}{\numberline {6.4}特征化流水线级和输入的布尔函数}{57}{section.6.4}
+\contentsline {subsection}{\numberline {6.4.1}特征化最后一个流水线级的布尔函数}{57}{subsection.6.4.1}
+\contentsline {subsection}{\numberline {6.4.2}特征化恢复其他流水线级的布尔函数}{57}{subsection.6.4.2}
+\contentsline {subsection}{\numberline {6.4.3}特征化从第0级流水线恢复输入向量的布尔函数}{58}{subsection.6.4.3}
+\contentsline {section}{\numberline {6.5}实验结果}{58}{section.6.5}
+\contentsline {subsection}{\numberline {6.5.1}比较时间和面积}{58}{subsection.6.5.1}
+\contentsline {subsection}{\numberline {6.5.2}PCIE推导的流水线结构}{59}{subsection.6.5.2}
+\contentsline {subsection}{\numberline {6.5.3}xgxs推导的流水线结构}{59}{subsection.6.5.3}
+\contentsline {subsection}{\numberline {6.5.4}t2ether推导的流水线结构}{59}{subsection.6.5.4}
+\contentsline {section}{\numberline {6.6}结论}{60}{section.6.6}
+\contentsline {chapter}{\numberline {7}结束语}{63}{chapter.7}
+\contentsline {section}{\numberline {7.1}工作总结}{63}{section.7.1}
+\contentsline {section}{\numberline {7.2}研究展望}{64}{section.7.2}
+\contentsline {chapter}{致谢}{67}{chapter*.43}
+\contentsline {chapter}{参考文献}{69}{section*.44}
+\contentsline {chapter}{作者在学期间取得的学术成果}{75}{chapter*.46}
 \contentsfinish 

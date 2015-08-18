@@ -15,7 +15,7 @@
 并自动产生相应的解码器。
 
 然而，
-许多编码器中采用的留空机制\cite{flowcontrol}
+许多编码器中采用的流控机制\cite{flowcontrol}
 不能满足该要求。
 如图\ref{fig_fc}a)所示，
 当接收器无法跟上发送器时，
@@ -73,8 +73,8 @@
 小节\ref{sec_framework} 介绍本文算法的整体结构；
 小节\ref{sec_pipeinfer} 找到每一个流水线级$\vec{stg}^j$中的$\vec{f}^j$ 和$\vec{d}^j$ 。
 小节\ref{sec_char} 为$\vec{stg}^j$ 和$\vec{i}$特征化布尔函数。
-小节\ref{sec_exp} 和\ref{sec_relwork} 分别给出实验结果和相关工作。
-最后小节\ref{sec_conclude} 给出结论。
+小节\ref{sec_exp} 和\ref{sec_conclude} 分别给出实验结果和结论。
+
 
 %
 %\section{背景知识}\label{sec_prem}
@@ -671,7 +671,7 @@ F'_{PC}(p,r):=
 
 
 
-\subsection{推导流水线结构}\label{subsec_inferstage}
+\subsection{寻找流控向量$\vec{f}^j$和数据向量$\vec{d}^j$}\label{subsec_inferstage}
 
 现在，
 基于上述推导的$p$ 和$r$，
@@ -1087,45 +1087,45 @@ scrambler  &64/64    & 58      & 1034 & inserting 01 flipping                   
 
 
 
-\section{相关工作}\label{sec_relwork}
-
-\subsection{对偶综合}\label{subsec_compsyn_relat}
-第一个对偶综合算法由沈\upcite{ShenICCAD09}提出。
-他通过迭代的展开迁移函数来检查解码器的存在性，
-并通过遍历所有的输出向量取值来特征化解码器的布尔函数。
-其主要弱点在于该算法不停机，
-而且特征化解码器函数时速度太慢。
-
-沈et al.\upcite{ShenTCAD11} 和Liu et al.\upcite{LiuICCAD11} 通过在状态序列上搜索环来解决停机问题。
-而\upcite{ShenTCAD12,LiuICCAD11} 通过Craig插值\upcite{interp_McMillan}高效的特征化解码器函数。
-
-沈et al.\upcite{ShenTCAD12} 自动推导使得解码器存在的配置断言。
-
-秦et al. \upcite{QinTODAES15}
-提出了第一个能处理流控机制的对偶综合算法。
-
-Tu 和Jiang \upcite{TuDAC13} 提出了一个突破性的算法以在恢复编码器输入时考虑其非限界的历史。
-
-
-\subsection{程序取反}\label{subsec_proinv}
-根据Gulwani \upcite{dim_syn}，
-程序取反意味着为
-特定程序$P$
-生成一个具有反功能的程序$P^{-1}$。
-因此，
-程序取反非常类似于我们的对偶综合。
-
-最早的程序取反算法基于proof的算法\upcite{prog_inv}，
-只能处理非常小的程序和非常简单的语法。
-
-Gl\"{u}ck et al. \upcite{mtd_autoProginv} 取反一阶函数语言的程序，
-通过基于LR的算法来去除非确定性。.
-然而使用函数语言使得其应用场景和我们有很大的差别。
-
-Srivastava et al. \upcite{prog_inv_rev,program_inversion} 假设反程序和原始程序的结构是类似的,
-因此可能的反程序结构可以通过挖掘原始程序中的谓词，表达式和控制流得到。
-这和本文发掘流水线级和流控机制类似。
-该算法迭代的去掉不满足要求的解空间直至剩下正确的解。
+%\section{相关工作}\label{sec_relwork}
+%
+%\subsection{对偶综合}\label{subsec_compsyn_relat}
+%第一个对偶综合算法由沈\upcite{ShenICCAD09}提出。
+%他通过迭代的展开迁移函数来检查解码器的存在性，
+%并通过遍历所有的输出向量取值来特征化解码器的布尔函数。
+%其主要弱点在于该算法不停机，
+%而且特征化解码器函数时速度太慢。
+%
+%沈et al.\upcite{ShenTCAD11} 和Liu et al.\upcite{LiuICCAD11} 通过在状态序列上搜索环来解决停机问题。
+%而\upcite{ShenTCAD12,LiuICCAD11} 通过Craig插值\upcite{interp_McMillan}高效的特征化解码器函数。
+%
+%沈et al.\upcite{ShenTCAD12} 自动推导使得解码器存在的配置断言。
+%
+%秦et al. \upcite{QinTODAES15}
+%提出了第一个能处理流控机制的对偶综合算法。
+%
+%Tu 和Jiang \upcite{TuDAC13} 提出了一个突破性的算法以在恢复编码器输入时考虑其非限界的历史。
+%
+%
+%\subsection{程序取反}\label{subsec_proinv}
+%根据Gulwani \upcite{dim_syn}，
+%程序取反意味着为
+%特定程序$P$
+%生成一个具有反功能的程序$P^{-1}$。
+%因此，
+%程序取反非常类似于我们的对偶综合。
+%
+%最早的程序取反算法基于proof的算法\upcite{prog_inv}，
+%只能处理非常小的程序和非常简单的语法。
+%
+%Gl\"{u}ck et al. \upcite{mtd_autoProginv} 取反一阶函数语言的程序，
+%通过基于LR的算法来去除非确定性。.
+%然而使用函数语言使得其应用场景和我们有很大的差别。
+%
+%Srivastava et al. \upcite{prog_inv_rev,program_inversion} 假设反程序和原始程序的结构是类似的,
+%因此可能的反程序结构可以通过挖掘原始程序中的谓词，表达式和控制流得到。
+%这和本文发掘流水线级和流控机制类似。
+%该算法迭代的去掉不满足要求的解空间直至剩下正确的解。
 
 
 \section{结论}\label{sec_conclude}

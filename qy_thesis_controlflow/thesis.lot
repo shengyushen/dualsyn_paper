@@ -8,8 +8,8 @@
 \contentsline {table}{\numberline {4.8}{\ignorespaces 在压缩和不压缩$l$ 和$r$的两种算法之间比较运行时间，电路面积和延迟\relax }}{41}{table.caption.27}
 \contentsline {table}{\numberline {4.9}{\ignorespaces 在我们的算法和手工书写的解码器之间比较电路面积和延迟\relax }}{42}{table.caption.28}
 \contentsline {table}{\numberline {5.1}{\ignorespaces Benchmarks and experimental results\relax }}{49}{table.caption.33}
-\contentsline {table}{\numberline {6.1}{\ignorespaces Benchmark和实验结果\relax }}{57}{table.caption.38}
-\contentsline {table}{\numberline {6.2}{\ignorespaces pcie推导的流水线结构\relax }}{57}{table.caption.39}
-\contentsline {table}{\numberline {6.3}{\ignorespaces xgxs推导的流水线结构\relax }}{58}{table.caption.40}
-\contentsline {table}{\numberline {6.4}{\ignorespaces t2ether推导的流水线结构\relax }}{59}{table.caption.41}
+\contentsline {table}{\numberline {6.1}{\ignorespaces Benchmark和实验结果\relax }}{59}{table.caption.38}
+\contentsline {table}{\numberline {6.2}{\ignorespaces pcie推导的流水线结构\relax }}{59}{table.caption.39}
+\contentsline {table}{\numberline {6.3}{\ignorespaces xgxs推导的流水线结构\relax }}{60}{table.caption.40}
+\contentsline {table}{\numberline {6.4}{\ignorespaces t2ether推导的流水线结构\relax }}{61}{table.caption.41}
 \contentsfinish 
