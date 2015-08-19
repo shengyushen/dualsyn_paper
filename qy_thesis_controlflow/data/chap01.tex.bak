@@ -167,7 +167,7 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 因此有可能和原始论文的描述方式有轻微出入。
 在阅读本论文是应以本小节的描述为准。
 
-\subsection{早期的充分非完备算法}
+\subsection{早期的充分非完备算法}\label{subsec_sound}
 
 国防科技大学的Shen et al.\upcite{ShenICCAD09}首次提出了对偶综合的概念和初步算法实现。
 该算法是充分非完备的，
@@ -230,7 +230,7 @@ $<\vec{o}_{p+1},\dots,\vec{o}_{p+l}>$ 和$<\vec{o}_{p+l+1},\dots,\vec{o}_{p+l+r}
 行5和6则是用户给出的断言，
 用于约束合法的输入模式。
 $F_{PC}$ 中的PC是"parameterized complementary"的缩写，
-意味着$F_{PC}(p,l,r)$ 被用于检查在三个参数 $p$,$l$ 和 $r$的情况下，
+意味着$F_{PC}(p,l,r)$ 被用于检查在三个参数 $p$，$l$ 和 $r$的情况下，
 $i_{p+l}$能否被唯一决定。
 
 
@@ -305,7 +305,7 @@ r & :=  & max_{i\in\vec{i}} \{r_i\}
 这种极端情况也没有出现过。
 
 
-\subsection{完备停机算法}
+\subsection{完备停机算法}\label{subsec_complete}
 
 
 在上一小节，
@@ -412,7 +412,7 @@ $i_{p+l}$ 针对任意$p$， $l$ 和$r$都不能被$<\vec{o}_{p},\dots,\vec{o}_{
  \item
 一方面，
 如果确实存在$p$， $l$ 和$r$，使得输入能被输出唯一决定，
-令$p':=max(p,l,r)$,$l':=max(p,l,r)$ 和$r':=max(p,l,r)$。
+令$p':=max(p,l,r)$，$l':=max(p,l,r)$ 和$r':=max(p,l,r)$。
 从命题\ref{prop_pc1}，
 可知$F_{PC}(p',l',r')$ 是不可满足的。
 因此$F_{PC}(p,l,r)$ 总能够在算法\ref{alg_pcln_chap1}行\ref{linepc1}成为不可满足的并退出循环；
@@ -452,7 +452,9 @@ Tu et al.\upcite{TuDAC13}提出了一个突破性的算法，
 
 
 \section{基于白盒模型的对偶综合}\label{sec_whiteboxtodo}
-本节阐述基于白盒模型的对偶综合技术的重要研究意义，并讨论从事该研究所面临的主要挑战。
+本节阐述基于白盒模型的对偶综合技术的重要研究意义
+%，并讨论从事该研究所面临的主要挑战
+。
 
 
 
@@ -465,8 +467,103 @@ Tu et al.\upcite{TuDAC13}提出了一个突破性的算法，
 完全忽视上述的内部结构，
 从而无法发挥上述内部结构在性能和适应性方面的优势。
 
+\subsubsection{流控机制}
+首先，
+目前所有对偶综合算法算法\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}的一个前提假设是，
+编码器的输入变量$\vec{i}$总能够被输出变量$\vec{o}$的一个有限长度序列唯一决定。
 
-\subsection{研究意义}
+然而，
+许多高速通讯系统的编码器带有流控机制\upcite{flowcontrol}，
+而该机制直接违反了上述假设。
+图\ref{fig_nonuniq_chap1}a)展示了一个带有流控机制的通讯系统的结构。
+其中一个传输器(transmitter)和一个接收器(receiver)通过一个编码器(encoder)和一个解码器(decoder)连接在一起。
+从传输器到编码器有两个输入变量：
+有待编码的数据位$d$，
+和代表$d$的有效性的有效位$f$。
+图\ref{fig_nonuniq_chap1}b)给出了编码器如何将
+$f$和$d$映射到输出变量$\vec{o}$的编码表。
+
+流控机制的工作原理为：
+\begin{enumerate}
+\item
+当接收器能够跟上发送器的速度时，
+发送器将$f$设为1，
+这使得编码器按照$d$的值发送$D_d$。
+从图\ref{fig:nonuniq}b)的编码表可知，
+解码器总能够根据$D_d$恢复$f$和$d$。
+\item
+而当接收器无法跟上发送器的速度时，
+发送器将$f$设为0以阻止编码器继续发送$D_d$，
+转而在不考虑$d$的情况下发送空闲符号$I$。
+而解码器应当识别并淘汰$I$，
+并将$f\equiv 0$发送给接收器。
+此时$d$的具体值并不重要。
+\end{enumerate}
+
+上述流控机制能够防止快速发送器发送过多数据以至于接收器无法处理。
+然而该机制违反了迄今为止所有对偶综合算法
+\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+的基本假设，
+因为$d$无法被$I$唯一决定。
+
+
+\begin{figure}
+\centerline{\includegraphics[width=\textwidth]{nonuniq}}
+\caption{带有流控机制的通讯系统及其编码器}
+\label{fig_nonuniq_chap1}
+\end{figure}
+
+因此，
+如何在对偶综合算法中处理流控机制，
+是一件非常有意义的研究工作。
+
+\subsubsection{流水线结构}
+
+通过研究现有的工业界编码器，我们发现他们都含有流水线结构以提高运行频率。
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=\textwidth]{pipeline_pipeline}
+\end{center}
+\caption{带有流水线的编码器和解码器}
+  \label{fig_pipe_chap1}
+\end{figure}
+
+一个带有流水线的简单编码器如图\ref{fig_pipe_chap1}a)所示。
+他的关键数据路径被第一级流水线切割成为两段，
+从而使得运行频率得到两倍的提升。
+
+他的第一级流水线$\vec{stg}^0$ 包含数个寄存器。
+其中输入变量$\vec{i}$ 被用于计算该级流水线$\vec{stg}^0$，
+而流水线$\vec{stg}^0$ 则被用于计算$\vec{o}$。
+根据该结构，
+$\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
+而$\vec{i}$ 能够被$\vec{stg}^0$唯一决定。
+
+因此，
+一个由人类程序员设计的合理解码器，
+应当如图\ref{fig_pipe_chap1}b)所示，
+从$\vec{o}$ 中使用组合逻辑$C^1$恢复$\vec{stg}^0$ ，
+并进一步使用组合逻辑$C^0$从$\vec{stg}^0$ 中恢复$\vec{i}$ 。
+在此类解码器中，
+关键路径被流水线级$\vec{stg}^0$切断，
+以改善时序。
+
+然而，
+目前所有的对偶综合算法\cite{ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+均使用Jiang提出的基于\cite{Craig}的算法 \cite{InterpBoolFunction}。
+如图\ref{fig_pipe_chap1}c)所示，
+这些算法从$\vec{o}$中使用一个大型组合逻辑$C^0*C^1$直接恢复$\vec{i}$，
+这使得他们变得不必要的很慢，因为没有流水线寄存器切断这段复杂逻辑。
+
+因此，
+如何在对偶综合算法中，
+产生具有流水线结构的解码器，
+是另一件非常有意义的研究工作。
+
+
+
+%\subsection{面临的挑战}
+
 
 
 
@@ -563,6 +660,8 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 论文共分七章，组织结构如下：
 
 第一章为绪论，介绍了相关的背景知识，对偶综合的基本概念、特点、应用以及研究现状。分析基于白盒模型的对偶综合技术的研究意义，并简述本文的研究内容和组织结构。
+
+第二章综述了在相关领域的研究成果。
 
 第二章描述了基于余因子和Craig插值\upcite{Craig}的迭代特征化算法。该算法在推导控制流谓词和特征化解码器的布尔函数中被广泛使用。
 

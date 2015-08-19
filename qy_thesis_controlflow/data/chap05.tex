@@ -5,19 +5,19 @@
 \section{引言}
 在通讯和多媒体芯片设计项目中，
 最困难的一个工作是针对特定的协议，
-如以太网\cite{IEEE8023_S4} 和PCI Express \cite{pcie21}，
+如以太网\upcite{IEEE8023_S4} 和PCI Express \upcite{pcie21}，
 设计相应的编码器和解码器.
 其中编码器负责将输入$\vec{i}$ 映射至输出$\vec{o}$，
 而解码器则负责从$\vec{o}$中恢复$\vec{i}$。
-对偶综合\cite{ShenICCAD09,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+对偶综合\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 假设$\vec{i}$ 总能够被$\vec{o}$的一个有限序列唯一决定，
 以自动产生相应的解码器。
 其中，
-解码器的布尔函数可以使用Jiang et al. \cite{InterpBoolFunction}提出的算法，
-该算法基于Craig插值\cite{Craig}。
+解码器的布尔函数可以使用Jiang et al. \upcite{InterpBoolFunction}提出的算法，
+该算法基于Craig插值\upcite{Craig}。
 
 通过研究现有的工业界编码器，我们发现他们都含有流水线结构以提高运行频率。
-\begin{figure}[t]
+\begin{figure}[b]
 \begin{center}
 \includegraphics[width=\textwidth]{pipeline_pipeline}
 \end{center}
@@ -48,8 +48,8 @@ $\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
 
 
 然而，
-目前所有的对偶综合算法\cite{ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
-均使用Jiang提出的基于\cite{Craig}的算法 \cite{InterpBoolFunction}。
+目前所有的对偶综合算法\upcite{ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+均使用Jiang提出的基于\upcite{Craig}的算法 \upcite{InterpBoolFunction}。
 如图\ref{fig_pipe}c)所示，
 这些算法从$\vec{o}$中使用一个大型组合逻辑$C^0*C^1$直接恢复$\vec{i}$，
 这使得他们变得不必要的很慢，因为没有流水线寄存器切断这段复杂逻辑。
@@ -57,8 +57,8 @@ $\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
 为了产生如图\ref{fig_pipe}b) 所示的解码器，
 本文提出了一个新颖的算法。首先找到编码器中每一个流水线级$\vec{stg}^j$中的寄存器，
 然后特征化每一个流水线级$\vec{stg}^j$的布尔函数，
-已从下一个流水线级$\vec{stg}^{j+1}$ 或输出$\vec{o}$之中恢复$\vec{stg}^j$。
-最终特征化$\vec{i}$的布尔函数以葱
+以从下一个流水线级$\vec{stg}^{j+1}$ 或输出$\vec{o}$之中恢复$\vec{stg}^j$。
+最终特征化$\vec{i}$的布尔函数以从
 第一个流水线级$\vec{stg}^0$中恢复$\vec{i}$。
 
 %\begin{figure}[t]
@@ -70,7 +70,7 @@ $\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
 %\end{figure}
 
 在复杂的工业界实际编码器，
-如PCI Express \cite{pcie21} 和以太网\cite{IEEE8023_S4}，
+如PCI Express \upcite{pcie21} 和以太网\upcite{IEEE8023_S4}，
 上的实验表明，
 该算法总能够产生带有流水线级的快速解码器。.
 
@@ -347,12 +347,20 @@ $\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
 \end{equation}
 
 
-\begin{figure}[b]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=\textwidth]{pipemod_pipeline}
 \end{center}
-\caption{编码器的一般性结构}
+\caption{包含流水线级的编码器一般性结构}
   \label{fig_pipeenc_chap4}
+\end{figure}
+
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=\textwidth]{pipemodexp_pipeline}
+\end{center}
+\caption{流水线级在迁移函数展开序列中的直观表示方式}
+  \label{fig_pipeencexp_chap4}
 \end{figure}
 
 
@@ -361,13 +369,17 @@ $\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
 
 
 在本文的剩余部分，
-上标始终表示特定的流水线级，
-而下标则如小节\ref{subsec_fsm}所述，
-表示在展开的迁移关系序列中的步数。
+上标始终表示特定的流水线级。
 例如，
 $\vec{stg}^j$ 是第$j$个流水线级。
-而$\vec{stg}^j_i$ 则是该第$j$流水线级
-在展开的迁移函数序列中的第$i$步的值。
+
+而下标则如小节\ref{subsec_fsm}所述，
+表示在展开的迁移关系序列中的步数。
+例如：$\vec{stg}^j_k$ 则是该第$j$流水线级
+在展开的迁移函数序列中的第$k$步的值。
+这在图\ref{fig_pipeencexp_chap4}中给出了直观的表示方式。
+该图展示了图\ref{fig_pipeenc_chap4}的各个流水线级在展开的迁移函数序列中的记法。
+
 
 \subsection{推导$p$， $l$ 和$r$}\label{subsec_inferplr}
 在推导之前，
@@ -378,7 +390,7 @@ $\vec{stg}^j$ 是第$j$个流水线级。
 以得到他们对用的$p$， $l$ 和$r$ 。
 
 然后我们将最终的$p$，$l$ 和$r$ 设置为所有$i\in \vec{i}$中最大的$p$， $l$ 和$r$ 。
-根据公式\ref{uniqt1}，
+根据公式(\ref{uniqt1})，
 这些$p$， $l$ 和$r$ 能够使得$<o_{p},\dots,o_{p+l+r}>$ 唯一决定所有$i_{p+l}\in \vec{i}_{p+l}$。
 
 
@@ -432,7 +444,7 @@ $F_{PC}(p,l,0)$ 已经在上一次迭代中被测试过，
  这意味着$\vec{o}_{p+r}$ 是在恢复$\vec{i}_p$时唯一被需要的输出。
 \end{enumerate}
 
-检查上述两个要求等价于下式的不可满足：
+检查上述两个要求等价于以下公式的不可满足：
 
 \begin{equation}\label{uniqt11_chap4}
 % \begin{split}
@@ -461,9 +473,9 @@ F'_{PC}(p,r):=
 
 该等式看起来似乎远强于等式(\ref{uniqt1})。
 我们将在实验结果中指出，
-该等式总能称为不满足。
+该等式总是不满足的。
 
-\begin{figure}[b]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=0.4\textwidth]{pc1_pipeline}
 \end{center}
@@ -474,10 +486,10 @@ F'_{PC}(p,r):=
 \subsection{推导流水线}\label{subsec_inferstage}
 
 基于上述的$p$ 和$r$，
-我们将上述公式(\ref{uniqt11_chap4})中的$F'_{PC}$ 推广到下述公式
-以便能够检查 $v$在第$j$步
-是否能够被$\vec{w}$ 在第$k$步唯一决定。
-现在$v$ 和$\vec{w}$ 可以使输入，输出和状态变量向量。
+我们将上述公式(\ref{uniqt11_chap4})中的$F'_{PC}$ 推广到下述公式，
+以便能够检查任意变量$v$在第$j$步
+是否能够被任意向量$\vec{w}$ 在第$k$步唯一决定。
+现在$v$ 和$\vec{w}$ 可以是输入，输出和状态变量或向量。
 
 \begin{equation}\label{uniqt2}
 % \begin{split}
@@ -507,10 +519,19 @@ F''_{PC}(p,r,v,j,\vec{w},k):=
 当$F''_{PC}(p,r,v,j,\vec{w},k)$ 不可满足时，
 $\vec{w}_k$ 能够唯一决定$v_j$.
 
-最后一集流水线$\vec{stg}^{n-1}$ 就是
-所有能够被
-在第$p+r$步的$\vec{o}$唯一决定的$s\in \vec{s}$。
-其定义为：
+
+\subsubsection{推导最后一级流水线$\vec{stg}^{n-1}$}\label{subsub_last}
+根据图\ref{fig_pipeenc_chap4}，
+最后一级流水线$\vec{stg}^{n-1}$通过组合逻辑$C^n$计算输出$\vec{o}$。
+因此，
+在图\ref{fig_pc1_chap4}所示的迁移关系展开序列中，
+$\vec{stg}^{n-1}$应当和$\vec{o}$处在同一步，
+即第$p+r$步。
+因此，
+$\vec{stg}^{n-1}$就是
+所有在第$p+r$步能够被
+$\vec{o}$在同一个第$p+r$步唯一决定的$s\in \vec{s}$。
+其形式化的定义为：
 
 \begin{equation}\label{stgn_1}
  \vec{stg}^{n-1} :=
@@ -525,19 +546,47 @@ $\vec{w}_k$ 能够唯一决定$v_j$.
 \right\}
 \end{equation}
 
+\subsubsection{推导非最后一级流水线$\vec{stg}^{j}$}
 
-类似的，
-对于$0\le j\le n-2$，
-$\vec{stg}^j$ 在第$j-((n-2)-(p+r-1))$步
+根据图\ref{fig_pipeencexp_chap4}以及上一小节的讨论，
+本节将对任意的$0\le j\le n-2$推导第$j$级流水线$\vec{stg}^{j}$。
+
+
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=\textwidth]{pipemodexpn_2_pipeline}
+\end{center}
+\caption{}
+  \label{fig_pipemodexpn_2_pipeline}
+\end{figure}
+
+首先，
+如图\ref{fig_pipemodexpn_2_pipeline}所示。
+对于倒数第二级流水线$\vec{stg}^{n-2}$和
+倒数第一级流水线$\vec{stg}^{n-1}$，
+从编码的角度来看，
+在展开的迁移函数序列中，
+$\vec{stg}^{n-2}$能够唯一决定下一步的$\vec{stg}^{n-1}$。
+反过来，
+从解码的角度看，
+$\vec{stg}^{n-1}$能够唯一决定上一步的$\vec{stg}^{n-2}$。
+因此，
+结合上一小节\ref{subsub_last}中的结论：
+$\vec{stg}^{n-1}$能够
+在第$p+r$步被
+$\vec{o}$在同一个第$p+r$步唯一决定。
+那么很明显，
+如果将$\vec{stg}^{n-1}$放在迁移函数展开序列的第$p+r$步，
+那么$\vec{stg}^{n-2}$应该被放在第$p+r-1$步。
+因此$\vec{stg}^{n-2}$能够
+在第$p+r-1$步被
+$\vec{stg}^{n-1}$在第$p+r$步唯一决定。
+
+将上述讨论一般化的推广到任意的$0\le j\le n-2$，
+则$\vec{stg}^j$ 在第$j-((n-2)-(p+r-1))$步
 可以被$\vec{stg}^{j+1}$ 在第$j-((n-2)-(p+r-1))+1$步唯一决定。
-我们可以定义$\vec{stg}^j$ 为：
-
-\begin{equation}\label{stgn_def_chap4}
-\begin{array}{ccc}
-S             & := & \vec{s}/\bigcup_{j<k\le n-2}\vec{stg}^{k}\\
-D             & := & (n-2)-(p+r-1)\\
-\end{array}
-\end{equation}
+因此定义第$j$个流水线级$\vec{stg}^j$ 为：
 
 \begin{equation}\label{stgn_j}
 \vec{stg}^{j} :=
@@ -550,10 +599,24 @@ D             & := & (n-2)-(p+r-1)\\
 \right\}
 \end{equation}
 
-基于等式(\ref{stgn_1}) 和(\ref{stgn_j})，
-所有的流水线几都能够被推导出来。
+其中$S$和$D$分别定义如下：
+\begin{equation}\label{stgnS_def_chap4}
+S              :=  \vec{s}/\bigcup_{j<k\le n-2}\vec{stg}^{k}
+\end{equation}
 
-\subsection{推导唯一决定输入的流水线级}\label{subsec_inferinput}
+\begin{equation}\label{stgn_def_chap4}
+D              :=  (n-2)-(p+r-1)
+\end{equation}
+
+在等式(\ref{stgnS_def_chap4})中，
+所有所有属于第k级流水线，
+其中$k>j$，
+的寄存器都被从状态向量$\vec{s}$中剔除。
+
+基于等式(\ref{stgn_1}) 和(\ref{stgn_j})，
+所有的流水线级都能够被推导出来。
+
+\subsubsection{推导唯一决定输入的流水线级}\label{subsec_inferinput}
 
 根据图\ref{fig_pipeenc_chap4}，
  定义于(\ref{stgn_j}) 的$\vec{stg}^0$是唯一决定$\vec{i}$的流水线级。
@@ -716,7 +779,7 @@ $\phi_A$ 相对于$\phi_B$的Craig 插值$\phi_I$
 
 \section{实验结果}\label{sec_exp_chap4}
 我们在OCaml 语言中实现了上述算法，
-并使用MiniSat 1.14 \cite{EXTSAT}求解相应的公式。
+并使用MiniSat 1.14 \upcite{EXTSAT}求解相应的公式。
 使用一台包含16 个Intel Xeon E5648 2.67GHz处理器，
 192GB 存储器， 和CentOS 5.4 Linux操作系统的服务器。
 
@@ -728,19 +791,24 @@ $\phi_A$ 相对于$\phi_B$的Craig 插值$\phi_I$
 
 
 
-\begin{table*}[t]
+\begin{table*}[b]
 \caption{Benchmarks and experimental results}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
  Names     & \multicolumn{4}{|c|}{编码器}                                  &   \multicolumn{3}{|c|}{由\cite{ShenTCAD11}产生}             &   \multicolumn{4}{|c|}{本文产生} \\
            & \multicolumn{4}{|c|}{}                                              &   \multicolumn{3}{|c|}{的解码器}  &   \multicolumn{4}{|c|}{的解码器} \\\cline{2-12}
-           &    \#   &   \#    &面积& 编码器&运行&延迟&面积                                       &运行&延迟&面积&寄存器\\
-           & in/out  &  reg    &      &   描述&时间&(ns) &                                        &时间 &(ns) &    &个数\\\hline\hline
- pcie      & 10/11   & 23      & 326  &PCIE 2.0 \cite{pcie21}                    &0.37 &7.20 &624                                     &3.57 & 5.89&652 &9/12\\\hline
- xgxs      & 10/10   & 16      & 453  &     以太网clause 48 \cite{IEEE8023_S4}&0.21 &7.02 &540                                     &1.57 & 5.93&829 &13\\\hline
- t2eth     & 14/14   & 49      & 2252 &    以太网clause 36 \cite{IEEE8023_S4} &12.7 &6.54 &434                                     &47.2 & 6.12&877 &8/8/10/20\\\hline
-scrambler  &64/64    & 58      & 1034 & inserting 01 flipping                    &     \multicolumn{7}{|c|}{no pipeline }\\\cline{1-5}
- xfi       & 72/66   & 72      & 7772 &     以太网clause 49 \cite{IEEE8023_S4}&     \multicolumn{7}{|c|}{stages found}\\\hline
+           &    \#in &   \#    &面积& 编码器&运行&延迟&面积                                       &运行&延迟&面积&寄存器\\
+           &   /out  &  reg    &      &   描述&时间&(ns) &                                        &时间 &(ns) &    &个数\\\hline\hline
+ pcie      & 10      & 23      & 326  &PCIE                                   &0.37 &7.20 &624                                     &3.57 & 5.89&652 &9/12\\
+           &   /11   &         &      &     2.0 \upcite{pcie21}                 &     &     &                                        &     &     &    &    \\\hline
+ xgxs      & 10      & 16      & 453  &     以太网                            &0.21 &7.02 &540                                     &1.57 & 5.93&829 &13\\
+           &  /10    &         &      &     clause 48 \upcite{IEEE8023_S4}      &     &     &                                        &     &     &    &  \\\hline
+ t2eth     & 14      & 49      & 2252 &    以太网                             &12.7 &6.54 &434                                     &47.2 & 6.12&877 &8/8/\\
+           &  /14    &         &      &          clause 36 \upcite{IEEE8023_S4} &     &     &                                        &     &     &    &10/20         \\\hline
+scrambler  &64       & 58      & 1034 & inserting                             &     \multicolumn{7}{|c|}{}   \\
+           &  /64    &         &      &           01 flipping                 &     \multicolumn{7}{|c|}{没有找到 }\\\cline{1-5}
+ xfi       & 72      & 72      & 7772 &     以太网                            &     \multicolumn{7}{|c|}{寄存器级}\\
+           &  /66    &         &      &           clause 49 \upcite{IEEE8023_S4}&     \multicolumn{7}{|c|}{}           \\\hline
 \end{tabular}\label{tab_bench_chap4}
 \end{table*}
 
@@ -748,7 +816,7 @@ scrambler  &64/64    & 58      & 1034 & inserting 01 flipping                   
 
 
 
-第6到8列分别给出了\cite{ShenTCAD11}算法在产生误流水线的解码器时的运行时间，延迟和面积。
+第6到8列分别给出了\upcite{ShenTCAD11}算法在产生误流水线的解码器时的运行时间，延迟和面积。
 而第9到11列分别给出了本文算法的运行时间，延迟和面积。
 而最后一列给出了每一级流水线包含的寄存器个数。
 

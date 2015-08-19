@@ -10,12 +10,12 @@
 一个最困难的工作之一是为不同的协议设计编码器和解码器。
 其中编码器负责将输入向量$\vec{i}$ 映射到输出向量$\vec{o}$，
 而解码器负责从$\vec{o}$中恢复$\vec{i}$。
-对偶综合\cite{ShenICCAD09,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+对偶综合\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenTCAD12,ShenICCAD11,LiuICCAD11,LiuTCAD12,TuDAC13}
 假设$\vec{i}$ 总能够被 $\vec{o}$唯一决定，
 并自动产生相应的解码器。
 
 然而，
-许多编码器中采用的流控机制\cite{flowcontrol}
+许多编码器中采用的流控机制\upcite{flowcontrol}
 不能满足该要求。
 如图\ref{fig_fc}a)所示，
 当接收器无法跟上发送器时，
@@ -28,7 +28,7 @@
 唯一决定所有输入
 包括流控向量$\vec{f}$ 和数据向量$\vec{d}$。
 
-秦et al. \cite{QinTODAES15} 首次提出了能够处理流控机制的对偶综合算法。
+Qin et al. \upcite{QinTODAES15} 首次提出了能够处理流控机制的对偶综合算法。
 该算法首先找到所有的能够被$\vec{o}$唯一决定的$i\in\vec{f}$。
 然后推导一个能使得$\vec{d}$ 被$\vec{o}$唯一决定的谓词$valid(\vec{f})$。
 
@@ -56,14 +56,14 @@
 类似于$\vec{i}$，
 每个流水线级$\vec{stg}^j$ 也可以划分为留空向量$\vec{f}^j$ 和数据向量$\vec{d}^j$。
 
-然而由秦et al. 的算法\cite{QinTODAES15} 产生的解码器并不包含流水线。
+然而由秦et al. 的算法\upcite{QinTODAES15} 产生的解码器并不包含流水线。
 这使得其运行速度远低于相应的编码器。
 为了解决该问题，
 本文提出了一个全新的算法以为此类编码器产生带有流控机制和流水线的解码器。
-该算法首先使用秦et al. \cite{QinTODAES15}的算法来寻找$\vec{f}$ 并推导$valid(\vec{f})$。
+该算法首先使用秦et al. \upcite{QinTODAES15}的算法来寻找$\vec{f}$ 并推导$valid(\vec{f})$。
 然后分别通过强制和不强制$valid(\vec{f})$，
-已从所有寄存器集合中找到每一个寄存器级$\vec{stg}^j$的$\vec{d}^j$ 和$\vec{f}^j$。
-最后通过Jiang et al. \cite{InterpBoolFunction}的算法特征化$\vec{stg}^j$ 和$\vec{i}$的布尔函数。
+以从所有寄存器集合中找到每一个寄存器级$\vec{stg}^j$的$\vec{d}^j$ 和$\vec{f}^j$。
+最后通过Jiang et al. \upcite{InterpBoolFunction}的算法特征化$\vec{stg}^j$ 和$\vec{i}$的布尔函数。
 
 实验结果表明，
 该算法能够为多个工业界的真实编码器正确的产生带有流控和流水线的解码器。
@@ -522,11 +522,11 @@
 
 \subsection{编码器的一般性模型}
 如图\ref{fig_pipeenc}所示，
-我们假设编码器包含$n$ 流水线级$\vec{stg}^j$，
+我们假设编码器包含$n$个流水线级$\vec{stg}^j$，
 其中$0\le j \le n-1$。
 每一个流水线级$\vec{stg}^j$ 能够被进一步划分为流控向量$\vec{f}^j$ 和数据向量$\vec{d}^j$。
 而输入向量$\vec{i}$，
-和\cite{QinTODAES15}一样，
+和\upcite{QinTODAES15}一样，
 也能被划分为留空向量$\vec{f}$ 和数据向量$\vec{d}$。
 如果将组合逻辑块$C^j$ 视为一个函数，
 则该编码器可以使用下列等式定义：
@@ -801,7 +801,7 @@ F^f_{PC}(p,l,r):=
 该公式的前两行分别是两个展开的迁移函数序列组成的路径。
 第三行约束它们的输出在$p+r$步相等。
 第四行约束它们在第j级流水线的流控向量$\vec{f}^j$在第$j-D$步相等。
-这里的$D$定义于公式$\ref{stgn_def}$。
+这里的$D$定义于公式(\ref{stgn_def})。
 第五行约束它们在第j级流水线的数据向量$\vec{d}^j$在第$j-D$步不等。
 
 如果上述$F^f_{PC}(p,l,r)$ 是可满足的，
@@ -1053,7 +1053,7 @@ $\phi_A$ 相对于$\phi_B$的Craig插值$\phi_I$
 
 \section{实验结果}\label{sec_exp}
 我们使用OCaml 语言实现了上述算法，
-并使用MiniSat 1.14 \cite{EXTSAT}求解产生的CNF公式。
+并使用MiniSat 1.14 \upcite{EXTSAT}求解产生的CNF公式。
 所有的实验使用一台包含16 个Intel Xeon E5648 2.67GHz处理器，
 192GB 内存， 和CentOS 5.4 Linux操作系统的服务器上。
 
@@ -1071,13 +1071,18 @@ $\phi_A$ 相对于$\phi_B$的Craig插值$\phi_I$
 \hline
  Names     & \multicolumn{4}{|c|}{编码器}                                        &   \multicolumn{3}{|c|}{\cite{ShenTCAD11}产生}      &   \multicolumn{3}{|c|}{本文产生} \\
            & \multicolumn{4}{|c|}{}                                              &   \multicolumn{3}{|c|}{的解码器}                   &   \multicolumn{3}{|c|}{的解码器} \\\cline{2-11}
-           &    \#   &   \#    &面积  & 解码器                                   &运行 &延迟 &面积                                    &运行 &延迟 &面积\\
-           & in/out  &  reg    &      &   藐视                                   &时间 &(ns) &                                        &时间 &(ns) &    \\\hline\hline
- pcie      & 10/11   & 23      & 326  &PCIE 2.0 \cite{pcie21}                    &0.37 &7.20 &624                                     &8.08 & 5.89&652 \\\hline
- xgxs      & 10/10   & 16      & 453  &     以太网   clause 48 \cite{IEEE8023_S4}&0.21 &7.02 &540                                     &4.25 & 5.93&829 \\\hline
- t2eth     & 14/14   & 49      & 2252 &    以太网   clause 36 \cite{IEEE8023_S4} &12.7 &6.54 &434                                     &430.4& 6.12&877 \\\hline
-scrambler  &64/64    & 58      & 1034 & inserting 01 flipping                    &     \multicolumn{6}{|c|}{no pipeline }\\\cline{1-5}
- xfi       & 72/66   & 72      & 7772 &     以太网   clause 49 \cite{IEEE8023_S4}&     \multicolumn{6}{|c|}{stages found}\\\hline
+           &    \#in &   \#    &面积  & 解码器                                   &运行 &延迟 &面积                                    &运行 &延迟 &面积\\
+           &   /out  &  reg    &      &   描述                                   &时间 &(ns) &                                        &时间 &(ns) &    \\\hline\hline
+ pcie      & 10/11   & 23      & 326  &PCIE                                      &0.37 &7.20 &624                                     &8.08 & 5.89&652 \\
+           &         &         &      &     2.0 \upcite{pcie21}                    &     &     &                                        &     &     &    \\\hline
+ xgxs      & 10/10   & 16      & 453  &     以太网                               &0.21 &7.02 &540                                     &4.25 & 5.93&829 \\
+           &         &         &      &              clause 48 \upcite{IEEE8023_S4}&     &     &                                        &     &     &    \\\hline
+ t2eth     & 14/14   & 49      & 2252 &    以太网                                &12.7 &6.54 &434                                     &430.4& 6.12&877 \\
+           &         &         &      &             clause 36 \upcite{IEEE8023_S4} &     &     &                                        &     &     &    \\\hline
+scrambler  &64/64    & 58      & 1034 & inserting                                &     \multicolumn{6}{|c|}{}\\
+           &         &         &      &           01 flipping                    &     \multicolumn{6}{|c|}{没有发现 }\\\cline{1-5}
+ xfi       & 72/66   & 72      & 7772 &     以太网                               &     \multicolumn{6}{|c|}{流水线级}\\
+           &         &         &      &              clause 49 \upcite{IEEE8023_S4}&     \multicolumn{6}{|c|}{}\\\hline
 \end{tabular}\label{tab_bench}
 \end{table*}
 
@@ -1085,7 +1090,7 @@ scrambler  &64/64    & 58      & 1034 & inserting 01 flipping                   
 
 
 
-第6到8列分别给出了论文\cite{ShenTCAD11}的算法产生非流水解码器的运行时间，
+第6到8列分别给出了论文\upcite{ShenTCAD11}的算法产生非流水解码器的运行时间，
 以及该解码器的延迟和面积。
 而第9到11列分别给出了本文算法的类似信息。
 

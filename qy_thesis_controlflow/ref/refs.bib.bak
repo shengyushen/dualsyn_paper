@@ -1,4 +1,4 @@
-% !Mode:: "Tex:UTF-8"
+﻿% !Mode:: "Tex:UTF-8"
 % This file was created with JabRef 2.5.
 % Encoding: UTF-8
 %\usepackage{hyperref}
@@ -1178,7 +1178,7 @@
 @INPROCEEDINGS{damgard,
   AUTHOR =       {Damgard, I},
   TITLE =        {Collision free hash functions and public key signature schemes},
-  BOOKTITLE =    {Proceedings of the $6^{th}$ Annual International Conference on Theory and Application of Cryptographic Techniques},
+  BOOKTITLE =    {Proceedings of the 6th Annual International Conference on Theory and Application of Cryptographic Techniques},
   YEAR =         {1987},
 }
 @BOOK{bookcryp,
@@ -1208,7 +1208,7 @@
 @INPROCEEDINGS{pla_timeseries,
   AUTHOR =       {Keogh, E and Pazzani, M},
   TITLE =        {An enhanced representation of time series which allows fast and accurate classification, clustering and relevance feedback},
-  BOOKTITLE =    {Proceedings of the $4^{th}$ International Conference of Knowledge Discovery and Data Mining},
+  BOOKTITLE =    {Proceedings of the 4th International Conference of Knowledge Discovery and Data Mining},
   YEAR =         {1998},
 }
 @INPROCEEDINGS{pla_sensordata,
@@ -1343,4 +1343,2244 @@
   year =         {2006},
   volume =       {103},
   number =       {5},
+}
+
+
+
+@Inbook{flowcontrol,
+  author = 	 "Dennis Abts and John Kim",
+  editor =       "Mark D. Hill",
+  title =        "High Performance Datacenter Networks",
+  subtitle =     "Architectures, Algorithms, and Opportunities",
+  series =       "Synthesis Lectures on Computer Architecture",
+  year =         "2011",
+  volume = 	 "14",
+  address =      "",
+  edition =      "1st.",
+  publisher =    "Morgan and Claypool",
+  doi = 	 "10.2200/S00341ED1V01Y201103CAC014",
+  url = 	 "http://dx.doi.org/10.2200/S00341ED1V01Y201103CAC014",
+  chapter = 	 "1.6",
+  pages = 	 "7-9",
+  number = 	 "",
+  type = 	 "",
+  month = 	 "",
+  note = 	 "",
+}
+
+@article{encode8b10b,
+ author = {Al X. Widmer and Peter A. Franaszek},
+ title = {A DC-Balanced, Partitioned-Block, 8B/10B Transmission Code},
+ journal = {IBM Journal of Research and Development},
+ issue_date = {May. 1983},
+ volume = {27},
+ number = {5},
+ month = {May},
+ year = {1983},
+ issn = {0018-8646},
+ pages = {440-451},
+ url = {http://dx.doi.org/10.1147/rd.275.0440},
+ doi = {10.1147/rd.275.0440},
+ publisher = {IBM},
+ address = {}
+}
+
+
+@misc{pcie21,
+  author =       "PCI-SIG",
+  year =         "2009",
+  title =        "PCI Express Base 2.1 Specification",
+  lastaccessed = "January 25, 2013",
+  url =          "http://www.pcisig.com/members/downloads/specifications/pciexpress/PCI_Express_Base_r2_1_04Mar09.pdf",
+  howpublished = "",
+}
+
+@misc{IEEE8023_S3,
+  author =       "IEEE",
+  year =         "2012",
+  title =        "IEEE Standard for Ethernet SECTION THREE",
+  lastaccessed = "January 25, 2013",
+  url =          "http://standards.ieee.org/getieee802/download/802.3-2012_section3.pdf",
+  howpublished = "",
+}
+
+@misc{IEEE8023_S4,
+  author =       "IEEE",
+  year =         "2012",
+  title =        "IEEE Standard for Ethernet SECTION FOURTH",
+  lastaccessed = "January 25, 2013",
+  url =          "http://standards.ieee.org/getieee802/download/802.3-2012_section4.pdf",
+  howpublished = "",
+}
+
+@Inproceedings{ShenICCAD09,
+  author =       "ShengYu Shen and Jianmin Zhang and Ying Qin and Sikun Li",
+  title =        "Synthesizing complementary circuits automatically",
+  booktitle =    "Proceedings of the 2009 International Conference on Computer-Aided Design",
+  series = 	 "ICCAD '09",
+  editor = 	 "",
+  year =         "2009",
+  publisher =    "IEEE Press",
+  address = 	 "San Jose, CA, USA",
+  pages =        "381--388",
+  doi = 	 "10.1145/1687399.1687472",
+  url = 	 "http://dx.doi.org/10.1145/1687399.1687472",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+@article{ShenTCAD10,
+ author = {ShengYu Shen and Ying Qin and KeFei Wang and LiQuan Xiao and Jianmin Zhang and Sikun Li.},
+ title = {Synthesizing Complementary Circuits Automatically},
+ journal = {IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems},
+ issue_date = {Aug. 2010},
+ volume = {29},
+ number = {8},
+ month = {August},
+ year = {2010},
+ issn = {0278-0070},
+ pages = {29:1191--29:1202},
+ url = {http://doi.acm.org/10.1109/TCAD.2010.2049152},
+ doi = {10.1109/TCAD.2010.2049152},
+ publisher = {IEEE Press},
+ address = {Piscataway, NJ, USA }
+}
+
+
+
+
+
+@article{ShenTCAD11,
+ author = {ShengYu Shen and Ying Qin and LiQuan Xiao and KeFei Wang and Jianmin Zhang and Sikun Li.},
+ title = {A Halting Algorithm to Determine the Existence of the Decoder},
+ journal = {IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems},
+ issue_date = {Oct. 2011},
+ volume = {30},
+ number = {10},
+ month = {October},
+ year = {2011},
+ issn = {0278-0070},
+ pages = {30:1556--30:1563},
+ url = {http://doi.acm.org/10.1109/TCAD.2011.2159792},
+ doi = {10.1109/TCAD.2011.2159792},
+ publisher = {IEEE Press},
+ address = {Piscataway, NJ, USA }
+}
+
+
+@Inproceedings{ShenICCAD11,
+  author =       "ShengYu Shen and Ying Qin and Jianmin Zhang",
+  title =        "Inferring assertion for complementary synthesis",
+  booktitle =    "Proceedings of the 2011 International Conference on Computer-Aided Design",
+  series = 	 "ICCAD '11",
+  editor = 	 "",
+  year =         "2011",
+  publisher =    "IEEE Press",
+  address = 	 "San Jose, CA, USA",
+  pages =        "404--411",
+  doi = 	 "10.1109/ICCAD.2011.6105361",
+  url = 	 "http://dx.doi.org/10.1109/ICCAD.2011.6105361",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+
+@article{ShenTCAD12,
+ author = {ShengYu Shen and Ying Qin and KeFei Wang and Zhengbin Pang and Jianmin Zhang and Sikun Li.},
+ title = {Inferring Assertion for Complementary Synthesis},
+ journal = {IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems},
+ issue_date = {Aug. 2012},
+ volume = {31},
+ number = {8},
+ month = {August},
+ year = {2012},
+ issn = {0278-0070},
+ pages = {31:1288--31:1292},
+ url = {http://doi.acm.org/10.1109/TCAD.2012.2190735},
+ doi = {10.1109/TCAD.2012.2190735},
+ publisher = {IEEE Press},
+ address = {Piscataway, NJ, USA }
+}
+
+
+@Inproceedings{LiuICCAD11,
+  author =       "Hsiou-Yuan Liu and Yen-Cheng Chou and Chen-Hsuan Lin and Jie-Hong R. Jiang",
+  title =        "Towards completely automatic decoder synthesis",
+  booktitle =    "Proceedings of the 2011 International Conference on Computer-Aided Design, ICCAD 2011",
+  series = 	 "ICCAD '11",
+  editor = 	 "",
+  year =         "2011",
+  publisher =    "IEEE Press",
+  address = 	 "San Jose, CA, USA",
+  pages =        "389--395",
+  doi = 	 "10.1109/ICCAD.2011.6105359",
+  url = 	 "http://dx.doi.org/10.1109/ICCAD.2011.6105359",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+
+@article{LiuTCAD12,
+ author = {Hsiou-Yuan Liu and Yen-Cheng Chou and Chen-Hsuan Lin and Jie-Hong R. Jiang.},
+ title = {Automatic Decoder Synthesis: Methods and Case Studies},
+ journal = {IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems},
+ issue_date = {Sep. 2012},
+ volume = {31},
+ number = {9},
+ month = {September},
+ year = {2012},
+ issn = {0278-0070},
+ pages = {31:1319--31:1331},
+ url = {http://doi.acm.org/10.1109/TCAD.2012.2191288},
+ doi = {10.1109/TCAD.2012.2191288},
+ publisher = {IEEE Press},
+ address = {Piscataway, NJ, USA }
+}
+
+@Inproceedings{TuDAC13,
+  author =       "Kuan-Hua Tu and Jie-Hong R. Jiang",
+  title =        "Synthesis of feedback decoders for initialized encoders",
+  booktitle =    "Proceedings of the 50th Annual Design Automation Conference, DAC 2013",
+  series = 	 "DAC '13",
+  editor = 	 "",
+  year =         "2013",
+  publisher =    "ACM Press",
+  address = 	 "Austin, TX, USA",
+  pages =        "1--6",
+  doi = 	 "10.1145/2463209.2488794",
+  url = 	 "http://dx.doi.org/10.1145/2463209.2488794",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+
+@Incollection{EXTSAT,
+  author =       "Niklas E\'en and Niklas S{\"o}rensson",
+  title =        "An extensible sat-solver",
+  series =       "Lecture Notes in Computer Science",
+  booktitle =    "Theory and Applications of Satisfiability Testing, 6th International Conference, SAT 2003",
+  publisher =    "Springer-Verlag",
+  address =      "Berlin Heidelberg",
+  volume = 	 "2919",
+  year =         "2003",
+  chapter =      "",
+  editor = 	 "Enrico Giunchiglia, Armando Tacchella",
+  pages =        "502--518",
+  doi = 	 "10.1007/978-3-540-24605-3_37",
+  url = 	 "http://dx.doi.org/10.1007/978-3-540-24605-3_37",
+  edition = 	 "",
+  number = 	 "",
+  type = 	 "",
+  month = 	 "",
+  note = 	 "",
+}
+
+@Inproceedings{CHAFF,
+  author =       "Matthew W. Moskewicz and Conor F. Madigan and Ying Zhao and Lintao Zhang and Sharad Malik",
+  title =        "Chaff: Engineering an Efficient SAT Solver",
+  booktitle =    "Proceedings of the 38th Design Automation Conference, DAC 2001",
+  series = 	 "DAC '01",
+  editor = 	 "",
+  year =         "2001",
+  publisher =    "ACM Press",
+  address = 	 "Las Vegas, NV, USA",
+  pages =        "530--535",
+  doi = 	 "10.1145/378239.379017",
+  url = 	 "http://dx.doi.org/10.1145/378239.379017",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+@Inproceedings{grasp,
+  author =       "Jo{\~a}o P. Marques Silva and Karem A. Sakallah",
+  title =        "GRASP - a new search algorithm for satisfiability",
+  booktitle =    "Proceedings of the 1996 IEEE/ACM international conference on Computer-aided design, ICCAD 1996",
+  series = 	 "ICCAD '96",
+  editor = 	 "",
+  year =         "1996",
+  publisher =    "ACM and IEEE Computer Society",
+  address = 	 "San Jose, CA, USA",
+  pages =        "220--227",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+@Inproceedings{BERKMIN,
+  author =       "Evguenii I. Goldberg and Yakov Novikov",
+  title =        "BerkMin: a fast and robust SAT-solver",
+  booktitle =    "Proceedings of the conference on Design, automation and test in Europe, DATE 2002",
+  series = 	 "DATE '02",
+  editor = 	 "",
+  year =         "2002",
+  publisher =    "IEEE Computer Society",
+  address = 	 "Paris, France",
+  pages =        "142--149",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+
+@Article{Craig,
+  author 	= "William Craig",
+  title 	= "Linear reasoning: A new form of the herbrand-gentzen theorem",
+  journal 	= "The Journal of Symbolic Logic",
+  volume 	= "22",
+  number 	= "3",
+  month 	= sep,
+  year 		= "1957",
+  pages 	= "250--268",
+  note		= "",
+}
+
+@Incollection{interp_McMillan,
+  author =       "Kenneth L. McMillan",
+  title =        "Interpolation and sat-based model checking",
+  series =       "Lecture Notes in Computer Science",
+  booktitle =    "Computer Aided Verification, 15th International Conference, CAV 2003",
+  publisher =    "Springer-Verlag",
+  address =      "Berlin Heidelberg",
+  volume = 	 "2725",
+  year =         "2003",
+  chapter =      "",
+  editor = 	 "Warren A. Hunt Jr., Fabio Somenzi ",
+  pages =        "1--13",
+  doi = 	 "10.1007/978-3-540-45069-6_1",
+  url = 	 "http://dx.doi.org/10.1007/978-3-540-45069-6_1",
+  edition = 	 "",
+  number = 	 "",
+  type = 	 "",
+  month = 	 "",
+  note = 	 "",
+}
+
+@Article{MEALY,
+  author 	= "GEORGE H. MEALY ",
+  title 	= "A method for synthesizing sequential circuits",
+  journal 	= "THE BELL SYSTEM TECHNICAL JOURNAL",
+  volume 	= "34",
+  number 	= "5",
+  month 	= sep,
+  year 		= "1955",
+  pages 	= "1045--1079",
+  note		= "",
+}
+
+
+@Incollection{BradleyVMCAI11,
+  author =       "Aaron R. Bradley",
+  title =        "SAT-based model checking without unrolling",
+  series =       "Lecture Notes in Computer Science",
+  booktitle =    "Verification, Model Checking, and Abstract Interpretation, 12th International Conference, VMCAI 2011",
+  publisher =    "Springer-Verlag",
+  address =      "Berlin Heidelberg",
+  volume = 	 "6538",
+  year =         "2011",
+  chapter =      "",
+  editor = 	 "Ranjit Jhala, David A. Schmidt",
+  pages =        "70--87",
+  doi = 	 "10.1007/978-3-642-18275-4_7",
+  url = 	 "http://dx.doi.org/10.1007/978-3-642-18275-4_7",
+  edition = 	 "",
+  number = 	 "",
+  type = 	 "",
+  month = 	 "",
+  note = 	 "",
+}
+
+@Inproceedings{EenFMCAD11,
+  author =       "Niklas E{\'e}n and Alan Mishchenko and Robert K. Brayton",
+  title =        "Efficient implementation of property-directed reachability",
+  booktitle =    "Proceedings of the International Conference on Formal Methods in Computer-Aided Design,FMCAD 2011",
+  series = 	 "FMCAD '11",
+  editor = 	 "",
+  year =         "2011",
+  publisher =    "FMCAD Inc",
+  address = 	 "Austin, TX, USA",
+  pages =        "125--134",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+@Inproceedings{dim_syn,
+  author =       "Sumit Gulwani",
+  title =        "Dimensions in program synthesis",
+  booktitle =    "Proceedings of the 12th international ACM SIGPLAN symposium on Principles and practice of declarative programming,PPDP 2010",
+  series = 	 "PPDP '10",
+  editor = 	 "",
+  year =         "2010",
+  publisher =    "ACM Press",
+  address = 	 "Hagenberg, Austria",
+  pages =        "13--24",
+  doi = 	 "10.1145/1836089.1836091",
+  url = 	 "http://dx.doi.org/10.1145/1836089.1836091",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+@Inproceedings{prog_inv,
+  author =       "Edsger W. Dijkstra	",
+  title =        "Program Inversion",
+  booktitle =    "Proceeding of Program Construction, International Summer School",
+  year =         "1979",
+  publisher =    "Springer-Verlag",
+  address = 	 "London, UK",
+  pages =        "54--57",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+
+
+@article{mtd_autoProginv,
+ author = {Robert Gl\"uck and Masahiko Kawabe.},
+ title = {A method for automatic program inversion based on LR(0) parsing},
+ journal = {Journal Fundamenta Informaticae},
+ issue_date = {Jan. 2005},
+ volume = {66},
+ number = {4},
+ month = {January},
+ year = {2005},
+ issn = {1875-8681},
+ pages = {367--395},
+ url = {http://doi.acm.org/10.1109/TCAD.2012.2191288},
+ doi = {10.1109/TCAD.2012.2191288},
+ publisher = {IOS Press}
+}
+
+@Inproceedings{converter_date08,
+  author =       "Karin Avnit and Vijay D'Silvaand Arcot Sowmya and S. Rameshand Sri Parameswaran",
+  title =        "A Formal Approach To The Protocol Converter Problem",
+  booktitle =    "Proceedings of the conference on Design, automation and test in Europe,DATE 2008",
+  series = 	 "DATE '08",
+  editor = 	 "",
+  year =         "2008",
+  publisher =    "ACM Press",
+  address = 	 "Munich, Germany",
+  pages =        "294--299",
+  doi = 	 "10.1109/DATE.2008.4484695",
+  url = 	 "http://dx.doi.org/10.1109/DATE.2008.4484695",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+@article{converter_todeas09,
+ author = {Karin Avnit and Vijay D'Silva and Arcot Sowmya and S. Ramesh and Sri Parameswaran.},
+ title = {Provably correct on-chip communication: A formal approach to automatic protocol converter synthesis},
+ journal = {ACM Transactions on Design Automation of Electronic Systems},
+ issue_date = {Mar. 2009},
+ volume = {14},
+ number = {2},
+ month = {March},
+ year = {2009},
+ issn = {1084-4309},
+ pages = {14:1--14:41},
+ url = {http://doi.acm.org/10.1145/1497561.1497562},
+ doi = {10.1145/1497561.1497562},
+ publisher = {ACM Press},
+ address = {New York, NY, USA }
+}
+
+
+@Inproceedings{converter_date09,
+  author =       "Karin Avnit and Arcot Sowmya",
+  title =        "A formal approach to design space exploration of protocol converters",
+  booktitle =    "Proceedings of the Conference on Design, Automation and Test in Europe,DATE 2009",
+  series = 	 "DATE '09",
+  editor = 	 "",
+  year =         "2009",
+  publisher =    "European Design and Automation Association",
+  address = 	 "3001 Leuven, Belgium, Belgium",
+  pages =        "129--134",
+  doi = 	 "10.1109/DATE.2009.5090645",
+  url = 	 "http://dx.doi.org/10.1109/DATE.2009.5090645",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+
+@Inproceedings{program_inversion_11,
+  author =       "Saurabh Srivastava and Sumit Gulwani and Swarat Chaudhuri and Jeffrey S. Foster",
+  title =        "Path-based inductive synthesis for program inversion",
+  booktitle =    "Proceedings of the 32nd ACM SIGPLAN conference on Programming language design and implementation,PLDI 2011",
+  series = 	 "PLDI '11",
+  editor = 	 "",
+  year =         "2011",
+  publisher =    "ACM Press",
+  address = 	 "San Jose, CA, USA",
+  pages =        "492--503",
+  doi = 	 "10.1145/1993498.1993557",
+  url = 	 "http://dx.doi.org/10.1145/1993498.1993557",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+@Incollection{SATUNBMC,
+  author =       "Kenneth L. McMillan",
+  title =        "Applying sat methods in unbounded symbolic model checking",
+  series =       "Lecture Notes in Computer Science",
+  booktitle =    "International Conference on Computer Aided Verification, CAV 2002",
+  publisher =    "Springer-Verlag",
+  address =      "Berlin Heidelberg",
+  volume = 	 "2404",
+  year =         "2002",
+  chapter =      "",
+  editor = 	 "Ed Brinksma, Kim Guldstrand Larsen",
+  pages =        "250--264",
+  doi = 	 "10.1007/3-540-45657-0_19",
+  url = 	 "http://dx.doi.org/10.1007/3-540-45657-0_19",
+  edition = 	 "",
+  number = 	 "",
+  type = 	 "",
+  month = 	 "",
+  note = 	 "",
+}
+
+@Incollection{MINASS,
+  author =       " Kavita Ravi and Fabio Somenzi ",
+  title =        "Minimal assignments for bounded model checking",
+  series =       "Lecture Notes in Computer Science",
+  booktitle =    " Tools and Algorithms for the Construction and Analysis of Systems, 10th International Conference, TACAS 2004",
+  publisher =    "Springer-Verlag",
+  address =      "Berlin Heidelberg",
+  volume = 	 "2988",
+  year =         "2004",
+  chapter =      "",
+  editor = 	 "Kurt Jensen, Andreas Podelski",
+  pages =        "31--45",
+  doi = 	 "10.1007/978-3-540-24730-2_3",
+  url = 	 "http://dx.doi.org/10.1007/978-3-540-24730-2_3",
+  edition = 	 "",
+  number = 	 "",
+  type = 	 "",
+  month = 	 "",
+  note = 	 "",
+}
+
+@Incollection{EFFCON,
+  author =       "  HoonSang Jin and HyoJung Han and Fabio Somenzi ",
+  title =        "Efficient conflict analysis for finding all satisfying assignments of a boolean circuit",
+  series =       "Lecture Notes in Computer Science",
+  booktitle =    " Tools and Algorithms for the Construction and Analysis of Systems, 11th International Conference, TACAS 2005",
+  publisher =    "Springer-Verlag",
+  address =      "Berlin Heidelberg",
+  volume = 	 "3440",
+  year =         "2005",
+  chapter =      "",
+  editor = 	 "Nicolas Halbwachs, Lenore D. Zuck",
+  pages =        "287--300",
+  doi = 	 "10.1007/978-3-540-31980-1_19",
+  url = 	 "http://dx.doi.org/10.1007/978-3-540-31980-1_19",
+  edition = 	 "",
+  number = 	 "",
+  type = 	 "",
+  month = 	 "",
+  note = 	 "",
+}
+
+
+
+@Incollection{MINCEX,
+  author =       "  ShengYu Shen and Ying Qin and Sikun Li",
+  title =        "Minimizing counterexample with unit core extraction and incremental sat",
+  series =       "Lecture Notes in Computer Science",
+  booktitle =    " Verification, Model Checking, and Abstract Interpretation, 6th International Conference, VMCAI 2005",
+  publisher =    "Springer-Verlag",
+  address =      "Berlin Heidelberg",
+  volume = 	 "3385",
+  year =         "2005",
+  chapter =      "",
+  editor = 	 "Radhia Cousot",
+  pages =        "298--312",
+  doi = 	 "10.1007/978-3-540-30579-8_20",
+  url = 	 "http://dx.doi.org/10.1007/978-3-540-30579-8_20",
+  edition = 	 "",
+  number = 	 "",
+  type = 	 "",
+  month = 	 "",
+  note = 	 "",
+}
+
+@Incollection{MEMEFFALLSAT,
+  author =       "   Orna Grumberg and Assaf Schuster and Avi Yadgar",
+  title =        "Memory efficient all-solutions sat solver and its application for reachability analysis",
+  series =       "Lecture Notes in Computer Science",
+  booktitle =    " International Conference on Formal Methods in Computer-Aided Design,FMCAD 2011",
+  publisher =    "Springer-Verlag",
+  address =      "Berlin Heidelberg",
+  volume = 	 "3312",
+  year =         "2004",
+  chapter =      "",
+  editor = 	 "Alan J. Hu, Andrew K. Martin ",
+  pages =        "275--289",
+  doi = 	 "10.1007/978-3-540-30494-4_20",
+  url = 	 "http://dx.doi.org/10.1007/978-3-540-30494-4_20",
+  edition = 	 "",
+  number = 	 "",
+  type = 	 "",
+  month = 	 "",
+  note = 	 "",
+}
+
+@Inproceedings{REPARAM,
+  author =       "Pankaj Chauhan and Edmund M. Clarke and Daniel Kroening",
+  title =        "A sat-based algorithm for reparameterization in symbolic simulation",
+  booktitle =    "Proceedings of the 41th Design Automation Conference, DAC 2004",
+  series = 	 "DAC '04",
+  editor = 	 "",
+  year =         "2004",
+  publisher =    "IEEE",
+  address = 	 "",
+  pages =        "524--529",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+@Inproceedings{PRIMECLAUSE,
+  author =       "HoonSang Jin and Fabio Somenzi:",
+  title =        "Prime clauses for fast enumeration of satisfying assignments to boolean circuits",
+  booktitle =    "Proceedings of the 42th Design Automation Conference, DAC 2005",
+  series = 	 "DAC '05",
+  editor = 	 "",
+  year =         "2005",
+  publisher =    "IEEE",
+  address = 	 "",
+  pages =        "750--753",
+  doi = 	 "10.1109/DAC.2005.193911",
+  url = 	 "http://dx.doi.org/10.1109/DAC.2005.193911",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+
+
+@Inproceedings{EFFSATUSMCCO,
+  author =       "Malay K. Ganai and Aarti Gupta and Pranav Ashar",
+  title =        "Efficient sat-based unbounded symbolic model checking using circuit cofactoring",
+  booktitle =    "Proceedings of the 2004 International Conference on Computer-Aided Design, ICCAD 2004",
+  series = 	 "ICCAD '04",
+  editor = 	 "",
+  year =         "2004",
+  publisher =    "ACM",
+  address = 	 "",
+  pages =        "510--517",
+  doi = 	 "10.1109/ICCAD.2004.1382631",
+  url = 	 "http://dx.doi.org/10.1109/ICCAD.2004.1382631",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+
+
+@Inproceedings{CONFLICTLEARN,
+  author =       "Lintao Zhang and Conor F. Madigan and Matthew W. Moskewicz and Sharad Malik",
+  title =        "Efficient Conflict Driven Learning in Boolean Satisfiability Solver",
+  booktitle =    "Proceedings of the 2001 International Conference on Computer-Aided Design, ICCAD 2001",
+  series = 	 "ICCAD '01",
+  editor = 	 "",
+  year =         "2001",
+  publisher =    "ACM",
+  address = 	 "",
+  pages =        "279--285",
+  doi = 	 "",
+  url = 	 "",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+@Inproceedings{SMCSAT,
+  author =       "Armin Biere and Alessandro Cimatti and Edmund M. Clarke and Masahiro Fujita and Yunshan Zhu",
+  title =        "Symbolic model checking using sat procedures instead of bdds",
+  booktitle =    " Proceedings of the 36th Conference on Design Automation",
+  series = 	 "DAC '99",
+  editor = 	 "",
+  year =         "1999",
+  publisher =    "ACM",
+  address = 	 "",
+  pages =        "317--320",
+  doi = 	 "10.1109/DAC.1999.781333",
+  url = 	 "http://dx.doi.org/10.1109/DAC.1999.781333",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+
+
+
+
+
+@Inproceedings{InterpBoolFunction,
+  author =       "Jie-Hong Roland Jiang, Hsuan-Po Lin, Wei-Lun Hung",
+  title =        "Interpolating functions from large Boolean relations",
+  booktitle =    " Proceedings of 2009 International Conference on Computer-Aided Design",
+  series = 	 "ICCAD '09",
+  editor = 	 "",
+  year =         "2009",
+  publisher =    "IEEE",
+  address = 	 "",
+  pages =        "779--784",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+
+@Incollection{interpNoProof,
+  author =       "Hana Chockler and Alexander Ivrii and Arie Matsliah",
+  title =        "Computing Interpolants without Proofs",
+  series =       "Lecture Notes in Computer Science",
+  booktitle =    "  8th International Haifa Verification Conference, HVC 2012",
+  publisher =    "Springer-Verlag",
+  address =      "Berlin Heidelberg",
+  volume = 	 "7857",
+  year =         "2012",
+  chapter =      "",
+  editor = 	 "Armin Biere, Amir Nahir, Tanja E. J. Vos",
+  pages =        "72--85",
+  doi = 	 "10.1007/978-3-642-39611-3_12",
+  url = 	 "http://dx.doi.org/10.1007/978-3-642-39611-3_12",
+  edition = 	 "",
+  number = 	 "",
+  type = 	 "",
+  month = 	 "",
+  note = 	 "",
+}
+
+@Inproceedings{scalableFuncDep,
+  author =       "Chih-Chun Lee and Jie-Hong Roland Jiang and Chung-Yang Huang and Alan Mishchenko",
+  title =        "Scalable exploration of functional dependency by interpolation and incremental SAT solving",
+  booktitle =    " Proceedings of 2007 International Conference on Computer-Aided Design",
+  series = 	 "ICCAD '07",
+  editor = 	 "",
+  year =         "2007",
+  publisher =    "IEEE",
+  address = 	 "",
+  pages =        "227--233",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+@Inproceedings{Bidecomp,
+  author =       "Ruei-Rung Lee and Jie-Hong Roland Jiang and Wei-Lun Hung",
+  title =        "Bi-decomposing large Boolean functions via interpolation and satisfiability solving",
+  booktitle =    "Proceedings of the 45th Design Automation Conference, DAC 2008",
+  series = 	 "DAC '08",
+  editor = 	 "",
+  year =         "2008",
+  publisher =    "IEEE",
+  address = 	 "",
+  pages =        "636--641",
+  doi = 	 "10.1145/1391469.1391634",
+  url = 	 "http://dx.doi.org/10.1145/1391469.1391634",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+@Inproceedings{ecoInterp,
+  author =       "Bo-Han Wu and Chun-Ju Yanga and Chung-Yang Huang and Jie-Hong Roland Jiang",
+  title =        "A robust functional ECO engine by SAT proof minimization and interpolation techniques",
+  booktitle =    " Proceedings of 2010 International Conference on Computer-Aided Design",
+  series = 	 "ICCAD '10",
+  editor = 	 "",
+  year =         "2010",
+  publisher =    "ACM",
+  address = 	 "",
+  pages =        "729--734",
+  doi = 	 "10.1109/ICCAD.2010.5654265 ",
+  url = 	 "http://dx.doi.org/10.1109/ICCAD.2010.5654265 ",
+  number =	 "",
+  month = 	 "",
+  organization = "",
+  note = 	 "",
+}
+
+@misc{ABC,
+    key         = {Berkeley Logic Synthesis and Verification Group},
+    title       = {ABC:A system for sequential synthesis and verification},
+    note        = {http://www.eecs.berkeley.edu/alanmi/abc/},
+    year        = 2008
+}
+
+%%%%%%%%%%
+% these come from dbl.
+%%%%%%%%%
+
+
+@article{SATtheory,
+  author    = {Martin Davis and
+               Hilary Putnam},
+  title     = {A Computing Procedure for Quantification Theory},
+  journal   = {J. {ACM}},
+  volume    = {7},
+  number    = {3},
+  pages     = {201--215},
+  year      = {1960},
+  url       = {http://doi.acm.org/10.1145/321033.321034},
+  doi       = {10.1145/321033.321034},
+  timestamp = {Fri, 29 Feb 2008 08:13:22 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/jacm/DavisP60},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@book{HardwareSAT,
+  author    = {Gary D. Hachtel and
+               Fabio Somenzi},
+  title     = {Logic synthesis and verification algorithms},
+  publisher = {Springer},
+  year      = {2006},
+  url       = {http://dx.doi.org/10.1007/0-387-31005-3},
+  doi       = {10.1007/0-387-31005-3},
+  isbn      = {978-0-387-31004-6},
+  timestamp = {Wed, 23 Mar 2011 16:58:38 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/books/daglib/0015994},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@inproceedings{softwareSAT,
+  author    = {Edmund M. Clarke and
+               Orna Grumberg and
+               Somesh Jha and
+               Yuan Lu and
+               Helmut Veith},
+  title     = {Counterexample-Guided Abstraction Refinement},
+  booktitle = {Computer Aided Verification, 12th International Conference, {CAV}
+               2000, Chicago, IL, USA, July 15-19, 2000, Proceedings},
+  pages     = {154--169},
+  year      = {2000},
+  crossref  = {DBLP:conf/cav/2000},
+  url       = {http://dx.doi.org/10.1007/10722167_15},
+  doi       = {10.1007/10722167_15},
+  timestamp = {Tue, 21 Jun 2011 16:38:39 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/cav/ClarkeGJLV00},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+
+@inproceedings{cryptoSAT,
+  author    = {Mate Soos and
+               Karsten Nohl and
+               Claude Castelluccia},
+  title     = {Extending {SAT} Solvers to Cryptographic Problems},
+  booktitle = {Theory and Applications of Satisfiability Testing - {SAT} 2009, 12th
+               International Conference, {SAT} 2009, Swansea, UK, June 30 - July
+               3, 2009. Proceedings},
+  pages     = {244--257},
+  year      = {2009},
+  crossref  = {DBLP:conf/sat/2009},
+  url       = {http://dx.doi.org/10.1007/978-3-642-02777-2_24},
+  doi       = {10.1007/978-3-642-02777-2_24},
+  timestamp = {Thu, 09 Jul 2009 07:43:48 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/sat/SoosNC09},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+
+
+@inproceedings{Nordugrid,
+  author    = {Antti Eero Johannes Hyv{\"{a}}rinen and
+               Tommi A. Junttila and
+               Ilkka Niemel{\"{a}}},
+  title     = {Grid-Based {SAT} Solving with Iterative Partitioning and Clause Learning},
+  booktitle = {Principles and Practice of Constraint Programming - {CP} 2011 - 17th
+               International Conference, {CP} 2011, Perugia, Italy, September 12-16,
+               2011. Proceedings},
+  pages     = {385--399},
+  year      = {2011},
+  crossref  = {DBLP:conf/cp/2011},
+  url       = {http://dx.doi.org/10.1007/978-3-642-23786-7_30},
+  doi       = {10.1007/978-3-642-23786-7_30},
+  timestamp = {Fri, 02 Sep 2011 15:33:27 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/cp/HyvarinenJN11},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@article{Tseitin,
+author = {G. Tseitin},
+title = {{On the complexity of derivations in propositional calculus}},
+year = {1983},
+masid = {2053004}
+}
+
+@inproceedings{c.WANG,
+  author    = {Cong Wang and
+               Kui Ren and
+               Jia Wang},
+  title     = {Secure and practical outsourcing of linear programming in cloud computing},
+  booktitle = {{INFOCOM} 2011. 30th {IEEE} International Conference on Computer Communications,
+               Joint Conference of the {IEEE} Computer and Communications Societies,
+               10-15 April 2011, Shanghai, China},
+  pages     = {820--828},
+  year      = {2011},
+  crossref  = {DBLP:conf/infocom/2011},
+  url       = {http://dx.doi.org/10.1109/INFCOM.2011.5935305},
+  doi       = {10.1109/INFCOM.2011.5935305},
+  timestamp = {Sun, 08 Dec 2013 12:19:02 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/infocom/WangRW11},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@inproceedings{csLiequivalency,
+  author    = {Chu Min Li},
+  title     = {Integrating Equivalency Reasoning into Davis-Putnam Procedure},
+  booktitle = {Proceedings of the Seventeenth National Conference on Artificial Intelligence
+               and Twelfth Conference on on Innovative Applications of Artificial
+               Intelligence, July 30 - August 3, 2000, Austin, Texas, {USA.}},
+  pages     = {291--296},
+  year      = {2000},
+  crossref  = {DBLP:conf/aaai/2000},
+  url       = {http://www.aaai.org/Library/AAAI/2000/aaai00-045.php},
+  timestamp = {Tue, 11 Dec 2012 12:57:22 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/aaai/Li00},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@inproceedings{csOstrowski,
+  author    = {Richard Ostrowski and
+               {\'{E}}ric Gr{\'{e}}goire and
+               Bertrand Mazure and
+               Lakhdar Sais},
+  title     = {Recovering and Exploiting Structural Knowledge from {CNF} Formulas},
+  booktitle = {Principles and Practice of Constraint Programming - {CP} 2002, 8th
+               International Conference, {CP} 2002, Ithaca, NY, USA, September 9-13,
+               2002, Proceedings},
+  pages     = {185--199},
+  year      = {2002},
+  crossref  = {DBLP:conf/cp/2002},
+  url       = {http://link.springer.de/link/service/series/0558/bibs/2470/24700185.htm},
+  timestamp = {Wed, 09 Oct 2002 09:19:53 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/cp/OstrowskiGMS02},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@MISC{csRoy,
+    author = {Jarrod A. Roy and Igor L. Markov},
+    title = {Restoring Circuit Structure from SAT Instances},
+  booktitle = {IWLS 2004},
+  pages     = {361–368},
+    year = {2004}
+}
+
+@inproceedings{csFu,
+  author    = {Zhaohui Fu and
+               Sharad Malik},
+  title     = {Extracting Logic Circuit Structure from Conjunctive Normal Form Descriptions},
+  booktitle = {20th International Conference on {VLSI} Design {(VLSI} Design 2007),
+               Sixth International Conference on Embedded Systems {(ICES} 2007),
+               6-10 January 2007, Bangalore, India},
+  pages     = {37--42},
+  year      = {2007},
+  crossref  = {DBLP:conf/vlsid/2007},
+  url       = {http://doi.ieeecomputersociety.org/10.1109/VLSID.2007.81},
+  doi       = {10.1109/VLSID.2007.81},
+  timestamp = {Mon, 26 Mar 2007 15:13:02 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/vlsid/FuM07},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@MISC{Minisat,
+    author = {Niklas Sorensson},
+    title = {MiniSat-SAT Algorithms and Applications},
+  booktitle = {CADE-20}
+}
+
+@inproceedings{AMI,
+  author    = {Marco Balduzzi and
+               Jonas Zaddach and
+               Davide Balzarotti and
+               Engin Kirda and
+               Sergio Loureiro},
+  title     = {A security analysis of amazon's elastic compute cloud service},
+  booktitle = {Proceedings of the {ACM} Symposium on Applied Computing, {SAC} 2012,
+               Riva, Trento, Italy, March 26-30, 2012},
+  pages     = {1427--1434},
+  year      = {2012},
+  crossref  = {DBLP:conf/sac/2012},
+  url       = {http://doi.acm.org/10.1145/2245276.2232005},
+  doi       = {10.1145/2245276.2232005},
+  timestamp = {Fri, 08 Jun 2012 19:37:23 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/sac/BalduzziZBKL12},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@inproceedings{InformationLeakageofCloud,
+  author    = {Thomas Ristenpart and
+               Eran Tromer and
+               Hovav Shacham and
+               Stefan Savage},
+  title     = {Hey, you, get off of my cloud: exploring information leakage in third-party
+               compute clouds},
+  booktitle = {Proceedings of the 2009 {ACM} Conference on Computer and Communications
+               Security, {CCS} 2009, Chicago, Illinois, USA, November 9-13, 2009},
+  pages     = {199--212},
+  year      = {2009},
+  crossref  = {DBLP:conf/ccs/2009},
+  url       = {http://doi.acm.org/10.1145/1653662.1653687},
+  doi       = {10.1145/1653662.1653687},
+  timestamp = {Wed, 25 Nov 2009 10:38:32 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/ccs/RistenpartTSS09},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@inproceedings{microgenSAT,
+  author    = {Dimitris Achlioptas and
+               Carla P. Gomes and
+               Henry A. Kautz and
+               Bart Selman},
+  title     = {Generating Satisfiable Problem Instances},
+  booktitle = {Proceedings of the Seventeenth National Conference on Artificial Intelligence
+               and Twelfth Conference on on Innovative Applications of Artificial
+               Intelligence, July 30 - August 3, 2000, Austin, Texas, {USA.}},
+  pages     = {256--261},
+  year      = {2000},
+  crossref  = {DBLP:conf/aaai/2000},
+  url       = {http://www.aaai.org/Library/AAAI/2000/aaai00-039.php},
+  timestamp = {Tue, 11 Dec 2012 12:57:22 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/aaai/AchlioptasGKS00},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@MISC{genSAT,
+    author = {M Jarvisalo},
+    title = {Equivalence checking hardware multiplier designs},
+  booktitle = {SAT Competition 2007 benchmark description}
+}
+
+
+@inproceedings{OBfuscationd-CNFs,
+  author    = {Zvika Brakerski and
+               Guy N. Rothblum},
+  title     = {Black-box obfuscation for d-CNFs},
+  booktitle = {Innovations in Theoretical Computer Science, ITCS'14, Princeton, NJ,
+               USA, January 12-14, 2014},
+  pages     = {235--250},
+  year      = {2014},
+  crossref  = {DBLP:conf/innovations/2014},
+  url       = {http://doi.acm.org/10.1145/2554797.2554820},
+  doi       = {10.1145/2554797.2554820},
+  timestamp = {Fri, 14 Feb 2014 17:43:13 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/innovations/BrakerskiR14},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@inproceedings{R.Gennaro,
+  author    = {Rosario Gennaro and
+               Craig Gentry and
+               Bryan Parno},
+  title     = {Non-interactive Verifiable Computing: Outsourcing Computation to Untrusted
+               Workers},
+  booktitle = {Advances in Cryptology - {CRYPTO} 2010, 30th Annual Cryptology Conference,
+               Santa Barbara, CA, USA, August 15-19, 2010. Proceedings},
+  pages     = {465--482},
+  year      = {2010},
+  crossref  = {DBLP:conf/crypto/2010},
+  url       = {http://dx.doi.org/10.1007/978-3-642-14623-7_25},
+  doi       = {10.1007/978-3-642-14623-7_25},
+  timestamp = {Tue, 17 Aug 2010 15:09:53 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/crypto/GennaroGP10},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@inproceedings{HV-grid,
+  author    = {Wenliang Du and
+               Michael T. Goodrich},
+  title     = {Searching for High-Value Rare Events with Uncheatable Grid Computing},
+  booktitle = {Applied Cryptography and Network Security, Third International Conference,
+               {ACNS} 2005, New York, NY, USA, June 7-10, 2005, Proceedings},
+  pages     = {122--137},
+  year      = {2005},
+  crossref  = {DBLP:conf/acns/2005},
+  url       = {http://dx.doi.org/10.1007/11496137_9},
+  doi       = {10.1007/11496137_9},
+  timestamp = {Wed, 01 Jun 2005 07:58:58 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/acns/DuG05},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@article{DBLP:journals/ac/AtallahPRS01,
+  author    = {Mikhail J. Atallah and
+               Konstantinos N. Pantazopoulos and
+               John R. Rice and
+               Eugene H. Spafford},
+  title     = {Secure outsourcing of scientific computations},
+  journal   = {Advances in Computers},
+  volume    = {54},
+  pages     = {215--272},
+  year      = {2001},
+  url       = {http://dx.doi.org/10.1016/S0065-2458(01)80019-X},
+  doi       = {10.1016/S0065-2458(01)80019-X},
+  timestamp = {Fri, 04 Jul 2014 14:36:53 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/ac/AtallahPRS01},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@article{DBLP:journals/ijisec/AtallahL05,
+  author    = {Mikhail J. Atallah and
+               Jiangtao Li},
+  title     = {Secure outsourcing of sequence comparisons},
+  journal   = {Int. J. Inf. Sec.},
+  volume    = {4},
+  number    = {4},
+  pages     = {277--287},
+  year      = {2005},
+  url       = {http://dx.doi.org/10.1007/s10207-005-0070-3},
+  doi       = {10.1007/s10207-005-0070-3},
+  timestamp = {Tue, 29 Oct 2013 12:43:01 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/ijisec/AtallahL05},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@inproceedings{DBLP:conf/ctrsa/GolleM01,
+  author    = {Philippe Golle and
+               Ilya Mironov},
+  title     = {Uncheatable Distributed Computations},
+  booktitle = {Topics in Cryptology - {CT-RSA} 2001, The Cryptographer's Track at
+               {RSA} Conference 2001, San Francisco, CA, USA, April 8-12, 2001, Proceedings},
+  pages     = {425--440},
+  year      = {2001},
+  crossref  = {DBLP:conf/ctrsa/2001},
+  url       = {http://dx.doi.org/10.1007/3-540-45353-9_31},
+  doi       = {10.1007/3-540-45353-9_31},
+  timestamp = {Mon, 27 Jun 2011 17:47:55 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/ctrsa/GolleM01},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@inproceedings{DBLP:conf/sp/SzajdaLO03,
+  author    = {Doug Szajda and
+               Barry G. Lawson and
+               Jason Owen},
+  title     = {Hardening Functions for Large Scale Distributed Computations},
+  booktitle = {2003 {IEEE} Symposium on Security and Privacy (S{\&}P 2003), 11-14
+               May 2003, Berkeley, CA, {USA}},
+  pages     = {216--224},
+  year      = {2003},
+  crossref  = {DBLP:conf/sp/2003},
+  url       = {http://doi.ieeecomputersociety.org/10.1109/SECPRI.2003.1199338},
+  doi       = {10.1109/SECPRI.2003.1199338},
+  timestamp = {Wed, 26 Oct 2011 12:00:38 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/sp/SzajdaLO03},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@MISC{CloudSMT,
+    title = {Paralleling OpenSMT Towards Cloud Computing.http://www.inf.usi.ch/urop-Tsitovich-2-127208.pdf}
+}
+
+
+@MISC{OneSpin,
+    title = {Formal in the Cloud OneSpin: New Spin on Cloud Computing.http://www. eejournal.com/archives/articles/20130627-onespin/?printView=true}
+}
+
+
+@inproceedings{obfuscationBible,
+  author    = {X.S. Zhang, F.L. He and W.l. Zuo},
+  title     = {Theory and Practice of Program Obfuscation},
+  booktitle = {Convergence and Hybrid Information Technologies},
+  pages     = {426},
+  year      = {2010}
+}
+
+@inproceedings{Partition,
+  author    = {George Karypis and
+               Rajat Aggarwal and
+               Vipin Kumar and
+               Shashi Shekhar},
+  title     = {Multilevel Hypergraph Partitioning: Application in {VLSI} Domain},
+  booktitle = {{DAC}},
+  pages     = {526--529},
+  year      = {1997},
+  url       = {http://doi.acm.org/10.1145/266021.266273},
+  doi       = {10.1145/266021.266273},
+  timestamp = {Mon, 16 Dec 2002 10:13:30 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/dac/KarypisAKS97},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@inproceedings{DBLP:conf/crypto/BrakerskiR13,
+  author    = {Zvika Brakerski and
+               Guy N. Rothblum},
+  title     = {Obfuscating Conjunctions},
+  booktitle = {Advances in Cryptology - {CRYPTO} 2013 - 33rd Annual Cryptology Conference,
+               Santa Barbara, CA, USA, August 18-22, 2013. Proceedings, Part {II}},
+  pages     = {416--434},
+  year      = {2013},
+  crossref  = {DBLP:conf/crypto/2013-2},
+  url       = {http://dx.doi.org/10.1007/978-3-642-40084-1_24},
+  doi       = {10.1007/978-3-642-40084-1_24},
+  timestamp = {Wed, 21 Aug 2013 17:36:07 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/crypto/BrakerskiR13},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@MISC{Zvika_Brakerski,
+    title = {Zvika Brakerski. Cryptographic Methods for the Clouds [Ph.D. Dissertation] Weizmann Institute of Science, 2011.}
+}
+
+
+@inproceedings{DBLP:conf/stoc/Gentry09,
+  author    = {Craig Gentry},
+  title     = {Fully homomorphic encryption using ideal lattices},
+  booktitle = {Proceedings of the 41st Annual {ACM} Symposium on Theory of Computing,
+               {STOC} 2009, Bethesda, MD, USA, May 31 - June 2, 2009},
+  pages     = {169--178},
+  year      = {2009},
+  crossref  = {DBLP:conf/stoc/2009},
+  url       = {http://doi.acm.org/10.1145/1536414.1536440},
+  doi       = {10.1145/1536414.1536440},
+  timestamp = {Fri, 05 Jun 2009 09:34:35 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/stoc/Gentry09},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@inproceedings{DBLP:conf/IEEEcloud/BrunM12,
+  author    = {Yuriy Brun and
+               Nenad Medvidovic},
+  title     = {Keeping Data Private while Computing in the Cloud},
+  booktitle = {2012 {IEEE} Fifth International Conference on Cloud Computing, Honolulu,
+               HI, USA, June 24-29, 2012},
+  pages     = {285--294},
+  year      = {2012},
+  crossref  = {DBLP:conf/IEEEcloud/2012},
+  url       = {http://dx.doi.org/10.1109/CLOUD.2012.126},
+  doi       = {10.1109/CLOUD.2012.126},
+  timestamp = {Tue, 22 Jul 2014 17:03:28 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/IEEEcloud/BrunM12},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@article{DBLP:journals/ac/AtallahPRS01,
+  author    = {Mikhail J. Atallah and
+               Konstantinos N. Pantazopoulos and
+               John R. Rice and
+               Eugene H. Spafford},
+  title     = {Secure outsourcing of scientific computations},
+  journal   = {Advances in Computers},
+  volume    = {54},
+  pages     = {215--272},
+  year      = {2001},
+  url       = {http://dx.doi.org/10.1016/S0065-2458(01)80019-X},
+  doi       = {10.1016/S0065-2458(01)80019-X},
+  timestamp = {Fri, 04 Jul 2014 14:36:53 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/ac/AtallahPRS01},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@inproceedings{DBLP:conf/pst/BenjaminA08,
+  author    = {David Benjamin and
+               Mikhail J. Atallah},
+  title     = {Private and Cheating-Free Outsourcing of Algebraic Computations},
+  booktitle = {Sixth Annual Conference on Privacy, Security and Trust, {PST} 2008,
+               October 1-3, 2008, Fredericton, New Brunswick, Canada},
+  pages     = {240--245},
+  year      = {2008},
+  crossref  = {DBLP:conf/pst/2008},
+  url       = {http://dx.doi.org/10.1109/PST.2008.12},
+  doi       = {10.1109/PST.2008.12},
+  timestamp = {Wed, 25 Mar 2009 22:24:54 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/pst/BenjaminA08},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@inproceedings{DBLP:conf/ccs/AtallahF10,
+  author    = {Mikhail J. Atallah and
+               Keith B. Frikken},
+  title     = {Securely outsourcing linear algebra computations},
+  booktitle = {Proceedings of the 5th {ACM} Symposium on Information, Computer and
+               Communications Security, {ASIACCS} 2010, Beijing, China, April 13-16,
+               2010},
+  pages     = {48--59},
+  year      = {2010},
+  crossref  = {DBLP:conf/ccs/2010asia},
+  url       = {http://doi.acm.org/10.1145/1755688.1755695},
+  doi       = {10.1145/1755688.1755695},
+  timestamp = {Fri, 16 Apr 2010 14:11:03 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/ccs/AtallahF10},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@article{DBLP:journals/cacm/Shamir79,
+  author    = {Adi Shamir},
+  title     = {How to Share a Secret},
+  journal   = {Commun. {ACM}},
+  volume    = {22},
+  number    = {11},
+  pages     = {612--613},
+  year      = {1979},
+  url       = {http://doi.acm.org/10.1145/359168.359176},
+  doi       = {10.1145/359168.359176},
+  timestamp = {Tue, 07 Jun 2011 16:51:19 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/cacm/Shamir79},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@article{DBLP:journals/cacm/RivestSA78,
+  author    = {Ronald L. Rivest and
+               Adi Shamir and
+               Leonard M. Adleman},
+  title     = {A Method for Obtaining Digital Signatures and Public-Key Cryptosystems},
+  journal   = {Commun. {ACM}},
+  volume    = {21},
+  number    = {2},
+  pages     = {120--126},
+  year      = {1978},
+  url       = {http://doi.acm.org/10.1145/359340.359342},
+  doi       = {10.1145/359340.359342},
+  timestamp = {Tue, 07 Jun 2011 16:51:11 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/cacm/RivestSA78},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@inproceedings{DBLP:conf/crypto/Gamal84,
+  author    = {Taher El Gamal},
+  title     = {A Public Key Cryptosystem and a Signature Scheme Based on Discrete
+               Logarithms},
+  booktitle = {Advances in Cryptology, Proceedings of {CRYPTO} '84, Santa Barbara,
+               California, USA, August 19-22, 1984, Proceedings},
+  pages     = {10--18},
+  year      = {1984},
+  crossref  = {DBLP:conf/crypto/1984},
+  url       = {http://dx.doi.org/10.1007/3-540-39568-7_2},
+  doi       = {10.1007/3-540-39568-7_2},
+  timestamp = {Fri, 23 Dec 2011 14:54:25 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/crypto/Gamal84},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@inproceedings{DBLP:conf/stoc/GoldwasserM82,
+  author    = {Shafi Goldwasser and
+               Silvio Micali},
+  title     = {Probabilistic Encryption and How to Play Mental Poker Keeping Secret
+               All Partial Information},
+  booktitle = {Proceedings of the 14th Annual {ACM} Symposium on Theory of Computing,
+               May 5-7, 1982, San Francisco, California, {USA}},
+  pages     = {365--377},
+  year      = {1982},
+  crossref  = {DBLP:conf/stoc/STOC14},
+  url       = {http://doi.acm.org/10.1145/800070.802212},
+  doi       = {10.1145/800070.802212},
+  timestamp = {Mon, 17 Oct 2011 17:25:06 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/stoc/GoldwasserM82},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+@proceedings{DBLP:conf/stoc/STOC14,
+  editor    = {Harry R. Lewis and
+               Barbara B. Simons and
+               Walter A. Burkhard and
+               Lawrence H. Landweber},
+  title     = {Proceedings of the 14th Annual {ACM} Symposium on Theory of Computing,
+               May 5-7, 1982, San Francisco, California, {USA}},
+  publisher = {{ACM}},
+  year      = {1982},
+  isbn      = {0-89791-070-2},
+  timestamp = {Mon, 17 Oct 2011 15:55:10 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/stoc/STOC14},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@inproceedings{DBLP:conf/eurocrypt/Paillier99,
+  author    = {Pascal Paillier},
+  title     = {Public-Key Cryptosystems Based on Composite Degree Residuosity Classes},
+  booktitle = {Advances in Cryptology - {EUROCRYPT} '99, International Conference
+               on the Theory and Application of Cryptographic Techniques, Prague,
+               Czech Republic, May 2-6, 1999, Proceeding},
+  pages     = {223--238},
+  year      = {1999},
+  crossref  = {DBLP:conf/eurocrypt/99},
+  url       = {http://dx.doi.org/10.1007/3-540-48910-X_16},
+  doi       = {10.1007/3-540-48910-X_16},
+  timestamp = {Fri, 23 Dec 2011 14:54:26 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/eurocrypt/Paillier99},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@inproceedings{DBLP:conf/socialcom/BlantonZF11,
+  author    = {Marina Blanton and
+               Yihua Zhang and
+               Keith B. Frikken},
+  title     = {Secure and Verifiable Outsourcing of Large-Scale Biometric Computations},
+  booktitle = {PASSAT/SocialCom 2011, Privacy, Security, Risk and Trust (PASSAT),
+               2011 {IEEE} Third International Conference on and 2011 {IEEE} Third
+               International Conference on Social Computing (SocialCom), Boston,
+               MA, USA, 9-11 Oct., 2011},
+  pages     = {1185--1191},
+  year      = {2011},
+  crossref  = {DBLP:conf/socialcom/2011},
+  url       = {http://doi.ieeecomputersociety.org/10.1109/PASSAT/SocialCom.2011.13},
+  doi       = {10.1109/PASSAT/SocialCom.2011.13},
+  timestamp = {Sun, 05 May 2013 11:53:35 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/socialcom/BlantonZF11},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@article{DBLP:journals/jsyml/Krajicek97,
+  author    = {Jan Kraj{\'{\i}}cek},
+  title     = {Interpolation Theorems, Lower Bounds for Proof Systems, and Independence
+               Results for Bounded Arithmetic},
+  journal   = {J. Symb. Log.},
+  volume    = {62},
+  number    = {2},
+  pages     = {457--486},
+  year      = {1997},
+  url       = {http://dx.doi.org/10.2307/2275541},
+  doi       = {10.2307/2275541},
+  timestamp = {Tue, 05 Aug 2014 16:36:02 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/jsyml/Krajicek97},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@article{DBLP:journals/concurrency/ChrabakhW07,
+  author    = {Wahid Chrabakh and
+               Richard Wolski},
+  title     = {The GridSAT portal: a Grid Web-based portal for solving satisfiability
+               problems using the national cyberinfrastructure},
+  journal   = {Concurrency and Computation: Practice and Experience},
+  volume    = {19},
+  number    = {6},
+  pages     = {795--808},
+  year      = {2007},
+  url       = {http://dx.doi.org/10.1002/cpe.1079},
+  doi       = {10.1002/cpe.1079},
+  timestamp = {Mon, 26 Nov 2007 13:12:25 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/concurrency/ChrabakhW07},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@MISC{Yongzhi_Wang,
+    title = {Yongzhi Wang, Jinpeng Wei, Mudhakar Srivatsaywa. CROSS CLOUD MAPREDUCE: A RESULT INTEGRITY CHECK FRAMEWORK ON HYBRID CLOUDS. to appear in International Journal of Cloud Computing (ISSN 2326-7550)}
+}
+
+@MISC{Collberg_C,
+    title = {Collberg C, Thomborson C, Low D. A Taxonomy of Obfuscating Transformations. Tech. Report, #148, University of Auckland}
+}
+
+
+
+
+@inproceedings{DBLP:conf/cc/BatchelderH07,
+  author    = {Michael Batchelder and
+               Laurie J. Hendren},
+  title     = {Obfuscating Java: The Most Pain for the Least Gain},
+  booktitle = {Compiler Construction, 16th International Conference, {CC} 2007, Held
+               as Part of the Joint European Conferences on Theory and Practice of
+               Software, {ETAPS} 2007, Braga, Portugal, March 26-30, 2007, Proceedings},
+  pages     = {96--110},
+  year      = {2007},
+  crossref  = {DBLP:conf/cc/2007},
+  url       = {http://dx.doi.org/10.1007/978-3-540-71229-9_7},
+  doi       = {10.1007/978-3-540-71229-9_7},
+  timestamp = {Tue, 31 Jul 2007 07:45:31 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/cc/BatchelderH07},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@MISC{C_Gentry_phd,
+    title = {C Gentry. A fully homomorphic encryption scheme. [PhD thesis], Stanford University, 2009.}
+}
+
+@inproceedings{DBLP:conf/focs/Yao82b,
+  author    = {Andrew Chi{-}Chih Yao},
+  title     = {Protocols for Secure Computations (Extended Abstract)},
+  booktitle = {23rd Annual Symposium on Foundations of Computer Science, Chicago,
+               Illinois, USA, 3-5 November 1982},
+  pages     = {160--164},
+  year      = {1982},
+  crossref  = {DBLP:conf/focs/FOCS23},
+  url       = {http://doi.ieeecomputersociety.org/10.1109/SFCS.1982.38},
+  doi       = {10.1109/SFCS.1982.38},
+  timestamp = {Wed, 19 Oct 2011 17:11:02 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/focs/Yao82b},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@inproceedings{DBLP:conf/apweb/QinSKD14,
+  author    = {Ying Qin and
+               ShengYu Shen and
+               Jingzhu Kong and
+               Huadong Dai},
+  title     = {Cloud-Oriented {SAT} Solver Based on Obfuscating {CNF} Formula},
+  booktitle = {Web Technologies and Applications - APWeb 2014 Workshops, SNA, NIS,
+               and IoTS, Changsha, China, September 5, 2014. Proceedings},
+  pages     = {188--199},
+  year      = {2014},
+  crossref  = {DBLP:conf/apweb/2014w},
+  url       = {http://dx.doi.org/10.1007/978-3-319-11119-3_18},
+  doi       = {10.1007/978-3-319-11119-3_18},
+  timestamp = {Fri, 12 Sep 2014 07:48:08 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/apweb/QinSKD14},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@inproceedings{qyMemocode14,
+  author    = {Ying Qin and
+               ShengYu Shen and
+               Yan Jia },
+  title     = {Structure-Aware CNF Obfuscation for Privacy-Preserving SAT Solving},
+  booktitle = {Proceedings of the 12th ACM/IEEE International Conference on Formal Methods and Models for System Design},
+  pages     = {84--93},
+  year      = {2014}
+}
+
+
+@article{DBLP:journals/corr/cond-mat-0111153,
+  author    = {Wolfgang Barthel and
+               Alexander K. Hartmann and
+               Michele Leone and
+               Federico Ricci{-}Tersenghi and
+               Martin Weigt and
+               Riccardo Zecchina},
+  title     = {Hiding solutions in random satisfiability problems: {A} statistical
+               mechanics approach},
+  journal   = {CoRR},
+  volume    = {cond-mat/0111153},
+  year      = {2001},
+  url       = {http://arxiv.org/abs/cond-mat/0111153},
+  timestamp = {Mon, 05 Dec 2011 18:05:10 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/corr/cond-mat-0111153},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@article{QinTODAES15,
+ author = {Ying Qin and ShengYu Shen and QingBo Wu and HuaDong Dai and Yan Jia.},
+ title = {Complementary Synthesis for Encoder with Flow Control Mechanism},
+ journal = {accepted by ACM Transactions on Design Automation of Electronic Systems},
+ publisher = {ACM Press},
+}
+
+@article{DBLP:journals/tcs/McMillan05,
+  author    = {Kenneth L. McMillan},
+  title     = {An interpolating theorem prover},
+  journal   = {Theor. Comput. Sci.},
+  volume    = {345},
+  number    = {1},
+  pages     = {101--121},
+  year      = {2005},
+  url       = {http://dx.doi.org/10.1016/j.tcs.2005.07.003},
+  doi       = {10.1016/j.tcs.2005.07.003},
+  timestamp = {Tue, 10 Jan 2006 15:37:04 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/tcs/McMillan05},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@inproceedings{DBLP:conf/cav/ClarkeGJLV00,
+  author    = {Edmund M. Clarke and
+               Orna Grumberg and
+               Somesh Jha and
+               Yuan Lu and
+               Helmut Veith},
+  title     = {Counterexample-Guided Abstraction Refinement},
+  booktitle = {Computer Aided Verification, 12th International Conference, {CAV}
+               2000, Chicago, IL, USA, July 15-19, 2000, Proceedings},
+  pages     = {154--169},
+  year      = {2000},
+  crossref  = {DBLP:conf/cav/2000},
+  url       = {http://dx.doi.org/10.1007/10722167_15},
+  doi       = {10.1007/10722167_15},
+  timestamp = {Tue, 21 Jun 2011 16:38:39 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/cav/ClarkeGJLV00},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+
+@inproceedings{DBLP:conf/dac/YuanAAP03,
+  author    = {Jun Yuan and
+               Ken Albin and
+               Adnan Aziz and
+               Carl Pixley},
+  title     = {Constraint synthesis for environment modeling in functional verification},
+  booktitle = {Proceedings of the 40th Design Automation Conference, {DAC} 2003,
+               Anaheim, CA, USA, June 2-6, 2003},
+  pages     = {296--299},
+  year      = {2003},
+  crossref  = {DBLP:conf/dac/2003},
+  url       = {http://doi.acm.org/10.1145/775832.775909},
+  doi       = {10.1145/775832.775909},
+  timestamp = {Wed, 30 Nov 2011 16:28:52 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/dac/YuanAAP03},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+
+
+@inproceedings{DBLP:conf/fmcad/AmlaM04,
+  author    = {Nina Amla and
+               Kenneth L. McMillan},
+  title     = {A Hybrid of Counterexample-Based and Proof-Based Abstraction},
+  booktitle = {Formal Methods in Computer-Aided Design, 5th International Conference,
+               {FMCAD} 2004, Austin, Texas, USA, November 15-17, 2004, Proceedings},
+  pages     = {260--274},
+  year      = {2004},
+  crossref  = {DBLP:conf/fmcad/2004},
+  url       = {http://dx.doi.org/10.1007/978-3-540-30494-4_19},
+  doi       = {10.1007/978-3-540-30494-4_19},
+  timestamp = {Mon, 08 Aug 2011 15:21:24 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/fmcad/AmlaM04},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+
+
+@inproceedings{DBLP:conf/cav/McMillan03,
+  author    = {Kenneth L. McMillan},
+  title     = {Interpolation and SAT-Based Model Checking},
+  booktitle = {Computer Aided Verification, 15th International Conference, {CAV}
+               2003, Boulder, CO, USA, July 8-12, 2003, Proceedings},
+  pages     = {1--13},
+  year      = {2003},
+  crossref  = {DBLP:conf/cav/2003},
+  url       = {http://dx.doi.org/10.1007/978-3-540-45069-6_1},
+  doi       = {10.1007/978-3-540-45069-6_1},
+  timestamp = {Fri, 22 Nov 2013 12:57:23 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/cav/McMillan03},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@MISC{InfiniBand,
+  title =        {InfiniBand},
+  howpublished = {\url{en.wikipedia.org/wiki/Infiniband}},
+}
+
+
+@MISC{encode6466,
+  title =        {64b/66b encoding},
+  howpublished = {\url{https://en.wikipedia.org/wiki/64b/66b_encoding}},
+}
+
+
+@MISC{pcie,
+  title =        {PCI Express},
+  howpublished = {\url{https://en.wikipedia.org/wiki/PCI_Express}},
+}
+
+@MISC{nda,
+  title =        {Nondeterministic finite automaton},
+  howpublished = {\url{https://en.wikipedia.org/wiki/Nondeterministic_finite_automaton}},
+}
+
+@MISC{ether100g,
+  title =        {IEEE P802.3bj 100 Gb/s Backplane and Copper Cable Task Force},
+  howpublished = {\url{www.ieee802.org/3/bj}},
+}
+
+@MISC{fc,
+  title =        {Fibre Channel},
+  howpublished = {\url{http://en.wikipedia.org/wiki/Fibre_Channel}},
+}
+
+
+@MISC{fecopt,
+  title =        {Should the FEC be Optional for the NRZ PHY},
+  howpublished = {\url{http://www.ieee802.org/3/bj/public/mar12/meghelli_01a_0312.pdf}},
+}
+
+@MISC{nrz56g,
+  title =        {56G NRZ Measured Test Results},
+  howpublished = {\url{http://media.wix.com/ugd/720847_e2386823f3ab4d09aba4a4c2d144a6e7.pdf}},
+}
+
+@BOOK{gfbook,
+  AUTHOR =       {Mullen, Gary L},
+  TITLE =        {Handbook of Finite Fields},
+  PUBLISHER =    {CRC Press},
+  YEAR =         {2013},
+}
+
+@MISC{fec,
+  title =        {Forward error correction},
+  howpublished = {\url{http://en.wikipedia.org/wiki/Forward_error_correction}},
+}
+
+
+@article{singularbook,
+  author    = {Christoph Lossen},
+  title     = {Singular: A Computer Algebra System},
+  journal   = {Computing in Science and Engineering},
+  volume    = {5},
+  number    = {4},
+  pages     = {45--55},
+  year      = {2003},
+}
+
+
+
+@article{DBLP:journals/tc/Bryant86,
+  author    = {Randal E. Bryant},
+  title     = {Graph-Based Algorithms for Boolean Function Manipulation},
+  journal   = {{IEEE} Trans. Computers},
+  volume    = {35},
+  number    = {8},
+  pages     = {677--691},
+  year      = {1986},
+  url       = {http://doi.ieeecomputersociety.org/10.1109/TC.1986.1676819},
+  doi       = {10.1109/TC.1986.1676819},
+  timestamp = {Thu, 27 Oct 2011 17:40:03 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/tc/Bryant86},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+
+@inproceedings{DBLP:conf/dac/MoskewiczMZZM01,
+  author    = {Matthew W. Moskewicz and
+               Conor F. Madigan and
+               Ying Zhao and
+               Lintao Zhang and
+               Sharad Malik},
+  title     = {Chaff: Engineering an Efficient {SAT} Solver},
+  booktitle = {Proceedings of the 38th Design Automation Conference, {DAC} 2001,
+               Las Vegas, NV, USA, June 18-22, 2001},
+  pages     = {530--535},
+  year      = {2001},
+  crossref  = {DBLP:conf/dac/2001},
+  url       = {http://doi.acm.org/10.1145/378239.379017},
+  doi       = {10.1145/378239.379017},
+  timestamp = {Tue, 15 Nov 2011 16:45:56 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/dac/MoskewiczMZZM01},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+
+@inproceedings{DBLP:conf/fmcad/LvovLPSE12,
+  author    = {Alexey Lvov and
+               Luis Alfonso Lastras{-}Monta{\~{n}}o and
+               Viresh Paruthi and
+               Robert Shadowen and
+               Ali El{-}Zein},
+  title     = {Formal verification of error correcting circuits using computational
+               algebraic geometry},
+  booktitle = {Formal Methods in Computer-Aided Design, {FMCAD} 2012, Cambridge,
+               UK, October 22-25, 2012},
+  pages     = {141--148},
+  year      = {2012},
+  crossref  = {DBLP:conf/fmcad/2012},
+  url       = {http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=6462566},
+  timestamp = {Sat, 27 Sep 2014 18:46:01 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/fmcad/LvovLPSE12},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@article{DBLP:journals/fmsd/LvovLTPSE14,
+  author    = {Alexey Lvov and
+               Luis Alfonso Lastras{-}Monta{\~{n}}o and
+               Barry M. Trager and
+               Viresh Paruthi and
+               Robert Shadowen and
+               Ali El{-}Zein},
+  title     = {Verification of Galois field based circuits by formal reasoning based
+               on computational algebraic geometry},
+  journal   = {Formal Methods in System Design},
+  volume    = {45},
+  number    = {2},
+  pages     = {189--212},
+  year      = {2014},
+  url       = {http://dx.doi.org/10.1007/s10703-014-0206-z},
+  doi       = {10.1007/s10703-014-0206-z},
+  timestamp = {Thu, 02 Oct 2014 12:33:32 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/fmsd/LvovLTPSE14},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@proceedings{DBLP:conf/crypto/1984,
+  editor    = {G. R. Blakley and
+               David Chaum},
+  title     = {Advances in Cryptology, Proceedings of {CRYPTO} '84, Santa Barbara,
+               California, USA, August 19-22, 1984, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {196},
+  publisher = {Springer},
+  year      = {1985},
+  isbn      = {3-540-15658-5},
+  timestamp = {Thu, 07 Feb 2002 09:59:41 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/crypto/1984},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@proceedings{DBLP:conf/eurocrypt/99,
+  editor    = {Jacques Stern},
+  title     = {Advances in Cryptology - {EUROCRYPT} '99, International Conference
+               on the Theory and Application of Cryptographic Techniques, Prague,
+               Czech Republic, May 2-6, 1999, Proceeding},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {1592},
+  publisher = {Springer},
+  year      = {1999},
+  isbn      = {3-540-65889-0},
+  timestamp = {Tue, 30 Apr 2002 07:51:53 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/eurocrypt/99},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@proceedings{DBLP:conf/cav/2000,
+  editor    = {E. Allen Emerson and
+               A. Prasad Sistla},
+  title     = {Computer Aided Verification, 12th International Conference, {CAV}
+               2000, Chicago, IL, USA, July 15-19, 2000, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {1855},
+  publisher = {Springer},
+  year      = {2000},
+  isbn      = {3-540-67770-4},
+  timestamp = {Thu, 03 Jan 2002 11:54:21 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/cav/2000},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+
+@proceedings{DBLP:conf/aaai/2000,
+  editor    = {Henry A. Kautz and
+               Bruce W. Porter},
+  title     = {Proceedings of the Seventeenth National Conference on Artificial Intelligence
+               and Twelfth Conference on on Innovative Applications of Artificial
+               Intelligence, July 30 - August 3, 2000, Austin, Texas, {USA}},
+  publisher = {{AAAI} Press / The {MIT} Press},
+  year      = {2000},
+  url       = {http://www.aaai.org/Conferences/AAAI/aaai00.php},
+  isbn      = {0-262-51112-6},
+  timestamp = {Thu, 01 Dec 2011 17:16:20 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/aaai/2000},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@proceedings{DBLP:conf/dac/2001,
+  title     = {Proceedings of the 38th Design Automation Conference, {DAC} 2001,
+               Las Vegas, NV, USA, June 18-22, 2001},
+  publisher = {{ACM}},
+  year      = {2001},
+  url       = {http://dl.acm.org/citation.cfm?id=378239},
+  isbn      = {1-58113-297-2},
+  timestamp = {Tue, 15 Nov 2011 16:45:56 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/dac/2001},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@proceedings{DBLP:conf/ctrsa/2001,
+  editor    = {David Naccache},
+  title     = {Topics in Cryptology - {CT-RSA} 2001, The Cryptographer's Track at
+               {RSA} Conference 2001, San Francisco, CA, USA, April 8-12, 2001, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {2020},
+  publisher = {Springer},
+  year      = {2001},
+  isbn      = {3-540-41898-9},
+  timestamp = {Thu, 03 Jan 2002 11:56:00 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/ctrsa/2001},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@proceedings{DBLP:conf/cp/2002,
+  editor    = {Pascal Van Hentenryck},
+  title     = {Principles and Practice of Constraint Programming - {CP} 2002, 8th
+               International Conference, {CP} 2002, Ithaca, NY, USA, September 9-13,
+               2002, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {2470},
+  publisher = {Springer},
+  year      = {2002},
+  isbn      = {3-540-44120-4},
+  timestamp = {Wed, 09 Oct 2002 09:19:53 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/cp/2002},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+
+
+@proceedings{DBLP:conf/sp/2003,
+  title     = {2003 {IEEE} Symposium on Security and Privacy (S{\&}P 2003), 11-14
+               May 2003, Berkeley, CA, {USA}},
+  publisher = {{IEEE} Computer Society},
+  year      = {2003},
+  isbn      = {0-7695-1940-7},
+  timestamp = {Tue, 01 Jul 2003 11:02:59 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/sp/2003},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@proceedings{DBLP:conf/dac/2003,
+  title     = {Proceedings of the 40th Design Automation Conference, {DAC} 2003,
+               Anaheim, CA, USA, June 2-6, 2003},
+  publisher = {{ACM}},
+  year      = {2003},
+  url       = {http://dl.acm.org/citation.cfm?id=775832},
+  isbn      = {1-58113-688-9},
+  timestamp = {Wed, 30 Nov 2011 16:28:52 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/dac/2003},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@proceedings{DBLP:conf/cav/2003,
+  editor    = {Warren A. Hunt Jr. and
+               Fabio Somenzi},
+  title     = {Computer Aided Verification, 15th International Conference, {CAV}
+               2003, Boulder, CO, USA, July 8-12, 2003, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {2725},
+  publisher = {Springer},
+  year      = {2003},
+  isbn      = {3-540-40524-0},
+  timestamp = {Thu, 09 Oct 2003 12:34:44 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/cav/2003},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@proceedings{DBLP:conf/fmcad/2004,
+  editor    = {Alan J. Hu and
+               Andrew K. Martin},
+  title     = {Formal Methods in Computer-Aided Design, 5th International Conference,
+               {FMCAD} 2004, Austin, Texas, USA, November 15-17, 2004, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {3312},
+  publisher = {Springer},
+  year      = {2004},
+  isbn      = {3-540-23738-0},
+  timestamp = {Thu, 24 Apr 2008 11:56:50 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/fmcad/2004},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@proceedings{DBLP:conf/acns/2005,
+  editor    = {John Ioannidis and
+               Angelos D. Keromytis and
+               Moti Yung},
+  title     = {Applied Cryptography and Network Security, Third International Conference,
+               {ACNS} 2005, New York, NY, USA, June 7-10, 2005, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {3531},
+  year      = {2005},
+  isbn      = {3-540-26223-7},
+  timestamp = {Wed, 01 Jun 2005 07:58:58 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/acns/2005},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@proceedings{DBLP:conf/vlsid/2007,
+  title     = {20th International Conference on {VLSI} Design {(VLSI} Design 2007),
+               Sixth International Conference on Embedded Systems {(ICES} 2007),
+               6-10 January 2007, Bangalore, India},
+  publisher = {{IEEE} Computer Society},
+  year      = {2007},
+  isbn      = {0-7695-2502-4},
+  timestamp = {Mon, 26 Mar 2007 15:13:02 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/vlsid/2007},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@proceedings{DBLP:conf/cc/2007,
+  editor    = {Shriram Krishnamurthi and
+               Martin Odersky},
+  title     = {Compiler Construction, 16th International Conference, {CC} 2007, Held
+               as Part of the Joint European Conferences on Theory and Practice of
+               Software, {ETAPS} 2007, Braga, Portugal, March 26-30, 2007, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {4420},
+  publisher = {Springer},
+  year      = {2007},
+  isbn      = {978-3-540-71228-2},
+  timestamp = {Tue, 31 Jul 2007 07:45:31 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/cc/2007},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@proceedings{DBLP:conf/pst/2008,
+  editor    = {Larry Korba and
+               Steve Marsh and
+               Reihaneh Safavi{-}Naini},
+  title     = {Sixth Annual Conference on Privacy, Security and Trust, {PST} 2008,
+               October 1-3, 2008, Fredericton, New Brunswick, Canada},
+  publisher = {{IEEE}},
+  year      = {2008},
+  isbn      = {978-0-7695-3390-2},
+  timestamp = {Wed, 25 Mar 2009 22:24:54 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/pst/2008},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@proceedings{DBLP:conf/ccs/2009,
+  editor    = {Ehab Al{-}Shaer and
+               Somesh Jha and
+               Angelos D. Keromytis},
+  title     = {Proceedings of the 2009 {ACM} Conference on Computer and Communications
+               Security, {CCS} 2009, Chicago, Illinois, USA, November 9-13, 2009},
+  publisher = {{ACM}},
+  year      = {2009},
+  isbn      = {978-1-60558-894-0},
+  timestamp = {Wed, 25 Nov 2009 10:26:38 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/ccs/2009},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@proceedings{DBLP:conf/sat/2009,
+  editor    = {Oliver Kullmann},
+  title     = {Theory and Applications of Satisfiability Testing - {SAT} 2009, 12th
+               International Conference, {SAT} 2009, Swansea, UK, June 30 - July
+               3, 2009. Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {5584},
+  publisher = {Springer},
+  year      = {2009},
+  url       = {http://dx.doi.org/10.1007/978-3-642-02777-2},
+  doi       = {10.1007/978-3-642-02777-2},
+  isbn      = {978-3-642-02776-5},
+  timestamp = {Thu, 09 Jul 2009 07:41:51 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/sat/2009},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+@proceedings{DBLP:conf/stoc/2009,
+  editor    = {Michael Mitzenmacher},
+  title     = {Proceedings of the 41st Annual {ACM} Symposium on Theory of Computing,
+               {STOC} 2009, Bethesda, MD, USA, May 31 - June 2, 2009},
+  publisher = {{ACM}},
+  year      = {2009},
+  isbn      = {978-1-60558-506-2},
+  timestamp = {Fri, 05 Jun 2009 09:31:27 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/stoc/2009},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@proceedings{DBLP:conf/ccs/2010asia,
+  editor    = {Dengguo Feng and
+               David A. Basin and
+               Peng Liu},
+  title     = {Proceedings of the 5th {ACM} Symposium on Information, Computer and
+               Communications Security, {ASIACCS} 2010, Beijing, China, April 13-16,
+               2010},
+  publisher = {{ACM}},
+  year      = {2010},
+  isbn      = {978-1-60558-936-7},
+  timestamp = {Fri, 16 Apr 2010 13:56:45 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/ccs/2010asia},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@proceedings{DBLP:conf/crypto/2010,
+  editor    = {Tal Rabin},
+  title     = {Advances in Cryptology - {CRYPTO} 2010, 30th Annual Cryptology Conference,
+               Santa Barbara, CA, USA, August 15-19, 2010. Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {6223},
+  publisher = {Springer},
+  year      = {2010},
+  url       = {http://dx.doi.org/10.1007/978-3-642-14623-7},
+  doi       = {10.1007/978-3-642-14623-7},
+  isbn      = {978-3-642-14622-0},
+  timestamp = {Tue, 17 Aug 2010 15:08:02 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/crypto/2010},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+@proceedings{DBLP:conf/cp/2011,
+  editor    = {Jimmy Ho{-}Man Lee},
+  title     = {Principles and Practice of Constraint Programming - {CP} 2011 - 17th
+               International Conference, {CP} 2011, Perugia, Italy, September 12-16,
+               2011. Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {6876},
+  publisher = {Springer},
+  year      = {2011},
+  url       = {http://dx.doi.org/10.1007/978-3-642-23786-7},
+  doi       = {10.1007/978-3-642-23786-7},
+  isbn      = {978-3-642-23785-0},
+  timestamp = {Fri, 02 Sep 2011 15:32:47 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/cp/2011},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@proceedings{DBLP:conf/infocom/2011,
+  title     = {{INFOCOM} 2011. 30th {IEEE} International Conference on Computer Communications,
+               Joint Conference of the {IEEE} Computer and Communications Societies,
+               10-15 April 2011, Shanghai, China},
+  publisher = {{IEEE}},
+  year      = {2011},
+  timestamp = {Fri, 01 Jul 2011 08:34:53 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/infocom/2011},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+@proceedings{DBLP:conf/socialcom/2011,
+  title     = {PASSAT/SocialCom 2011, Privacy, Security, Risk and Trust (PASSAT),
+               2011 {IEEE} Third International Conference on and 2011 {IEEE} Third
+               International Conference on Social Computing (SocialCom), Boston,
+               MA, USA, 9-11 Oct., 2011},
+  publisher = {{IEEE}},
+  year      = {2011},
+  url       = {http://ieeexplore.ieee.org/xpl/mostRecentIssue.jsp?punumber=6112285},
+  isbn      = {978-1-4577-1931-8},
+  timestamp = {Sun, 05 May 2013 11:53:35 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/socialcom/2011},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+@proceedings{DBLP:conf/IEEEcloud/2012,
+  editor    = {Rong Chang},
+  title     = {2012 {IEEE} Fifth International Conference on Cloud Computing, Honolulu,
+               HI, USA, June 24-29, 2012},
+  publisher = {{IEEE}},
+  year      = {2012},
+  url       = {http://ieeexplore.ieee.org/xpl/mostRecentIssue.jsp?punumber=6253102},
+  isbn      = {978-1-4673-2892-0},
+  timestamp = {Wed, 29 Aug 2012 17:38:30 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/IEEEcloud/2012},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+@proceedings{DBLP:conf/sac/2012,
+  editor    = {Sascha Ossowski and
+               Paola Lecca},
+  title     = {Proceedings of the {ACM} Symposium on Applied Computing, {SAC} 2012,
+               Riva, Trento, Italy, March 26-30, 2012},
+  publisher = {{ACM}},
+  year      = {2012},
+  url       = {http://dl.acm.org/citation.cfm?id=2245276},
+  isbn      = {978-1-4503-0857-1},
+  timestamp = {Fri, 08 Jun 2012 17:50:20 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/sac/2012},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@proceedings{DBLP:conf/fmcad/2012,
+  editor    = {Gianpiero Cabodi and
+               Satnam Singh},
+  title     = {Formal Methods in Computer-Aided Design, {FMCAD} 2012, Cambridge,
+               UK, October 22-25, 2012},
+  publisher = {{IEEE}},
+  year      = {2012},
+  url       = {http://ieeexplore.ieee.org/xpl/mostRecentIssue.jsp?punumber=6450168},
+  timestamp = {Fri, 15 Mar 2013 09:40:03 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/fmcad/2012},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+
+@proceedings{DBLP:conf/crypto/2013-2,
+  editor    = {Ran Canetti and
+               Juan A. Garay},
+  title     = {Advances in Cryptology - {CRYPTO} 2013 - 33rd Annual Cryptology Conference,
+               Santa Barbara, CA, USA, August 18-22, 2013. Proceedings, Part {II}},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {8043},
+  publisher = {Springer},
+  year      = {2013},
+  url       = {http://dx.doi.org/10.1007/978-3-642-40084-1},
+  doi       = {10.1007/978-3-642-40084-1},
+  isbn      = {978-3-642-40083-4},
+  timestamp = {Wed, 21 Aug 2013 17:31:44 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/crypto/2013-2},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+
+@proceedings{DBLP:conf/innovations/2014,
+  editor    = {Moni Naor},
+  title     = {Innovations in Theoretical Computer Science, ITCS'14, Princeton, NJ,
+               USA, January 12-14, 2014},
+  publisher = {{ACM}},
+  year      = {2014},
+  url       = {http://dl.acm.org/citation.cfm?id=2554797},
+  isbn      = {978-1-4503-2698-8},
+  timestamp = {Fri, 14 Feb 2014 17:36:37 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/innovations/2014},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+@proceedings{DBLP:conf/apweb/2014w,
+  editor    = {Weihong Han and
+               Zi Huang and
+               Changjun Hu and
+               Hongli Zhang and
+               Li Guo},
+  title     = {Web Technologies and Applications - APWeb 2014 Workshops, SNA, NIS,
+               and IoTS, Changsha, China, September 5, 2014. Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {8710},
+  publisher = {Springer},
+  year      = {2014},
+  url       = {http://dx.doi.org/10.1007/978-3-319-11119-3},
+  doi       = {10.1007/978-3-319-11119-3},
+  isbn      = {978-3-319-11118-6},
+  timestamp = {Thu, 11 Sep 2014 14:25:29 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/apweb/2014w},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
+
+
+
+
+
+
+
+
+@proceedings{DBLP:conf/focs/FOCS23,
+  title     = {23rd Annual Symposium on Foundations of Computer Science, Chicago,
+               Illinois, USA, 3-5 November 1982},
+  publisher = {{IEEE} Computer Society},
+  year      = {1982},
+  timestamp = {Tue, 18 Oct 2011 17:44:36 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/focs/FOCS23},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
 }

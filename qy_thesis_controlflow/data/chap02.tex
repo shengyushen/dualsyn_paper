@@ -33,7 +33,7 @@ Tu et al.\upcite{TuDAC13}提出了一个突破性的算法，
 该算法是第一个能够考虑初始条件的对偶综合算法。
 
 \section{程序求反}\label{subsec_proinv}
-文献\upcite{dim_syn}指出，
+Gulwani et al.\upcite{dim_syn}指出，
 程序求反是指针对特定程序$P$，
 求解其反程序$P^{-1}$。
 因此，
@@ -44,14 +44,17 @@ Tu et al.\upcite{TuDAC13}提出了一个突破性的算法，
 
 Gl\"{u}ck et al. \upcite{mtd_autoProginv} 提出通过基于LR的分析方法消除非确定性，
 从而综合反程序。
-然而使用函数式语言使得该算法和我们的算法不兼容。
+然而使用函数式语言使得该算法和我们的应用场景不兼容。
 
-在文献\upcite{program_inversion_11}中，
-Srivastava et al. 假设反程序和原始程序在结构上是相似的，
+Srivastava et al.\upcite{program_inversion_11} 假设反程序和原始程序在结构上是相似的，
 共享相同的谓词集合和控制流结构。
+在这方面该算法和我们的白盒模型假设，
+尤其是流水线推导非常类似。
 该算法通过在原始程序上迭代的推导和剔除非法路径，
 以获得合法的反程序。
-然而该算法不能保证完备性。
+然而当反程序不存在时，
+该算法不能保证停机。
+因此该算法不能保证完备性。
 
 
 
@@ -59,8 +62,7 @@ Srivastava et al. 假设反程序和原始程序在结构上是相似的，
 协议转换是指在不同的通讯协议之间自动产生转换器。
 该领域和我们的工作是相关的，因为他们都试图自动产生通讯电路。
 
-在文献\upcite{converter_date08,converter_todeas09}中，
-Avnit et al. 首先定义了一个通用的通讯协议模型，
+Avnit et al.\upcite{converter_date08,converter_todeas09}首先定义了一个通用的通讯协议模型，
 并给出了一个算法以检验是否存在某个协议的特定功能无法被翻译为另一个协议。
 最后他们给出了一个算法以计算目标协议的缓冲区控制函数的不动点。
 在文献\upcite{converter_date09}中，
@@ -72,43 +74,48 @@ Avnit et al. 首先定义了一个通用的通讯协议模型，
 以便减少调用SAT求解器的次数并压缩存储赋值解的空间开销。
 此类工作与我们在第\ref{chap:interative_craig}章描述的基于余因子和迭代Craig插值的算法联系非常紧密。
 
-文献\upcite{SATUNBMC}提出了第一个此类算法。
+McMillan et al.\upcite{SATUNBMC}提出了第一个此类算法。
 他在SAT求解器求解过程中构造一个蕴含图，
 用以记录每个赋值之间的依赖关系。
 每个不在该图中的赋值变量都可以从最终结果中剔除。
-在文献\upcite{MINASS} 和\upcite{REPARAM}中，
+在Ravi et al.\upcite{MINASS} 和Chauhan et al.\upcite{REPARAM}中，
 每个变量如果在其不被约束的情况下不能使$obj\equiv 0$ 被满足的话，
 则该变量可以从最终结果中剔除。
-在文献\upcite{MINCEX} 和\upcite{PRIMECLAUSE,EFFCON}中，
+在Shen et al.\upcite{MINCEX}，Jin et al.\upcite{PRIMECLAUSE}和 Jin et al.\upcite{EFFCON}中，
 冲突分析方法被用于剔除与可满足性无关的变量。
-在文献\upcite{MEMEFFALLSAT}中，
+在Grumberg et al.\upcite{MEMEFFALLSAT}中，
 变量集合被划分为重要变量和非重要变量集合。
 搜索过程中重要变量的优先级高于非重要变量。
 因此重要变量子集构成了一个搜索树，
 而该树的每一个叶节点是非重要变量的一个搜索子树。
-%Tobias Nopper et al.\upcite{CMPMINCEX} propose an counterexample minimization algorithm for incomplete designs that contain black box.
+Nopper et al.\upcite{CMPMINCEX} 提出了一个针对非完备模型进行反例压缩的算法
 Cofactoring \upcite{EFFSATUSMCCO} 则通过将非重要变量设置为SAT求解器返回的值以缩减搜索空间。
 
 另一类算法通过Craig插值以扩大解集合。
-文献\upcite{InterpBoolFunction}提出了第一个此类算法。
+Jiang et al.\upcite{InterpBoolFunction}提出了第一个此类算法。
 该算法构造两个相互矛盾的公式，并从他们的不可满足证明中抽取Craig插值。
-在文献\upcite{interpNoProof}中，
+在Chockler et al.\upcite{interpNoProof}中，
 Craig插值的产生过程类似于传统的可满足赋值遍历算法。
 不过其扩展算法包含两步，
 分别对应于两个参与计算的公式。
 该算法是第一个不需要产生不可满足证明的Craig插值算法。
 
 \section{基于Craig插值的逻辑综合算法}
-在文献\upcite{scalableFuncDep,Bidecomp}中，
+在Lee et al.\upcite{scalableFuncDep,Bidecomp}中，
 函数依赖和逻辑分解问题被转换成一个两级布尔函数网络，其中基函数为第一级，
-而有待求解的函数为第二级，
-并用Craig插值算法产生。
+而有待求解的函数为第二级。
+然后约束在第一级输出相同的情况下，
+第二级输出不同。
+这将导致所得到的合取公式不可满足。
+然后调用Craig插值算法从不可满足证明中特征化第二级函数。
 该算法也应用于我们的早期工作\upcite{ShenTCAD12} 以找到所有可能的解码器。
 
-在文献\upcite{ecoInterp}中，
+在Wu et al.\upcite{ecoInterp}中，
 Craig插值被用于产生ECO。
+该算法将有待求解的ECO函数构造成为满足Craig插值条件的不可满足公式，
+并从不可满足证明中抽取ECO函数的布尔实现。
 
-在文献\upcite{InterpBoolFunction}中，
+在Jiang et al.\upcite{InterpBoolFunction}中，
 Craig插值算法被用于从一个布尔关系中产生布尔函数。
 该算法也被应用于本文中以产生解码器。
 
