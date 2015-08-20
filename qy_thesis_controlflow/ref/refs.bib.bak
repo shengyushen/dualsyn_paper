@@ -3139,6 +3139,32 @@ masid = {2053004}
   bibsource = {dblp computer science bibliography, http://dblp.org}
 }
 
+
+
+
+
+
+@inproceedings{DBLP:conf/tacas/BiereCCZ99,
+  author    = {Armin Biere and
+               Alessandro Cimatti and
+               Edmund M. Clarke and
+               Yunshan Zhu},
+  title     = {Symbolic Model Checking without BDDs},
+  booktitle = {Tools and Algorithms for Construction and Analysis of Systems, 5th
+               International Conference, {TACAS} '99, Held as Part of the European
+               Joint Conferences on the Theory and Practice of Software, ETAPS'99,
+               Amsterdam, The Netherlands, March 22-28, 1999, Proceedings},
+  pages     = {193--207},
+  year      = {1999},
+  crossref  = {DBLP:conf/tacas/1999},
+  url       = {http://dx.doi.org/10.1007/3-540-49059-0_14},
+  doi       = {10.1007/3-540-49059-0_14},
+  timestamp = {Fri, 17 Jun 2011 14:14:03 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/tacas/BiereCCZ99},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
 @proceedings{DBLP:conf/crypto/1984,
   editor    = {G. R. Blakley and
                David Chaum},
@@ -3168,6 +3194,25 @@ masid = {2053004}
   biburl    = {http://dblp.uni-trier.de/rec/bib/conf/eurocrypt/99},
   bibsource = {dblp computer science bibliography, http://dblp.org}
 }
+
+
+@proceedings{DBLP:conf/tacas/1999,
+  editor    = {Rance Cleaveland},
+  title     = {Tools and Algorithms for Construction and Analysis of Systems, 5th
+               International Conference, {TACAS} '99, Held as Part of the European
+               Joint Conferences on the Theory and Practice of Software, ETAPS'99,
+               Amsterdam, The Netherlands, March 22-28, 1999, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {1579},
+  publisher = {Springer},
+  year      = {1999},
+  isbn      = {3-540-65703-7},
+  timestamp = {Mon, 18 Mar 2002 12:19:39 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/tacas/1999},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+
 
 @proceedings{DBLP:conf/cav/2000,
   editor    = {E. Allen Emerson and

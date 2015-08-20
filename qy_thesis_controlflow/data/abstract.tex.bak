@@ -1,19 +1,22 @@
 % !Mode:: "Tex:UTF-8"
 \begin{cabstract}
 在通讯和多媒体芯片设计中，
-一个最为困难且容易出错的工作就是设计该协议的的编码器和解码器。
+一个最为困难且容易出错的工作就是设计特定协议的的编码器和解码器。
 其中编码器将输入变量$\vec{i}$映射到输出变量$\vec{o}$。
 而解码器则从$\vec{o}$中恢复$\vec{i}$。
 对偶综合算法
 \upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
-通过自动生成特定编码器的解码器以降低该工作的复杂度并提高结果的可靠性。
+通过自动生成特定编码器的解码器，
+以降低该工作的复杂度并提高结果的可靠性。
 
 而另一方面，
 现代复杂通讯协议的编码器中，广泛采用了流控\upcite{flowcontrol}和流水线等复杂内部结构，
 以提升编码器的性能和对复杂应用环境的适应性。
 而目前在对偶综合方面的所有研究工作\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 均基于黑盒模型，
-从而无法发挥上述内部结构在性能和适应性方面的优势。
+完全忽略这些内部结构，
+而仅考虑输入$\vec{i}$和输出$\vec{o}$之间的映射关系，
+从而无法发挥上述结构在性能和适应性方面的优势。
 
 为了克服上述问题，
 本文基于白盒模型，
@@ -26,7 +29,8 @@
 在发掘编码器内部结构和自动产生解码器的过程中，
 一个必须而且对性能要求非常苛刻的步骤，
 是特征化满足特定命题逻辑关系$R$的布尔函数$f$。
-传统的算法包括基于SAT或BDD的完全解遍历和和量词削减。
+传统的算法包括基于命题逻辑可满足求解器(SAT)\upcite{DBLP:conf/dac/MoskewiczMZZM01}和二叉判决图(BDD)\upcite{DBLP:journals/tc/Bryant86}的完全解遍历
+\upcite{SATUNBMC}和和量词削减。
 然而这些算法通常受到解空间不规则的困扰，
 导致性能低下。
 为此，
@@ -90,7 +94,7 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 该算法首先使用秦et al. \upcite{QinTODAES15}的算法来寻找$\vec{f}$ 并推导$valid(\vec{f})$。
 然后分别通过强制和不强制$valid(\vec{f})$，
 已从所有寄存器集合中找到每一个寄存器级$\vec{stg}^j$的$\vec{d}^j$ 和$\vec{f}^j$。
-最后通过Jiang et al. \cite{InterpBoolFunction}的算法特征化$\vec{stg}^j$ 和$\vec{i}$的布尔函数。
+最后通过Jiang et al. \upcite{InterpBoolFunction}的算法特征化$\vec{stg}^j$ 和$\vec{i}$的布尔函数。
 
 综上所述，
 本文对基于白盒模型的对偶综合算法中若干关键问题进行了深入的研究，
@@ -114,7 +118,7 @@ uniquely determined by a bounded sequence of $\vec{o}$.
 
 On the other hand,
 The encoders of modern communication protocols
-widely employ flow control\cite{flowcontrol} and pipeline mechanism to boost performance and their ability of adopting to complex application environment.
+widely employ flow control\upcite{flowcontrol} and pipeline mechanism to boost performance and their ability of adopting to complex application environment.
 But state-of-the-art research works on complementary synthesis\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 are all based on black box model,
 so can not take full advantage of these mechanisms.
@@ -177,13 +181,13 @@ Finally,
 with all above researches,
 this thesis proposes a final algorithm to handle flow control mechanism and pipeline structure at the same time.
 First,
-it infers the flow control predicate on inputs with Qin et al. \cite{QinTODAES15}'s algorithm.
+it infers the flow control predicate on inputs with Qin et al. \upcite{QinTODAES15}'s algorithm.
 Second,
 it finds out the pipeline stages in the encoder by enforcing the inferred flow control predicate.
 % Third,
 % it infers the flow control predicate for each pipeline stages.
 Finally,
-the decoder's Boolean functions that recover each pipeline stage and input are characterized with Jiang et al. \cite{InterpBoolFunction}'s algorithm based on Craig interpolant.
+the decoder's Boolean functions that recover each pipeline stage and input are characterized with Jiang et al. \upcite{InterpBoolFunction}'s algorithm based on Craig interpolant.
 
 This thesis proposes several algorithm to exploit the encoder's internal structure in complementary synthesis.
 Theoretical analysis and experimental result indicate that these algorithm are useful and efficient.

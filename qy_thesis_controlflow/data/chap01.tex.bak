@@ -27,17 +27,19 @@
 这就对传统的动态模拟验证方法的完备性提出了严峻挑战。
 
 为此，
-国防科技大学的沈胜宇于2009年首次提出了对偶综合的概念和基本的算法实现\upcite{ShenICCAD09}，
+国防科技大学的Shen et al.\upcite{ShenICCAD09}于2009年首次提出了对偶综合的概念和基本的算法实现，
 以从一个通讯协议的编码器源代码中，
 自动产生其对应的解码器代码。
 以此为起点，
-集成电路设计自动化领域的研究者们在该领域取得了大量的研究成果\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}。
+集成电路设计自动化领域的研究者们在该领域取得了大量的研究成果\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}。
 
 在本章的剩余部分中，
 我们将首先在小节\ref{sec_back}介绍相关的背景知识。
 然后在小节\ref{sec_now}详细描述目前在该领域的研究成果。
 然后在小节\ref{sec_whiteboxtodo}介绍基于白盒模型的对偶综合的研究意义和所面临的挑战。
 最后在小节\ref{sec_contest_innov}介绍本文的研究内容和创新点。
+\upcite{DBLP:conf/memocode/QinSJ14,DBLP:conf/apweb/QinSKD14}
+
 
 \section{背景知识}\label{sec_back}
 本节将给出相关的背景知识。
@@ -104,7 +106,7 @@ $\phi_I$ 被称为$\phi_A$针对$\phi_B$的Craig插值\upcite{Craig}。
 $\phi_I$可以使用McMillan算法\upcite{interp_McMillan}得到。
 Craig插值通常被用于产生$\phi_A$的上估计。
 
-
+\subsection{命题逻辑可满足性问题}
 \subsection{MiniSat 求解器的递增求解机制}\label{subsec_incsat}
 
 本文中，
@@ -159,6 +161,51 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
   \label{c2_fsm}
 \end{figure}
 
+\subsection{基于迁移关系(函数)展开的形式化验证算法的一般性原理}\label{subsec_}
+迁移关系(函数)展开被广泛应用于绝大多数形式化验证方法中，
+以对该状态机的行为进行推理。
+
+假设有待验证的状态机是一个2位计数器，
+初始状态为0，
+每一步的行为是将当前状态加一。
+再假设当计数器为3时会发生一些不希望发生的行为。
+因此我们需要验证该计数器永远不会到达3。
+因此有待证明的断言是“计数器永远不等于3”。
+
+最简单，同时也是最典型的限界模型检验\upcite{DBLP:conf/tacas/BiereCCZ99}方法，
+通过逐步的增加迁移关系(函数)展开的长度，
+以试图找到在展开序列上违反有待证明断言的状态。
+比如针对上述“计数器永远不等于3”的断言，
+则违反该断言意味着计数器的值等于3.
+
+如图\ref{c2_fsm_exp}所示，
+限界模型检验将迁移函数展开了1次，2次和3次。
+其中在前2次都没有找到对断言的违反。
+而在第3次中则找到了计数器等于3的情况。
+在这种情况下，
+限界模型检验停止展开，
+并给出展开序列上每个状态$\vec{s}^j$的值，
+作为反例，
+以证明上述“计数器永远不等于3”的断言是错误。
+
+当然，
+限界模型检验的算法是不停机的。
+即当断言成立的情况下，
+无法退出算法。
+存在其他方法来部分的改善这一点，
+如完备性停机条件\upcite{DBLP:conf/cav/KroeningOSWW11}等。
+不过这些方法也都基于上述的基本框架，而且也都有他们自身的缺陷。
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.8\textwidth]{c2_fsm_exp}
+  \caption{一个简单计数器的迁移函数展开序列}
+  \label{c2_fsm_exp}
+\end{figure}
+
+上述逐步的增加迁移关系(函数)展开长度的框架，
+也广泛应用于本文的对偶综合算法中。
+详情将在本文的后继部分详细描述。
 
 \section{对偶综合研究现状}\label{sec_now}
 本节将简述对偶综合领域取得的研究成果。
@@ -175,6 +222,8 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 该算法总能找到其实现；
 而当解码器不存在时，
 该算法不停机。
+
+类似于
 
 对于每一个$i\in\vec{i}$，
 在展开的迁移函数序列上，
@@ -212,7 +261,7 @@ F_{PC}(p,l,r):=
 \begin{center}
 \includegraphics[width=\textwidth]{pc}
 \end{center}
-\caption{用于检查$i_{p+l}$ 是否能够被唯一决定的下估计算法}
+\caption{用于检查$i_{p+l}$ 是否能够被唯一决定的充分非完备算法}
   \label{fig_pc_double}
 \end{figure}
 
@@ -458,7 +507,7 @@ Tu et al.\upcite{TuDAC13}提出了一个突破性的算法，
 
 
 
-\subsection{研究意义}
+%\subsection{研究意义}
 
 现代复杂通讯协议的编码器中，广泛采用了流水线和流控机制\upcite{flowcontrol}技术。
 以提高性能并增强对环境的适应能力。
@@ -549,8 +598,8 @@ $\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
 以改善时序。
 
 然而，
-目前所有的对偶综合算法\cite{ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
-均使用Jiang提出的基于\cite{Craig}的算法 \cite{InterpBoolFunction}。
+目前所有的对偶综合算法\upcite{ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+均使用Jiang提出的基于\upcite{Craig}的算法 \upcite{InterpBoolFunction}。
 如图\ref{fig_pipe_chap1}c)所示，
 这些算法从$\vec{o}$中使用一个大型组合逻辑$C^0*C^1$直接恢复$\vec{i}$，
 这使得他们变得不必要的很慢，因为没有流水线寄存器切断这段复杂逻辑。
@@ -561,10 +610,23 @@ $\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
 是另一件非常有意义的研究工作。
 
 
-
+%
 %\subsection{面临的挑战}
-
-
+%
+%根据上述研究内容，
+%目前的算法面临如下挑战：
+%
+%首先，
+%在面向流控机制的对偶综合中，需要特征化流控向量上的谓词$valie(\vec{f})$。
+%而该计算过程中需要对大量冗余变量进行存在量化。
+%这导致现有解遍历算法无法高效运行，
+%而基于Craig插值的算法又不支持 \upcite{InterpBoolFunction}对冗余变量进行存在量化。
+%这就对目前的算法框架提出了严峻挑战。
+%
+%
+%其次，
+%面向流控机制的对偶综合中，
+%
 
 
 
@@ -663,14 +725,14 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 
 第二章综述了在相关领域的研究成果。
 
-第二章描述了基于余因子和Craig插值\upcite{Craig}的迭代特征化算法。该算法在推导控制流谓词和特征化解码器的布尔函数中被广泛使用。
+第三章描述了基于余因子和Craig插值\upcite{Craig}的迭代特征化算法。该算法在推导控制流谓词和特征化解码器的布尔函数中被广泛使用。
 
-第三章描述了面向流控机制的对偶综合算法。
+第四章描述了面向流控机制的对偶综合算法。
 
-第四章描述了面向流水线结构的对偶综合算法。
+第五章描述了面向流水线结构的对偶综合算法。
 
-第五章将上述两个算法有机的结合在一起，能够处理同时包含流控和流水线结构的编码器。
+第六章将上述两个算法有机的结合在一起，能够处理同时包含流控和流水线结构的编码器。
 
-第六章总结全文并展望未来的工作。
+第七章总结全文并展望未来的工作。
 
 最后是致谢、博士期间撰写的论文、参加的科研工作以及参考文献。

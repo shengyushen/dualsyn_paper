@@ -31,13 +31,15 @@
 以从一个通讯协议的编码器源代码中，
 自动产生其对应的解码器代码。
 以此为起点，
-集成电路设计自动化领域的研究者们在该领域取得了大量的研究成果\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}。
+集成电路设计自动化领域的研究者们在该领域取得了大量的研究成果\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}。
 
 在本章的剩余部分中，
 我们将首先在小节\ref{sec_back}介绍相关的背景知识。
 然后在小节\ref{sec_now}详细描述目前在该领域的研究成果。
 然后在小节\ref{sec_whiteboxtodo}介绍基于白盒模型的对偶综合的研究意义和所面临的挑战。
 最后在小节\ref{sec_contest_innov}介绍本文的研究内容和创新点。
+\upcite{DBLP:conf/memocode/QinSJ14,DBLP:conf/apweb/QinSKD14}
+
 
 \section{背景知识}\label{sec_back}
 本节将给出相关的背景知识。
@@ -104,8 +106,147 @@ $\phi_I$ 被称为$\phi_A$针对$\phi_B$的Craig插值\upcite{Craig}。
 $\phi_I$可以使用McMillan算法\upcite{interp_McMillan}得到。
 Craig插值通常被用于产生$\phi_A$的上估计。
 
+\subsubsection{Tseitin编码}\label{subsubsec_tseitin}
+在硬件验证过程中，
+电路和属性通过Tseitin编码\upcite{Tseitin}转换为CNF公式，
+而后交给SAT求解器求解。
 
-\subsection{MiniSat 求解器的递增求解机制}\label{subsec_incsat}
+任意电路均可以被表示为AND2门和INV 门的组合形式，
+因此我们在这里仅给出AND2门和INV门的编码：
+\begin{enumerate}
+\item 对于非门INV $z=\neg x$，它的Tseitin编码为$(x\vee z)\wedge( \neg x\vee \neg z)$。
+\item 对于二输入与门AND2 $z=x_1\wedge x_2$,
+它的CNF公式为$( \neg x_1\vee \neg x_2\vee z)\wedge(x_1\vee \neg z) \wedge(x_2\vee \neg z)$。
+\item 对于一个表示为AND2门和INV门组合的复杂电路$C$，
+它的Tseitin编码$Tseitin(C)$ 是所有这些门的Tseitin编码的合取。
+\end{enumerate}
+
+包含一个INV门$d=\neg a$和一个AND2的$e=d\wedge c$的简单电路$C$,
+他的Tseitin编码显示在公式(\ref{eqn_andinv})中。
+\begin{multline}\label{eqn_andinv}
+% \begin{equation}\label{eqn_andinv}
+Tseitin(C)=\\
+\left\{
+\begin{array}{cc}
+& (a\vee d) \\
+\wedge & (\neg a\vee \neg d)
+\end{array}
+\right\}\wedge\left\{
+\begin{array}{cc}
+& (\neg e\vee c) \\
+\wedge & (\neg e\vee d) \\
+\wedge & (e\vee \neg c\vee\neg d)
+\end{array}
+\right\}
+% \end{equation}
+\end{multline}
+
+
+%\subsection{SAT问题求解}
+%确定SAT问题可满足赋值的计算，称为SAT求解。
+%多数时候，可以使SAT问题可以满足的解并不是唯一的，求出所有可满足解被称为ALLSAT求解。
+
+\subsubsection{SAT问题的简单解法}
+为了方便对SAT求解过程的描述，
+我们以图\ref{basic_circuit}中的电路为例子，
+首先给出一个简单低效但是直观的求解方法。
+并在下面逐步描述对该方法的改进措施，
+从而最终描述清楚现代SAT求解器中常用的高效算法。
+
+\begin{figure}[t] % use float package if you want it here
+  \centering
+  \includegraphics[width=0.8\textwidth]{fig_basic_circuit}
+  \caption{示例电路及其编码}
+  \label{basic_circuit}
+\end{figure}
+
+
+最简单的SAT求解算法是简单地遍历所有可能的变量赋值，
+形成树形的二叉搜索空间。
+对于图\ref{basic_circuit}b)的SAT公式，
+将导致图\ref{basic_search}所示的二叉搜索树。
+其中打钩的叶节点表示合法的求解结果。
+每次对特定变量进行二叉分解的步骤称为决策，
+每次决策产生一个新的决策层。
+图\ref{basic_search}的决策层1、2和3分别对应于分别对变量$a$、$b$和$c$进行二叉分解。
+
+\begin{figure}[t] % use float package if you want it here
+  \centering
+  \includegraphics[width=0.8\textwidth]{fig_basic_search}
+  \caption{基于完全二叉树遍历的SAT求解}
+  \label{basic_search}
+\end{figure}
+
+\subsubsection{布尔约束传播(BCP)}
+为了使一个特定的SAT公式成立，
+必须使其中每个短句都成立。
+而为了使某个特定短句成立，
+其中必须存在至少一个文字成立。
+在某个短句中，
+当只有一个特定的文字$w$尚未取值，
+而其他所有文字均取值为0，
+则该文字必须取值为1。
+如果该文字为某个特定变量$v$，
+这将导致$v$取值为1，
+否则取值为0。
+这一推导过程称为布尔约束传播。
+
+以图\ref{basic_circuit}b)的或门的Tseitin编码为例，
+为了使该公式成立，
+每个短句都必须成立。
+以第一个短句$d \wedge a$为例，当$a$ 为1时，
+$d \wedge a$化简为$d$，
+为了使其成立，
+$d$必须取值为1。 
+此时搜索树如图\ref{BCP}所示。
+其中粗线代表在特定决策层内部的BCP 操作。
+
+\begin{figure}[t] % use float package if you want it here
+  \centering
+  \includegraphics[width=0.8\textwidth]{bcp}
+  \caption{布尔约束传播}
+  \label{BCP}
+\end{figure}
+
+\subsubsection{冲突指导的短句学习}
+冲突指导的短句学习和非正交回溯\upcite{CONFLICTLEARN}是提升SAT求解器性能的另一个重要手段。
+其中非正交回溯与与本文重点关注的数据结构关系不大，
+因此将仅描述冲突指导的短句学习。
+为了简明起见，
+仍然使用一个例子描述冲突指导的短句学习。
+如图\ref{confict}所示的一个二叉搜索树，
+当到达红色的标记为conflict 的节点时，
+有$\{a \equiv 0,b \equiv 0, c \equiv 0,d \equiv1,e \equiv 0,f \equiv1\}$。
+这将导致某个短句中的所有文字均成为0，
+称这种情况为一个冲突(conflict)。 
+此时冲突分析算法将对该短句中的每一个文字，
+沿着如图\ref{confict}粗线所示的BCP 关系逆向回溯，
+以便找到导致此次冲突的根本原因。
+假设找到的三个变量分别为$\{c \equiv 0,d \equiv 1,f \equiv 1\}$，
+这意味着a、b和e与本次冲突无关。
+无论以后a、b 和e 取任何值，
+只要遇到$\{c \equiv 0,d \equiv 1,f \equiv 1\}$ 的情况，
+都不必继续搜索。
+这意味图\ref{confict}中绿色所示的分支都可以被剪掉。
+
+为了达到这种剪枝效果，
+将对冲突分析的结果中每个变量取反，
+以构造一个冲突学习短句。
+即$\{c \equiv 0, d \equiv 1, f \equiv 1\}$ 将会产生一个冲突学习短句$\{c\vee d \vee \neg f\}$，
+并加入短句数组。
+以后每次当c、d和f三个变量中的两个满足$\{c \equiv 0, d \equiv 1, f \equiv 1\}$，
+则将立即通过冲突学习短句产生一次BCP，
+使得第三个变量无法满足$\{c \equiv 0,d \equiv 1,f \equiv 1\}$。 
+这就构成了一次剪枝操作。
+
+\begin{figure}[t] % use float package if you want it here
+  \centering
+  \includegraphics[width=0.8\textwidth]{fig_conflict}
+  \caption{冲突指导的短句学习}
+  \label{confict}
+\end{figure}
+
+\subsubsection{MiniSat 求解器的递增求解机制}\label{subsec_incsat}
 
 本文中，
 我们使用MiniSat 求解器\upcite{EXTSAT} 求解所有CNF公式。
@@ -132,6 +273,7 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 \end{enumerate}
 
 
+
 \subsection{有限状态机}\label{subsec_fsm}
 
 如图\ref{c2_fsm}a)所示，
@@ -144,13 +286,34 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 
 如图\ref{c2_fsm}b)所示，
 有限状态机$M$的行为可以通过将迁移函数展开多步得到。
+具体的做法是：
+\begin{enumerate}
+\item 首先使用在小节\ref{subsubsec_tseitin}中描述的Tseitin编码方法，
+将任意电路转化成为对应的CNF公式。
+而如图\ref{c2_fsm}b)所示，
+我们可以实例化任意多个迁移函数$T$的CNF公式的实例，
+同时保证任意两个CNF公式所使用的变量不重叠。
 在第n步上，
 状态变量$s\in\vec{s}$，输入变量$i\in\vec{i}$ 和输出变量$o\in\vec{o}$
 分别表示为$s_n$，$i_n$ 和 $o_n$。
 进一步的，
 在第n步的状态变量向量，输入变量向量和输出变量向量分别记为$\vec{s}_n$，$\vec{i}_n$ 和 $\vec{o}_n$。
-一条路径是一个状态序列$<\vec{s}_n,\dots,\vec{s}_m>$ 使得$\exists \vec{i}_j\vec{o}_j (\vec{s}_{j+1},\vec{o}_j)\equiv T(\vec{s}_j,\vec{i}_j)$ 对所有$n\le j< m$均满足。
-一个环是一条路径$<\vec{s}_n,\dots,\vec{s}_m>$使得$\vec{s}_n\equiv \vec{s}_m$。
+
+\item 然后对于任意两个相邻的迁移函数$T_n$和$T_{n+1}$，
+我们约束$T_n$的次态等于$T_{n+1}$的当前状态，
+即都等于图\ref{c2_fsm}b)的$\vec{s}_{n+1}$。
+这样任意$n$个迁移函数$T$的实例就能够被连接起来，
+形成一个如图\ref{c2_fsm}b)所示长度为$n+1$的序列。
+将这些CNF公式的合取形成的新的CNF公式，
+送入SAT求解器求解，
+所得到的对状态向量序列$<\vec{s}_0,\dots,\vec{s}_n>$的赋值，
+就代表了该有限状态机的一个长度为$n$的合法行为。
+\end{enumerate}
+
+
+一条\textbf{路径}是一个状态序列$<\vec{s}_n,\dots,\vec{s}_m>$ 使得$\exists \vec{i}_j\vec{o}_j (\vec{s}_{j+1},\vec{o}_j)\equiv T(\vec{s}_j,\vec{i}_j)$ 对所有$n\le j< m$均满足。
+一个\textbf{环}是一条路径$<\vec{s}_n,\dots,\vec{s}_m>$使得$\vec{s}_n\equiv \vec{s}_m$。
+
 
 \begin{figure}[t]
   \centering
@@ -159,6 +322,55 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
   \label{c2_fsm}
 \end{figure}
 
+
+
+\subsection{基于迁移关系(函数)展开的形式化验证算法的一般性原理}\label{subsec_}
+我们已经在上一小节描述了如何将迁移关系(函数)的CNF公式展开成为任意长度的序列。
+这种展开方法被广泛应用于绝大多数形式化验证方法中，
+以对该状态机的行为进行推理。
+
+假设有待验证的状态机是一个2位计数器，
+初始状态为0，
+每一步的行为是将当前状态加一。
+再假设当计数器为3时会发生一些不希望发生的行为。
+因此我们需要验证该计数器永远不会到达3。
+因此有待证明的断言是“计数器永远不等于3”。
+
+最简单，
+同时也是最典型的限界模型检验\upcite{DBLP:conf/tacas/BiereCCZ99}方法，
+通过逐步的增加迁移关系(函数)展开的长度，
+以试图找到在展开序列上违反有待证明断言的状态。
+比如针对上述“计数器永远不等于3”的断言，
+则违反该断言意味着计数器的值等于3.
+
+如图\ref{c2_fsm_exp}所示，
+限界模型检验将迁移函数展开了1次，2次和3次。
+其中在前2次都没有找到对断言的违反。
+而在第3次中则找到了计数器等于3的情况。
+在这种情况下，
+限界模型检验停止展开，
+并给出展开序列上每个状态$\vec{s}^j$的值，
+作为反例，
+以证明上述“计数器永远不等于3”的断言是错误。
+
+当然，
+限界模型检验的算法是不停机的。
+即当断言成立的情况下，
+无法退出算法。
+存在其他方法来部分的改善这一点，
+如完备性停机条件\upcite{DBLP:conf/cav/KroeningOSWW11}等。
+不过这些方法也都基于上述的基本框架，而且也都有他们自身的缺陷。
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.8\textwidth]{c2_fsm_exp}
+  \caption{一个简单计数器的迁移函数展开序列}
+  \label{c2_fsm_exp}
+\end{figure}
+
+上述逐步的增加迁移关系(函数)展开长度的框架，
+也广泛应用于本文的对偶综合算法中。
+详情将在本文的后继部分详细描述。
 
 \section{对偶综合研究现状}\label{sec_now}
 本节将简述对偶综合领域取得的研究成果。
@@ -175,6 +387,8 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 该算法总能找到其实现；
 而当解码器不存在时，
 该算法不停机。
+
+类似于
 
 对于每一个$i\in\vec{i}$，
 在展开的迁移函数序列上，
@@ -212,7 +426,7 @@ F_{PC}(p,l,r):=
 \begin{center}
 \includegraphics[width=\textwidth]{pc}
 \end{center}
-\caption{用于检查$i_{p+l}$ 是否能够被唯一决定的下估计算法}
+\caption{用于检查$i_{p+l}$ 是否能够被唯一决定的充分非完备算法}
   \label{fig_pc_double}
 \end{figure}
 
