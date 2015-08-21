@@ -12,7 +12,7 @@
 而另一方面，
 现代复杂通讯协议的编码器中，广泛采用了流控\upcite{flowcontrol}和流水线等复杂内部结构，
 以提升编码器的性能和对复杂应用环境的适应性。
-而目前在对偶综合方面的所有研究工作\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+而目前在对偶综合方面的所有研究工作\upcite{ShenICCAD09,ShenTCAD10,ShenFMCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 均基于黑盒模型，
 完全忽略这些内部结构，
 而仅考虑输入$\vec{i}$和输出$\vec{o}$之间的映射关系，
@@ -30,7 +30,7 @@
 一个必须而且对性能要求非常苛刻的步骤，
 是特征化满足特定命题逻辑关系$R$的布尔函数$f$。
 传统的算法包括基于命题逻辑可满足求解器(SAT)\upcite{DBLP:conf/dac/MoskewiczMZZM01}和二叉判决图(BDD)\upcite{DBLP:journals/tc/Bryant86}的完全解遍历
-\upcite{SATUNBMC}和和量词削减。
+和量词削减\upcite{SATUNBMC,MINASS,REPARAM,MINCEX,PRIMECLAUSE,EFFCON,MEMEFFALLSAT,CMPMINCEX,EFFSATUSMCCO,InterpBoolFunction,interpNoProof}。
 然而这些算法通常受到解空间不规则的困扰，
 导致性能低下。
 为此，

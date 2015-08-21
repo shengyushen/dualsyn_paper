@@ -33,7 +33,7 @@
 其中编码器将输入变量$\vec{i}$映射到输出变量$\vec{o}$.
 而解码器则从$\vec{o}$中恢复$\vec{i}$。
 对偶综合算法
-\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 通过自动生成特定编码器的解码器以降低该工作的复杂度并提高结果的可靠性。
 该算法的一个前提假设是，
 编码器的输入变量$\vec{i}$总能够被输出变量$\vec{o}$的一个有限长度序列唯一决定。

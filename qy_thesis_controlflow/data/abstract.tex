@@ -5,14 +5,14 @@
 其中编码器将输入变量$\vec{i}$映射到输出变量$\vec{o}$。
 而解码器则从$\vec{o}$中恢复$\vec{i}$。
 对偶综合算法
-\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 通过自动生成特定编码器的解码器，
 以降低该工作的复杂度并提高结果的可靠性。
 
 而另一方面，
 现代复杂通讯协议的编码器中，广泛采用了流控\upcite{flowcontrol}和流水线等复杂内部结构，
 以提升编码器的性能和对复杂应用环境的适应性。
-而目前在对偶综合方面的所有研究工作\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+而目前在对偶综合方面的所有研究工作\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 均基于黑盒模型，
 完全忽略这些内部结构，
 而仅考虑输入$\vec{i}$和输出$\vec{o}$之间的映射关系，
@@ -43,7 +43,7 @@
 且其性能比传统的完全解遍历算法有巨大的提升。
 
 第二，研究了针对流控机制的对偶综合算法。
-传统对偶综合算法的\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}的一个基本假设是，
+传统对偶综合算法的\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}的一个基本假设是，
 编码器的输入变量$\vec{i}$总能够被输出变量$\vec{o}$的一个有限长度序列唯一决定。
 基于该假设方可构造满足Craig插值的不可满足公式。
 然而，
@@ -78,7 +78,7 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 为了提升工作频率，
 通常包含多个流水线级，
 以将关键的数据路径划分为多级。
-而传统的对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+而传统的对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 完全无视这种流水线结构，
 从而导致生成的解码器无法保持和编码器匹配的频率和性能。
 为此，
@@ -110,7 +110,7 @@ and multimedia chips is to design and verify complex encoder and decoder pairs.
 The encoder maps its input variables $\vec{i}$ to its output variables $\vec{o}$,
 while the decoder recovers $\vec{i}$ from $\vec{o}$.
 Complementary synthesis
-\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 eases this job by
 automatically generating a decoder from an encoder,
 with the assumption that $\vec{i}$ can always be
@@ -119,7 +119,7 @@ uniquely determined by a bounded sequence of $\vec{o}$.
 On the other hand,
 The encoders of modern communication protocols
 widely employ flow control\upcite{flowcontrol} and pipeline mechanism to boost performance and their ability of adopting to complex application environment.
-But state-of-the-art research works on complementary synthesis\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+But state-of-the-art research works on complementary synthesis\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 are all based on black box model,
 so can not take full advantage of these mechanisms.
 
@@ -144,7 +144,7 @@ This algorithm is a halting one and is much faster than naive satisfying assignm
 
 Second,
 this thesis proposes a novel complementary synthesis algorithm to handle flow control mechanism.
-One assumption of State-of-the-art complementary algorithms\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13} is that,
+One assumption of State-of-the-art complementary algorithms\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13} is that,
 $\vec{i}$can always be uniquely determined by a bounded sequence of $\vec{o}$.
 Only in this way the unsatisfiable formula for computing Craig interpolant can be constructed.
 But the flow control mechanism \upcite{flowcontrol} in many modern encoders fail this assumption.
@@ -167,7 +167,7 @@ Third,
 this thesis proposes a novel complementary synthesis algorithm to handle pipeline structure.
 Modern encoders often include multiple pipeline stages that cut the critical datapath into multiple segments
 to boost frequency and thus performance,
-State-of-the-art complementary algorithms \upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+State-of-the-art complementary algorithms \upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 all ignore such structure,
 which make the generated decoder can not keep up with the encoder on frequency and performance.
 Thus this thesis proposes a novel algorithm to first find out the encoder's pipeline registers in each pipeline stage,

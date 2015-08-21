@@ -106,8 +106,148 @@ $\phi_I$ 被称为$\phi_A$针对$\phi_B$的Craig插值\upcite{Craig}。
 $\phi_I$可以使用McMillan算法\upcite{interp_McMillan}得到。
 Craig插值通常被用于产生$\phi_A$的上估计。
 
-\subsection{命题逻辑可满足性问题}
-\subsection{MiniSat 求解器的递增求解机制}\label{subsec_incsat}
+\subsubsection{Tseitin编码}\label{subsubsec_tseitin}
+在硬件验证过程中，
+电路和属性通过Tseitin编码\upcite{Tseitin}转换为CNF公式，
+而后交给SAT求解器求解。
+
+任意电路均可以被表示为AND2门和INV 门的组合形式，
+因此我们在这里仅给出AND2门和INV门的编码：
+\begin{enumerate}
+\item 对于非门INV $z=\neg x$，
+由Tseitin编码产生的CNF公式为$(x\vee z)\wedge( \neg x\vee \neg z)$。
+\item 对于二输入与门AND2 $z=x_1\wedge x_2$,
+由Tseitin编码产生的CNF公式为$( \neg x_1\vee \neg x_2\vee z)\wedge(x_1\vee \neg z) \wedge(x_2\vee \neg z)$。
+\item 对于一个表示为AND2门和INV门组合的复杂电路$C$，
+由Tseitin编码产生的CNF公式$Tseitin(C)$ 是所有这些门的Tseitin编码的合取。
+\end{enumerate}
+
+包含一个INV门$d=\neg a$和一个AND2的$e=d\wedge c$的简单电路$C$,
+他的Tseitin编码显示在公式(\ref{eqn_andinv})中。
+\begin{multline}\label{eqn_andinv}
+% \begin{equation}\label{eqn_andinv}
+Tseitin(C)=
+\left\{
+\begin{array}{cc}
+& (a\vee d) \\
+\wedge & (\neg a\vee \neg d)
+\end{array}
+\right\}\wedge\left\{
+\begin{array}{cc}
+& (\neg e\vee c) \\
+\wedge & (\neg e\vee d) \\
+\wedge & (e\vee \neg c\vee\neg d)
+\end{array}
+\right\}
+% \end{equation}
+\end{multline}
+
+
+%\subsection{SAT问题求解}
+%确定SAT问题可满足赋值的计算，称为SAT求解。
+%多数时候，可以使SAT问题可以满足的解并不是唯一的，求出所有可满足解被称为ALLSAT求解。
+
+\subsubsection{SAT问题的简单解法}
+为了方便对SAT求解过程的描述，
+我们以图\ref{basic_circuit}中的电路为例子，
+首先给出一个简单低效但是直观的求解方法。
+并在下面逐步描述对该方法的改进措施，
+从而最终描述清楚现代SAT求解器中常用的高效算法。
+
+\begin{figure}[t] % use float package if you want it here
+  \centering
+  \includegraphics[width=0.8\textwidth]{fig_basic_circuit}
+  \caption{示例电路及其编码}
+  \label{basic_circuit}
+\end{figure}
+
+
+最简单的SAT求解算法是简单地遍历所有可能的变量赋值，
+形成树形的二叉搜索空间。
+对于图\ref{basic_circuit}b)的SAT公式，
+将导致图\ref{basic_search}所示的二叉搜索树。
+其中打钩的叶节点表示合法的求解结果。
+每次对特定变量进行二叉分解的步骤称为决策，
+每次决策产生一个新的决策层。
+图\ref{basic_search}的决策层1、2和3分别对应于分别对变量$a$、$b$和$c$进行二叉分解。
+
+\begin{figure}[t] % use float package if you want it here
+  \centering
+  \includegraphics[width=0.8\textwidth]{fig_basic_search}
+  \caption{基于完全二叉树遍历的SAT求解}
+  \label{basic_search}
+\end{figure}
+
+\subsubsection{布尔约束传播(BCP)}
+为了使一个特定的SAT公式成立，
+必须使其中每个短句都成立。
+而为了使某个特定短句成立，
+其中必须存在至少一个文字成立。
+在某个短句中，
+当只有一个特定的文字$w$尚未取值，
+而其他所有文字均取值为0，
+则该文字必须取值为1。
+如果该文字为某个特定变量$v$，
+这将导致$v$取值为1，
+否则取值为0。
+这一推导过程称为布尔约束传播。
+
+以图\ref{basic_circuit}b)的或门的Tseitin编码为例，
+为了使该公式成立，
+每个短句都必须成立。
+以第一个短句$d \wedge a$为例，当$a$ 为1时，
+$d \wedge a$化简为$d$，
+为了使其成立，
+$d$必须取值为1。
+此时搜索树如图\ref{BCP}所示。
+其中粗线代表在特定决策层内部的BCP 操作。
+
+\begin{figure}[t] % use float package if you want it here
+  \centering
+  \includegraphics[width=0.8\textwidth]{bcp}
+  \caption{布尔约束传播}
+  \label{BCP}
+\end{figure}
+
+\subsubsection{冲突指导的短句学习}
+冲突指导的短句学习和非正交回溯\upcite{CONFLICTLEARN}是提升SAT求解器性能的另一个重要手段。
+其中非正交回溯与与本文重点关注的数据结构关系不大，
+因此将仅描述冲突指导的短句学习。
+为了简明起见，
+仍然使用一个例子描述冲突指导的短句学习。
+如图\ref{confict}所示的一个二叉搜索树，
+当到达红色的标记为conflict 的节点时，
+有$\{a \equiv 0,b \equiv 0, c \equiv 0,d \equiv1,e \equiv 0,f \equiv1\}$。
+这将导致某个短句中的所有文字均成为0，
+称这种情况为一个冲突(conflict)。
+此时冲突分析算法将对该短句中的每一个文字，
+沿着如图\ref{confict}粗线所示的BCP 关系逆向回溯，
+以便找到导致此次冲突的根本原因。
+假设找到的三个变量分别为$\{c \equiv 0,d \equiv 1,f \equiv 1\}$，
+这意味着a、b和e与本次冲突无关。
+无论以后a、b 和e 取任何值，
+只要遇到$\{c \equiv 0,d \equiv 1,f \equiv 1\}$ 的情况，
+都不必继续搜索。
+这意味图\ref{confict}中绿色所示的分支都可以被剪掉。
+
+为了达到这种剪枝效果，
+将对冲突分析的结果中每个变量取反，
+以构造一个冲突学习短句。
+即$\{c \equiv 0, d \equiv 1, f \equiv 1\}$ 将会产生一个冲突学习短句$\{c\vee d \vee \neg f\}$，
+并加入短句数组。
+以后每次当c、d和f三个变量中的两个满足$\{c \equiv 0, d \equiv 1, f \equiv 1\}$，
+则将立即通过冲突学习短句产生一次BCP，
+使得第三个变量无法满足$\{c \equiv 0,d \equiv 1,f \equiv 1\}$。
+这就构成了一次剪枝操作。
+
+\begin{figure}[t] % use float package if you want it here
+  \centering
+  \includegraphics[width=0.8\textwidth]{fig_conflict}
+  \caption{冲突指导的短句学习}
+  \label{confict}
+\end{figure}
+
+\subsubsection{MiniSat 求解器的递增求解机制}\label{subsec_incsat}
 
 本文中，
 我们使用MiniSat 求解器\upcite{EXTSAT} 求解所有CNF公式。
@@ -134,6 +274,7 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 \end{enumerate}
 
 
+
 \subsection{有限状态机}\label{subsec_fsm}
 
 如图\ref{c2_fsm}a)所示，
@@ -146,13 +287,34 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 
 如图\ref{c2_fsm}b)所示，
 有限状态机$M$的行为可以通过将迁移函数展开多步得到。
+具体的做法是：
+\begin{enumerate}
+\item 首先使用在小节\ref{subsubsec_tseitin}中描述的Tseitin编码方法，
+将迁移函数$T$转化成为对应的CNF公式。
+而如图\ref{c2_fsm}b)所示，
+我们可以实例化任意多个迁移函数$T$的CNF公式的实例，
+同时保证任意两个CNF公式所使用的变量不重叠。
 在第n步上，
 状态变量$s\in\vec{s}$，输入变量$i\in\vec{i}$ 和输出变量$o\in\vec{o}$
 分别表示为$s_n$，$i_n$ 和 $o_n$。
 进一步的，
 在第n步的状态变量向量，输入变量向量和输出变量向量分别记为$\vec{s}_n$，$\vec{i}_n$ 和 $\vec{o}_n$。
-一条路径是一个状态序列$<\vec{s}_n,\dots,\vec{s}_m>$ 使得$\exists \vec{i}_j\vec{o}_j (\vec{s}_{j+1},\vec{o}_j)\equiv T(\vec{s}_j,\vec{i}_j)$ 对所有$n\le j< m$均满足。
-一个环是一条路径$<\vec{s}_n,\dots,\vec{s}_m>$使得$\vec{s}_n\equiv \vec{s}_m$。
+
+\item 然后对于任意两个相邻的迁移函数$T_n$和$T_{n+1}$，
+我们约束$T_n$的次态等于$T_{n+1}$的当前状态，
+即都等于图\ref{c2_fsm}b)的$\vec{s}_{n+1}$。
+这样任意$n$个迁移函数$T$的实例就能够被连接起来，
+形成一个如图\ref{c2_fsm}b)所示长度为$n+1$的序列。
+将这些CNF公式的合取形成的新的CNF公式，
+送入SAT求解器求解，
+所得到的对状态向量序列$<\vec{s}_0,\dots,\vec{s}_n>$的赋值，
+就代表了该有限状态机的一个长度为$n$的合法行为。
+\end{enumerate}
+
+
+一条\textbf{路径}是一个状态序列$<\vec{s}_n,\dots,\vec{s}_m>$ 使得$\exists \vec{i}_j\vec{o}_j (\vec{s}_{j+1},\vec{o}_j)\equiv T(\vec{s}_j,\vec{i}_j)$ 对所有$n\le j< m$均满足。
+一个\textbf{环}是一条路径$<\vec{s}_n,\dots,\vec{s}_m>$使得$\vec{s}_n\equiv \vec{s}_m$。
+
 
 \begin{figure}[t]
   \centering
@@ -161,8 +323,11 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
   \label{c2_fsm}
 \end{figure}
 
-\subsection{基于迁移关系(函数)展开的形式化验证算法的一般性原理}\label{subsec_}
-迁移关系(函数)展开被广泛应用于绝大多数形式化验证方法中，
+
+
+\subsection{基于迁移关系(函数)展开的形式化验证算法的一般性原理}\label{subsec_trexp_chap1}
+我们已经在上一小节描述了如何将迁移关系(函数)的CNF公式展开成为任意长度的序列。
+这种展开方法被广泛应用于绝大多数形式化验证方法中，
 以对该状态机的行为进行推理。
 
 假设有待验证的状态机是一个2位计数器，
@@ -172,7 +337,8 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 因此我们需要验证该计数器永远不会到达3。
 因此有待证明的断言是“计数器永远不等于3”。
 
-最简单，同时也是最典型的限界模型检验\upcite{DBLP:conf/tacas/BiereCCZ99}方法，
+最简单，
+同时也是最典型的限界模型检验\upcite{DBLP:conf/tacas/BiereCCZ99}方法，
 通过逐步的增加迁移关系(函数)展开的长度，
 以试图找到在展开序列上违反有待证明断言的状态。
 比如针对上述“计数器永远不等于3”的断言，
@@ -212,7 +378,7 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 由于其中的若干算法也将在本论文的主要章节中被使用，
 因此其描述方式根据本论文的需要进行了修改。
 因此有可能和原始论文的描述方式有轻微出入。
-在阅读本论文是应以本小节的描述为准。
+在阅读本论文时应以本小节的描述为准。
 
 \subsection{早期的充分非完备算法}\label{subsec_sound}
 
@@ -223,12 +389,15 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 而当解码器不存在时，
 该算法不停机。
 
-类似于
+该算法类似于小节\ref{subsec_trexp_chap1}中所描述的限界模型检验，
+同样是通过逐步的增加迁移函数展开序列的长度，
+并在每一个特定长度的展开序列上检查是否存在解码器。
+
 
 对于每一个$i\in\vec{i}$，
-在展开的迁移函数序列上，
 如果存在三个参数$p$， $l$ 和$r$，
-使得对于输出序列$<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$的任意取值，
+使得在长度为$p+l+r$的迁移函数展开序列上，
+对于输出序列$<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$的任意取值，
 $i_{p+l}$不能同时取值为0和1，
 则输入变量$i\in\vec{i}$可以被唯一决定。
 这等价于等式(\ref{uniqt1})中的公式$F_{PC}(p,l,r)$的不可满足。
@@ -309,8 +478,37 @@ $F_{PC}(p,l,r)$的不可满足性的限界证明可以被扩展到
 $i_{p+l}$ 能够被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
 \end{proposition}
 
+\begin{algorithm}[t]
+\caption{$CheckUniquenessSound(i)$:用于检测$i\in\vec{i}$是否能够被$\vec{o}$的有限长度序列唯一决定的充分算法}
+\label{alg_pcsound_chap1}
+\begin{algorithmic}[1]
+\STATE $p$:= 0;
+\STATE $l$:= 0;
+\STATE $r$:= 0;
+\WHILE {$1$}
+\STATE $p$++;
+\STATE $l$++;
+\STATE $r$++ ;
+\IF{$F_{PC}(p,l,r)$ 不可满足}\label{linepc1sound}
+\RETURN ($1$,$p$,$l$,$r$)\label{lineln1sound};
+\ENDIF
+\ENDWHILE
+\end{algorithmic}
+\end{algorithm}
 
-上述命题仅考虑了输入向量$\vec{i}$中的一个输入变量$i$。
+%
+
+基于上述讨论，
+算法\ref{alg_pcsound_chap1}即为我们所提出的充分算法。
+该算法首先初始化$p$，$l$和$r$为全0。
+然后使用一个循环来持续的增加$p$，$l$和$r$。
+在每一个循环中，
+将迁移关系展开至长度为$p+l+r$的序列。
+若$F_{PC}(p,l,r)$ 不可满足，
+则返回当前的$p$，$l$和$r$。
+
+
+上述算法仅考虑了输入向量$\vec{i}$中的一个输入变量$i$。
 当需要讨论整个$\vec{i}$时，
 我们需要将整体的$p$， $l$ 和$r$设置为最大值。
 即，
@@ -335,22 +533,23 @@ r & :=  & max_{i\in\vec{i}} \{r_i\}
 通过不计算可达状态，
 本文算法可以得到极大的简化和加速。
 而相比之下，目前唯一能够计算可达状态的对偶综合算法\upcite{TuDAC13}
-则无法处理最为复杂的XFI编码器。
+则无法处理最为复杂的XFI编码器\upcite{encode6466}。
 而我们的算法\upcite{ShenTCAD11}则始终可以处理。
 第二，
-通过忽略初始状态，本文算法可以提升产生出来的解码器的可靠性。
-因为这可以使得解码器的状态和输出仅仅依赖于有限的输入历史。
+通过忽略初始状态，本文算法可以产生出更加可靠的解码器。
+因为这样可以使得解码器的状态和输出仅仅依赖于有限的输入历史。
 因此任何被传输中的错误破坏的$\vec{o}$ 只能对解码器产生有限步数的影响。
 
 当然忽略初始状态有一个缺点在于，
-他使得判断条件比必须的情况稍微强一些。
+它使得判断条件比必须的情况稍微强一些。
 也就是说，
-他要求$\vec{i}$ 必须在一个更大的集合$R^p$上被唯一决定。
+他要求$\vec{i}$ 必须在一个更大的状态集合$R^p$上被唯一决定。
 其中$R^p$代表了由任意状态在$p$步之内能够到达的状态集合。
 而必要条件是从初始条件出发在任意步数内可以到达的可达状态集合$R$。
 因此在某些情况下，
 我们的算法有可能无法处理正确设计的编码器。
-不过从目前使用的所有编码器，即使是那些来自于真实工业应用的编码器，
+不过对于目前使用的所有编码器，
+即使是那些来自于真实工业应用的编码器，
 这种极端情况也没有出现过。
 
 
@@ -477,7 +676,16 @@ $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$上都存在环。
 
 因此该算法是停机的。
 
+类似于等式{\ref{equ_maxplr}}，
+我们需要将整体的$p$， $l$ 和$r$设置为最大值。
 
+\begin{equation}\label{equ_maxplr_ln}
+\begin{array}{ccc}
+p & :=  & max_{i\in\vec{i}} \{p_i\}\\
+l & :=  & max_{i\in\vec{i}} \{l_i\}\\
+r & :=  & max_{i\in\vec{i}} \{r_i\}
+\end{array}
+\end{equation}
 
 \subsection{在对偶综合领域的其他的相关工作}
 
@@ -485,15 +693,53 @@ Shen et al.\upcite{ShenTCAD12}和Liu et al.\upcite{LiuICCAD11} 独立的发现�
 该算法还将作为下一章的一部分单独介绍，
 因此不在这里展开描述。
 
-Shen et al.\upcite{ShenTCAD12} 自动的发掘能够使得解码器存在的前提条件，
-首次发现在同一个前提条件下，
-存在多个不同的解码器。
-为了方便用户区分和选择，
-该文还提出了单独的算法来寻找所有这些解码器，
-并推导他们存在的前提条件。
+Shen et al.\upcite{ShenTCAD12} 
+通过迭代的剔除所有能导致公式(\ref{uniqln})可满足的配置管脚赋值，
+以自动的发掘能够使得解码器存在的前提条件。
+如图\ref{multidec}所示，
+当 $c_2\equiv 0$时，
+常数$20$被赋值到$\vec{o}$。
+此时不存在解码器；
+当$c_1\equiv 0\wedge c_2\equiv 1$时，
+$\vec{i}+1$被赋值到$\vec{o}$，
+此时的解码器为$\vec{o}-1$
+而当$c_1\equiv 1\wedge c_2\equiv 1$时，
+$\vec{i}+2$ 将被赋值到$\vec{o}$。
+很明显，
+$c_2\equiv 0$首先需要被剔除。
+这就得到了$c_2\equiv 1$。
+该公式能够使得公式(\ref{uniqt1})不可满足。
+
+然而，
+该论文\upcite{ShenTCAD12}首次发现在公式(\ref{uniqt1})不可满足的情况下，
+有可能存在多个不同的解码器。
+如上述的$c_2\equiv 1$
+能够使得公式(\ref{uniqt1})不可满足，
+但是此时实际上存在两个解码器。
+
+为了区分所有这些解码器，
+该文提出了另一个迭代的算法，
+以检查在$c_2\equiv 1$情况下，
+公式(\ref{uniqt1})所代表的整体解码器是否能够被分解为目前所发掘的所有解码器的组合。
+该检查使用现有的函数依赖算法\upcite{DBLP:journals/tc/JiangLMH10}进行。
+当该检查失败时，
+所产生的SAT赋值能将公式(\ref{uniqt1})所代表的整体解码器化简为一个尚未被发掘的新解码器。
+而当该检查成功时，
+为每个解码器所产生的函数依赖公式即为该解码器存在的前提条件。
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.35\textwidth]{multidec}
+\end{center}
+\caption{The encoder used to explain our ideas}
+  \label{multidec}
+\end{figure}
 
 Tu et al.\upcite{TuDAC13}提出了一个突破性的算法，
-通过使用属性指导的可达性分析算法\upcite{BradleyVMCAI11,EenFMCAD11}，
+基于属性指导的可达性分析算法\upcite{BradleyVMCAI11,EenFMCAD11}，
+在隐含地而非显式展开的迁移函数序列上，
+迭代的精炼归纳不变公式(inductive invariant)，
+以获得对可达状态的一个单调递减上估计
 将初始条件考虑到解码器存在性检测中。
 该算法是第一个能够考虑初始条件的对偶综合算法。
 
