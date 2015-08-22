@@ -70,14 +70,14 @@
 \contentsline {subsection}{\numberline {5.2.1}流水线的一般性模型}{54}{subsection.5.2.1}
 \contentsline {subsection}{\numberline {5.2.2}推导$p$， $l$ 和$r$}{55}{subsection.5.2.2}
 \contentsline {subsection}{\numberline {5.2.3}压缩$r$ 和$l$}{55}{subsection.5.2.3}
-\contentsline {subsection}{\numberline {5.2.4}推导流水线}{56}{subsection.5.2.4}
-\contentsline {subsubsection}{\numberline {5.2.4.1}推导最后一级流水线$\mathaccentV {vec}17E{stg}^{n-1}$}{56}{subsubsection.5.2.4.1}
+\contentsline {subsection}{\numberline {5.2.4}推导流水线}{57}{subsection.5.2.4}
+\contentsline {subsubsection}{\numberline {5.2.4.1}推导最后一级流水线$\mathaccentV {vec}17E{stg}^{n-1}$}{57}{subsubsection.5.2.4.1}
 \contentsline {subsubsection}{\numberline {5.2.4.2}推导非最后一级流水线$\mathaccentV {vec}17E{stg}^{j}$}{57}{subsubsection.5.2.4.2}
-\contentsline {subsubsection}{\numberline {5.2.4.3}推导唯一决定输入的流水线级}{58}{subsubsection.5.2.4.3}
-\contentsline {section}{\numberline {5.3}特征化输入向量和流水线级的布尔函数}{58}{section.5.3}
-\contentsline {subsection}{\numberline {5.3.1}特征化最后一个流水线级的布尔函数}{58}{subsection.5.3.1}
+\contentsline {subsubsection}{\numberline {5.2.4.3}推导唯一决定输入的流水线级}{59}{subsubsection.5.2.4.3}
+\contentsline {section}{\numberline {5.3}特征化输入向量和流水线级的布尔函数}{59}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}特征化最后一个流水线级的布尔函数}{59}{subsection.5.3.1}
 \contentsline {subsection}{\numberline {5.3.2}特征化其他流水线级的布尔函数}{59}{subsection.5.3.2}
-\contentsline {subsection}{\numberline {5.3.3}特征化输入变量的布尔函数}{59}{subsection.5.3.3}
+\contentsline {subsection}{\numberline {5.3.3}特征化输入变量的布尔函数}{60}{subsection.5.3.3}
 \contentsline {section}{\numberline {5.4}实验结果}{60}{section.5.4}
 \contentsline {section}{\numberline {5.5}结论}{61}{section.5.5}
 \contentsline {chapter}{\numberline {6}面向流控机制和流水线的对偶综合}{63}{chapter.6}

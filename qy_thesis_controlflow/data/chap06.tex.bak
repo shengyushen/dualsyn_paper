@@ -10,7 +10,7 @@
 一个最困难的工作之一是为不同的协议设计编码器和解码器。
 其中编码器负责将输入向量$\vec{i}$ 映射到输出向量$\vec{o}$，
 而解码器负责从$\vec{o}$中恢复$\vec{i}$。
-对偶综合\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenTCAD12,ShenICCAD11,LiuICCAD11,LiuTCAD12,TuDAC13}
+对偶综合\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenTCAD12,ShenICCAD11,LiuICCAD11,LiuTCAD12,TuDAC13}
 假设$\vec{i}$ 总能够被 $\vec{o}$唯一决定，
 并自动产生相应的解码器。
 
@@ -1052,7 +1052,7 @@ $\phi_A$ 相对于$\phi_B$的Craig插值$\phi_I$
 
 
 \section{实验结果}\label{sec_exp}
-我们使用OCaml 语言实现了上述算法，
+我们使用OCaml 语言\upcite{OCaml}实现了上述算法，
 并使用MiniSat 1.14 \upcite{EXTSAT}求解产生的CNF公式。
 所有的实验使用一台包含16 个Intel Xeon E5648 2.67GHz处理器，
 192GB 内存， 和CentOS 5.4 Linux操作系统的服务器上。

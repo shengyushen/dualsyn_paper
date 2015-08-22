@@ -9,7 +9,7 @@
 设计相应的编码器和解码器.
 其中编码器负责将输入$\vec{i}$ 映射至输出$\vec{o}$，
 而解码器则负责从$\vec{o}$中恢复$\vec{i}$。
-对偶综合\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+对偶综合\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 假设$\vec{i}$ 总能够被$\vec{o}$的一个有限序列唯一决定，
 以自动产生相应的解码器。
 其中，
@@ -778,7 +778,7 @@ $\phi_A$ 相对于$\phi_B$的Craig 插值$\phi_I$
 
 
 \section{实验结果}\label{sec_exp_chap4}
-我们在OCaml 语言中实现了上述算法，
+我们在OCaml 语言\upcite{OCaml}中实现了上述算法，
 并使用MiniSat 1.14 \upcite{EXTSAT}求解相应的公式。
 使用一台包含16 个Intel Xeon E5648 2.67GHz处理器，
 192GB 存储器， 和CentOS 5.4 Linux操作系统的服务器。

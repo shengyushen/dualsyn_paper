@@ -27,7 +27,7 @@
 且其性能比传统的完全解遍历算法有巨大的提升。
 
 第二，研究了针对流控机制的对偶综合算法。
-传统对偶综合算法的\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}的一个基本假设是，
+传统对偶综合算法的\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}的一个基本假设是，
 编码器的输入变量$\vec{i}$总能够被输出变量$\vec{o}$的一个有限长度序列唯一决定。
 基于该假设方可构造满足Craig插值的不可满足公式。
 然而，
@@ -62,7 +62,7 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 为了提升工作频率，
 通常包含多个流水线级，
 以将关键的数据路径划分为多级。
-而传统的对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+而传统的对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 完全无视这种流水线结构，
 从而导致生成的解码器无法保持和编码器匹配的频率和性能。
 为此，
@@ -120,7 +120,7 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 近年来致力于验证纠错编码的多篇论文均指出了这一点\upcite{ShenTCAD10,TuDAC13,DBLP:conf/fmcad/LvovLPSE12,DBLP:journals/fmsd/LvovLTPSE14}。
 
 3. 前向纠错编码(FEC)中的长帧将导致对偶综合的巨大运算开销。
-现有的对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenTCAD12,ShenICCAD11,LiuICCAD11,LiuTCAD12,TuDAC13}通过逐步的扩大迁移关系的展开长度，
+现有的对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenTCAD12,ShenICCAD11,LiuICCAD11,LiuTCAD12,TuDAC13}通过逐步的扩大迁移关系的展开长度，
 以找到一个特定大小的移动窗口，
 使得该窗口内的输出序列能够唯一决定当前的输入字符。
 在我们使用的多个工业界标准编码器中，

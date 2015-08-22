@@ -10,7 +10,7 @@
 一个最困难的工作之一是为不同的协议设计编码器和解码器。
 其中编码器负责将输入向量$\vec{i}$ 映射到输出向量$\vec{o}$，
 而解码器负责从$\vec{o}$中恢复$\vec{i}$。
-对偶综合\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenTCAD12,ShenICCAD11,LiuICCAD11,LiuTCAD12,TuDAC13}
+对偶综合\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenTCAD12,ShenICCAD11,LiuICCAD11,LiuTCAD12,TuDAC13}
 假设$\vec{i}$ 总能够被 $\vec{o}$唯一决定，
 并自动产生相应的解码器。
 
@@ -23,14 +23,11 @@
 如图\ref{fig_fc}b)所示，
 空闲字符$I$
 只能唯一决定$\vec{i}$的一部分而非全部，
-我们称之为流控向量$\vec{f}$。
+我们称这一部分为流控向量$\vec{f}$。
 而正常的编码结果$D_i$ 能
 唯一决定所有输入
 包括流控向量$\vec{f}$ 和数据向量$\vec{d}$。
 
-Qin et al. \upcite{QinTODAES15} 首次提出了能够处理流控机制的对偶综合算法。
-该算法首先找到所有的能够被$\vec{o}$唯一决定的$i\in\vec{f}$。
-然后推导一个能使得$\vec{d}$ 被$\vec{o}$唯一决定的谓词$valid(\vec{f})$。
 
 \begin{figure}[t]
 \centering
@@ -48,25 +45,40 @@ Qin et al. \upcite{QinTODAES15} 首次提出了能够处理流控机制的对偶
 
 
 
-同时，
+另一方面，
 如图\ref{fig_pipeenc}所示，
 许多编码器
-包含流水线级$\vec{stg}^j$ 已将关键的数据路径划分为多个子段$C^j$，
-这样有助于提高性能。
+包含流水线级$\vec{stg}^j$ 以将关键的数据路径划分为多个子段$C^j$，
+以提高运行频率。
 类似于$\vec{i}$，
-每个流水线级$\vec{stg}^j$ 也可以划分为留空向量$\vec{f}^j$ 和数据向量$\vec{d}^j$。
+每个流水线级$\vec{stg}^j$ 也可以划分为流控向量$\vec{f}^j$ 和数据向量$\vec{d}^j$。
 
-然而由秦et al. 的算法\upcite{QinTODAES15} 产生的解码器并不包含流水线。
-这使得其运行速度远低于相应的编码器。
+Qin et al. \upcite{QinTODAES15} 首次提出了能够处理流控机制的对偶综合算法。
+该算法首先找到所有的能够被$\vec{o}$唯一决定的$i\in\vec{f}$。
+然后推导一个能使得$\vec{d}$ 被$\vec{o}$唯一决定的谓词$valid(\vec{f})$。
+
+然而Qin et al. 的算法\upcite{QinTODAES15}在处理流控机制的同时，
+却无法处理流水线结构。
+这导致其产生的解码器不包含流水线，
+并进而使得其运行频率远低于相应的编码器。
 为了解决该问题，
-本文提出了一个全新的算法以为此类编码器产生带有流控机制和流水线的解码器。
-该算法首先使用秦et al. \upcite{QinTODAES15}的算法来寻找$\vec{f}$ 并推导$valid(\vec{f})$。
+本文提出了一个全新的算法，
+以为此类同时包含流控机制和流水线的编码器，
+产生同样带有流控和流水线的解码器。
+该算法首先使用Qin et al. \upcite{QinTODAES15}的算法来寻找流控向量$\vec{f}$ 并推导流控谓词$valid(\vec{f})$。
 然后分别通过强制和不强制$valid(\vec{f})$，
-以从所有寄存器集合中找到每一个寄存器级$\vec{stg}^j$的$\vec{d}^j$ 和$\vec{f}^j$。
+以从所有寄存器集合中找到每一个寄存器级$\vec{stg}^j$的数据向量$\vec{d}^j$ 和流控向量$\vec{f}^j$。
 最后通过Jiang et al. \upcite{InterpBoolFunction}的算法特征化$\vec{stg}^j$ 和$\vec{i}$的布尔函数。
 
+为了展示该算法的有效性，
+我们在多个复杂的工业界实际编码器，
+如PCI Express \upcite{pcie21} 和以太网\upcite{IEEE8023_S4}，
+上进行了实验。
 实验结果表明，
-该算法能够为多个工业界的真实编码器正确的产生带有流控和流水线的解码器。
+该算法能够为多个工业界的真实编码器正确的产生带有流控和流水线的解码器，
+且时序性能相对于传统的对偶综合算法产生的非流水解码器有巨大的提升。
+
+
 
 本文剩余部分如下组织。
 %小节\ref{sec_prem} 介绍相关的背景知识；

@@ -62,7 +62,7 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 为了提升工作频率，
 通常包含多个流水线级，
 以将关键的数据路径划分为多级。
-而传统的对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+而传统的对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 完全无视这种流水线结构，
 从而导致生成的解码器无法保持和编码器匹配的频率和性能。
 为此，
@@ -146,9 +146,5 @@ FEC 解码算法的复杂性远比编码高得多，
 
 应对并解决这些困难和挑战，
 将极大的推进 FEC 的形式化验证和对偶综合方面的研究，
-并进而提升面向通讯和多媒体的集成电路芯片设计质量，
-并缩短设计周期。
-同时，
-本项目所提出的算法，
-也将极大的推动与有限域相关的其他领域，
-如密码学的形式化方法研究。
+并进而提升面向通讯和多媒体的集成电路芯片设计质量。
+
