@@ -21,5 +21,7 @@
 \contentsline {figure}{\numberline {5.5}{\ignorespaces 推导非最后一级流水线时，上标和下标的同步递减关系\relax }}{58}{figure.caption.40}
 \contentsline {figure}{\numberline {6.1}{\ignorespaces 带有流控机制的编码器\relax }}{64}{figure.caption.43}
 \contentsline {figure}{\numberline {6.2}{\ignorespaces 带有流水线和流控机制的编码器\relax }}{64}{figure.caption.44}
-\contentsline {figure}{\numberline {6.3}{\ignorespaces 使用削减的输出序列恢复输入\relax }}{65}{figure.caption.45}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces 使用削减的输出序列恢复输入\relax }}{66}{figure.caption.45}
+\contentsline {figure}{\numberline {7.1}{\ignorespaces 原型系统的结构\relax }}{76}{figure.caption.51}
+\contentsline {figure}{\numberline {7.2}{\ignorespaces 自动机模型的简化描述的例子\relax }}{77}{figure.caption.52}
 \contentsfinish 

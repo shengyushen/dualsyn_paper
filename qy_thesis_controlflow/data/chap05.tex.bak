@@ -6,16 +6,18 @@
 在通讯和多媒体芯片设计项目中，
 最困难的一个工作是针对特定的协议，
 如以太网\upcite{IEEE8023_S4} 和PCI Express \upcite{pcie21}，
-设计相应的编码器和解码器.
+设计相应的编码器和解码器。
 其中编码器负责将输入$\vec{i}$ 映射至输出$\vec{o}$，
 而解码器则负责从$\vec{o}$中恢复$\vec{i}$。
-对偶综合\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
-假设$\vec{i}$ 总能够被$\vec{o}$的一个有限序列唯一决定，
+为了降低此项工作的难度并提高设计质量，
+国防科技大学的Shen et al.首先提出了对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 以自动产生相应的解码器。
-其中，
-解码器的布尔函数可以使用Jiang et al. \upcite{InterpBoolFunction}提出的算法，
-该算法基于Craig插值\upcite{Craig}。
+该算法的一个基本假设是：
+$\vec{i}$ 总能够被$\vec{o}$的一个有限序列唯一决定。
+基于该假设，
+解码器的布尔函数可以使用Jiang et al. \upcite{InterpBoolFunction}提出的基于Craig插值\upcite{Craig}的算法进行特征化。
 
+与此同时，
 通过研究现有的工业界编码器，我们发现他们都含有流水线结构以提高运行频率。
 \begin{figure}[b]
 \begin{center}
@@ -25,23 +27,23 @@
   \label{fig_pipe}
 \end{figure}
 
-一个带有流水线的简单编码器如图\ref{fig_pipe}a)所示。
-他的关键数据路径被第一级流水线切割成为两段，
+图\ref{fig_pipe}a)展示了一个带有一级流水线的简单编码器。
+其关键数据路径被第一级流水线切割成为两段，
 从而使得运行频率得到两倍的提升。
 
-他的第一级流水线$\vec{stg}^0$ 包含数个寄存器。
-其中输入变量$\vec{i}$ 被用于计算该级流水线$\vec{stg}^0$，
-而流水线$\vec{stg}^0$ 则被用于计算$\vec{o}$。
+它的第一级流水线$\vec{stg}^0$ 包含数个状态变量。
+输入变量$\vec{i}$ 被用于计算该级流水线$\vec{stg}^0$，
+而$\vec{stg}^0$ 则被用于计算$\vec{o}$。
 根据该结构，
-$\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
-而$\vec{i}$ 能够被$\vec{stg}^0$唯一决定。
+$\vec{stg}^0$ 能够反过来被$\vec{o}$唯一决定，
+而$\vec{i}$ 则进一步能够被$\vec{stg}^0$唯一决定。
 
 因此，
-一个由人类程序员设计的合理解码器，
+一个由人类工程师设计的合理解码器，
 应当如图\ref{fig_pipe}b)所示，
 从$\vec{o}$ 中使用组合逻辑$C^1$恢复$\vec{stg}^0$ ，
 并进一步使用组合逻辑$C^0$从$\vec{stg}^0$ 中恢复$\vec{i}$ 。
-在此类解码器中，
+在该解码器中，
 关键路径被流水线级$\vec{stg}^0$切断，
 以改善时序。
 
@@ -49,16 +51,25 @@ $\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
 
 然而，
 目前所有的对偶综合算法\upcite{ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
-均使用Jiang提出的基于\upcite{Craig}的算法 \upcite{InterpBoolFunction}。
+均使用Jiang提出的基于Craig插值\upcite{Craig}的算法 \upcite{InterpBoolFunction}特征化解码器的布尔函数，
+并产生解码器。
 如图\ref{fig_pipe}c)所示，
-这些算法从$\vec{o}$中使用一个大型组合逻辑$C^0*C^1$直接恢复$\vec{i}$，
+这些算法产生的解码器从$\vec{o}$中使用一个大型组合逻辑$C^0*C^1$直接恢复$\vec{i}$，
 这使得他们变得不必要的很慢，因为没有流水线寄存器切断这段复杂逻辑。
 
-为了产生如图\ref{fig_pipe}b) 所示的解码器，
-本文提出了一个新颖的算法。首先找到编码器中每一个流水线级$\vec{stg}^j$中的寄存器，
-然后特征化每一个流水线级$\vec{stg}^j$的布尔函数，
+为此，
+本文提出了一个新颖的算法以产生如图\ref{fig_pipe}b) 所示的带有流水线的解码器。
+首先，
+通过将早期的完备停机对偶综合算法\ref{alg_pcln_chap1}进行适当扩展，
+以用于测试任意两个周期中，
+任意变量相互之间是否能够唯一决定。
+并使用该扩展算法找到编码器中每一个流水线级$\vec{stg}^j$中的寄存器。
+其次，
+基于上述算法中产生的不可满足公式，
+使用Craig插值特征化每一个流水线级$\vec{stg}^j$的布尔函数，
 以从下一个流水线级$\vec{stg}^{j+1}$ 或输出$\vec{o}$之中恢复$\vec{stg}^j$。
-最终特征化$\vec{i}$的布尔函数以从
+最后，
+使用类似算法特征化$\vec{i}$的布尔函数以从
 第一个流水线级$\vec{stg}^0$中恢复$\vec{i}$。
 
 %\begin{figure}[t]
@@ -69,10 +80,13 @@ $\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
 %  \label{fig_pc}
 %\end{figure}
 
-在复杂的工业界实际编码器，
+为了展示该算法的有效性，
+我们在多个复杂的工业界实际编码器，
 如PCI Express \upcite{pcie21} 和以太网\upcite{IEEE8023_S4}，
-上的实验表明，
-该算法总能够产生带有流水线级的快速解码器。.
+上进行了实验。
+实验结果表明，
+该算法总能够产生流水线解码器，
+且时序性能相对于传统的对偶综合算法产生的非流水解码器有巨大的提升。
 
 
 \emph{本文剩余的内容安排如下}.
@@ -334,7 +348,12 @@ $\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
 \subsection{流水线的一般性模型}
 如图\ref{fig_pipeenc_chap4}所示，
 我们假设
-编码器有$n$ 级流水线。
+该编码器的状态向量$\vec{s}$可以划分为$n$ 级流水线，即：
+
+\begin{equation}\label{eqn_partition_S}
+\vec{s}\equiv \bigcup _{0\le j\le n-1} \vec{stg}^j
+\end{equation}
+
 如果我们把组合逻辑$C^j$ 视为一个函数，
 则编码器可以用下列的公式表示：
 
@@ -377,9 +396,14 @@ $\vec{stg}^j$ 是第$j$个流水线级。
 表示在展开的迁移关系序列中的步数。
 例如：$\vec{stg}^j_k$ 则是该第$j$流水线级
 在展开的迁移函数序列中的第$k$步的值。
-这在图\ref{fig_pipeencexp_chap4}中给出了直观的表示方式。
-该图展示了图\ref{fig_pipeenc_chap4}的各个流水线级在展开的迁移函数序列中的记法。
+图\ref{fig_pipeencexp_chap4}直观地展示了图\ref{fig_pipeenc_chap4}中的各个流水线级在展开的迁移函数序列中的记法。
+根据公式(\ref{eqn_partition_S})，
+$\vec{s}_k$实际上包含了所有流水线级在第$k$步的取值，
+即：
 
+\begin{equation}\label{eqn_partition_Sk}
+\vec{s}_k\equiv \bigcup _{0\le j\le n-1} \vec{stg}^j_k
+\end{equation}
 
 \subsection{推导$p$， $l$ 和$r$}\label{subsec_inferplr}
 在推导之前，
@@ -391,7 +415,7 @@ $\vec{stg}^j$ 是第$j$个流水线级。
 
 然后我们将最终的$p$，$l$ 和$r$ 设置为所有$i\in \vec{i}$中最大的$p$， $l$ 和$r$ 。
 根据公式(\ref{uniqt1})，
-这些$p$， $l$ 和$r$ 能够使得$<o_{p},\dots,o_{p+l+r}>$ 唯一决定所有$i_{p+l}\in \vec{i}_{p+l}$。
+这些$p$， $l$ 和$r$ 能够使得$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定所有$i_{p+l}\in \vec{i}_{p+l}$。
 
 
 \subsection{压缩$r$ 和$l$}\label{reduceing}
@@ -437,11 +461,10 @@ $F_{PC}(p,l,0)$ 已经在上一次迭代中被测试过，
  \item 如图\ref{fig_pc1_chap4}所示，
  $l$ 可以被压缩为0，
  这意味着$\vec{i}_{p}$ 能够被$<\vec{o}_{p},\dots,\vec{o}_{p+r}>$唯一决定，
- 也就是说，
- 所有的将来输出。
+ 也就是所有的未来输出向量。
  \item 上述的序列$<\vec{o}_{p},\dots,\vec{o}_{p+r}>$
  可以被进一步压缩为$\vec{o}_{p+r}$.
- 这意味着$\vec{o}_{p+r}$ 是在恢复$\vec{i}_p$时唯一被需要的输出。
+ 这意味着$\vec{o}_{p+r}$ 是在恢复$\vec{i}_p$时唯一被需要的输出向量。
 \end{enumerate}
 
 检查上述两个要求等价于以下公式的不可满足：
@@ -473,7 +496,7 @@ F'_{PC}(p,r):=
 
 该等式看起来似乎远强于等式(\ref{uniqt1})。
 我们将在实验结果中指出，
-该等式总是不满足的。
+该等式总是不可满足的。
 
 \begin{figure}[t]
 \begin{center}
@@ -557,7 +580,7 @@ $\vec{o}$在同一个第$p+r$步唯一决定的$s\in \vec{s}$。
 \begin{center}
 \includegraphics[width=\textwidth]{pipemodexpn_2_pipeline}
 \end{center}
-\caption{}
+\caption{推导非最后一级流水线时，上标和下标的同步递减关系}
   \label{fig_pipemodexpn_2_pipeline}
 \end{figure}
 
@@ -584,7 +607,8 @@ $\vec{o}$在同一个第$p+r$步唯一决定。
 $\vec{stg}^{n-1}$在第$p+r$步唯一决定。
 
 将上述讨论一般化的推广到任意的$0\le j\le n-2$，
-则$\vec{stg}^j$ 在第$j-((n-2)-(p+r-1))$步
+则很容易发现$\vec{stg}$的上标和下标具有同步递减关系。
+因此$\vec{stg}^j$ 在第$j-((n-2)-(p+r-1))$步
 可以被$\vec{stg}^{j+1}$ 在第$j-((n-2)-(p+r-1))+1$步唯一决定。
 因此定义第$j$个流水线级$\vec{stg}^j$ 为：
 
@@ -609,7 +633,7 @@ D              :=  (n-2)-(p+r-1)
 \end{equation}
 
 在等式(\ref{stgnS_def_chap4})中，
-所有所有属于第k级流水线，
+所有属于第$k$级流水线，
 其中$k>j$，
 的寄存器都被从状态向量$\vec{s}$中剔除。
 
@@ -619,14 +643,14 @@ D              :=  (n-2)-(p+r-1)
 \subsubsection{推导唯一决定输入的流水线级}\label{subsec_inferinput}
 
 根据图\ref{fig_pipeenc_chap4}，
- 定义于(\ref{stgn_j}) 的$\vec{stg}^0$是唯一决定$\vec{i}$的流水线级。
+定义于等式(\ref{stgn_j}) 的$\vec{stg}^0$是唯一决定$\vec{i}$的流水线级。
 
-然而在实际的解码器中，
+然而在实际的编码器中，
 并不一定是这种情形。
 因此我们需要从$0$ 到$n-1$，
 搜索最小的$j$ 使得
 $\vec{i}$ 能够被$\vec{stg}^j$唯一决定。
-即，
+即
 最小的能够使得$F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ 对所有$i\in \vec{i}$不可满足的$j$。
 其中$D$ 定义于等式(\ref{stgn_def_chap4})。
 
@@ -635,8 +659,9 @@ $\vec{i}$ 能够被$\vec{stg}^j$唯一决定。
 
 根据等式(\ref{stgn_1})，
 每个寄存器$s\in \vec{stg}^{n-1}$ 都能够被$\vec{o}$ 在第$p+r$步唯一决定。
-即，
-$F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 不可满足，且可以被划分为：
+即
+$F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 不可满足。
+我们可以将该公式划分为：
 
 \begin{equation}
  \phi_A :=
@@ -675,19 +700,20 @@ $F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 不可满足，且可以被划分为：
 因此$\phi_A \wedge \phi_B$ 也是不可满足的。
 而$\phi_A$ 和$\phi_B$ 的共同变量集合是$\vec{o}_{p+r}$。
 
-根据文献\upcite{InterpBoolFunction}，
-$\phi_A$ 相对于$\phi_B$的Craig插值$\phi_I$  可以构造出来，
-其中仅包含$\vec{o}_{p+r}$，
-并覆盖所有使$s_{p+r}\equiv 1$得$\vec{o}_{p+r}$ 的赋值。
+
+$\phi_A$ 相对于$\phi_B$的Craig插值$\phi_I$ 可以使用McMillian算法\upcite{InterpBoolFunction}构造出来，
+其中仅引用$\phi_A$ 和$\phi_B$ 的共同变量集合$\vec{o}_{p+r}$，
+并覆盖所有使$s_{p+r}\equiv 1$的$\vec{o}_{p+r}$ 的赋值。
 同时，
 $\phi_I\wedge \phi_B$  不可满足，
 这意味着$\phi_I$ 不能使$s_{p+r}\equiv 0$。
 
 因此，
-$\phi_I$ 能作为解码器的布尔函数以从$\vec{o}$中恢复$s\in \vec{stg}^{n-1}$ 。
+$\phi_I$ 可以作为解码器的布尔函数以从$\vec{o}$中恢复$s\in \vec{stg}^{n-1}$ 。
 
 \subsection{特征化其他流水线级的布尔函数}
 类似于上一小节，
+为了特征化非最后一级流水线$\vec{stg}^j$的布尔函数，
 我们可以将公式(\ref{stgn_j})中的不可满足公式$F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)$
 划分如下：
 
@@ -724,7 +750,7 @@ $\phi_I$ 能作为解码器的布尔函数以从$\vec{o}$中恢复$s\in \vec{stg
 % \end{split}
 \end{equation}
 
-$\phi_A$ 相对于$\phi_B$的Craig 插值$\phi_I$  能够被构造出来，
+$\phi_A$ 相对于$\phi_B$的Craig 插值$\phi_I$  可以使用McMillian算法\upcite{InterpBoolFunction}构造出来，
 并作为从$\vec{stg}^{j+1}$恢复$s\in \vec{stg}^{j}$的布尔函数。
 
 \subsection{特征化输入变量的布尔函数}
@@ -783,7 +809,7 @@ $\phi_A$ 相对于$\phi_B$的Craig 插值$\phi_I$
 使用一台包含16 个Intel Xeon E5648 2.67GHz处理器，
 192GB 存储器， 和CentOS 5.4 Linux操作系统的服务器。
 
-表\ref{tab_bench_chap4} 给出了本文使用的benchmarks 。
+表\ref{tab_bench_chap4} 给出了本文使用的测试机 。
 第2和3列分别给出了每个benchmark的输入， 输出和寄存器数量。
 第4列将这些编码器映射至LSI10K 库的面积。
 本文中，
@@ -1004,7 +1030,4 @@ scrambler  &64       & 58      & 1034 & inserting                             & 
 本文提出了第一个能够处理流水线的对偶综合算法。
 实验结果表明，
 本算法能够针对多个复杂的实际工业界编码器，
-正确的推导流水线结构并生成对应的流水线解码器。.
-
-
-
+正确的推导流水线结构并生成对应的流水线解码器。

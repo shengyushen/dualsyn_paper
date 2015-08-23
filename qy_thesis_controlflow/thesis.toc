@@ -24,7 +24,7 @@
 \contentsline {chapter}{\numberline {2}相关研究}{19}{chapter.2}
 \contentsline {section}{\numberline {2.1}对偶综合}{19}{section.2.1}
 \contentsline {section}{\numberline {2.2}程序求反}{19}{section.2.2}
-\contentsline {section}{\numberline {2.3}协议转换}{19}{section.2.3}
+\contentsline {section}{\numberline {2.3}协议转换}{20}{section.2.3}
 \contentsline {section}{\numberline {2.4}可满足赋值遍历和量词削减}{20}{section.2.4}
 \contentsline {section}{\numberline {2.5}基于Craig插值的逻辑综合算法}{20}{section.2.5}
 \contentsline {section}{\numberline {2.6}本章小结}{21}{section.2.6}
@@ -91,18 +91,32 @@
 \contentsline {subsection}{\numberline {6.3.3}推导每一级流水线上的控制流谓词$valid(\mathaccentV {vec}17E{f}^j)$}{67}{subsection.6.3.3}
 \contentsline {section}{\numberline {6.4}特征化流水线级和输入的布尔函数}{69}{section.6.4}
 \contentsline {subsection}{\numberline {6.4.1}特征化最后一个流水线级的布尔函数}{69}{subsection.6.4.1}
-\contentsline {subsection}{\numberline {6.4.2}特征化恢复其他流水线级的布尔函数}{69}{subsection.6.4.2}
+\contentsline {subsection}{\numberline {6.4.2}特征化恢复其他流水线级的布尔函数}{70}{subsection.6.4.2}
 \contentsline {subsection}{\numberline {6.4.3}特征化从第0级流水线恢复输入向量的布尔函数}{70}{subsection.6.4.3}
-\contentsline {section}{\numberline {6.5}实验结果}{70}{section.6.5}
-\contentsline {subsection}{\numberline {6.5.1}比较时间和面积}{70}{subsection.6.5.1}
+\contentsline {section}{\numberline {6.5}实验结果}{71}{section.6.5}
+\contentsline {subsection}{\numberline {6.5.1}比较时间和面积}{71}{subsection.6.5.1}
 \contentsline {subsection}{\numberline {6.5.2}PCIE推导的流水线结构}{71}{subsection.6.5.2}
-\contentsline {subsection}{\numberline {6.5.3}xgxs推导的流水线结构}{71}{subsection.6.5.3}
-\contentsline {subsection}{\numberline {6.5.4}t2ether推导的流水线结构}{72}{subsection.6.5.4}
-\contentsline {section}{\numberline {6.6}结论}{73}{section.6.6}
-\contentsline {chapter}{\numberline {7}结束语}{75}{chapter.7}
-\contentsline {section}{\numberline {7.1}工作总结}{75}{section.7.1}
-\contentsline {section}{\numberline {7.2}研究展望}{76}{section.7.2}
-\contentsline {chapter}{致谢}{79}{chapter*.51}
-\contentsline {chapter}{参考文献}{81}{section*.52}
-\contentsline {chapter}{作者在学期间取得的学术成果}{89}{chapter*.54}
+\contentsline {subsection}{\numberline {6.5.3}xgxs推导的流水线结构}{72}{subsection.6.5.3}
+\contentsline {subsection}{\numberline {6.5.4}t2ether推导的流水线结构}{73}{subsection.6.5.4}
+\contentsline {section}{\numberline {6.6}结论}{74}{section.6.6}
+\contentsline {chapter}{\numberline {7}原型系统的实现}{75}{chapter.7}
+\contentsline {section}{\numberline {7.1}整体结构}{75}{section.7.1}
+\contentsline {subsection}{\numberline {7.1.1}使用DesignCompiler产生编码器的化简代码}{75}{subsection.7.1.1}
+\contentsline {subsection}{\numberline {7.1.2}语法分析模块}{75}{subsection.7.1.2}
+\contentsline {subsection}{\numberline {7.1.3}AIG模块}{77}{subsection.7.1.3}
+\contentsline {subsection}{\numberline {7.1.4}MiniSat求解器}{77}{subsection.7.1.4}
+\contentsline {subsection}{\numberline {7.1.5}BDD}{77}{subsection.7.1.5}
+\contentsline {subsection}{\numberline {7.1.6}Craig插值模块}{77}{subsection.7.1.6}
+\contentsline {section}{\numberline {7.2}主要流程}{77}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}语法分析和有限状态机的构造}{78}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}SAT求解}{78}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.3}Craig插值}{78}{subsection.7.2.3}
+\contentsline {subsection}{\numberline {7.2.4}基于余因子和Craig插值的迭代}{78}{subsection.7.2.4}
+\contentsline {section}{\numberline {7.3}结论}{78}{section.7.3}
+\contentsline {chapter}{\numberline {8}结束语}{79}{chapter.8}
+\contentsline {section}{\numberline {8.1}工作总结}{79}{section.8.1}
+\contentsline {section}{\numberline {8.2}研究展望}{80}{section.8.2}
+\contentsline {chapter}{致谢}{83}{chapter*.54}
+\contentsline {chapter}{参考文献}{85}{section*.55}
+\contentsline {chapter}{作者在学期间取得的学术成果}{93}{chapter*.57}
 \contentsfinish 

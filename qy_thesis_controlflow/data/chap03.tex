@@ -354,7 +354,7 @@ $ITP(\vec{a})$ 将在行\ref{add}被加入$FSAT_R(\vec{a})$  并在行\ref{tests
 这意味着$FSAT_R(\vec{a})$ 覆盖了$\vec{a}$的一个有界并且单调增长的赋值集合。
 因此算法\ref{alg_craigchar} 是停机的。
 
-\section{可选的BDD整理和化简}
+\section{可选的BDD整理和化简}\label{sec_bdd_simp}
 
 上述由迭代特征化算法产生的函数，
 本质上是一系列Craig插值结果的析取。
@@ -380,7 +380,7 @@ Craig插值结果是一个包含大量自由组合的与门和或门的电路，
 我们提出了基于BDD的整理算法。
 利用BDD本身的规范性(canonical)，
 首先将Craig插值结果转换为BDD，
-然后使用CUDD工具包提供的遍历功能，
+然后使用CUDD工具包\ref{cudd}提供的遍历功能，
 遍历并导出每个Cube，
 形成多个合取项的析取形式。
 

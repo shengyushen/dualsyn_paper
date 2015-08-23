@@ -11,6 +11,11 @@
 %
 %The incomplete problem has been addressed by \upcite{ShengYuShen:fmcad10}, while \upcite{ShengYuShen:tcad} addresses the second shortcoming by simplifying the SAT instance with unsatisfiable core extraction before building decoders.
 
+本章简述了与对偶综合相关的各个研究领域的进展。
+其中对偶综合、程序求反和协议转换在目的方面与本文的研究内容相同或者相似。
+而可满足赋值遍历和量词削减，以及基于Craig插值的逻辑综合算法，
+则和本文的算法所使用的使能手段相关。
+
 \section{对偶综合}\label{subsec_compsyn_relat}
 Shen et al. \upcite{ShenICCAD09}首次提出了对偶综合的概念。
 该算法通过迭代的增加迁移函数的展开长度以检查解码器是否存在，
@@ -23,9 +28,10 @@ Shen et al.\upcite{ShenTCAD11} 和Liu et al.\upcite{LiuICCAD11} 独立的发现�
 而Shen et al.\upcite{ShenTCAD12}和Liu et al.\upcite{LiuICCAD11} 独立的发现可以通过Craig插值加速解码器的生成。
 
 Shen et al. \upcite{ShenTCAD12} 自动的发掘能够使得解码器存在的前提条件。
-%该算法可视为本文算法\ref{algo_infer}的特例。
-%% to prevent the encoder from leaving the unique state set.
-%而本文算法\ref{algo_infer}则是第一个允许在不同状态步上使用不同谓词的算法。
+该算法可视为本文算法\ref{algo_infer}的特例。
+他们之间的差别在于，
+Shen et al. \upcite{ShenTCAD12}的算法得到的是一个必须在每个周期上都必须强制的约束，
+而本文算法\ref{algo_infer}则是第一个允许在不同状态步上使用不同谓词的算法。
 
 Tu et al.\upcite{TuDAC13}提出了一个突破性的算法，
 通过使用属性指导的可达性分析算法\upcite{BradleyVMCAI11,EenFMCAD11}，

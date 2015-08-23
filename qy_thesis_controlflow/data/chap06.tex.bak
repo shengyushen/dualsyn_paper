@@ -3,7 +3,7 @@
 
 % !Mode:: "Tex:UTF-8"
 \chapter{面向流控机制和流水线的对偶综合}
-\label{chap:4}
+\label{chap:6}
 
 \section{引言}\label{sec_intro}
 在通讯和多媒体芯片设计项目中，
@@ -23,14 +23,11 @@
 如图\ref{fig_fc}b)所示，
 空闲字符$I$
 只能唯一决定$\vec{i}$的一部分而非全部，
-我们称之为流控向量$\vec{f}$。
+我们称这一部分为流控向量$\vec{f}$。
 而正常的编码结果$D_i$ 能
 唯一决定所有输入
 包括流控向量$\vec{f}$ 和数据向量$\vec{d}$。
 
-Qin et al. \upcite{QinTODAES15} 首次提出了能够处理流控机制的对偶综合算法。
-该算法首先找到所有的能够被$\vec{o}$唯一决定的$i\in\vec{f}$。
-然后推导一个能使得$\vec{d}$ 被$\vec{o}$唯一决定的谓词$valid(\vec{f})$。
 
 \begin{figure}[t]
 \centering
@@ -48,31 +45,46 @@ Qin et al. \upcite{QinTODAES15} 首次提出了能够处理流控机制的对偶
 
 
 
-同时，
+另一方面，
 如图\ref{fig_pipeenc}所示，
 许多编码器
-包含流水线级$\vec{stg}^j$ 已将关键的数据路径划分为多个子段$C^j$，
-这样有助于提高性能。
+包含流水线级$\vec{stg}^j$ 以将关键的数据路径划分为多个子段$C^j$，
+以提高运行频率。
 类似于$\vec{i}$，
-每个流水线级$\vec{stg}^j$ 也可以划分为留空向量$\vec{f}^j$ 和数据向量$\vec{d}^j$。
+每个流水线级$\vec{stg}^j$ 也可以划分为流控向量$\vec{f}^j$ 和数据向量$\vec{d}^j$。
 
-然而由秦et al. 的算法\upcite{QinTODAES15} 产生的解码器并不包含流水线。
-这使得其运行速度远低于相应的编码器。
+Qin et al. \upcite{QinTODAES15} 首次提出了能够处理流控机制的对偶综合算法。
+该算法首先找到所有的能够被$\vec{o}$唯一决定的$i\in\vec{f}$。
+然后推导一个能使得$\vec{d}$ 被$\vec{o}$唯一决定的谓词$valid(\vec{f})$。
+
+然而Qin et al. 的算法\upcite{QinTODAES15}在处理流控机制的同时，
+却无法处理流水线结构。
+这导致其产生的解码器不包含流水线，
+并进而使得其运行频率远低于相应的编码器。
 为了解决该问题，
-本文提出了一个全新的算法以为此类编码器产生带有流控机制和流水线的解码器。
-该算法首先使用秦et al. \upcite{QinTODAES15}的算法来寻找$\vec{f}$ 并推导$valid(\vec{f})$。
+本文提出了一个全新的算法，
+以为此类同时包含流控机制和流水线的编码器，
+产生同样带有流控和流水线的解码器。
+该算法首先使用Qin et al. \upcite{QinTODAES15}的算法来寻找流控向量$\vec{f}$ 并推导流控谓词$valid(\vec{f})$。
 然后分别通过强制和不强制$valid(\vec{f})$，
-以从所有寄存器集合中找到每一个寄存器级$\vec{stg}^j$的$\vec{d}^j$ 和$\vec{f}^j$。
+以从所有寄存器集合中找到每一个寄存器级$\vec{stg}^j$的数据向量$\vec{d}^j$ 和流控向量$\vec{f}^j$。
 最后通过Jiang et al. \upcite{InterpBoolFunction}的算法特征化$\vec{stg}^j$ 和$\vec{i}$的布尔函数。
 
+为了展示该算法的有效性，
+我们在多个复杂的工业界实际编码器，
+如PCI Express \upcite{pcie21} 和以太网\upcite{IEEE8023_S4}，
+上进行了实验。
 实验结果表明，
-该算法能够为多个工业界的真实编码器正确的产生带有流控和流水线的解码器。
+该算法能够为多个工业界的真实编码器正确的产生带有流控和流水线的解码器，
+且时序性能相对于传统的对偶综合算法产生的非流水解码器有巨大的提升。
+
+
 
 本文剩余部分如下组织。
 %小节\ref{sec_prem} 介绍相关的背景知识；
 小节\ref{sec_framework} 介绍本文算法的整体结构；
 小节\ref{sec_pipeinfer} 找到每一个流水线级$\vec{stg}^j$中的$\vec{f}^j$ 和$\vec{d}^j$ 。
-小节\ref{sec_char} 为$\vec{stg}^j$ 和$\vec{i}$特征化布尔函数。
+小节\ref{sec_char_chap6} 为$\vec{stg}^j$ 和$\vec{i}$特征化布尔函数。
 小节\ref{sec_exp} 和\ref{sec_conclude} 分别给出实验结果和结论。
 
 
@@ -527,7 +539,7 @@ Qin et al. \upcite{QinTODAES15} 首次提出了能够处理流控机制的对偶
 每一个流水线级$\vec{stg}^j$ 能够被进一步划分为流控向量$\vec{f}^j$ 和数据向量$\vec{d}^j$。
 而输入向量$\vec{i}$，
 和\upcite{QinTODAES15}一样，
-也能被划分为留空向量$\vec{f}$ 和数据向量$\vec{d}$。
+也能被划分为流控向量$\vec{f}$ 和数据向量$\vec{d}$。
 如果将组合逻辑块$C^j$ 视为一个函数，
 则该编码器可以使用下列等式定义：
 
@@ -557,8 +569,8 @@ Qin et al. \upcite{QinTODAES15} 首次提出了能够处理流控机制的对偶
 始终意味着在展开的迁移关系序列中的步。
 例如，
 $\vec{stg}^j$ 是第$j$个流水线级。
-而$\vec{stg}^j_i$ 该第$j$流水线级
-在第$i$步的取值。
+而$\vec{stg}^j_k$ 是该第$j$流水线级
+在第$k$步的取值。
 
 \subsection{算法框架}\label{algo_algoframework}
 
@@ -571,9 +583,9 @@ $\vec{stg}^j$ 是第$j$个流水线级。
  被唯一决定的$valid(\vec{f})$和其对应的$p$， $l$ 和$r$。
  \item 在小节\ref{sec_pipeinfer}，
  找到每一个流水线级$\vec{stg}^j$中的$\vec{f}^j$ 和$\vec{d}^j$ 。
- \item 在小节\ref{sec_char}，
- 为每一个流水线级$\vec{stg}^j$
- 和输入向量 $\vec{i}$特征化布尔函数。
+ \item 在小节\ref{sec_char_chap6}中特征化每一个流水线级$\vec{stg}^j$和输入$\vec{i}$的布尔函数，
+ 即图\ref{fig_pipeenc}中每一个组合逻辑函数$C^j$的反$(C^j)^{-1}$。
+ 以构造最终的解码器。
 \end{enumerate}
 
 
@@ -667,7 +679,7 @@ F'_{PC}(p,r):=
 
 
 该要求看起来远远强于(\ref{uniqt1})。
-我们将在实验结果中指出他们总能够满足。
+我们将在实验结果中指出他们总是不可满足的。
 
 
 
@@ -889,7 +901,7 @@ valid(\vec{f}^j):=\neg FSAT^j_{PC}(p,l,r)
 
 
 
-\section{特征化流水线级和输入的布尔函数}\label{sec_char}
+\section{特征化流水线级和输入的布尔函数}\label{sec_char_chap6}
 \subsection{特征化最后一个流水线级的布尔函数}
 
 从公式(\ref{stgn_fj})可知，
@@ -1058,7 +1070,7 @@ $\phi_A$ 相对于$\phi_B$的Craig插值$\phi_I$
 192GB 内存， 和CentOS 5.4 Linux操作系统的服务器上。
 
 \subsection{比较时间和面积}
-表\ref{tab_bench} 给出本文中使用的benchmark。
+表\ref{tab_bench} 给出本文中使用的测试电路。
 第2和3分别给出输入，输出和寄存器个数。
 第4列给出了将编码器映射至LSI10K 库所得到的面积。
 本文中，
@@ -1098,7 +1110,7 @@ scrambler  &64/64    & 58      & 1034 & inserting                               
 延迟得到了明显的改善。
 
 一个比较令人惊讶的事实是，
-两个最大的benchmarks scrambler 和xfi 并不包含流水线。
+两个最大的测试电路 scrambler 和xfi 并不包含流水线。
 我们研究并确认了这一点。
 他们的面积如此之大是因为使用了很宽的64到72 位数据路径。
 

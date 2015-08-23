@@ -1,150 +1,120 @@
 % !Mode:: "Tex:UTF-8"
-\chapter{结束语}
+\chapter{原型系统的实现}
 \label{chap:7}
-本章对全文进行总结，并对进一步研究工作进行展望。
-\section{工作总结}
-对偶综合是集成电路设计，
-尤其是面向通讯和多媒体芯片设计研究中的重要问题。
-本文针对现代通讯协议的编码器中广泛采用的流水线和流控机制，
-以提高所产生的解码器的性能和对环境的适应性为研究目标，
-系统地研究了对偶综合中的一些重要问题。
-具体而言，本文主要对以下几个重要问题进行了深入研究。
+本章针对本文中实现的各个算法的原型系统，
+描述他们的整体结构，
+各个子系统的功能，
+以及这些子系统相互之间的关系和流程。
 
-第一，研究了基于余因子(Cofactoring)和Craig插值\upcite{Craig}的迭代特征化算法。
-在发掘编码器内部结构和自动产生解码器的过程中，
-一个必须而且对性能要求非常苛刻的步骤，
-是特征化满足特定命题逻辑关系$R$的布尔函数$f$。
-传统的算法包括基于SAT或BDD的完全解遍历和和量词削减。
-然而这些算法通常受到解空间不规则的困扰，
-导致性能低下。
-为此，
-我们创造性的提出了一个迭代的特征化算法框架。
-在每一次迭代中，
-为每一个尚未被遍历的解$A$，
-利用其对应的余因子化简$R$以满足产生Craig插值要求。
-而该插值是$A$的一个充分扩展。
-该迭代过程是停机的，
-且其性能比传统的完全解遍历算法有巨大的提升。
+\section{整体结构}
 
-第二，研究了针对流控机制的对偶综合算法。
-传统对偶综合算法的\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}的一个基本假设是，
-编码器的输入变量$\vec{i}$总能够被输出变量$\vec{o}$的一个有限长度序列唯一决定。
-基于该假设方可构造满足Craig插值的不可满足公式。
-然而，
-许多高速通讯系统的编码器所带有流控机制\upcite{flowcontrol}，
-直接违反了上述假设。
-该机制将$\vec{i}$划分为有待编码的数据向量$\vec{d}$和用以表达$\vec{d}$有效性的流控向量$\vec{f}$，
-并在$\vec{f}$上定义一个有效性谓词$valid(\vec{f})$。
-只有在$valid(\vec{f})\equiv 1$的情形下，
-$\vec{d}$才能够被$\vec{o}$唯一决定。
-为此，
-我们创造性的提出了能够处理流控机制的对偶综合算法：
-\textbf{首先},
-它使用经典的对偶综合算法\upcite{ShenTCAD11}
-以识别那些能够被唯一决定的输入变量，
-并称他们为流控变量$\vec{f}$。
-而其他不能被唯一决定的变量称为数据变量$\vec{d}$。
-\textbf{第二}，该算法推导一个充分必要谓词$valid(\vec{f})$使得$\vec{d}$能够被
-输出变量$\vec{o}$的一个有限长度序列唯一决定。
-\textbf{第三},
-对于每一个流控变量$f\in\vec{f}$，
-该算法使用Craig插值算法\upcite{interp_McMillan}特征化其解码器函数。
-同时，
-对于数据变量$\vec{d}$，
-他们的值只有在$valid(\vec{f}) \equiv 1$时才有意义。
-因此每个$d\in\vec{d}$的解码器函数可以类似的使用Craig插值算法得到，
-唯一的不同在于必须首先应用谓词$valid(\vec{f}) \equiv 1$。
+原型系统的结构如图\ref{fig_sysarch}所示。
 
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\textwidth]{sysarch}
+\caption{原型系统的结构}
+\label{fig_sysarch}
+\end{figure}
 
-第三，研究了针对流水线结构的对偶综合算法。
-现代集成电路中的编码器，
-为了提升工作频率，
-通常包含多个流水线级，
-以将关键的数据路径划分为多级。
-而传统的对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
-完全无视这种流水线结构，
-从而导致生成的解码器无法保持和编码器匹配的频率和性能。
-为此，
-我们创造性的提出了能够产生流水解码器的对偶综合算法：
-首先将传统对偶综合算法推广到非输入输出情形，
-以找到编码器中每一个流水线级$\vec{stg}^j$中的寄存器集合；
-然后使用迭代Craig插值算法特征化每一个流水线级$\vec{stg}^j$的布尔函数，
-以从下一个流水线级$\vec{stg}^{j+1}$ 或输出$\vec{o}$之中恢复$\vec{stg}^j$。
-最终特征化$\vec{i}$的布尔函数以从
-第一个流水线级$\vec{stg}^0$中恢复$\vec{i}$。
-
-第四，结合上述研究成果，研究了能够同时处理流控和流水线结构的对偶综合算法。
-该算法首先使用秦et al. \upcite{QinTODAES15}的算法来寻找$\vec{f}$ 并推导$valid(\vec{f})$。
-然后分别通过强制和不强制$valid(\vec{f})$，
-已从所有寄存器集合中找到每一个寄存器级$\vec{stg}^j$的$\vec{d}^j$ 和$\vec{f}^j$。
-最后通过Jiang et al. \upcite{InterpBoolFunction}的算法特征化$\vec{stg}^j$ 和$\vec{i}$的布尔函数。
-
-综上所述，
-本文对基于白盒模型的对偶综合算法中若干关键问题进行了深入的研究，
-提出了针对流控和流水线结构的解决方案。
-理论分析和实验结果验证了所提出算法的有效性和性能，
-对于进一步促进对偶综合算法的发展和应用具有一定的理论意义和应用价值。
-
-\section{研究展望}
-近两年来,随着 100G以太网\upcite{ether100g}、128G光纤通道\upcite{fc}和InfiniBand EDR\upcite{InfiniBand}的出现，
-单通道传输带宽达到 25~32Gbps。
-从而导致高频衰减在标准的背板传输距离上超过了 30dB，
-并使其无法达到以太网标准要求的 $10^{-12}$ 误码率\upcite{fecopt}。
-而工业界最新的实验性 56Gbps串行传输技术仅能在 11 英寸以内的距离上保证 $10^{-12}$误码率\upcite{nrz56g}。
-为了克服上述误码率问题，
-基于有限域(Galois field)\upcite{gfbook}的前向纠错编码(FEC)\upcite{fec}被广泛采用于100G以太网\upcite{ether100g}、128G光纤通道\upcite{fc}和InfiniBand EDR\upcite{InfiniBand}等全新的传输标准中。
-该纠错机制的特点及其对目前的对偶综合算法的挑战如下:
-
-1. 前向纠错编码设计者和集成电路工程师之间在知识背景和抽象层次上的差异，
-导致无法很好的协作完成纠错码的集成电路实现。
-一方面，
-前向纠错编码设计者专注于有限域等抽象数学领域，
-使用诸如singular\upcite{singularbook}等数学工具，
-在抽象数学的层面上对FEC进行推理。
-然而，
-将上述抽象的数学对象映射到集成电路的寄存器传输级描述的工作，
-需要由集成电路工程师完成。
-而后者关注的是流水线分级、布尔逻辑功能和物理时序等工程细节。
-这种知识背景和抽象层次上的差异，
-有可能在前向纠错编码(FEC)的集成电路实现上产生潜在的缺陷。
-因此就带来了在寄存器传输级上，
-对前向纠错编码(FEC)进行形式化验证和对偶综合的强烈需求。
-
-2. 前向纠错编码(FEC)中的有限域算术操作无法使用布尔逻辑推理引擎进行高效推理。
-包括对偶综合在内的绝大多数形式化方法依赖于高效的布尔逻辑推理引擎，
-包括命题逻辑可满足求解器(SAT)\upcite{DBLP:conf/dac/MoskewiczMZZM01}和二叉判决图(BDD)\upcite{DBLP:journals/tc/Bryant86}。
-而在将有限域算术操作映射到布尔逻辑的过程中，
-会产生大量的异或操作。
-这极大的削弱了SAT和BDD的效率。
-近年来致力于验证纠错编码的多篇论文均指出了这一点\upcite{ShenTCAD10,TuDAC13,DBLP:conf/fmcad/LvovLPSE12,DBLP:journals/fmsd/LvovLTPSE14}。
-
-3. 前向纠错编码(FEC)中的长帧将导致对偶综合的巨大运算开销。
-现有的对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenTCAD12,ShenICCAD11,LiuICCAD11,LiuTCAD12,TuDAC13}通过逐步的扩大迁移关系的展开长度，
-以找到一个特定大小的移动窗口，
-使得该窗口内的输出序列能够唯一决定当前的输入字符。
-在我们使用的多个工业界标准编码器中，
-该窗口大小均不超过 5。
-然而在FEC中，
-为了尽量减小校验码所占用的带宽，
-通常会选择很长的FEC帧尺寸。
-比如在IEEE 802.3bj定义的 100G以太网中\upcite{ether100g}，
-每个FEC帧包含 5280 个比特。
-在典型的 250~260 位数据路径宽度上，
-这将导致移动窗口的尺寸至少为 20。
-这超出了目前为止所有对偶综合算法的处理能力。
+其中核心算法可以是前述的三个算法，包括：
+\begin{enumerate}
+\item 第\ref{chap:4}章的面向流控机制的对偶综合算法。
+\item 第\ref{chap:5}章的面向流水线的对偶综合算法。
+\item 第\ref{chap:6}章的面向流控和流水线的对偶综合算法。
+\end{enumerate}
 
 
-4. 前向纠错编码(FEC)的非对称结构和阻塞式的解码算法，
-导致现有的对偶综合算法无法产生规则而高效的解码器结构。
-正如我们将在下文中指出的，
-FEC 解码算法的复杂性远比编码高得多，
-而且并不存在线性流水线式的实现，
-必须在一个完整的 FEC 帧上经过多次迭代处理方能完成。
-这和我们现有对偶综合框架中，
-对解码器结构的线性流水线假设有很大区别。
+上述三个算法虽然内部结构各不相同，
+但是他们与其他各个子系统的关系是完全一样的，
+都如图\ref{fig_sysarch}所示。
 
-应对并解决这些困难和挑战，
-将极大的推进 FEC 的形式化验证和对偶综合方面的研究，
-并进而提升面向通讯和多媒体的集成电路芯片设计质量。
+以下各个小节中我们将详细描述各个子系统的功能。
 
+\subsection{使用DesignCompiler产生编码器的化简代码}
+
+设计编码器的工程师在编写代码的时候，
+为了追求更强的表达能力，
+更紧凑的代码，
+或者更好的可读性等原因，
+会使用Verilog语言\ref{Verilog}提供的各种复杂语法结构。
+而开发一个能分析完整的Verilog语法结构的语法分析器会导致大量不必要的工作量。
+
+因此，
+我们选择使用DesignCompiler工具\ref{DesignCompiler}中自带的完整语法分析器来分析复杂的源代码。
+
+然后我们在DesignCompiler中，
+将语法分析的结果映射到DesignCompiler自带的LSI10K单元库中。
+为了在保持语义的前提下进一步简化分析结果的语法形式，
+我们限制在该映射过程中只能使用与门和非门两种组合逻辑单元。
+
+然后我们将映射的结果导出为一个相对较大但是结构非常简单的Verilog源代码文件。
+其中只包含一种与门，一种非门和一种寄存器。
+这就极大的简化了后继的语法分析程序的设计。
+
+
+\subsection{语法分析模块}
+我们使用OCaml语言自带的词法分析工具OCamllex和语义分析工具OCamlyacc创建了针对上述简化的编码器代码的词法和语法分析程序。
+词法分析程序的代码在\url{https://github.com/shengyushen/compsyn/blob/master/vp/share/very.mll}。
+而语法分析程序的代码在\url{https://github.com/shengyushen/compsyn/blob/master/vp/share/parser.mly}。
+
+分析的结果将被转换为一个有向图$(V,E)$。
+其中$V$是节点集合，包含以下类型的节点：
+\begin{enumerate}
+\item 输入变量$i\in\vec{i}$，
+包含1个输出；
+\item 输出变量$o\in\vec{o}$，
+包含一个输入；
+\item 与门，
+包含两个输入(A,B)和一个输出Z；
+\item 非门，
+包含一个输入A和一个输出Z；
+\item 寄存器，
+包含一个输入D和一个输出Q；
+\end{enumerate}
+
+而每条边$e\in E$是单向的，
+从一个节点的输出指向另一个节点的输入。
+如图\ref{fig_dag}所示。
+
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\textwidth]{dag}
+\caption{自动机模型的简化描述的例子}
+\label{fig_dag}
+\end{figure}
+
+
+\subsection{AIG模块}
+
+AIG是And-Inverter graph的缩写，
+即如图\ref{fig_dag}所示的电路结构。
+该模块用于构造和维护AIG数据结构，
+并负责从AIG到CNF公式的转换。
+
+\subsection{MiniSat求解器}
+
+MiniSat求解器\upcite{EXTSAT}是目前应用最为广泛的SAT求解器。
+在2010年左右曾经是最快的。
+目前尽管已经有不少新的求解器在性能上超过了MiniSat，
+但是由于MiniSat在结构的模块化和可修改性方面具有显著优势，
+因此被大量用作理论相关求解器的基础，如数组、未解释函数和线性等式/不等式等。
+
+基于同样的原因，
+MiniSat提供了从其自身的C语言内核到Ocaml语言的接口。
+这为我们在对偶综合算法中调用MiniSat求解器，
+并获取其求解结果提供了很大的便利。
+
+\subsection{BDD}
+我们使用了学术界广泛使用并经过长期验证的CUDD软件包\url{cudd}来处理BDD数据结构。
+主要应用于小节\ref{sec_bdd_simp}中描述的基于BDD的化简算法。
+
+
+\subsection{Craig插值模块}
+该模块使用MiniSat求解器的Ocaml接口，
+以得到不可满足公式的不可满足证明。
+并依据小节\ref{sec_craigimp}中定义\ref{def_gencraig}描述的过程产生Craig插值。
+
+\section{主要流程}

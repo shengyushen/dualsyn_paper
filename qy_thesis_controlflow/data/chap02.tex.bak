@@ -10,7 +10,11 @@
 %and its run-time overhead of building decoder is too large.
 %
 %The incomplete problem has been addressed by \upcite{ShengYuShen:fmcad10}, while \upcite{ShengYuShen:tcad} addresses the second shortcoming by simplifying the SAT instance with unsatisfiable core extraction before building decoders.
-由于对偶综合的研究现状已经在小节\ref{sec_now}给出了详细描述，
+
+本章简述了与对偶综合相关的各个研究领域的进展。
+其中对偶综合、程序求反和协议转换在目的方面与本文的研究内容相同或者相似。
+而
+
 \section{对偶综合}\label{subsec_compsyn_relat}
 Shen et al. \upcite{ShenICCAD09}首次提出了对偶综合的概念。
 该算法通过迭代的增加迁移函数的展开长度以检查解码器是否存在，
