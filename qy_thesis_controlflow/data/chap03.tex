@@ -25,11 +25,6 @@
 对$\vec{a}$的任意取值$x\in[\![\vec{a}]\!]$，
 均存在且仅存在唯一的$y\in[\![\vec{b}]\!]$，
 使得$R(x,y)$。
-在实际的软硬件设计与验证领域，
-存在大量的情况需要从一个关系中获得相应的函数。
-如在自动激励生成算法中从约束描述产生相应的激励函数\upcite{DBLP:conf/dac/YuanAAP03}，
-证明导引抽象中的抽象模型构造\upcite{DBLP:conf/fmcad/AmlaM04}，
-以及本文中推导控制流谓词和特征化解码器等。
 
 以图\ref{fig_relation}为例。
 对于图\ref{fig_relation}a)中的一对一映射，
@@ -52,13 +47,19 @@ R=
 \right\}
 \end{equation}
 
-\begin{figure}[t]
+\begin{figure}[b]
 \begin{center}
 \includegraphics[width=0.8\textwidth]{relation}
 \end{center}
 \caption{关系和函数的布尔映射}
   \label{fig_relation}
 \end{figure}
+
+在实际的软硬件设计与验证领域，
+存在大量的情况需要从一个关系中获得相应的函数。
+如在自动激励生成算法中从约束描述产生相应的激励函数\upcite{DBLP:conf/dac/YuanAAP03}，
+证明导引抽象中的抽象模型构造\upcite{DBLP:conf/fmcad/AmlaM04}，
+以及本文中推导控制流谓词和特征化解码器等。
 
 为此，
 我们在本章中提出了基于余因子(Cofactor)\upcite{EFFSATUSMCCO}和Craig插值\upcite{Craig}的迭代特征化算法，
@@ -67,11 +68,12 @@ R=
 在本章中，
 我们首先在小节\ref{sec_craigimp}描述Craig插值的基本原理，
 然后在小节\ref{sec_craigchar}中将其应用至一种受限的特殊情况下以求解特征化函数。
-最后在小节\ref{sec_iterativecraig}中将其扩展到包含额外变量的更一般情形。
+最后在小节\ref{sec_iterativecraig}中通过迭代调用上述受限算法，
+以将其扩展到包含额外变量的更一般情形。
 
 \section{Craig插值的原理和实现}\label{sec_craigimp}
 注意本小节描述的Craig插值原理不是我们的原创，
-而是为了方便上下文的叙述从\upcite{DBLP:conf/cav/McMillan03} 移植至此。
+而是为了方便上下文的叙述从\upcite{interp_McMillan} 移植至此。
 \subsection{相关背景知识和记法}
 在通常的SAT求解器，
 包括本文使用的MiniSat\upcite{EXTSAT}中，
@@ -80,7 +82,7 @@ R=
 而每一个短句是多个文字的析取(disjunction)，
 而每个文字是一个布尔变量$v$或者其反$\neg v$。
 如公式$(v_0\vee\neg v_1\vee v_2)\wedge(v_1\vee v_2)\wedge(\neg v_0\vee v_2)$，
-包含短句$v_0\vee\neg v_1\vee v_2$,$v_1\vee v_2$和$\neg v_0\vee v_2$。
+包含短句$v_0\vee\neg v_1\vee v_2$，$v_1\vee v_2$和$\neg v_0\vee v_2$。
 而短句$v_0\vee\neg v_1\vee v_2$包含文字$v_0$， $\neg v_1$和$v_2$。
 
 当存在一个变量$v$，
@@ -99,8 +101,8 @@ R=
 \subsection{不可满足证明}
 对于两个短句$c_1=v\vee B$和$c_2=\neg v\vee C$，
 当$A\vee B$是非tautological的时，
-$A\vee B$称为他们的resolvant。
-而$v$称为他们的pivot。
+$A\vee B$称为它们的\textbf{resolvant}。
+而$v$称为它们的\textbf{pivot}。
 易知以下事实：
 
 \begin{equation}
@@ -115,13 +117,13 @@ $A\vee B$称为他们的resolvant。
 假设其短句集合为$C$，
 则其不可满足证明$\Pi$是一个有向无环图$(V_{\Pi},E_{\Pi})$，
 其中$V_{\Pi}$是短句集合，
-而$E_{\Pi}$是链接$V_{\Pi}$中节点的边集合。
+而$E_{\Pi}$是连接$V_{\Pi}$中短句的有向边集合。
 $\Pi$满足如下要求：
 \begin{enumerate}
 \item 对于节点$c\in V_{\Pi}$：
   \begin{enumerate}
     \item 要么$c\in C$，此时称$c$为$\Pi$的根
-    \item 或者$c$有且仅有两个predecessors $c_1$和$c_2$，
+    \item 或者$c$有且仅有两个扇入边$c_1\to c$和$c_2\to c$，
     使得$c$是$c_1$和$c_2$的resolvant。
   \end{enumerate}
 \item 空短句是$\Pi$的唯一一个叶节点。
@@ -132,7 +134,7 @@ $\Pi$满足如下要求：
 $\Pi$就是一棵树，
 以短句集合$C$的子集为根，
 以空短句为唯一叶节点。
-而每个节点的两个扇入边代表了一个resolving关系。
+而每个节点$c$的两个扇入边$c_1\to c$和$c_2\to c$代表了一个resolving关系$c:=resolvant(c_1,c_2)$。
 
 包括本文使用的MiniSat求解器\upcite{EXTSAT}在内的许多SAT求解器，
 当公式不可满足时都将产生一个不可满足证明$\Pi$。
@@ -152,7 +154,7 @@ McMillan算法\upcite{interp_McMillan} 。
 其基本原理描述如下。
 
 对于上述公式$A$和$B$，
-已知$A\cup B$不可满足，
+已知$A\wedge B$不可满足，
 而$\Pi$是SAT求解器给出的不可满足证明。
 当一个变量$v$同时出现在$A$和$B$中时，
 我们称其为全局变量。
@@ -179,7 +181,7 @@ $l(c_2)=FALSE$。
 
 \begin{definition}\label{def_gencraig}
 令$(A,B)$为一对公式，
-而$\Pi$是$A\cup B$的不可满足证明，
+而$\Pi$是$A\wedge B$的不可满足证明，
 且其唯一叶节点是空短句$FALSE$。
 对于每一个节点$c\in V_{\Pi}$，
 令$p(c)$为如下定义的一个公式：
@@ -198,7 +200,7 @@ $l(c_2)=FALSE$。
 \end{definition}
 
 上述定义\ref{def_gencraig}是构造性的，
-已经给出了从$\Pi$得到最终的插值的算法，
+已经给出了从不可满足证明$\Pi$得到最终的Craig插值的算法，
 即以$\Pi$的根节点为起点，
 为每一个$c$计算相应的$p(c)$，
 直至到达最终的唯一叶节点$FALSE$。
@@ -217,7 +219,7 @@ $A$相对于$B$的Craig插值。
 而所产生的插值可以视为一个电路，
 其空间复杂性为$|O(N+L)|$。
 当然，
-$\Pi$的尺寸在最坏情况下也是$A\cup B$的尺寸的指数。
+$\Pi$的尺寸在最坏情况下也是$A\wedge B$的尺寸的指数。
 
 
 
@@ -233,9 +235,9 @@ $R(\vec{a},1)\wedge R(\vec{a},0)$不可满足。
 
 \begin{enumerate}
 \item $R(\vec{a},1)\to \Pi$，
-这说明$\Pi$覆盖了所有能够使得$R(\vec{a},1)$的$\vec{a}$。
+这说明$\Pi$覆盖了所有能够使得$R(\vec{a},1)$可满足的$[\![\vec{a}]\!]$。
 \item $R(\vec{a},0)\wedge \Pi$不可满足，
-这说明$\Pi$没有覆盖任何使得$R(\vec{a},0)$的$\vec{a}$。
+这说明$\Pi$没有覆盖任何使得$R(\vec{a},0)$可满足的$[\![\vec{a}]\!]$。
 \item $\Pi$仅引用了$R(\vec{a},0)$和$R(\vec{a},1)$的共同变量集合$\vec{a}$。
 这说明$\Pi$是一个定义在$\vec{a}$上的函数。
 \end{enumerate}
@@ -278,10 +280,10 @@ FSAT_R(\vec{a}):=
 因此，
 一个计算$FSAT_R(\vec{a})$ 的简单算法是：
 逐一遍历并收集所有使得$R(\vec{a},\vec{b},1)$ 可满足的$\vec{a}$的赋值。
-然而该算法需要处理$2^{|\vec{a}|}$中情况。
+然而该算法需要处理$2^{|\vec{a}|}$种情况。
 对于很长的$\vec{a}$，时间开销将会很大。
 
-使用cofactoring \upcite{EFFSATUSMCCO} 和Craig 插值\upcite{interp_McMillan}，
+使用余因子化(cofactoring) \upcite{EFFSATUSMCCO} 和Craig 插值\upcite{interp_McMillan}，
 可以将每一个$\vec{a}$ 扩展为一个更大的集合，
 从而极大的提高算法运行速度。
 直观的，
@@ -301,7 +303,7 @@ FSAT_R(\vec{a}):=
 \STATE $FSAT_R(\vec{a}):= 0$ ;
 \WHILE { $R(\vec{a},\vec{b},1)\wedge\neg FSAT_R(\vec{a})$ 是可满足的}
 \label{testsat}
-  \STATE 假设 $A:\vec{a}\cup\vec{b}\cup\{t\}\rightarrow \{0,1\}$ 可满足赋值函数;
+  \STATE 假设 $A:\vec{a}\cup\vec{b}\cup\{t\}\rightarrow \{0,1\}$ 是可满足赋值函数;
   \STATE $\phi_A(\vec{a}):= R(\vec{a},A(\vec{b}),1)$ ;
 \label{cofact1}
   \STATE $\phi_B(\vec{a}):= R(\vec{a},A(\vec{b}),0)$ ;
@@ -317,12 +319,12 @@ FSAT_R(\vec{a}):=
 
 \begin{equation}
 % \begin{split}
-R(\vec{a},A(\vec{b}),1):=R(\vec{a},\vec{b},1)_{b\equiv A(b)}
+R(\vec{a},A(\vec{b}),1):=R(\vec{a},\vec{b},1)\wedge b\equiv A(b)
 % \end{split}
 \end{equation}
 \begin{equation}
 % \begin{split}
-R(\vec{a},A(\vec{b}),0):=R(\vec{a},\vec{b},0)_{b\equiv A(b)}
+R(\vec{a},A(\vec{b}),0):=R(\vec{a},\vec{b},0) \wedge b\equiv A(b)
 % \end{split}
 \end{equation}
 
@@ -337,11 +339,11 @@ $ITP(\vec{a})$ 覆盖且仅覆盖了所有使得$R(\vec{a},A(\vec{b}),1)$ 可满
 
 基于上述讨论，
 我们提出了算法\ref{alg_craigchar} 以特征化等式(\ref{fchar})中的$FSAT_R(\vec{a})$。
-行\ref{testsat}检测是否仍然存在尚未被$FSAT_R(\vec{a})$覆盖的$\vec{a}$ ，
-使得$R(\vec{a},\vec{b},1)$ 可满足。
+行\ref{testsat}检测是否仍然存在尚未被$FSAT_R(\vec{a})$覆盖，
+且使得$R(\vec{a},\vec{b},1)$ 可满足的$\vec{a}$ 。
 行\ref{cofact1} 和\ref{cofact2} 将可满足赋值中$\vec{b}$的取值分别赋予
 $R(\vec{a},\vec{b},1)$ 和$R(\vec{a},\vec{b},0)$ 。
-这将使得$\vec{b}$ 不在出现在这两个公式中。
+这将使得$\vec{b}$ 不再出现在这两个公式中。
 
 因此，
 $\phi_A\wedge \phi_B$ 在行\ref{ab} 是不可满足的。
@@ -360,7 +362,7 @@ $ITP(\vec{a})$ 将在行\ref{add}被加入$FSAT_R(\vec{a})$  并在行\ref{tests
 本质上是一系列Craig插值结果的析取。
 然而，
 正如小节\ref{sec_craigchar}所指出的，
-Craig插值结果是一个包含大量自由组合的与门和或门的电路，
+Craig插值结果是一个包含大量自由组合的与门、或门和反相器的电路，
 结构非常不规则。
 
 对于不同的应用需求，
@@ -368,7 +370,7 @@ Craig插值结果是一个包含大量自由组合的与门和或门的电路，
 \begin{enumerate}
 \item 对于特征化解码器的情形，
 由于这些解码器在进行物理实现的时候，
-还需要经由Design Compiler这样的逻辑综合器进行处理。
+还需要经由Design Compiler\upcite{DesignCompiler}这样的逻辑综合器进行处理，
 而这些工具具有非常强大的优化能力。
 因此不规则的Craig插值结果并不会对此类应用产生不良影响。
 \item 然而对于特征化控制流谓词这样的应用，
@@ -380,11 +382,11 @@ Craig插值结果是一个包含大量自由组合的与门和或门的电路，
 我们提出了基于BDD的整理算法。
 利用BDD本身的规范性(canonical)，
 首先将Craig插值结果转换为BDD，
-然后使用CUDD工具包\ref{cudd}提供的遍历功能，
+然后使用CUDD工具包\upcite{cudd}提供的遍历功能，
 遍历并导出每个Cube，
 形成多个合取项的析取形式。
 
-该方法的具有其独特的优点和缺点,
+该方法的具有其独特的优点和缺点，
 并进而导致了对其应用场合的不同选择：
 
 \begin{enumerate}

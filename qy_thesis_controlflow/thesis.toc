@@ -6,9 +6,9 @@
 \contentsline {subsection}{\numberline {1.1.2}命题逻辑可满足性问题}{2}{subsection.1.1.2}
 \contentsline {subsubsection}{\numberline {1.1.2.1}Tseitin编码}{2}{subsubsection.1.1.2.1}
 \contentsline {subsubsection}{\numberline {1.1.2.2}SAT问题的简单解法}{3}{subsubsection.1.1.2.2}
-\contentsline {subsubsection}{\numberline {1.1.2.3}布尔约束传播(BCP)}{3}{subsubsection.1.1.2.3}
+\contentsline {subsubsection}{\numberline {1.1.2.3}布尔约束传播(BCP)}{4}{subsubsection.1.1.2.3}
 \contentsline {subsubsection}{\numberline {1.1.2.4}冲突指导的短句学习}{4}{subsubsection.1.1.2.4}
-\contentsline {subsubsection}{\numberline {1.1.2.5}MiniSat 求解器的递增求解机制}{4}{subsubsection.1.1.2.5}
+\contentsline {subsubsection}{\numberline {1.1.2.5}MiniSat 求解器的递增求解机制}{5}{subsubsection.1.1.2.5}
 \contentsline {subsection}{\numberline {1.1.3}有限状态机}{5}{subsection.1.1.3}
 \contentsline {subsection}{\numberline {1.1.4}基于迁移关系(函数)展开的形式化验证算法的一般性原理}{6}{subsection.1.1.4}
 \contentsline {section}{\numberline {1.2}对偶综合研究现状}{7}{section.1.2}
@@ -16,33 +16,35 @@
 \contentsline {subsection}{\numberline {1.2.2}完备停机算法}{10}{subsection.1.2.2}
 \contentsline {subsection}{\numberline {1.2.3}在对偶综合领域的其他的相关工作}{12}{subsection.1.2.3}
 \contentsline {section}{\numberline {1.3}基于白盒模型的对偶综合}{13}{section.1.3}
-\contentsline {subsubsection}{\numberline {1.3.0.1}流控机制}{13}{subsubsection.1.3.0.1}
-\contentsline {subsubsection}{\numberline {1.3.0.2}流水线结构}{14}{subsubsection.1.3.0.2}
-\contentsline {subsection}{\numberline {1.3.1}面临的挑战}{15}{subsection.1.3.1}
+\contentsline {subsection}{\numberline {1.3.1}研究意义}{13}{subsection.1.3.1}
+\contentsline {subsubsection}{\numberline {1.3.1.1}流控机制}{13}{subsubsection.1.3.1.1}
+\contentsline {subsubsection}{\numberline {1.3.1.2}流水线结构}{14}{subsubsection.1.3.1.2}
+\contentsline {subsection}{\numberline {1.3.2}面临的挑战}{15}{subsection.1.3.2}
 \contentsline {section}{\numberline {1.4}研究内容与创新点}{15}{section.1.4}
 \contentsline {section}{\numberline {1.5}论文组织结构}{16}{section.1.5}
 \contentsline {chapter}{\numberline {2}相关研究}{19}{chapter.2}
 \contentsline {section}{\numberline {2.1}对偶综合}{19}{section.2.1}
 \contentsline {section}{\numberline {2.2}程序求反}{19}{section.2.2}
-\contentsline {section}{\numberline {2.3}协议转换}{20}{section.2.3}
-\contentsline {section}{\numberline {2.4}可满足赋值遍历和量词削减}{20}{section.2.4}
-\contentsline {section}{\numberline {2.5}基于Craig插值的逻辑综合算法}{20}{section.2.5}
-\contentsline {section}{\numberline {2.6}本章小结}{21}{section.2.6}
+\contentsline {section}{\numberline {2.3}超属性(Hyperproperty)模型检验}{20}{section.2.3}
+\contentsline {section}{\numberline {2.4}协议转换}{20}{section.2.4}
+\contentsline {section}{\numberline {2.5}可满足赋值遍历和量词削减}{20}{section.2.5}
+\contentsline {section}{\numberline {2.6}基于Craig插值的逻辑综合算法}{21}{section.2.6}
+\contentsline {section}{\numberline {2.7}本章小结}{21}{section.2.7}
 \contentsline {chapter}{\numberline {3}基于余因子和Craig插值的迭代特征化算法}{23}{chapter.3}
 \contentsline {section}{\numberline {3.1}引言}{23}{section.3.1}
-\contentsline {section}{\numberline {3.2}Craig插值的原理和实现}{23}{section.3.2}
+\contentsline {section}{\numberline {3.2}Craig插值的原理和实现}{24}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}相关背景知识和记法}{24}{subsection.3.2.1}
 \contentsline {subsection}{\numberline {3.2.2}不可满足证明}{24}{subsection.3.2.2}
 \contentsline {subsection}{\numberline {3.2.3}Craig插值算法}{25}{subsection.3.2.3}
 \contentsline {section}{\numberline {3.3}非迭代的特征化算法}{26}{section.3.3}
-\contentsline {section}{\numberline {3.4}迭代的特征化算法}{26}{section.3.4}
+\contentsline {section}{\numberline {3.4}迭代的特征化算法}{27}{section.3.4}
 \contentsline {section}{\numberline {3.5}可选的BDD整理和化简}{28}{section.3.5}
 \contentsline {section}{\numberline {3.6}本章小结}{29}{section.3.6}
 \contentsline {chapter}{\numberline {4}面向流控机制的对偶综合}{31}{chapter.4}
 \contentsline {section}{\numberline {4.1} 引言}{31}{section.4.1}
 \contentsline {section}{\numberline {4.2}识别流控变量}{32}{section.4.2}
 \contentsline {subsection}{\numberline {4.2.1}识别流控变量$\mathaccentV {vec}17E{f}$}{32}{subsection.4.2.1}
-\contentsline {subsection}{\numberline {4.2.2}使用增量SAT求解加速识别算法}{33}{subsection.4.2.2}
+\contentsline {subsection}{\numberline {4.2.2}使用增量SAT求解器加速识别算法}{33}{subsection.4.2.2}
 \contentsline {section}{\numberline {4.3}推导使得数据变量向量被唯一决定的谓词}{34}{section.4.3}
 \contentsline {subsection}{\numberline {4.3.1}计算$valid(\mathaccentV {vec}17E{f})$的单调增长的下估计}{36}{subsection.4.3.1}
 \contentsline {subsection}{\numberline {4.3.2}计算$valid(\mathaccentV {vec}17E{f})$的单调递减上估计}{37}{subsection.4.3.2}
@@ -118,5 +120,5 @@
 \contentsline {section}{\numberline {8.2}研究展望}{80}{section.8.2}
 \contentsline {chapter}{致谢}{83}{chapter*.54}
 \contentsline {chapter}{参考文献}{85}{section*.55}
-\contentsline {chapter}{作者在学期间取得的学术成果}{93}{chapter*.57}
+\contentsline {chapter}{作者在学期间取得的学术成果}{95}{chapter*.57}
 \contentsfinish 

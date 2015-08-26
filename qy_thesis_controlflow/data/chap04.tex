@@ -33,13 +33,13 @@
 其中编码器将输入变量$\vec{i}$映射到输出变量$\vec{o}$.
 而解码器则从$\vec{o}$中恢复$\vec{i}$。
 对偶综合算法
-\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 通过自动生成特定编码器的解码器以降低该工作的复杂度并提高结果的可靠性。
 该算法的一个前提假设是，
 编码器的输入变量$\vec{i}$总能够被输出变量$\vec{o}$的一个有限长度序列唯一决定。
 
 然而，
-许多高速通讯系统的编码器带有流控功能\upcite{flowcontrol}，
+许多高速通讯系统的编码器带有流控机制\upcite{flowcontrol}，
 而该功能直接违反了上述假设。
 图\ref{fig:nonuniq}a)展示了一个带有流控机制的通讯系统的结构。
 其中一个传输器(transmitter)和一个接收器(receiver)通过一个编码器(encoder)和一个解码器(decoder)连接在一起。
@@ -49,7 +49,7 @@
 图\ref{fig:nonuniq}b)给出了编码器如何将
 $f$和$d$映射到输出变量$\vec{o}$的编码表。
 
-流控机制的工作原理为：
+该流控机制的工作原理为：
 \begin{enumerate}
 \item
 当接收器能够跟上发送器的速度时，
@@ -68,7 +68,7 @@ $f$和$d$映射到输出变量$\vec{o}$的编码表。
 
 上述流控机制能够防止快速发送器发送过多数据以至于接收器无法处理。
 然而该机制违反了迄今为止所有对偶综合算法
-\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+\upcite{ShenICCAD09,ShenICCAD11,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 的基本假设，
 因为$d$无法被$I$唯一决定。
 很明显，
@@ -95,19 +95,19 @@ $d$是无意义的，可以无需考虑。
 该算法在$\vec{f}$上特征化一个流控谓词$valid(\vec{f})$，
 使得剩余的所有输入变量均能被输出唯一决定。
 最后，
-该算法产生解码器的布尔函数。
+该算法调用Craig插值算法\upcite{interp_McMillan}产生解码器的布尔函数。
 
-该算法的第二步类似于\upcite{ShenTCAD12}，
+该算法的第二步类似于Shen et al.\upcite{ShenTCAD12}，
 因为他们都试图得到使得$\vec{d}$或者$\vec{i}$被唯一决定的谓词。
-然而他们的根本区别在于
+然而他们的根本区别在于文献
 \upcite{ShenTCAD12}的算法推导的是一个全局谓词，
-必须在整个展开的迁移关系上都成立。
+必须在整个展开的迁移关系序列上都成立。
 % so that the encoder eventually reaches and never leaves the unique state set,
 而本文算法得到的是仅应用于当前步的谓词，以恢复$\vec{d}$。
-因此本文算法可以视为\upcite{ShenTCAD12}的一般化。
+因此本文算法可以视为文献\upcite{ShenTCAD12}的一般化。
 
 实验结果表明，
-对于多个来自于工业界的复杂编码器(如以太网 \upcite{IEEE8023_S4}和PCI Express \upcite{pcie21})，
+对于多个来自于工业界的复杂编码器(如以太网 \upcite{IEEE8023_S4}和PCI Express \upcite{pcie})，
 本文算法总能够正确的识别流控变量$\vec{f}$，
 推导谓词$valid(\vec{f})$，
 并产生解码器。
@@ -581,7 +581,7 @@ $d$ 也将被算法\ref{alg_fofc}识别为流控变量。
 因为这些$d$的解码器函数也将在节\ref{sec_char_chap3}中被正确特征化。
 
 
-\subsection{使用增量SAT求解加速识别算法}\label{incSAT}
+\subsection{使用增量SAT求解器加速识别算法}\label{incSAT}
 
 通过小节\ref{subsec_incsat}中的MiniSat增量求解机制，
 我们能进一步加速算法\ref{alg_fofc} 。
@@ -695,10 +695,10 @@ A_{LN}(p,l,r):=
 
 
 很明显$C_{PC}$ 和$C_{LN}$ 是独立于特定$i\in \vec{i}$的，
-所以他们可以使用$addClause(C_{PC})$ 或$addClause(C_{LN})$来被添加进入MiniSat的短句数据库。
+所以可以使用$addClause(C_{PC})$ 或$addClause(C_{LN})$来将它们一次性添加进入MiniSat的短句数据库。
 于此同时，
 $A_{PC}$ 和$A_{LN}$ 中的短句只包含单个文字，
-因此他们可以作为调用$solve$ 函数时的假设集合。
+因此它们可以作为调用$solve$ 函数时的假设集合。
 
 因此，
 基于上述等式，
@@ -835,10 +835,8 @@ $A_{PC}$ 和$A_{LN}$ 中的短句只包含单个文字，
 
 
 如图\ref{fig_mono_chap3}所示，
-我们将首先在小节\ref{subsub_nonloop}中定义$\neg FSAT_{PC}(p,l,r)$，
-$valid(\vec{f})$ 的一个单调增长的下估计。
-然后我们将在小节\ref{subsub_loop}中定义$\neg FSAT_{LN}(p,l,r)$，
-$valid(\vec{f})$ 的一个单调递减的上估计。
+我们将首先在小节\ref{subsub_nonloop}中定义$valid(\vec{f})$ 的一个单调增长的下估计。
+然后我们将在小节\ref{subsub_loop}中定义$valid(\vec{f})$ 的一个单调递减的上估计。
 然后在小节\ref{subsub_overal}中我们指出这两个估计将收敛至$valid(\vec{f})$ 。
 小节\ref{subsec_proofterm}将证明该算法的正确性。
 
@@ -936,9 +934,9 @@ F'^d_{PC}(p,l,r,t):=
 % $\vec{f}_{p+l}$ can be uniquely determined,
 % so we do not need to consider $\vec{f'}_{p+l}$.
 则$\vec{a}\cup\vec{b}$ 包含了两个迁移函数展开序列上的所有输入状态向量$<\vec{i}_0,\dots,\vec{i}_{p+l+r}>$ and $<\vec{i'}_0,\dots,\vec{i'}_{p+l+r}>$。
-他同时也包含了两个展开序列的初始状态$\vec{s}_0$ 和 $\vec{s'}_0$。
+它同时也包含了两个展开序列的初始状态$\vec{s}_0$ 和 $\vec{s'}_0$。
 进一步的，
-等式(\ref{fpcq})前两行的迁移关系$T$
+等式(\ref{fpcq})前两行的迁移关系序列
 能够从输入序列和初始状态唯一的计算出输出序列。
 因此$\vec{a}$ 和$\vec{b}$ 能够唯一决定$F'^d_{PC}(p,l,r,t)$中$t$ 的取值。
 因此，
@@ -1124,7 +1122,7 @@ $\neg FSAT_{PC}(p,l,r)$即为$valid(\vec{f})$。
 
 直观的，
 如图\ref{fig_pcmap}所示，
-通过将$(p'+l')$和$(p+l)$步对准，
+通过将第$(p'+l')$和$(p+l)$步对准，
 我们能够将$F'^d_{PC}(p',l',r',1)$的状态变量，输入变量和输出变量赋值映射到$F'^d_{PC}(p,l,r,1)$。
 并淘汰前置和后置的状态序列。
 形式化的，
@@ -1169,7 +1167,7 @@ $FSAT_{PC}(p,l,r)$ 针对$p$， $l$ 和$r$单调递减。
 \end{lemma}
 \begin{proof}
 对于任意$p'>p$，$l'>l$ 和$r'>l$，
-假设$A:\vec{f}_{p+l}\to B$ 是流控变量子在第$(p+l)$步的赋值。
+假设$A:\vec{f}_{p+l}\to B$ 是流控变量在第$(p+l)$步的赋值。
 进一步假设$A$ 被$FSAT_{LN}(p,l,r)$覆盖。
 
 因此$A$能够使$F'^d_{LN}(p,l,r,1)$ 可满足。
@@ -1267,7 +1265,7 @@ $\vec{d}$ 对特定的$p$， $l$ 和$r$不能被唯一决定。
 
 \subsection{压缩$l$ 和$r$}\label{reduceing_chap3}
 由于我们在算法\ref{algo_infer}中同步增长$p$，$l$ 和$r$的值。
-这导致他们的值有可能包含冗余。
+这导致它们的值有可能包含冗余。
 这将导致产生的解码器的面积和时序上有不必要的额外开销。
 
 例如，
@@ -1275,8 +1273,8 @@ $\vec{d}$ 对特定的$p$， $l$ 和$r$不能被唯一决定。
 其功能为$o:=i$。
 当$p\equiv 0$，$l\equiv 0$ 和$r\equiv 0$时，
 我们能够得到最简单的解码器$i:=o$。
-该解码器只包含一个buffer，而不包含寄存器。而对于$p\equiv 0$，$l\equiv 0$ 和$r\equiv 1$，
-我们则需要一个额外的寄存器以将$o$ 延迟一步，
+该解码器只包含一个buffer，而不包含状态变量。而对于$p\equiv 0$，$l\equiv 0$ 和$r\equiv 1$，
+我们则需要一个额外的状态变量以将$o$ 延迟一步，
 然后从延迟的$o$中回复$i_i$。
 
 根据图\ref{fig_pc_double}，
@@ -1521,7 +1519,7 @@ $ITP$ 是$d\in\vec{d}$的解码器函数。
                  & 名字      &    个数   &      个数   &电路  & 编码器                               &处理\\
                  &           & in/ouy    &  reg/gate   &面积  &   描述                               & 方法\\\hline\hline
                  & PCIE2     & 10 / 11   & 22   / 149  & 326  &PCIE 2.0                              & 小节                 \\
-                 &           &           &             &      &\upcite{pcie21}                       & \ref{subsec_pcie2}         \\\cline{2-7}
+                 &           &           &             &      &\upcite{pcie}                       & \ref{subsec_pcie2}         \\\cline{2-7}
  来自于          & XGXS      & 10 / 10   & 17   / 249  & 572  &10Gb以太网                            & 小节                 \\
 \upcite{ShenTCAD12}&         &           &             &      & clause 48\upcite{IEEE8023_S4}        & \ref{subsec_10g}           \\\cline{2-7}
 并有流控的       & T2Eth     & 14 / 14   & 53   / 427  & 947  &UltraSPARC T2                         & 小节                 \\
@@ -1582,7 +1580,7 @@ $ITP$ 是$d\in\vec{d}$的解码器函数。
 
 
 \subsection{PCI Express 2.0 编码器}\label{subsec_pcie2}
-该编码器遵从PCI Express 2.0 标准\upcite{pcie21}。
+该编码器遵从PCI Express 2.0 标准\upcite{pcie}。
 在删除了所有的注释和空行之后，
 其源代码包含259 行verilog。
 
@@ -1617,7 +1615,7 @@ $TXDATA$ 只能是1C， 3C， 5C， 7C， 9C， BC， DC， FC， F7， FB， FD
 最后算法\ref{algo_remove2_chap3} 在0.69 秒内得到压缩后的$p:=4$， $l:=0$ 和$r:=2$。
 最后
 产生解码器函数使用了0.26 秒。
-最终的解码器包含156 个门和0 个寄存器，
+最终的解码器包含156 个门和0 个状态变量，
 面积为366，
 延迟为7.6。
 
@@ -1680,7 +1678,7 @@ $encode\_data\_in$ 只能是1C， 3C， 5C， 7C， 9C， BC， DC， FC， F7�
 在0.95 秒内推导了谓词$valid(\vec{f}):=\!bad\_code$。
 再次算法\ref{algo_remove2_chap3} 在0.52 秒内得到压缩结果$p:=4$， $l:=0$ 和$r:=1$。
 最后产生解码器使用了0.17 秒。
-该解码器包含163 个门和0 个寄存器。
+该解码器包含163 个门和0 个状态变量。
 面积为370 ，
 延迟为8.1。
 
@@ -1778,7 +1776,7 @@ $encode\_data\_in$ 和$konstant$ 均无效时，
 然后算法\ref{algo_infer} 在 21.53 秒内推导了谓词$valid(\vec{f}):=tx\_enc\_ctrl\_sel\equiv `PCS\_ENC\_DATA$。
 再次算法\ref{algo_remove2_chap3} 在6.15 秒内得到压缩结果$p:=5$，$l:=0$ 和$r:=4$。
 最后产生解码器花费了3.40 秒。
-解码器包含401 个门和9 个寄存器。
+解码器包含401 个门和9 个状态变量。
 面积为920 ，
 延迟10.2。
 
@@ -1892,9 +1890,9 @@ A1对A2的优势是显著的。
 CC\_4 是唯一一个在第2列和第7列具有不同$p$，$l$和$r$的benchmark。
 这是由于$l$ 和$r$的不同增长顺序导致的。
 对于A1 方案，
-其解码器包含14 个寄存器， 206 个门， 490 面积和13.3 延迟。
+其解码器包含14 个状态变量， 206 个门， 490 面积和13.3 延迟。
 对于A2 方案，
-其解码器包含10 个寄存器， 61 个门， 154 面积和9.6 延迟。
+其解码器包含10 个状态变量， 61 个门， 154 面积和9.6 延迟。
 因此A2 方案比A1好很多。
 但是这仍然不意味着我们应当使用A2。
 具体原因我们将在下一小节得到更多实验数据支撑之后进一步展开解释。
@@ -1932,7 +1930,7 @@ HM(15,11)   & 3,3,3& 2.98       & 5611    & 45  & 13.5                          
 第2列到第6列分别给出了$p$，$l$ 和$r$ 的值，
 产生解码器的运行时间，
 解码器面积，
-解码器包含的寄存器个数，
+解码器包含的状态变量个数，
 解码器最大的逻辑延迟。
 当算法\ref{algo_remove2_chap3} 被使用的时候，
 这些数据在最后5列给出。
@@ -1988,6 +1986,6 @@ CC\_3，CC\_4， HM(7,4) and HM(15,11) 没有
 
 本文提出了第一个能够处理流控机制的对偶综合算法。
 实验结果表明本文算法能够为多个来自于实际工业项目的复杂编码器，
-包括PCI Express \upcite{pcie21} 和以太网\upcite{IEEE8023_S4}。
+包括PCI Express \upcite{pcie} 和以太网\upcite{IEEE8023_S4}。
 
 

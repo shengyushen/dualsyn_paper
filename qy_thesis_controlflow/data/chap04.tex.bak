@@ -1,6 +1,6 @@
 % !Mode:: "Tex:UTF-8"
 \chapter{面向流控机制的对偶综合}
-\label{chap:6}
+\label{chap:4}
 
 %在假设一个编码器的输入总能够被其输出完全唯一决定的前提下，
 %传统对偶综合算法能够自动化的生成一个编码器的解码器。
@@ -33,7 +33,7 @@
 其中编码器将输入变量$\vec{i}$映射到输出变量$\vec{o}$.
 而解码器则从$\vec{o}$中恢复$\vec{i}$。
 对偶综合算法
-\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 通过自动生成特定编码器的解码器以降低该工作的复杂度并提高结果的可靠性。
 该算法的一个前提假设是，
 编码器的输入变量$\vec{i}$总能够被输出变量$\vec{o}$的一个有限长度序列唯一决定。
@@ -107,7 +107,7 @@ $d$是无意义的，可以无需考虑。
 因此本文算法可以视为\upcite{ShenTCAD12}的一般化。
 
 实验结果表明，
-对于多个来自于工业界的复杂编码器(如以太网 \upcite{IEEE8023_S4}和PCI Express \upcite{pcie21})，
+对于多个来自于工业界的复杂编码器(如以太网 \upcite{IEEE8023_S4}和PCI Express \upcite{pcie})，
 本文算法总能够正确的识别流控变量$\vec{f}$，
 推导谓词$valid(\vec{f})$，
 并产生解码器。
@@ -1275,8 +1275,8 @@ $\vec{d}$ 对特定的$p$， $l$ 和$r$不能被唯一决定。
 其功能为$o:=i$。
 当$p\equiv 0$，$l\equiv 0$ 和$r\equiv 0$时，
 我们能够得到最简单的解码器$i:=o$。
-该解码器只包含一个buffer，而不包含寄存器。而对于$p\equiv 0$，$l\equiv 0$ 和$r\equiv 1$，
-我们则需要一个额外的寄存器以将$o$ 延迟一步，
+该解码器只包含一个buffer，而不包含状态变量。而对于$p\equiv 0$，$l\equiv 0$ 和$r\equiv 1$，
+我们则需要一个额外的状态变量以将$o$ 延迟一步，
 然后从延迟的$o$中回复$i_i$。
 
 根据图\ref{fig_pc_double}，
@@ -1521,7 +1521,7 @@ $ITP$ 是$d\in\vec{d}$的解码器函数。
                  & 名字      &    个数   &      个数   &电路  & 编码器                               &处理\\
                  &           & in/ouy    &  reg/gate   &面积  &   描述                               & 方法\\\hline\hline
                  & PCIE2     & 10 / 11   & 22   / 149  & 326  &PCIE 2.0                              & 小节                 \\
-                 &           &           &             &      &\upcite{pcie21}                       & \ref{subsec_pcie2}         \\\cline{2-7}
+                 &           &           &             &      &\upcite{pcie}                       & \ref{subsec_pcie2}         \\\cline{2-7}
  来自于          & XGXS      & 10 / 10   & 17   / 249  & 572  &10Gb以太网                            & 小节                 \\
 \upcite{ShenTCAD12}&         &           &             &      & clause 48\upcite{IEEE8023_S4}        & \ref{subsec_10g}           \\\cline{2-7}
 并有流控的       & T2Eth     & 14 / 14   & 53   / 427  & 947  &UltraSPARC T2                         & 小节                 \\
@@ -1582,7 +1582,7 @@ $ITP$ 是$d\in\vec{d}$的解码器函数。
 
 
 \subsection{PCI Express 2.0 编码器}\label{subsec_pcie2}
-该编码器遵从PCI Express 2.0 标准\upcite{pcie21}。
+该编码器遵从PCI Express 2.0 标准\upcite{pcie}。
 在删除了所有的注释和空行之后，
 其源代码包含259 行verilog。
 
@@ -1617,7 +1617,7 @@ $TXDATA$ 只能是1C， 3C， 5C， 7C， 9C， BC， DC， FC， F7， FB， FD
 最后算法\ref{algo_remove2_chap3} 在0.69 秒内得到压缩后的$p:=4$， $l:=0$ 和$r:=2$。
 最后
 产生解码器函数使用了0.26 秒。
-最终的解码器包含156 个门和0 个寄存器，
+最终的解码器包含156 个门和0 个状态变量，
 面积为366，
 延迟为7.6。
 
@@ -1680,7 +1680,7 @@ $encode\_data\_in$ 只能是1C， 3C， 5C， 7C， 9C， BC， DC， FC， F7�
 在0.95 秒内推导了谓词$valid(\vec{f}):=\!bad\_code$。
 再次算法\ref{algo_remove2_chap3} 在0.52 秒内得到压缩结果$p:=4$， $l:=0$ 和$r:=1$。
 最后产生解码器使用了0.17 秒。
-该解码器包含163 个门和0 个寄存器。
+该解码器包含163 个门和0 个状态变量。
 面积为370 ，
 延迟为8.1。
 
@@ -1778,7 +1778,7 @@ $encode\_data\_in$ 和$konstant$ 均无效时，
 然后算法\ref{algo_infer} 在 21.53 秒内推导了谓词$valid(\vec{f}):=tx\_enc\_ctrl\_sel\equiv `PCS\_ENC\_DATA$。
 再次算法\ref{algo_remove2_chap3} 在6.15 秒内得到压缩结果$p:=5$，$l:=0$ 和$r:=4$。
 最后产生解码器花费了3.40 秒。
-解码器包含401 个门和9 个寄存器。
+解码器包含401 个门和9 个状态变量。
 面积为920 ，
 延迟10.2。
 
@@ -1892,9 +1892,9 @@ A1对A2的优势是显著的。
 CC\_4 是唯一一个在第2列和第7列具有不同$p$，$l$和$r$的benchmark。
 这是由于$l$ 和$r$的不同增长顺序导致的。
 对于A1 方案，
-其解码器包含14 个寄存器， 206 个门， 490 面积和13.3 延迟。
+其解码器包含14 个状态变量， 206 个门， 490 面积和13.3 延迟。
 对于A2 方案，
-其解码器包含10 个寄存器， 61 个门， 154 面积和9.6 延迟。
+其解码器包含10 个状态变量， 61 个门， 154 面积和9.6 延迟。
 因此A2 方案比A1好很多。
 但是这仍然不意味着我们应当使用A2。
 具体原因我们将在下一小节得到更多实验数据支撑之后进一步展开解释。
@@ -1932,7 +1932,7 @@ HM(15,11)   & 3,3,3& 2.98       & 5611    & 45  & 13.5                          
 第2列到第6列分别给出了$p$，$l$ 和$r$ 的值，
 产生解码器的运行时间，
 解码器面积，
-解码器包含的寄存器个数，
+解码器包含的状态变量个数，
 解码器最大的逻辑延迟。
 当算法\ref{algo_remove2_chap3} 被使用的时候，
 这些数据在最后5列给出。
@@ -1988,6 +1988,6 @@ CC\_3，CC\_4， HM(7,4) and HM(15,11) 没有
 
 本文提出了第一个能够处理流控机制的对偶综合算法。
 实验结果表明本文算法能够为多个来自于实际工业项目的复杂编码器，
-包括PCI Express \upcite{pcie21} 和以太网\upcite{IEEE8023_S4}。
+包括PCI Express \upcite{pcie} 和以太网\upcite{IEEE8023_S4}。
 
 

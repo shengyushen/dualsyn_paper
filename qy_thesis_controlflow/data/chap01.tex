@@ -6,10 +6,13 @@
 这两个领域日新月异的发展，
 带来了对传输带宽永无止境的追求。
 常见的高性能传输协议，
-如以太网\upcite{IEEE8023_S4}、InfiniBand\upcite{InfiniBand}和PCI Express\upcite{pcie21}等，
+如以太网\upcite{IEEE8023_S4}、InfiniBand\upcite{InfiniBand}和PCI Express\upcite{pcie}等，
 其单通道带宽从本世纪初的3.125Gbps增长到目前的25Gbps。
 
-为了克服在高频信号衰减方面的挑战，
+更高的带宽意味着更高的信号频率，
+从而导致在传输介质上更严重的衰减，
+并进而带来更大的噪声干扰。
+为了克服这一挑战，
 每一代新的传输标准都会采用全新的编码方案。
 因此，在通讯和多媒体芯片设计项目中，
 最为关键且困难的工作之一是设计和验证特定的物理层编码器和解码器。
@@ -23,7 +26,7 @@
 包含大量异或操作的线性移位寄存器组，
 如以太网标准clause 49的64/66加扰器\upcite{encode6466}和PCI Express标准的128/130编码器\upcite{pcie}。
 大量的异或操作使得编码器的映射表非常不规则，
-包含的corner case的数量随编码长度指数增长。
+其状态空间尺寸随编码长度指数增长。
 这就对传统的动态模拟验证方法的完备性提出了严峻挑战。
 
 为此，
@@ -38,19 +41,19 @@
 然后在小节\ref{sec_now}详细描述目前在该领域的研究成果。
 然后在小节\ref{sec_whiteboxtodo}介绍基于白盒模型的对偶综合的研究意义和所面临的挑战。
 最后在小节\ref{sec_contest_innov}介绍本文的研究内容和创新点。
-\upcite{DBLP:conf/memocode/QinSJ14,DBLP:conf/apweb/QinSKD14}
+
 
 
 \section{背景知识}\label{sec_back}
 本节将给出相关的背景知识。
 
 \subsection{基本记法}
-布尔集合记为$B=\{0,1\}$。
-多个变量组成的向量记为$\vec{v}=(v,\dots)$。
+布尔集合记为$\mathbf{B}=\{0,1\}$。
+多个变量组成的\textbf{向量}记为$\vec{v}=(v,\dots)$。
 $\vec{v}$中的变量个数记为$|\vec{v}|$。
 如果$v$是$\vec{v}$的成员，
 则记为$v\in\vec{v}$；
-否则$v\notin\vec{v}$。
+否则记为$v\notin\vec{v}$。
 对于变量$v$和向量$\vec{v}$，
 如果$v\notin\vec{v}$，
 则同时包含$v$和所有$\vec{v}$的成员的新向量记为$v\cup\vec{v}$。
@@ -64,20 +67,20 @@ $[\![(v_1,v_2)]\!]=\{(0,0),(0,1),(1,0),(1,1)\}$。
 
 在变量集合$V$上的布尔逻辑公式$F$是通过以下连接符连接$V$上的变量得到的：
 包括$\neg$， $\wedge$，$\vee$和$\Rightarrow$，
-他们分别代表着求反，与，或和蕴含操作。
+他们分别代表着求反，合取(与)，析取(或)和蕴含操作。
 
 \subsection{命题逻辑可满足性问题}
 
 对在变量集合$V$上的布尔逻辑公式$F$，
-命题逻辑可满足问题(缩写为SAT)
-意味着寻找$V$的赋值函数$A:V\to B$，
+\textbf{命题逻辑可满足问题}(缩写为\textbf{SAT})
+意味着寻找$V$的赋值函数$A:V\to \mathbf{B}$，
 使得$F$ 可以取值为$1$。
 如果存在这样的赋值函数$A$，
 则$F$ 是可满足的；
 否则，
 是不可满足的。
 
-一个寻找上述赋值函数$A$的计算机程序称为SAT 求解器，
+一个寻找上述赋值函数$A$的计算机程序称为\textbf{SAT 求解器}，
 常见的SAT求解器包括Zchaff\upcite{CHAFF}，
 Grasp\upcite{grasp}，
 Berkmin\upcite{BERKMIN}，
@@ -85,12 +88,19 @@ Berkmin\upcite{BERKMIN}，
 
 
 通常，
-SAT 求解器要求有待求解的公式使用合取范式(CNF)表示，
-其中一个公式是一个短句集合的合取，
-一个短句是一个文字集合的析取，
+SAT 求解器要求有待求解的公式使用\textbf{合取范式}(CNF)表示，
+其中一个公式是多个短句的合取，
+一个短句是多个文字的析取，
 一个文字是一个变量或者其反。
-一个使用CNF 格式表示的公式通常也称为SAT 实例。
+一个使用CNF 格式表示的公式通常也称为\textbf{SAT 实例}。
 
+很明显，
+要使得公式$F$可满足(使其取值为1)，
+则每个短句都必须取值为1；
+相应的，
+为了使得一个短句取值为1，
+则其包含的所有文字中，
+至少一个应该取值为1。
 
 从文献\upcite{EFFSATUSMCCO}可知，
 对于函数$f(v_1\dots v\dots v_n)$，
@@ -102,28 +112,30 @@ SAT 求解器要求有待求解的公式使用合取范式(CNF)表示，
 则存在仅使用了$\phi_A$ 和$\phi_B$共同变量的公式$\phi_I$ ，
  使得$\phi_A\Rightarrow \phi_I$且
 $\phi_I\wedge \phi_B$不可满足。
-$\phi_I$ 被称为$\phi_A$针对$\phi_B$的Craig插值\upcite{Craig}。
+$\phi_I$ 被称为$\phi_A$针对$\phi_B$的\textbf{Craig插值}\upcite{Craig}。
+Craig插值通常被用做$\phi_A$的上估计抽象。
 $\phi_I$可以使用McMillan算法\upcite{interp_McMillan}得到。
-Craig插值通常被用于产生$\phi_A$的上估计。
+具体细节将在小节\ref{sec_craigimp}给出。
 
 \subsubsection{Tseitin编码}\label{subsubsec_tseitin}
 在硬件验证过程中，
-电路和属性通过Tseitin编码\upcite{Tseitin}转换为CNF公式，
+电路和有待验证的属性通过\textbf{Tseitin编码}\upcite{Tseitin}转换为CNF公式，
 而后交给SAT求解器求解。
 
-任意电路均可以被表示为AND2门和INV 门的组合形式，
-因此我们在这里仅给出AND2门和INV门的编码：
+Tseitin编码的基本原理描述如下：
+由于任意电路均可以被表示为二输入与门(AND2)和反相器(INV)的组合形式，
+因此我们在这里仅给出二输入与门和反相器的Tseitin编码：
 \begin{enumerate}
-\item 对于非门INV $z=\neg x$，
+\item 对于反相器 $z=\neg x$，
 由Tseitin编码产生的CNF公式为$(x\vee z)\wedge( \neg x\vee \neg z)$。
-\item 对于二输入与门AND2 $z=x_1\wedge x_2$,
+\item 对于二输入与门 $z=x_1\wedge x_2$,
 由Tseitin编码产生的CNF公式为$( \neg x_1\vee \neg x_2\vee z)\wedge(x_1\vee \neg z) \wedge(x_2\vee \neg z)$。
-\item 对于一个表示为AND2门和INV门组合的复杂电路$C$，
+\item 对于一个由二输入与门和反相器组合而成的复杂电路$C$，
 由Tseitin编码产生的CNF公式$Tseitin(C)$ 是所有这些门的Tseitin编码的合取。
 \end{enumerate}
 
-包含一个INV门$d=\neg a$和一个AND2的$e=d\wedge c$的简单电路$C$,
-他的Tseitin编码显示在公式(\ref{eqn_andinv})中。
+包含一个反相器$d=\neg a$和一个二输入与门$e=d\wedge c$的简单电路$C$,
+其Tseitin编码显示在公式(\ref{eqn_andinv})中。
 \begin{multline}\label{eqn_andinv}
 % \begin{equation}\label{eqn_andinv}
 Tseitin(C)=
@@ -160,7 +172,12 @@ Tseitin(C)=
   \caption{示例电路及其编码}
   \label{basic_circuit}
 \end{figure}
-
+\begin{figure}[b] % use float package if you want it here
+  \centering
+  \includegraphics[width=0.8\textwidth]{fig_basic_search}
+  \caption{基于完全二叉树遍历的SAT求解}
+  \label{basic_search}
+\end{figure}
 
 最简单的SAT求解算法是简单地遍历所有可能的变量赋值，
 形成树形的二叉搜索空间。
@@ -171,12 +188,7 @@ Tseitin(C)=
 每次决策产生一个新的决策层。
 图\ref{basic_search}的决策层1、2和3分别对应于分别对变量$a$、$b$和$c$进行二叉分解。
 
-\begin{figure}[t] % use float package if you want it here
-  \centering
-  \includegraphics[width=0.8\textwidth]{fig_basic_search}
-  \caption{基于完全二叉树遍历的SAT求解}
-  \label{basic_search}
-\end{figure}
+
 
 \subsubsection{布尔约束传播(BCP)}
 为了使一个特定的SAT公式成立，
@@ -207,6 +219,12 @@ $d$必须取值为1。
   \includegraphics[width=0.8\textwidth]{bcp}
   \caption{布尔约束传播}
   \label{BCP}
+\end{figure}
+\begin{figure}[b] % use float package if you want it here
+  \centering
+  \includegraphics[width=0.8\textwidth]{fig_conflict}
+  \caption{冲突指导的短句学习}
+  \label{confict}
 \end{figure}
 
 \subsubsection{冲突指导的短句学习}
@@ -240,12 +258,7 @@ $d$必须取值为1。
 使得第三个变量无法满足$\{c \equiv 0,d \equiv 1,f \equiv 1\}$。
 这就构成了一次剪枝操作。
 
-\begin{figure}[t] % use float package if you want it here
-  \centering
-  \includegraphics[width=0.8\textwidth]{fig_conflict}
-  \caption{冲突指导的短句学习}
-  \label{confict}
-\end{figure}
+
 
 \subsubsection{MiniSat 求解器的递增求解机制}\label{subsec_incsat}
 
@@ -273,36 +286,42 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 其中$F$是在$addClause$中被加入短句数据库的CNF公式。
 \end{enumerate}
 
+基于该机制，
+可以针对一个相同的CNF公式$F$，
+使用不同的文字集合$A$，
+来产生并递增地高效求解不同的$F\wedge \bigwedge_{a\in A} a$。
 
 
 \subsection{有限状态机}\label{subsec_fsm}
 
 如图\ref{c2_fsm}a)所示，
 本文中编码器使用有限状态机$M=(\vec{s},\vec{i},\vec{o},T)$作为模型。
-一个状态机包括状态变量向量$\vec{s}$，
-输入变量向量$\vec{i}$，
-输出变量向量$\vec{o}$，
+该模型包括状态向量$\vec{s}$，
+输入向量$\vec{i}$，
+输出向量$\vec{o}$，
 和迁移函数$T: [\![\vec{s}]\!]\times [\![\vec{i}]\!]\to [\![\vec{s}]\!]\times [\![\vec{o}]\!]$。
-其中$T$用于从当前状态变量向量$\vec{s}$和输入变量向量$\vec{i}$计算出下一状态变量向量$\vec{s}$和输出变量向量$\vec{o}$。
+其中$T$用于从当前状态向量$\vec{s}$和输入向量$\vec{i}$计算出下一状态向量$\vec{s}$和输出向量$\vec{o}$。
 
 如图\ref{c2_fsm}b)所示，
 有限状态机$M$的行为可以通过将迁移函数展开多步得到。
-具体的做法是：
+具体的步骤如下：
 \begin{enumerate}
-\item 首先使用在小节\ref{subsubsec_tseitin}中描述的Tseitin编码方法，
+\item 首先，
+使用在小节\ref{subsubsec_tseitin}中描述的Tseitin编码方法，
 将迁移函数$T$转化成为对应的CNF公式。
 而如图\ref{c2_fsm}b)所示，
-我们可以实例化任意多个迁移函数$T$的CNF公式的实例，
-同时保证任意两个CNF公式所使用的变量不重叠。
-在第n步上，
+我们可以实例化$T$的CNF公式的任意多个实例$T_0$，...，$T_{n}$，
+同时保证任意两个实例所使用的变量集合不重叠。
+在第$j$步上，
 状态变量$s\in\vec{s}$，输入变量$i\in\vec{i}$ 和输出变量$o\in\vec{o}$
-分别表示为$s_n$，$i_n$ 和 $o_n$。
+分别表示为$s_j$，$i_j$ 和 $o_j$。
 进一步的，
-在第n步的状态变量向量，输入变量向量和输出变量向量分别记为$\vec{s}_n$，$\vec{i}_n$ 和 $\vec{o}_n$。
+在第$j$步的状态变量向量，输入变量向量和输出变量向量分别记为$\vec{s}_j$，$\vec{i}_j$ 和 $\vec{o}_j$。
 
-\item 然后对于任意两个相邻的迁移函数$T_n$和$T_{n+1}$，
-我们约束$T_n$的次态等于$T_{n+1}$的当前状态，
-即都等于图\ref{c2_fsm}b)的$\vec{s}_{n+1}$。
+\item 其次，
+对于任意两个相邻的迁移函数$T_j$和$T_{j+1}$，
+我们约束$T_j$的下一状态等于$T_{j+1}$的当前状态，
+即都等于图\ref{c2_fsm}b)的$\vec{s}_{j+1}$。
 这样任意$n$个迁移函数$T$的实例就能够被连接起来，
 形成一个如图\ref{c2_fsm}b)所示长度为$n+1$的序列。
 将这些CNF公式的合取形成的新的CNF公式，
@@ -312,8 +331,8 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 \end{enumerate}
 
 
-一条\textbf{路径}是一个状态序列$<\vec{s}_n,\dots,\vec{s}_m>$ 使得$\exists \vec{i}_j\vec{o}_j (\vec{s}_{j+1},\vec{o}_j)\equiv T(\vec{s}_j,\vec{i}_j)$ 对所有$n\le j< m$均满足。
-一个\textbf{环}是一条路径$<\vec{s}_n,\dots,\vec{s}_m>$使得$\vec{s}_n\equiv \vec{s}_m$。
+一条\textbf{路径}是一个对所有$n\le j< m$均有$\exists \vec{i}_j\vec{o}_j (\vec{s}_{j+1},\vec{o}_j)\equiv T(\vec{s}_j,\vec{i}_j)$ 的状态序列$<\vec{s}_n,\dots,\vec{s}_m>$。
+一个\textbf{环}是一条使得$\vec{s}_n\equiv \vec{s}_m$的路径$<\vec{s}_n,\dots,\vec{s}_m>$。
 
 
 \begin{figure}[t]
@@ -332,9 +351,9 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 
 假设有待验证的状态机是一个2位计数器，
 初始状态为0，
-每一步的行为是将当前状态加一。
-再假设当计数器为3时会发生一些不希望发生的行为。
-因此我们需要验证该计数器永远不会到达3。
+每一步的行为是将当前状态加1。
+再假设当计数器为3时会发生一些不希望发生的行为，
+所以我们需要验证该计数器永远不会到达3。
 因此有待证明的断言是“计数器永远不等于3”。
 
 最简单，
@@ -345,12 +364,12 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 则违反该断言意味着计数器的值等于3.
 
 如图\ref{c2_fsm_exp}所示，
-限界模型检验将迁移函数展开了1次，2次和3次。
-其中在前2次都没有找到对断言的违反。
+限界模型检验依次将迁移函数展开了1次，2次和3次。
+其中在前两次都没有找到对断言的违反。
 而在第3次中则找到了计数器等于3的情况。
 在这种情况下，
 限界模型检验停止展开，
-并给出展开序列上每个状态$\vec{s}^j$的值，
+并给出最后一个展开序列上每个状态$\vec{s}^j$的值，
 作为反例，
 以证明上述“计数器永远不等于3”的断言是错误。
 
@@ -377,7 +396,7 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 本节将简述对偶综合领域取得的研究成果。
 由于其中的若干算法也将在本论文的主要章节中被使用，
 因此其描述方式根据本论文的需要进行了修改。
-因此有可能和原始论文的描述方式有轻微出入。
+因此有可能和原始论文的描述方式有微小差别。
 在阅读本论文时应以本小节的描述为准。
 
 \subsection{早期的充分非完备算法}\label{subsec_sound}
@@ -393,7 +412,9 @@ $solve(A)$ 接收一个文字集合$A$作为假设，
 同样是通过逐步的增加迁移函数展开序列的长度，
 并在每一个特定长度的展开序列上检查是否存在解码器。
 
-
+针对特定展开长度，
+检查解码器是否存在的方法如下：
+如图\ref{fig_pc_double}所示，
 对于每一个$i\in\vec{i}$，
 如果存在三个参数$p$， $l$ 和$r$，
 使得在长度为$p+l+r$的迁移函数展开序列上，
@@ -461,15 +482,15 @@ $i_{p+l}$能否被唯一决定。
 即输入被唯一决定。
 
 从图\ref{fig_pc_double}可知，
-如果$F_{PC}(p,l,r)$ 不可满足
-则$F_{PC}(p',l',r')$ 对于更大的$p'\ge p$， $l'\ge l$ 和$r'\ge r$也不可满足。
+如果$F_{PC}(p,l,r)$ 不可满足，
+则$F_{PC}(p',l',r')$ 对于更大的$p'\ge p$， $l'\ge l$ 和$r'\ge r$也是不可满足的。
 从等式(\ref{uniqt1})中可知，
 $F_{PC}(p',l',r')$ 的短句集合是$F_{PC}(p,l,r)$的超集。
 这也指向了同一个结论。
 
 这意味着，
 $F_{PC}(p,l,r)$的不可满足性的限界证明可以被扩展到
-任意$p$， $l$ 和$r$上，
+任意更大的$p$， $l$ 和$r$上，
 从而成为非限界的证明。
 
 \begin{proposition}\label{prop_pc1}
@@ -543,7 +564,7 @@ r & :=  & max_{i\in\vec{i}} \{r_i\}
 当然忽略初始状态有一个缺点在于，
 它使得判断条件比必须的情况稍微强一些。
 也就是说，
-他要求$\vec{i}$ 必须在一个更大的状态集合$R^p$上被唯一决定。
+它要求$\vec{i}$ 必须在一个更大的状态集合$R^p$上被唯一决定。
 其中$R^p$代表了由任意状态在$p$步之内能够到达的状态集合。
 而必要条件是从初始条件出发在任意步数内可以到达的可达状态集合$R$。
 因此在某些情况下，
@@ -558,21 +579,22 @@ r & :=  & max_{i\in\vec{i}} \{r_i\}
 
 在上一小节，
 我讨论了当$F_{PC}(p,l,r)$ 不可满足时，
-$i_{p+l}$能够针对任意$p$， $l$ 和$r$被唯一决定。
+$i_{p+l}$能够在任意更大的$p$， $l$ 和$r$下被唯一决定。
 另一方面，
 如果$F_{PC}(p,l,r)$ 是可满足的，
 则$i_{p+l}$ 不能在特定的$p$， $l$ 和$r$情况下被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$唯一决定。
 此时存在两种可能性：
 \begin{enumerate}
  \item
-在更大的$p$， $l$ 和$r$情况下$i_{p+l}$能够被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
+在某个更大的$p'$， $l'$ 和$r'$情况下，
+$i_{p'+l'}$能够被$<\vec{o}_{p'},\dots,\vec{o}_{p'+l'+r'}>$ 唯一决定。
  \item
 对任意$p$， $l$ 和$r$，$i_{p+l}$ 都不能够被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ 唯一决定。
 \end{enumerate}
 
 如果是第一种情况，
 则通过迭代的增长$p$， $l$ 和$r$，
-$F_{PC}(p,l,r)$ 总能够变成不可满足。
+$F_{PC}(p,l,r)$ 总能够变成不可满足的。
 然而对于第二种情况，
 迭代的递增$p$， $l$ 和$r$将导致不停机。
 
@@ -584,10 +606,12 @@ $F_{PC}(p,l,r)$ 总能够变成不可满足。
   \label{fig_ln_double}
 \end{figure}
 
+
+
 因此，
 为了得到一个停机算法，
 我们需要区分上述两种情形的手段。
-国防科技大学的Shen et al.\upcite{ShenTCAD11}和Liu et al.\upcite{LiuICCAD11}分别独立提出了类似的全新的解决方案。
+国防科技大学的Shen et al.\upcite{ShenTCAD11}和Liu et al.\upcite{LiuICCAD11}分别独立提出了类似的全新解决方案。
 该方案如图\ref{fig_ln_double}所示，
 该图类似于图\ref{fig_pc_double}，
 但是增加了三个约束用于检测三个路径$<\vec{s}_{0},\dots,\vec{s}_{p}>$，$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ 和
@@ -611,12 +635,18 @@ F_{LN}(p,l,r):=\\
 $F_{LN}$ 中的LN意味着环形非对偶。
 这表明$F_{LN}(p,l,r)$ 将使用这三个环检测约束来检测$i_{p+l}$是否不能够被唯一决定。
 
-当$F_{LN}(p,l,r)$ 可满足，
-则$i_{p+l}$ 不能被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$唯一决定。
-更重要的，
+当$F_{LN}(p,l,r)$ 可满足时，
+$i_{p+l}$ 不能被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$唯一决定。
+更重要的是，
+这个可满足结果意味着在三个路径$<\vec{s}_{0},\dots,\vec{s}_{p}>$，$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ 和
+$<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$
+上分别各存在一个环。
 通过展开这三个环，
-我们能将这个结论扩展到任意更大的$p$， $l$ 和$r$上。
+我们可以把上述三个路径变得更长，
+从而得到针对更大的$p$， $l$ 和$r$的新公式$F_{LN}(p,l,r)$。
+而该公式仍然是可满足的。
 这意味着：
+
 
 \begin{proposition}\label{prop_ln1}
 当$F_{LN}(p,l,r)$ 可满足时，
@@ -670,7 +700,8 @@ $i_{p+l}$ 针对任意$p$， $l$ 和$r$都不能被$<\vec{o}_{p},\dots,\vec{o}_{
 则$p$， $l$ 和$r$ 在不断的递增之后最终总能够大于有限状态机的最大无环路径长度。
 这意味着在$<\vec{s}_{0},\dots,\vec{s}_{p}>$，$<\vec{s}_{p+1},\dots,\vec{s}_{p+l}>$ 和
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$上都存在环。
-这将使得$F_{LN}(p,l,r)$ 在行\ref{lnsat}被满足。这样将导致退出循环。
+这将使得$F_{LN}(p,l,r)$ 在行\ref{lnsat}被满足。
+这也将导致退出循环。
 \end{enumerate}
 
 
@@ -690,7 +721,7 @@ r & :=  & max_{i\in\vec{i}} \{r_i\}
 \subsection{在对偶综合领域的其他的相关工作}
 
 Shen et al.\upcite{ShenTCAD12}和Liu et al.\upcite{LiuICCAD11} 独立的发现可以通过Craig 插值加速解码器的生成。
-该算法还将作为下一章的一部分单独介绍，
+该算法还将作为第\ref{chap:interative_craig}章的一部分单独介绍，
 因此不在这里展开描述。
 
 Shen et al.\upcite{ShenTCAD12}
@@ -702,9 +733,10 @@ Shen et al.\upcite{ShenTCAD12}
 此时不存在解码器；
 当$c_1\equiv 0\wedge c_2\equiv 1$时，
 $\vec{i}+1$被赋值到$\vec{o}$，
-此时的解码器为$\vec{o}-1$
+此时的解码器为$\vec{o}-1$；
 而当$c_1\equiv 1\wedge c_2\equiv 1$时，
-$\vec{i}+2$ 将被赋值到$\vec{o}$。
+$\vec{i}+2$ 将被赋值到$\vec{o}$，
+此时的解码器为$\vec{o}-2$。
 很明显，
 $c_2\equiv 0$首先需要被剔除。
 这就得到了$c_2\equiv 1$。
@@ -737,7 +769,7 @@ $c_2\equiv 0$首先需要被剔除。
 
 Tu et al.\upcite{TuDAC13}提出了一个突破性的算法，
 基于属性指导的可达性分析算法\upcite{BradleyVMCAI11,EenFMCAD11}，
-在隐含地而非显式展开的迁移函数序列上，
+在隐含的而非显式展开的迁移函数序列上，
 迭代的精炼归纳不变公式(inductive invariant)，
 以获得对可达状态的一个单调递减上估计。
 如此即可在从$\vec{o}$恢复$\vec{i}$的过程中考虑$\vec{i}$的非限界历史。
@@ -755,19 +787,19 @@ Tu et al.\upcite{TuDAC13}提出了一个突破性的算法，
 
 
 
-%\subsection{研究意义}
+\subsection{研究意义}
 
-现代复杂通讯协议的编码器中，广泛采用了流水线和流控机制\upcite{flowcontrol}技术。
+现代复杂通讯协议的编码器中，广泛采用了流水线和流控机制\upcite{flowcontrol}，
 以提高性能并增强对环境的适应能力。
-而目前在对偶综合方面的所有研究工作\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+而目前在对偶综合方面的所有研究工作\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 均基于黑盒模型，
 完全忽视上述的内部结构，
 从而无法发挥上述内部结构在性能和适应性方面的优势。
 
 \subsubsection{流控机制}
 首先，
-目前所有对偶综合算法算法\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}的一个前提假设是，
-编码器的输入变量$\vec{i}$总能够被输出变量$\vec{o}$的一个有限长度序列唯一决定。
+目前所有对偶综合算法算法\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}的一个前提假设是，
+编码器的输入向量$\vec{i}$总能够被输出向量$\vec{o}$的一个有限长度序列唯一决定。
 
 然而，
 许多高速通讯系统的编码器带有流控机制\upcite{flowcontrol}，
@@ -786,7 +818,7 @@ $f$和$d$映射到输出变量$\vec{o}$的编码表。
 当接收器能够跟上发送器的速度时，
 发送器将$f$设为1，
 这使得编码器按照$d$的值发送$D_d$。
-从图\ref{fig:nonuniq}b)的编码表可知，
+从图\ref{fig_nonuniq_chap1}b)的编码表可知，
 解码器总能够根据$D_d$恢复$f$和$d$。
 \item
 而当接收器无法跟上发送器的速度时，
@@ -799,7 +831,7 @@ $f$和$d$映射到输出变量$\vec{o}$的编码表。
 
 上述流控机制能够防止快速发送器发送过多数据以至于接收器无法处理。
 然而该机制违反了迄今为止所有对偶综合算法
-\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 的基本假设，
 因为在$f\equiv 0$的情况下，
 $d$无法被$I$唯一决定。
@@ -827,10 +859,10 @@ $d$无法被$I$唯一决定。
 \end{figure}
 
 一个带有流水线的简单编码器如图\ref{fig_pipe_chap1}a)所示。
-他的关键数据路径被第一级流水线切割成为两段，
+它的关键数据路径被第一级流水线切割成为两段，
 从而使得运行频率得到两倍的提升。
 
-他的第一级流水线$\vec{stg}^0$ 包含数个寄存器。
+第一级流水线$\vec{stg}^0$ 包含数个状态变量。
 其中输入变量$\vec{i}$ 被用于计算该级流水线$\vec{stg}^0$，
 而流水线$\vec{stg}^0$ 则被用于计算$\vec{o}$。
 根据该结构，
@@ -838,7 +870,7 @@ $\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
 而$\vec{i}$ 能够被$\vec{stg}^0$唯一决定。
 
 因此，
-一个由人类程序员设计的合理解码器，
+一个由人类工程师设计的合理解码器，
 应当如图\ref{fig_pipe_chap1}b)所示，
 从$\vec{o}$ 中使用组合逻辑$C^1$恢复$\vec{stg}^0$ ，
 并进一步使用组合逻辑$C^0$从$\vec{stg}^0$ 中恢复$\vec{i}$ 。
@@ -850,8 +882,8 @@ $\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
 目前所有的对偶综合算法\upcite{ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 均使用Jiang提出的基于Craig插值\upcite{Craig}的算法 \upcite{InterpBoolFunction}。
 如图\ref{fig_pipe_chap1}c)所示，
-这些算法从$\vec{o}$中使用一个大型组合逻辑$C^0*C^1$直接恢复$\vec{i}$，
-这使得他们变得不必要的很慢，因为没有流水线寄存器切断这段复杂逻辑。
+这些算法从$\vec{o}$中使用一个大型组合逻辑$C^0*C^1$直接恢复$\vec{i}$。
+这使得他们变得的很慢，因为没有流水线切断这段复杂逻辑。
 
 因此，
 如何在对偶综合算法中，
@@ -866,10 +898,10 @@ $\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
 目前的算法面临如下挑战：
 
 首先，
-在面向流控机制的对偶综合中，需要特征化流控向量上的谓词$valie(\vec{f})$。
+在面向流控机制的对偶综合中，需要特征化流控向量上的谓词$valid(\vec{f})$。
 而该计算过程中需要对大量冗余变量进行存在量化。
 这导致现有解遍历算法无法高效运行，
-而基于Craig插值的算法又不支持 \upcite{InterpBoolFunction}对冗余变量进行存在量化。
+而基于Craig插值的算法 \upcite{InterpBoolFunction}又不支持对冗余变量进行存在量化。
 这就对目前的算法框架提出了严峻挑战。
 
 
@@ -884,13 +916,13 @@ $\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
 在面向流水线的对偶综合中，
 如何推导流水线结构，
 并生成带有流水线的解码器，
-使我们面临的有一个挑战。
+是我们面临的又一个挑战。
 
 最后，
 当上述的流水线和流控机制被混合在一起，
 同时出现在同一个编码器中时，
 如何同时处理两者及其相互之间的复杂关系，
-是本文面临的有一个严峻挑战。
+是本文面临的又一个严峻挑战。
 
 
 
@@ -898,51 +930,31 @@ $\vec{stg}^0$ 能够被$\vec{o}$唯一决定，
 
 
 \section{研究内容与创新点}\label{sec_contest_innov}
-为了克服上述问题，
+为了克服上述挑战，
 本文基于白盒模型，
 探索了如何在对偶综合中发掘编码器的内部结构信息，
 如流控和流水线结构，
 以自动产生支持相应结构的解码器。
 本文的主要研究内容及创新点包括以下几方面：
 
-本文受国家自然科学基金项目“面向通讯应用的自动对偶综合方法研究”（项目编号61070132）的支持，主要贡献和创新点如下：
 
 
 
 第一，研究了基于余因子(Cofactoring)和Craig插值\upcite{Craig}的迭代特征化算法。
-在发掘编码器内部结构和自动产生解码器的过程中，
-一个必须而且对性能要求非常苛刻的步骤，
-是特征化满足特定命题逻辑关系$R$的布尔函数$f$。
-传统的算法包括基于SAT或BDD的完全解遍历和和量词削减。
-然而这些算法通常受到解空间不规则的困扰，
-导致性能低下。
-为此，
-我们创造性的提出了一个迭代的特征化算法框架。
-在每一次迭代中，
+该算法在每一次迭代中，
 为每一个尚未被遍历的解$A$，
-利用其对应的余因子化简$R$以满足产生Craig插值要求。
+利用其对应的余因子化简$R$以满足产生Craig插值的要求。
 而该插值是$A$的一个充分扩展。
 该迭代过程是停机的，
 且其性能比传统的完全解遍历算法有巨大的提升。
 
 第二，研究了针对流控机制的对偶综合算法。
-传统对偶综合算法的\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13} 的一个基本假设是，
-编码器的输入变量$\vec{i}$总能够被输出变量$\vec{o}$的一个有限长度序列唯一决定。
-基于该假设方可构造满足Craig插值的不可满足公式。
-然而，
-许多高速通讯系统的编码器所带有流控机制\upcite{flowcontrol}，
-直接违反了上述假设。
-该机制将$\vec{i}$划分为有待编码的数据向量$\vec{d}$和用以表达$\vec{d}$有效性的流控向量$\vec{f}$，
-并在$\vec{f}$上定义一个有效性谓词$valid(\vec{f})$。
-只有在$valid(\vec{f})\equiv 1$的情形下，
-$\vec{d}$才能够被$\vec{o}$唯一决定。
-为此，
-我们创造性的提出了能够处理流控机制的对偶综合算法：
+该算法的流程如下：
 \textbf{首先}，
-它使用经典的对偶综合算法\upcite{ShenTCAD11}
+使用经典的对偶综合算法\upcite{ShenTCAD11}
 以识别那些能够被唯一决定的输入变量，
-并称他们为流控变量$\vec{f}$。
-而其他不能被唯一决定的变量称为数据变量$\vec{d}$。
+并将它们加入流控向量$\vec{f}$。
+而其他不能被唯一决定的变量加入数据向量$\vec{d}$。
 \textbf{第二}，该算法推导一个充分必要谓词$valid(\vec{f})$使得$\vec{d}$能够被
 输出变量$\vec{o}$的一个有限长度序列唯一决定。
 \textbf{第三}，
@@ -956,27 +968,18 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 
 
 
-第三，研究了针对流水线结构的对偶综合算法。
-现代集成电路中的编码器，
-为了提升工作频率，
-通常包含多个流水线级，
-以将关键的数据路径划分为多级。
-而传统的对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
-完全无视这种流水线结构，
-从而导致生成的解码器无法保持和编码器匹配的频率和性能。
-为此，
-我们创造性的提出了能够产生流水解码器的对偶综合算法：
+第三，研究了针对流水线结构的对偶综合算法：
 首先将传统对偶综合算法推广到非输入输出情形，
-以找到编码器中每一个流水线级$\vec{stg}^j$中的寄存器集合；
-然后使用迭代Craig插值算法特征化每一个流水线级$\vec{stg}^j$的布尔函数，
+以找到编码器中每一个流水线级$\vec{stg}^j$中的状态变量集合；
+然后使用Craig插值算法特征化每一个流水线级$\vec{stg}^j$的布尔函数，
 以从下一个流水线级$\vec{stg}^{j+1}$ 或输出$\vec{o}$之中恢复$\vec{stg}^j$。
 最终特征化$\vec{i}$的布尔函数以从
 第一个流水线级$\vec{stg}^0$中恢复$\vec{i}$。
 
 第四，结合上述研究成果，研究了能够同时处理流控和流水线结构的对偶综合算法。
-该算法首先使用秦et al. \cite{QinTODAES15}的算法来寻找$\vec{f}$ 并推导$valid(\vec{f})$。
+该算法首先使用Qin et al. \cite{QinTODAES15}的算法来寻找$\vec{f}$ 并推导$valid(\vec{f})$。
 然后分别通过强制和不强制$valid(\vec{f})$，
-已从所有寄存器集合中找到每一个寄存器级$\vec{stg}^j$的$\vec{d}^j$ 和$\vec{f}^j$。
+以从所有状态变量集合中找到每一个流水线级$\vec{stg}^j$的$\vec{d}^j$ 和$\vec{f}^j$。
 最后通过Jiang et al. \cite{InterpBoolFunction}的算法特征化$\vec{stg}^j$ 和$\vec{i}$的布尔函数。
 
 综上所述，
@@ -988,7 +991,7 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 \section{论文组织结构}
 论文共分八章，组织结构如下：
 
-第一章为绪论，介绍了相关的背景知识，对偶综合的基本概念、特点、应用以及研究现状。分析基于白盒模型的对偶综合技术的研究意义，并简述本文的研究内容和组织结构。
+第一章为绪论，介绍了相关的背景知识，对偶综合的基本概念、特点、应用以及研究现状。分析基于白盒模型的对偶综合技术的研究意义和挑战，并简述本文的研究内容和组织结构。
 
 第二章综述了在相关领域的研究成果。
 

@@ -1,6 +1,3 @@
-
-
-
 % !Mode:: "Tex:UTF-8"
 \chapter{面向流控机制和流水线的对偶综合}
 \label{chap:6}
@@ -72,7 +69,7 @@ Qin et al. \upcite{QinTODAES15} 首次提出了能够处理流控机制的对偶
 
 为了展示该算法的有效性，
 我们在多个复杂的工业界实际编码器，
-如PCI Express \upcite{pcie21} 和以太网\upcite{IEEE8023_S4}，
+如PCI Express \upcite{pcie} 和以太网\upcite{IEEE8023_S4}，
 上进行了实验。
 实验结果表明，
 该算法能够为多个工业界的真实编码器正确的产生带有流控和流水线的解码器，
@@ -1086,7 +1083,7 @@ $\phi_A$ 相对于$\phi_B$的Craig插值$\phi_I$
            &    \#in &   \#    &面积  & 解码器                                   &运行 &延迟 &面积                                    &运行 &延迟 &面积\\
            &   /out  &  reg    &      &   描述                                   &时间 &(ns) &                                        &时间 &(ns) &    \\\hline\hline
  pcie      & 10/11   & 23      & 326  &PCIE                                      &0.37 &7.20 &624                                     &8.08 & 5.89&652 \\
-           &         &         &      &     2.0 \upcite{pcie21}                    &     &     &                                        &     &     &    \\\hline
+           &         &         &      &     2.0 \upcite{pcie}                    &     &     &                                        &     &     &    \\\hline
  xgxs      & 10/10   & 16      & 453  &     以太网                               &0.21 &7.02 &540                                     &4.25 & 5.93&829 \\
            &         &         &      &              clause 48 \upcite{IEEE8023_S4}&     &     &                                        &     &     &    \\\hline
  t2eth     & 14/14   & 49      & 2252 &    以太网                                &12.7 &6.54 &434                                     &430.4& 6.12&877 \\

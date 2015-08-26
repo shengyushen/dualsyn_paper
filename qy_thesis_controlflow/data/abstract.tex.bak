@@ -5,14 +5,14 @@
 其中编码器将输入变量$\vec{i}$映射到输出变量$\vec{o}$。
 而解码器则从$\vec{o}$中恢复$\vec{i}$。
 对偶综合算法
-\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 通过自动生成特定编码器的解码器，
 以降低该工作的复杂度并提高结果的可靠性。
 
 而另一方面，
 现代复杂通讯协议的编码器中，广泛采用了流控\upcite{flowcontrol}和流水线等复杂内部结构，
 以提升编码器的性能和对复杂应用环境的适应性。
-而目前在对偶综合方面的所有研究工作\upcite{ShenICCAD09,ShenTCAD10,ShenFMCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+而目前在对偶综合方面的所有研究工作\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 均基于黑盒模型，
 完全忽略这些内部结构，
 而仅考虑输入$\vec{i}$和输出$\vec{o}$之间的映射关系，
@@ -25,14 +25,14 @@
 以自动产生支持相应结构的解码器。
 本文的主要研究内容及创新点包括以下几方面：
 
-第一，研究了基于余因子(Cofactoring)和Craig插值\upcite{Craig}的迭代特征化算法。
+第一，研究了基于余因子(Cofactor)和Craig插值\upcite{Craig}的迭代特征化算法。
 在发掘编码器内部结构和自动产生解码器的过程中，
 一个必须而且对性能要求非常苛刻的步骤，
 是特征化满足特定命题逻辑关系$R$的布尔函数$f$。
-传统的算法包括基于命题逻辑可满足求解器(SAT)\upcite{DBLP:conf/dac/MoskewiczMZZM01}和二叉判决图(BDD)\upcite{DBLP:journals/tc/Bryant86}的完全解遍历
-和量词削减\upcite{SATUNBMC,MINASS,REPARAM,MINCEX,PRIMECLAUSE,EFFCON,MEMEFFALLSAT,CMPMINCEX,EFFSATUSMCCO,InterpBoolFunction,interpNoProof}。
+传统的方法包括基于命题逻辑可满足求解器(SAT)\upcite{DBLP:conf/dac/MoskewiczMZZM01}和二叉判决图(BDD)\upcite{DBLP:journals/tc/Bryant86}的完全解遍历
+和量词削减算法\upcite{SATUNBMC,MINASS,REPARAM,MINCEX,PRIMECLAUSE,EFFCON,MEMEFFALLSAT,DBLP:conf/mbmv/NopperS07,EFFSATUSMCCO,InterpBoolFunction,interpNoProof}。
 然而这些算法通常受到解空间不规则的困扰，
-导致性能低下。
+导致性能低下且内存开销很大。
 为此，
 我们创造性的提出了一个迭代的特征化算法框架。
 在每一次迭代中，
@@ -43,11 +43,11 @@
 且其性能比传统的完全解遍历算法有巨大的提升。
 
 第二，研究了针对流控机制的对偶综合算法。
-传统对偶综合算法的\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}的一个基本假设是，
-编码器的输入变量$\vec{i}$总能够被输出变量$\vec{o}$的一个有限长度序列唯一决定。
+传统对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}的一个基本假设是，
+编码器的输入向量$\vec{i}$总能够被输出向量$\vec{o}$的一个有限长度序列唯一决定。
 基于该假设方可构造满足Craig插值的不可满足公式。
 然而，
-许多高速通讯系统的编码器所带有流控机制\upcite{flowcontrol}，
+许多高速通讯系统编码器所带有的流控机制\upcite{flowcontrol}，
 直接违反了上述假设。
 该机制将$\vec{i}$划分为有待编码的数据向量$\vec{d}$和用以表达$\vec{d}$有效性的流控向量$\vec{f}$，
 并在$\vec{f}$上定义一个有效性谓词$valid(\vec{f})$。
@@ -56,12 +56,13 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 为此，
 我们创造性的提出了能够处理流控机制的对偶综合算法：
 \textbf{首先},
-它使用经典的对偶综合算法\upcite{ShenTCAD11}
+使用经典的对偶综合算法\upcite{ShenTCAD11}
 以识别那些能够被唯一决定的输入变量，
-并称他们为流控变量$\vec{f}$。
-而其他不能被唯一决定的变量称为数据变量$\vec{d}$。
-\textbf{第二}，该算法推导一个充分必要谓词$valid(\vec{f})$使得$\vec{d}$能够被
-输出变量$\vec{o}$的一个有限长度序列唯一决定。
+并将它们视为流控向量$\vec{f}$的成员。
+而其他不能被唯一决定的变量则视为数据向量$\vec{d}$的成员。
+\textbf{第二}，
+该算法推导一个充分必要谓词$valid(\vec{f})$使得$\vec{d}$能够被
+输出向量$\vec{o}$的一个有限长度序列唯一决定。
 \textbf{第三},
 对于每一个流控变量$f\in\vec{f}$，
 该算法使用Craig插值算法\upcite{interp_McMillan}特征化其解码器函数。
@@ -69,16 +70,15 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 对于数据变量$\vec{d}$，
 他们的值只有在$valid(\vec{f}) \equiv 1$时才有意义。
 因此每个$d\in\vec{d}$的解码器函数可以类似的使用Craig插值算法得到，
-唯一的不同在于必须首先应用谓词$valid(\vec{f}) \equiv 1$。
+唯一的不同在于必须首先约束谓词$valid(\vec{f}) \equiv 1$。
 
 
 
 第三，研究了针对流水线结构的对偶综合算法。
-现代集成电路中的编码器，
 为了提升工作频率，
-通常包含多个流水线级，
+现代集成电路中的编码器通常包含多个流水线级，
 以将关键的数据路径划分为多级。
-而传统的对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+而传统的对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 完全无视这种流水线结构，
 从而导致生成的解码器无法保持和编码器匹配的频率和性能。
 为此，
@@ -91,9 +91,9 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 第一个流水线级$\vec{stg}^0$中恢复$\vec{i}$。
 
 第四，结合上述研究成果，研究了能够同时处理流控和流水线结构的对偶综合算法。
-该算法首先使用秦et al. \upcite{QinTODAES15}的算法来寻找$\vec{f}$ 并推导$valid(\vec{f})$。
+该算法首先使用Qin et al. \upcite{QinTODAES15}的算法来寻找输入向量$\vec{i}$中的流控向量$\vec{f}$ 并推导有效性谓词$valid(\vec{f})$。
 然后分别通过强制和不强制$valid(\vec{f})$，
-已从所有寄存器集合中找到每一个寄存器级$\vec{stg}^j$的$\vec{d}^j$ 和$\vec{f}^j$。
+以从所有寄存器集合中找到每一个寄存器级$\vec{stg}^j$的数据向量$\vec{d}^j$ 和流控向量$\vec{f}^j$。
 最后通过Jiang et al. \upcite{InterpBoolFunction}的算法特征化$\vec{stg}^j$ 和$\vec{i}$的布尔函数。
 
 综上所述，
@@ -110,53 +110,53 @@ and multimedia chips is to design and verify complex encoder and decoder pairs.
 The encoder maps its input variables $\vec{i}$ to its output variables $\vec{o}$,
 while the decoder recovers $\vec{i}$ from $\vec{o}$.
 Complementary synthesis
-\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 eases this job by
 automatically generating a decoder from an encoder,
 with the assumption that $\vec{i}$ can always be
 uniquely determined by a bounded sequence of $\vec{o}$.
 
 On the other hand,
-The encoders of modern communication protocols
+the encoders of modern communication protocols
 widely employ flow control\upcite{flowcontrol} and pipeline mechanism to boost performance and their ability of adopting to complex application environment.
-But state-of-the-art research works on complementary synthesis\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
-are all based on black box model,
+But state-of-the-art research works on complementary synthesis\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+are all based on black box model that ignores these internal structures,
 so can not take full advantage of these mechanisms.
 
 To overcome these problems,
-based on white box model,
-this paper propose new complementary synthesis algorithms to handle flow control and pipeline mechanism:
+this thesis proposes new complementary synthesis algorithms based on white box model to handle flow control and pipeline mechanism:
 
 First,
 this thesis proposes an iterative characterizing algorithm based on cofactoring and Craig interpolant.
 In inferring the encoder's internal structure and generating its decoder,
 one of the most critical algorithm is to characterize a Boolean function $f$
 that covers a Boolean relation $R$.
-State-of-the-art algorithms are satisfying assignment enumeration and quantifier elimination with SAT or BDD.
+State-of-the-art algorithms are satisfying assignment enumeration and quantifier elimination \upcite{SATUNBMC,MINASS,REPARAM,MINCEX,PRIMECLAUSE,EFFCON,MEMEFFALLSAT,CMPMINCEX,EFFSATUSMCCO,InterpBoolFunction,interpNoProof}
+with SAT\upcite{DBLP:conf/dac/MoskewiczMZZM01} or BDD\upcite{DBLP:journals/tc/Bryant86}.
 But these algorithms are very inefficient because of irregular solution space.
 Thus we propose an iterative characterizing algorithm.
 In each iteration of this algorithm,
-for each satisfying assignment not yet enumerated $A$,
+for each satisfying assignment $A$ not yet enumerated ,
 $R$ is simplified with $A$'s cofactor,
-and then is used to generated a Craig interpolant,
-which can be used as an enlarged cube of $A$.
+and used to generated a Craig interpolant,
+which can is an enlarged cube of $A$.
 This algorithm is a halting one and is much faster than naive satisfying assignment enumeration.
 
 Second,
 this thesis proposes a novel complementary synthesis algorithm to handle flow control mechanism.
-One assumption of State-of-the-art complementary algorithms\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13} is that,
-$\vec{i}$can always be uniquely determined by a bounded sequence of $\vec{o}$.
+One assumption of state-of-the-art complementary algorithms\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13} is that,
+$\vec{i}$ can always be uniquely determined by a bounded sequence of $\vec{o}$.
 Only in this way the unsatisfiable formula for computing Craig interpolant can be constructed.
-But the flow control mechanism \upcite{flowcontrol} in many modern encoders fail this assumption.
+But the flow control mechanism \upcite{flowcontrol} in many modern encoders fails this assumption.
 This mechanism partition $\vec{i}$ into the data vector $\vec{d}$ to be encoded and the flow control vector $\vec{f}$ used to express the validness of $\vec{d}$.
 And a validness predicate $valid(\vec{f})$ is defined on $\vec{f}$.
-$\vec{d}$ can be uniquely determined by $\vec{o}$ only when $valid(\vec{f})\equiv true$.
-Thus this thesis propose a novel complementary synthesis algorithm to handle flow control mechanism：
+$\vec{d}$ can be uniquely determined by $\vec{o}$ only when $valid(\vec{f})\equiv 1$.
+Thus this thesis proposes a novel complementary synthesis algorithm to handle flow control mechanism：
 First,
 it identifies all input variables that can be uniquely determined,
-and takes them as flow control variables.
+and takes them as members of the flow control vector $\vec{f}$.
 Second,
-it infers a predicate over these flow control variables
+it infers predicate $valid(\vec{f})$ over these flow control variables
 that enables all other input variables to be uniquely determined.
 Third,
 it characterizes the decoder's Boolean function with Craig interpolant.
@@ -166,8 +166,8 @@ it characterizes the decoder's Boolean function with Craig interpolant.
 Third,
 this thesis proposes a novel complementary synthesis algorithm to handle pipeline structure.
 Modern encoders often include multiple pipeline stages that cut the critical datapath into multiple segments
-to boost frequency and thus performance,
-State-of-the-art complementary algorithms \upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+to boost frequency and performance.
+State-of-the-art complementary algorithms \upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 all ignore such structure,
 which make the generated decoder can not keep up with the encoder on frequency and performance.
 Thus this thesis proposes a novel algorithm to first find out the encoder's pipeline registers in each pipeline stage,
@@ -181,11 +181,11 @@ Finally,
 with all above researches,
 this thesis proposes a final algorithm to handle flow control mechanism and pipeline structure at the same time.
 First,
-it infers the flow control predicate on inputs with Qin et al. \upcite{QinTODAES15}'s algorithm.
+it infers the flow control vector $\vec{}f$ and flow control predicate $valid(\vec{f})$ on inputs vector $\vec{i}$ with Qin et al. \upcite{QinTODAES15}'s algorithm.
 Second,
-it finds out the pipeline stages in the encoder by enforcing the inferred flow control predicate.
-% Third,
-% it infers the flow control predicate for each pipeline stages.
+it finds out the data vector and flow control vector in each pipeline stages by enforcing and not enforcing the inferred flow control predicate.
+Third,
+it infers the flow control predicate for each pipeline stages.
 Finally,
 the decoder's Boolean functions that recover each pipeline stage and input are characterized with Jiang et al. \upcite{InterpBoolFunction}'s algorithm based on Craig interpolant.
 

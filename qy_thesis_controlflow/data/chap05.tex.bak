@@ -5,7 +5,7 @@
 \section{引言}
 在通讯和多媒体芯片设计项目中，
 最困难的一个工作是针对特定的协议，
-如以太网\upcite{IEEE8023_S4} 和PCI Express \upcite{pcie21}，
+如以太网\upcite{IEEE8023_S4} 和PCI Express \upcite{pcie}，
 设计相应的编码器和解码器。
 其中编码器负责将输入$\vec{i}$ 映射至输出$\vec{o}$，
 而解码器则负责从$\vec{o}$中恢复$\vec{i}$。
@@ -82,7 +82,7 @@ $\vec{stg}^0$ 能够反过来被$\vec{o}$唯一决定，
 
 为了展示该算法的有效性，
 我们在多个复杂的工业界实际编码器，
-如PCI Express \upcite{pcie21} 和以太网\upcite{IEEE8023_S4}，
+如PCI Express \upcite{pcie} 和以太网\upcite{IEEE8023_S4}，
 上进行了实验。
 实验结果表明，
 该算法总能够产生流水线解码器，
@@ -542,6 +542,9 @@ F''_{PC}(p,r,v,j,\vec{w},k):=
 当$F''_{PC}(p,r,v,j,\vec{w},k)$ 不可满足时，
 $\vec{w}_k$ 能够唯一决定$v_j$.
 
+在下面，
+我们将首先在小节\ref{subsub_last}中使用公式(\ref{uniqt2})从输出向量$\vec{o}$推导最后一级流水线，
+然后在小节\ref{subsub_notlast}中由后向前依次推导其他各级流水线。
 
 \subsubsection{推导最后一级流水线$\vec{stg}^{n-1}$}\label{subsub_last}
 根据图\ref{fig_pipeenc_chap4}，
@@ -569,7 +572,7 @@ $\vec{o}$在同一个第$p+r$步唯一决定的$s\in \vec{s}$。
 \right\}
 \end{equation}
 
-\subsubsection{推导非最后一级流水线$\vec{stg}^{j}$}
+\subsubsection{推导非最后一级流水线$\vec{stg}^{j}$}\label{subsub_notlast}
 
 根据图\ref{fig_pipeencexp_chap4}以及上一小节的讨论，
 本节将对任意的$0\le j\le n-2$推导第$j$级流水线$\vec{stg}^{j}$。
@@ -809,8 +812,8 @@ $\phi_A$ 相对于$\phi_B$的Craig 插值$\phi_I$
 使用一台包含16 个Intel Xeon E5648 2.67GHz处理器，
 192GB 存储器， 和CentOS 5.4 Linux操作系统的服务器。
 
-表\ref{tab_bench_chap4} 给出了本文使用的测试机 。
-第2和3列分别给出了每个benchmark的输入， 输出和寄存器数量。
+表\ref{tab_bench_chap4} 给出了本文使用的测试集 。
+第2和3列分别给出了每个测试电路的输入， 输出和寄存器数量。
 第4列将这些编码器映射至LSI10K 库的面积。
 本文中，
 所有的面积和延时都是在相同的设定下得到的。
@@ -826,7 +829,7 @@ $\phi_A$ 相对于$\phi_B$的Craig 插值$\phi_I$
            &    \#in &   \#    &面积& 编码器&运行&延迟&面积                                       &运行&延迟&面积&寄存器\\
            &   /out  &  reg    &      &   描述&时间&(ns) &                                        &时间 &(ns) &    &个数\\\hline\hline
  pcie      & 10      & 23      & 326  &PCIE                                   &0.37 &7.20 &624                                     &3.57 & 5.89&652 &9/12\\
-           &   /11   &         &      &     2.0 \upcite{pcie21}                 &     &     &                                        &     &     &    &    \\\hline
+           &   /11   &         &      &     2.0 \upcite{pcie}                 &     &     &                                        &     &     &    &    \\\hline
  xgxs      & 10      & 16      & 453  &     以太网                            &0.21 &7.02 &540                                     &1.57 & 5.93&829 &13\\
            &  /10    &         &      &     clause 48 \upcite{IEEE8023_S4}      &     &     &                                        &     &     &    &  \\\hline
  t2eth     & 14      & 49      & 2252 &    以太网                             &12.7 &6.54 &434                                     &47.2 & 6.12&877 &8/8/\\
@@ -852,7 +855,7 @@ scrambler  &64       & 58      & 1034 & inserting                             & 
 其中t2ether包含4级流水线。
 
 有一点非常有意思的是，
-两个最大的benchmarks scrambler 和xfi 没有检测到流水线。
+两个最大的测试电路 scrambler 和xfi 没有检测到流水线。
 我们研究了其代码，并确认了这一点。
 他们的面积如此之大是因为使用了64 到72 位宽的数据路径。
 
