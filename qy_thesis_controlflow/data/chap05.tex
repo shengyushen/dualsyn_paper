@@ -18,7 +18,7 @@ $\vec{i}$ 总能够被$\vec{o}$的一个有限序列唯一决定。
 解码器的布尔函数可以使用Jiang et al. \upcite{InterpBoolFunction}提出的基于Craig插值\upcite{Craig}的算法进行特征化。
 
 与此同时，
-通过研究现有的工业界编码器，我们发现他们都含有流水线结构以提高运行频率。
+通过分析现有的工业界编码器，我们发现它们都含有流水线结构以提高运行频率。
 \begin{figure}[b]
 \begin{center}
 \includegraphics[width=\textwidth]{pipeline_pipeline}
@@ -374,7 +374,7 @@ $\vec{stg}^0$ 能够反过来被$\vec{o}$唯一决定，
   \label{fig_pipeenc_chap4}
 \end{figure}
 
-\begin{figure}[b]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=\textwidth]{pipemodexp_pipeline}
 \end{center}
@@ -393,10 +393,10 @@ $\vec{stg}^0$ 能够反过来被$\vec{o}$唯一决定，
 $\vec{stg}^j$ 是第$j$个流水线级。
 
 而下标则如小节\ref{subsec_fsm}所述，
-表示在展开的迁移关系序列中的步数。
-例如：$\vec{stg}^j_k$ 则是该第$j$流水线级
-在展开的迁移函数序列中的第$k$步的值。
-图\ref{fig_pipeencexp_chap4}直观地展示了图\ref{fig_pipeenc_chap4}中的各个流水线级在展开的迁移函数序列中的记法。
+表示在迁移函数展开序列中的步数。
+例如：$\vec{stg}^j_k$ 是第$j$流水线级
+在迁移函数展开序列中第$k$步的值。
+图\ref{fig_pipeencexp_chap4}直观地展示了图\ref{fig_pipeenc_chap4}中的各个流水线级在迁移函数展开序列中的记法。
 根据公式(\ref{eqn_partition_S})，
 $\vec{s}_k$实际上包含了所有流水线级在第$k$步的取值，
 即：
@@ -411,7 +411,7 @@ $\vec{s}_k$实际上包含了所有流水线级在第$k$步的取值，
 
 因为存在多于一个$i\in \vec{i}$，
 我们需要为每一个$i\in \vec{i}$使用算法\ref{alg_pcln_chap1}
-以得到他们对用的$p$， $l$ 和$r$ 。
+以得到他们对应的$p$， $l$ 和$r$ 。
 
 然后我们将最终的$p$，$l$ 和$r$ 设置为所有$i\in \vec{i}$中最大的$p$， $l$ 和$r$ 。
 根据公式(\ref{uniqt1})，
@@ -443,7 +443,7 @@ $\vec{s}_k$实际上包含了所有流水线级在第$k$步的取值，
 
 在行\ref{testr_1}，
 当$F_{PC}(p,l,r'-1)$ 可满足时，
-则$r'$ 是最有一个使得$F_{PC}(p,l,r')$ 不可满足的，
+则$r'$ 是最后一个使得$F_{PC}(p,l,r')$ 不可满足的，
 我们将其直接返回。
 另一方面，
 当$r'\equiv 0$，
@@ -485,9 +485,9 @@ F'_{PC}(p,r):=
 \}
 \\
 \wedge&\vec{o}_{p+r}\equiv \vec{o'}_{p+r} \\
-\wedge& i_{p}\equiv 1 \wedge  i'_{p}\equiv 0
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\wedge& i_{p}\equiv 1 \wedge  i'_{p}\equiv 0 \\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i}_m) \\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i'}_m)
 \end{array}
 \right\}
 % \end{split}
@@ -514,7 +514,7 @@ F'_{PC}(p,r):=
 是否能够被任意向量$\vec{w}$ 在第$k$步唯一决定。
 现在$v$ 和$\vec{w}$ 可以是输入，输出和状态变量或向量。
 
-\begin{equation}\label{uniqt2}
+\begin{equation}\label{uniqt2_chap5}
 % \begin{split}
 F''_{PC}(p,r,v,j,\vec{w},k):=
 \left\{
@@ -530,9 +530,9 @@ F''_{PC}(p,r,v,j,\vec{w},k):=
 \}
 \\
 \wedge&\vec{w}_{k}\equiv \vec{w'}_{k} \\
-\wedge& v_{j}\equiv 1 \wedge  v'_{j}\equiv 0
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\wedge& v_{j}\equiv 1 \wedge  v'_{j}\equiv 0 \\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i}_m) \\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i'}_m)
 \end{array}
 \right\}
 % \end{split}
@@ -543,7 +543,7 @@ F''_{PC}(p,r,v,j,\vec{w},k):=
 $\vec{w}_k$ 能够唯一决定$v_j$.
 
 在下面，
-我们将首先在小节\ref{subsub_last}中使用公式(\ref{uniqt2})从输出向量$\vec{o}$推导最后一级流水线，
+我们将首先在小节\ref{subsub_last}中使用公式(\ref{uniqt2_chap5})从输出向量$\vec{o}$推导最后一级流水线，
 然后在小节\ref{subsub_notlast}中由后向前依次推导其他各级流水线。
 
 \subsubsection{推导最后一级流水线$\vec{stg}^{n-1}$}\label{subsub_last}
@@ -604,7 +604,8 @@ $\vec{stg}^{n-1}$能够
 $\vec{o}$在同一个第$p+r$步唯一决定。
 那么很明显，
 如果将$\vec{stg}^{n-1}$放在迁移函数展开序列的第$p+r$步，
-那么$\vec{stg}^{n-2}$应该被放在第$p+r-1$步。
+那么$\vec{stg}^{n-2}$应该被放在上一步，
+即第$p+r-1$步。
 因此$\vec{stg}^{n-2}$能够
 在第$p+r-1$步被
 $\vec{stg}^{n-1}$在第$p+r$步唯一决定。
@@ -628,7 +629,7 @@ $\vec{stg}^{n-1}$在第$p+r$步唯一决定。
 
 其中$S$和$D$分别定义如下：
 \begin{equation}\label{stgnS_def_chap4}
-S              :=  \vec{s}/\bigcup_{j<k\le n-2}\vec{stg}^{k}
+S              :=  \vec{s}-\bigcup_{j<k\le n-2}\vec{stg}^{k}
 \end{equation}
 
 \begin{equation}\label{stgn_def_chap4}
@@ -638,7 +639,8 @@ D              :=  (n-2)-(p+r-1)
 在等式(\ref{stgnS_def_chap4})中，
 所有属于第$k$级流水线，
 其中$k>j$，
-的状态变量都被从状态向量$\vec{s}$中剔除。
+的状态变量都被从状态向量$\vec{s}$中剔除，
+以避免重复测试那些已经被确定包含在其他流水线级的状态变量。
 
 基于等式(\ref{stgn_1}) 和(\ref{stgn_j})，
 所有的流水线级都能够被推导出来。
@@ -675,7 +677,8 @@ $F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 不可满足。
 (\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
 \}
 \\
-\wedge& s_{p+r}\equiv 1
+\wedge& s_{p+r}\equiv 1\\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i}_m) 
 \end{array}
 \right\}
 \end{equation}
@@ -691,9 +694,8 @@ $F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 不可满足。
 \}
 \\
 \wedge&\vec{o}_{p+r}\equiv \vec{o'}_{p+r} \\
-\wedge& s'_{p+r}\equiv 0
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\wedge& s'_{p+r}\equiv 0\\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i'}_m)
 \end{array}
 \right\}
 % \end{split}
@@ -706,7 +708,7 @@ $F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 不可满足。
 
 $\phi_A$ 相对于$\phi_B$的Craig插值$\phi_I$ 可以使用McMillian算法\upcite{InterpBoolFunction}构造出来，
 其中仅引用$\phi_A$ 和$\phi_B$ 的共同变量集合$\vec{o}_{p+r}$，
-并覆盖所有使$s_{p+r}\equiv 1$的$\vec{o}_{p+r}$ 的赋值。
+并覆盖所有使$s_{p+r}\equiv 1$成立的$\vec{o}_{p+r}$ 的赋值。
 同时，
 $\phi_I\wedge \phi_B$  不可满足，
 这意味着$\phi_I$ 不能使$s_{p+r}\equiv 0$。
@@ -729,7 +731,8 @@ $\phi_I$ 可以作为解码器的布尔函数以从$\vec{o}$中恢复$s\in \vec{
 (\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
 \}
 \\
-\wedge& s_{j-D}\equiv 1
+\wedge& s_{j-D}\equiv 1\\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i}_m) 
 \end{array}
 \right\}
 \end{equation}
@@ -745,9 +748,8 @@ $\phi_I$ 可以作为解码器的布尔函数以从$\vec{o}$中恢复$s\in \vec{
 \}
 \\
 \wedge&\vec{stg}^{j+1}_{j-D+1}\equiv \vec{stg'}^{j+1}_{j-D+1} \\
-\wedge& s'_{j-D}\equiv 0
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\wedge& s'_{j-D}\equiv 0\\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i'}_m)
 \end{array}
 \right\}
 % \end{split}
@@ -773,9 +775,8 @@ $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ 是不可满足的并可划分为:
 (\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
 \}
 \\
-\wedge& i_{p}\equiv 1
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\wedge& i_{p}\equiv 1\\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i}_m) 
 \end{array}
 \right\}
 % \end{split}
@@ -792,9 +793,8 @@ $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ 是不可满足的并可划分为:
 \}
 \\
 \wedge&\vec{stg}^j_{j-D}\equiv \vec{stg'}^j_{j-D} \\
-\wedge& i'_{p}\equiv 0
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\wedge& i'_{p}\equiv 0\\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i'}_m)
 \end{array}
 \right\}
 % \end{split}
@@ -814,7 +814,7 @@ $\phi_A$ 相对于$\phi_B$的Craig 插值$\phi_I$
 
 表\ref{tab_bench_chap4} 给出了本文使用的测试集 。
 第2和3列分别给出了每个测试电路的输入， 输出和状态变量数量。
-第4列将这些编码器映射至LSI10K 库的面积。
+第4列则是将这些编码器映射至LSI10K 库的面积。
 本文中，
 所有的面积和延时都是在相同的设定下得到的。
 
@@ -845,7 +845,7 @@ scrambler  &64       & 58      & 1034 & inserting                             & 
 
 
 
-第6到8列分别给出了\upcite{ShenTCAD11}算法在产生误流水线的解码器时的运行时间，延迟和面积。
+第6到8列分别给出了Shen et al.\upcite{ShenTCAD11}算法在产生无流水线的解码器时的运行时间，延迟和面积。
 而第9到11列分别给出了本文算法的运行时间，延迟和面积。
 而最后一列给出了每一级流水线包含的状态变量个数。
 

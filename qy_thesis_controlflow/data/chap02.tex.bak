@@ -43,7 +43,7 @@ Gulwani et al.\upcite{dim_syn}指出，
 程序求反是指针对特定程序$P$，
 求解其反程序$P^{-1}$。
 因此，
-程序求反和我们的算法很类似。
+程序求反和对偶综合非常类似。
 
 程序求反的早期工作是基于证明的\upcite{prog_inv}，
 只能处理非常小的程序和非常简单的语法。
@@ -80,7 +80,7 @@ Clarkson et al.\upcite{DBLP:journals/jcs/ClarksonS10}提出的超属性(Hyperpro
 
 Clarkson et al.\upcite{DBLP:conf/post/ClarksonFKMRS14}通过扩展传统的线性时态逻辑(LTL)和扩展计算树逻辑(CTL*)，
 以描述上述的超属性，
-并给出了针对扩展LTL的超属性的模型检验算法。
+并给出了针对扩展LTL超属性的模型检验算法。
 
 Finkbeiner et al. \upcite{DBLP:conf/cav/FinkbeinerRS15}进一步提出基于自动机理论的模型检验算法。
 该算法能同时处理扩展了超属性的LTL和CTL*。
@@ -110,14 +110,14 @@ McMillan et al.\upcite{SATUNBMC}提出了第一个此类算法。
 在Ravi et al.\upcite{MINASS} 和Chauhan et al.\upcite{REPARAM}中，
 每个变量如果在其不被约束的情况下不能使$obj\equiv 0$ 被满足的话，
 则该变量可以从最终结果中剔除。
-在Shen et al.\upcite{MINCEX}，Jin et al.\upcite{PRIMECLAUSE}和 Jin et al.\upcite{EFFCON}中，
+在Shen et al.\upcite{MINCEX}和Jin et al.\upcite{PRIMECLAUSE,EFFCON}中，
 冲突分析方法被用于剔除与可满足性无关的变量。
 在Grumberg et al.\upcite{MEMEFFALLSAT}中，
 变量集合被划分为重要变量和非重要变量集合。
 搜索过程中重要变量的优先级高于非重要变量。
 因此重要变量子集构成了一个搜索树，
 而该树的每一个叶节点是非重要变量的一个搜索子树。
-Nopper et al.\upcite{CMPMINCEX} 提出了一个针对非完备模型进行反例压缩的算法
+Nopper et al.\upcite{DBLP:conf/mbmv/NopperS07} 提出了一个针对非完备模型进行反例压缩的算法。
 Cofactoring \upcite{EFFSATUSMCCO} 则通过将非重要变量设置为SAT求解器返回的值以缩减搜索空间。
 
 另一类算法通过Craig插值以扩大解集合。
@@ -137,7 +137,7 @@ Craig插值的产生过程类似于传统的可满足赋值遍历算法。
 第二级输出不同。
 这将导致所得到的合取公式不可满足。
 然后调用Craig插值算法从不可满足证明中特征化第二级函数。
-该算法也应用于我们的早期工作\upcite{ShenTCAD12} 以找到所有可能的解码器。
+该算法也应用于我们的早期工作\upcite{ShenTCAD12} 中以找到所有可能的解码器。
 
 在Wu et al.\upcite{ecoInterp}中，
 Craig插值被用于产生ECO。

@@ -110,7 +110,7 @@ MiniSat提供了从其自身的C语言内核到OCaml语言的接口。
 
 \subsection{BDD}
 我们选择了学术界广泛使用，
-并经过长期验证的CUDD软件包\url{cudd}来处理BDD数据结构。
+并经过长期验证的CUDD软件包\upcite{cudd}来处理BDD数据结构。
 主要应用于小节\ref{sec_bdd_simp}中描述的基于BDD的化简算法。
 
 
@@ -148,7 +148,8 @@ MiniSat提供了从其自身的C语言内核到OCaml语言的接口。
 
 \subsection{基于余因子和Craig插值的迭代}
 此步骤相当于重复的执行上述的Craig插值操作。
-即重复的经过$6\to 9 \to 8 \to 7 \to 8 \to 9 \to 6$。
+即重复的经过8和7，
+形成如$6\to 9 \to (8 \to 7 \to)^{+} 8 \to 9 \to 6$的路径。
 
 在完成上述流程之后，
 还需要额外调用BDD模块进行结果的化简。

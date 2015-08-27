@@ -15,7 +15,7 @@
 在发掘编码器内部结构和自动产生解码器的过程中，
 一个必须而且对性能要求非常苛刻的步骤，
 是特征化满足特定命题逻辑关系$R$的布尔函数$f$。
-传统的算法包括基于SAT或BDD的完全解遍历和和量词削减。
+传统的算法包括基于SAT\upcite{DBLP:conf/dac/MoskewiczMZZM01}或BDD\upcite{DBLP:journals/tc/Bryant86}的完全解遍历和和量词削减\upcite{SATUNBMC,MINASS,REPARAM,MINCEX,PRIMECLAUSE,EFFCON,MEMEFFALLSAT,DBLP:conf/mbmv/NopperS07}。
 然而这些算法通常受到解空间不规则的困扰，
 导致性能低下。
 为此，
@@ -28,8 +28,8 @@
 且其性能比传统的完全解遍历算法有巨大的提升。
 
 第二，研究了针对流控机制的对偶综合算法。
-传统对偶综合算法的\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}的一个基本假设是，
-编码器的输入变量$\vec{i}$总能够被输出变量$\vec{o}$的一个有限长度序列唯一决定。
+传统对偶综合算法\upcite{ShenICCAD09,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}的一个基本假设是，
+编码器的输入向量$\vec{i}$总能够被输出向量$\vec{o}$的一个有限长度序列唯一决定。
 基于该假设方可构造满足Craig插值的不可满足公式。
 然而，
 许多高速通讯系统的编码器所带有流控机制\upcite{flowcontrol}，
@@ -43,16 +43,16 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 \textbf{首先},
 它使用经典的对偶综合算法\upcite{ShenTCAD11}
 以识别那些能够被唯一决定的输入变量，
-并称他们为流控变量$\vec{f}$。
-而其他不能被唯一决定的变量称为数据变量$\vec{d}$。
+并将它们视为流控变量$\vec{f}$的成员。
+而其他不能被唯一决定的变量则作为数据向量$\vec{d}$的成员。
 \textbf{第二}，该算法推导一个充分必要谓词$valid(\vec{f})$使得$\vec{d}$能够被
-输出变量$\vec{o}$的一个有限长度序列唯一决定。
+输出向量$\vec{o}$的一个有限长度序列唯一决定。
 \textbf{第三},
 对于每一个流控变量$f\in\vec{f}$，
 该算法使用Craig插值算法\upcite{interp_McMillan}特征化其解码器函数。
 同时，
-对于数据变量$\vec{d}$，
-他们的值只有在$valid(\vec{f}) \equiv 1$时才有意义。
+对于数据向量$\vec{d}$，
+它们的值只有在$valid(\vec{f}) \equiv 1$时才有意义。
 因此每个$d\in\vec{d}$的解码器函数可以类似的使用Craig插值算法得到，
 唯一的不同在于必须首先应用谓词$valid(\vec{f}) \equiv 1$。
 
@@ -76,9 +76,9 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 第一个流水线级$\vec{stg}^0$中恢复$\vec{i}$。
 
 第四，结合上述研究成果，研究了能够同时处理流控和流水线结构的对偶综合算法。
-该算法首先使用秦et al. \upcite{QinTODAES15}的算法来寻找$\vec{f}$ 并推导$valid(\vec{f})$。
+该算法首先使用Qin et al. \upcite{QinTODAES15}的算法来寻找$\vec{f}$ 并推导$valid(\vec{f})$。
 然后分别通过强制和不强制$valid(\vec{f})$，
-以从所有状态变量集合中找到每一个流水线级$\vec{stg}^j$的$\vec{d}^j$ 和$\vec{f}^j$。
+以从所有状态变量集合中找到每一个流水线级$\vec{stg}^j$的数据向量$\vec{d}^j$ 和流控向量$\vec{f}^j$。
 最后通过Jiang et al. \upcite{InterpBoolFunction}的算法特征化$\vec{stg}^j$ 和$\vec{i}$的布尔函数。
 
 综上所述，
@@ -90,7 +90,7 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 \section{研究展望}
 近两年来，
 随着 100G以太网\upcite{ether100g}，128G光纤通道\upcite{fc}和InfiniBand EDR\upcite{InfiniBand}的出现，
-单通道传输带宽达到 25~32Gbps。
+单通道传输带宽达到 25至32Gbps。
 从而导致高频衰减在标准的背板传输距离上超过了 30dB，
 并使其无法达到以太网标准要求的 $10^{-12}$ 误码率\upcite{fecopt}。
 而工业界最新的实验性 56Gbps串行传输技术仅能在 11 英寸以内的距离上保证 $10^{-12}$误码率\upcite{nrz56g}。
@@ -132,14 +132,14 @@ $\vec{d}$才能够被$\vec{o}$唯一决定。
 通常会选择很长的FEC帧尺寸。
 比如在IEEE 802.3bj定义的 100G以太网中\upcite{ether100g}，
 每个FEC帧包含 5280 个比特。
-在典型的 250~260 位数据路径宽度上，
+在典型的 250至260 位数据路径宽度上，
 这将导致移动窗口的尺寸至少为 20。
 这超出了目前为止所有对偶综合算法的处理能力。
 
 
 4. 前向纠错编码(FEC)的非对称结构和阻塞式的解码算法，
 导致现有的对偶综合算法无法产生规则而高效的解码器结构。
-正如我们将在下文中指出的，
+原因在于，
 FEC 解码算法的复杂性远比编码高得多，
 而且并不存在线性流水线式的实现，
 必须在一个完整的 FEC 帧上经过多次迭代处理方能完成。

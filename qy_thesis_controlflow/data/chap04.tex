@@ -1349,7 +1349,7 @@ $l$仅影响解码器的电路面积，
 解码器的输入$\vec{i}$ 被划分为两个向量：
 流控向量$\vec{f}$ 和数据向量$\vec{d}$。
 为这两个向量分别产生解码器函数的算法是不同的，
-因此他们将在下面两个小节中分别描述。
+在下面两个小节中将分别描述。
 
 \subsection{产生$\vec{f}$的解码器函数}\label{subsec_fdec}
 
@@ -1358,7 +1358,7 @@ $l$仅影响解码器的电路面积，
 对于每个特定的输出向量序列$<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$，
 $f_{p+l}$ 不能同时取值为1和0。
 因此，
-计算$f_{p+l}$ 的解码器函数可以视为$\phi_A$针对$\phi_B$的Craig插值，
+计算$f_{p+l}$ 的解码器函数可以视为$\phi_A$相对于$\phi_B$的Craig插值，
 其中$\phi_A$和$\phi_B$分别定义如下：
 
 \begin{equation}\label{fa}
@@ -1487,7 +1487,7 @@ $ITP$ 是$d\in\vec{d}$的解码器函数。
 
 \section{实验结果}\label{sec_exp_chap3}
 
-我们使用OCaml 语言\upcite{OCaml}实现了所有算法。
+我们使用OCaml 语言\upcite{OCaml}实现了所有算法，
 并使用MiniSat 1.14\upcite{EXTSAT}求解所有的CNF公式。
 所有的实验使用一台包含16 个Intel Xeon E5648 2.67GHz处理器，
 192GB 存储器， 和CentOS 5.4 Linux操作系统的服务器进行。
@@ -1504,7 +1504,7 @@ $ITP$ 是$d\in\vec{d}$的解码器函数。
 %  So there may be some overlap between (2) and (3).
 \end{enumerate}
 
-表\ref{tab:summ} 的每一列依次给出了每个实验对象的输入位数，输出位数，状态位数，映射到 mcnc.genlib 标准单元库后的门数和面积。
+表\ref{tab:summ} 的每一列依次给出了每个实验对象的输入位数、输出位数、状态位数、映射到 mcnc.genlib 标准单元库后的门数和面积。
 映射使用ABC 综合工具\upcite{ABC}，
 脚本为"strash; dsd; strash; dc2; dc2; dch; map"。
 该脚本来自于\upcite{LiuTCAD12}。
@@ -1540,17 +1540,17 @@ $ITP$ 是$d\in\vec{d}$的解码器函数。
 \end{table}%
 
 表\ref{tab:summ} 的最后一列
-也给出了我们将如何描述每一个benchmark的实验结果。
+也给出了我们将如何描述每一个测试电路的实验结果。
 \begin{enumerate}
  \item
-对于来自于我们以前论文\upcite{ShenTCAD12}的5个benchmark，
+对于来自于我们以前论文\upcite{ShenTCAD12}的5个测试电路，
 我们发现他们中的大多数都有流控机制。
 这并不奇怪，
-因为这些benchmark都来自于实际的工业项目。
+因为这些测试电路都来自于实际的工业项目。
 他们的实验结果将分别在小节
 \ref{subsec_pcie2}，\ref{subsec_10g} 和\ref{subsec_t2e}中描述。
  \item
-对于其他不包含流控机制的benchmark，
+对于其他不包含流控机制的测试电路，
 如果他们的输入都能够被输出唯一决定，
 则我们的算法能够将他们所有的输入都识别成流控变量，
 并直接生成他们的解码器函数。
@@ -1573,7 +1573,7 @@ $ITP$ 是$d\in\vec{d}$的解码器函数。
 
 在小节\ref{subsec_min}中，
 我们将比较在算法\ref{algo_remove2_chap3}中是否压缩$p$，$l$ 和$r$，
-导致的在算法运行时间，解码器面积和延时方面的区别。
+导致的在算法运行时间、解码器面积和延时方面的区别。
 
 最后在小节 \ref{subsec_compareman}中，
 我们将比较我们算法产生的解码器和手工书写的解码器在电路面积和延迟方面的差别。
@@ -1621,15 +1621,15 @@ $TXDATA$ 只能是1C， 3C， 5C， 7C， 9C， BC， DC， FC， F7， FB， FD
 
 
 本文算法的创新之处在于其处理流控机制的能力。
-我们将展示器编码器如何将无效的数据向量映射到输出向量$\vec{o}$。
+谓词我们将展示编码器如何将无效的数据向量映射到输出向量$\vec{o}$。
 通过研究编码器的代码，
 我们发现，
 当且仅当$CNTL\_TXEnable\_P0\equiv 0$ 成立，
 也就是
 $TXDATA$ 和$TXDATAK$ 无效时，
-输出$HSS\_TXELECIDLE$ 为1.
+输出$HSS\_TXELECIDLE$ 为1。
 因此，
-解码器将使用$HSS\_TXELECIDLE$ 来唯一决定$CNTL\_TXEnable\_P0$。
+解码器将使用空闲字符$HSS\_TXELECIDLE$ 来唯一决定流控向量$CNTL\_TXEnable\_P0$。
 
 \begin{table}[t]%
 \caption{10G 以太网编码器XGXS的输入和输出}
@@ -1697,7 +1697,8 @@ $encode\_data\_in$ 和$konstant$ 均无效时，
 
 
 \subsection{UltraSPARC T2 以太网编码器}\label{subsec_t2e}
-这个编码器来自于UltraSPARC T2 开源处理器。他遵从于IEEE 802.3 标准\upcite{IEEE8023_S4} 的clause 36。
+该编码器来自于UltraSPARC T2 开源处理器。
+它遵从于IEEE 802.3 标准\upcite{IEEE8023_S4} 的clause 36。
 在删除空行和注释之后，
 它包含864 行verilog源代码。
 
@@ -1784,15 +1785,15 @@ $encode\_data\_in$ 和$konstant$ 均无效时，
 前5种情况都有各自特殊的控制字符 被赋予$tx\_10bdata$。
 因此解码器总能从$tx\_10bdata$恢复出$tx\_enc\_ctrl\_sel$。
 
-\subsection{针对不具备流控机制的编码器比较我们的算法和现有算法}\label{subsec_nonflow}
+\subsection{针对不具备流控机制的编码器比较我们的算法和Liu et al.\upcite{LiuTCAD12}算法}\label{subsec_nonflow}
 
 \begin{table}[b]%
-\caption{比较我们的算法和\upcite{LiuTCAD12}的算法}
+\caption{比较我们的算法和Liu et al.\upcite{LiuTCAD12}的算法}
 \centering
 \label{tab:comp_nocf}
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
 \hline
-            &\multicolumn{4}{|c|}{我们的算法}                       &\multicolumn{3}{|c|}{\upcite{LiuTCAD12}}\\\cline{2-8}
+            &\multicolumn{4}{|c|}{我们的算法}                       &\multicolumn{3}{|c|}{Liu et al.\upcite{LiuTCAD12}}\\\cline{2-8}
             &检查解码   & 产生解码& 解码器  & 解码器                &检查解码器          & 解码器  & 解码器\\
 名字        & 器存在的  & 器的    & 面积    & 延迟                  & 存在和产生解码     & 面积    & 延迟                \\
             & 时间开销  & 时间开销&         &                       & 器的时间开销       &         &                       \\\hline
@@ -1805,23 +1806,23 @@ SCRAMBLER   & 1.80      &0.55     & 698     & 3.8                   & 0.42      
 \end{tabular}
 \end{table}%
 
-表\ref{tab:comp_nocf} 针对不具备流控机制的编码器比较了我们的算法和\upcite{LiuTCAD12} 的算法。
+表\ref{tab:comp_nocf} 针对不具备流控机制的编码器比较了我们的算法和Liu et al.\upcite{LiuTCAD12} 的算法。
 
 %前三个benchmark具备流控机制而且已经在小节\ref{subsec_pcie2},\ref{subsec_10g} 和\ref{subsec_t2e}被讨论过。
 %因此他们在这里就不在讨论了。
 
-对于从XFI 到HM(15,11)的6个benchmark，
+对于从XFI 到HM(15,11)的6个测试电路，
 我们有他们的源代码，
-而\upcite{LiuTCAD12} 给出了他们的实验结果。
-因此我们能在这里比较我们的算法和\upcite{LiuTCAD12}的结果。
+而Liu et al.\upcite{LiuTCAD12} 给出了他们的实验结果。
+因此我们能在这里比较我们的算法和Liu et al.\upcite{LiuTCAD12}的结果。
 
 通过比较第二和第三列之和和第六列，
-可见\upcite{LiuTCAD12} 比本文算法快很多。
+可见Liu et al.\upcite{LiuTCAD12} 比本文算法快很多。
 尤其是第二列。
 这种差距的主要原因在于本文算法需要逐一检查每个$i\in \vec{i}$ 是否能够被唯一决定，
-而\upcite{LiuTCAD12} 可以在一次SAT求解之中检查所有的$\vec{i}$。
+而Liu et al.\upcite{LiuTCAD12} 可以在一次SAT求解之中检查所有的$\vec{i}$。
 
-另一个问题是本文算法的面积和延迟均大于\upcite{LiuTCAD12}，
+另一个问题是本文算法的面积和延迟均大于Liu et al.\upcite{LiuTCAD12}，
 原因在于本文算法所采用的Craig插值算法实现仍不够优化，
 可以通过移植ABC \upcite{ABC}的相应代码得到改善。
 
@@ -1887,7 +1888,7 @@ A1对A2的优势是显著的。
 也就是首先同步增加$p$， $l$ 和$r$ ，
 然后在算法\ref{algo_remove2_chap3}中压缩他们。
 
-CC\_4 是唯一一个在第2列和第7列具有不同$p$，$l$和$r$的benchmark。
+CC\_4 是唯一一个在第2列和第7列具有不同$p$，$l$和$r$的测试电路。
 这是由于$l$ 和$r$的不同增长顺序导致的。
 对于A1 方案，
 其解码器包含14 个状态变量， 206 个门， 490 面积和13.3 延迟。
@@ -1897,7 +1898,7 @@ CC\_4 是唯一一个在第2列和第7列具有不同$p$，$l$和$r$的benchmark
 但是这仍然不意味着我们应当使用A2。
 具体原因我们将在下一小节得到更多实验数据支撑之后进一步展开解释。
 
-\subsection{在压缩和不压缩$l$ 和$r$的两种算法之间比较运行时间，电路面积和延迟}\label{subsec_min}
+\subsection{在压缩和不压缩$l$ 和$r$的两种算法之间比较运行时间、电路面积和延迟}\label{subsec_min}
 
 \begin{table}[t]%
 \caption{在压缩和不压缩$l$ 和$r$的两种算法之间比较运行时间，电路面积和延迟}
@@ -1925,12 +1926,12 @@ HM(15,11)   & 3,3,3& 2.98       & 5611    & 45  & 13.5                          
 算法\ref{algo_remove2_chap3} 被用于在产生解码器之前压缩$l$ 和$r$。
 表\ref{tab:compare_min}展示了其效果。
 
-第一列是benchmark名字。
+第一列是测试电路名字。
 当算法\ref{algo_remove2_chap3} 没有被使用时，
-第2列到第6列分别给出了$p$，$l$ 和$r$ 的值，
-产生解码器的运行时间，
-解码器面积，
-解码器包含的状态变量个数，
+第2列到第6列分别给出了$p$，$l$ 和$r$ 的值、
+产生解码器的运行时间、
+解码器面积、
+解码器包含的状态变量个数和
 解码器最大的逻辑延迟。
 当算法\ref{algo_remove2_chap3} 被使用的时候，
 这些数据在最后5列给出。
@@ -1986,6 +1987,7 @@ CC\_3，CC\_4， HM(7,4) and HM(15,11) 没有
 
 本文提出了第一个能够处理流控机制的对偶综合算法。
 实验结果表明本文算法能够为多个来自于实际工业项目的复杂编码器，
-包括PCI Express \upcite{pcie} 和以太网\upcite{IEEE8023_S4}。
+包括PCI Express \upcite{pcie} 和以太网\upcite{IEEE8023_S4}，
+正确的生成包含流控机制的解码器。
 
 

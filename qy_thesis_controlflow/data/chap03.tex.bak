@@ -280,10 +280,10 @@ FSAT_R(\vec{a}):=
 因此，
 一个计算$FSAT_R(\vec{a})$ 的简单算法是：
 逐一遍历并收集所有使得$R(\vec{a},\vec{b},1)$ 可满足的$\vec{a}$的赋值。
-然而该算法需要处理$2^{|\vec{a}|}$中情况。
+然而该算法需要处理$2^{|\vec{a}|}$种情况。
 对于很长的$\vec{a}$，时间开销将会很大。
 
-使用cofactoring \upcite{EFFSATUSMCCO} 和Craig 插值\upcite{interp_McMillan}，
+使用余因子化(cofactoring) \upcite{EFFSATUSMCCO} 和Craig 插值\upcite{interp_McMillan}，
 可以将每一个$\vec{a}$ 扩展为一个更大的集合，
 从而极大的提高算法运行速度。
 直观的，
@@ -319,12 +319,12 @@ FSAT_R(\vec{a}):=
 
 \begin{equation}
 % \begin{split}
-R(\vec{a},A(\vec{b}),1):=R(\vec{a},\vec{b},1)_{b\equiv A(b)}
+R(\vec{a},A(\vec{b}),1):=R(\vec{a},\vec{b},1)\wedge b\equiv A(b)
 % \end{split}
 \end{equation}
 \begin{equation}
 % \begin{split}
-R(\vec{a},A(\vec{b}),0):=R(\vec{a},\vec{b},0)_{b\equiv A(b)}
+R(\vec{a},A(\vec{b}),0):=R(\vec{a},\vec{b},0) \wedge b\equiv A(b)
 % \end{split}
 \end{equation}
 
@@ -339,11 +339,11 @@ $ITP(\vec{a})$ 覆盖且仅覆盖了所有使得$R(\vec{a},A(\vec{b}),1)$ 可满
 
 基于上述讨论，
 我们提出了算法\ref{alg_craigchar} 以特征化等式(\ref{fchar})中的$FSAT_R(\vec{a})$。
-行\ref{testsat}检测是否仍然存在尚未被$FSAT_R(\vec{a})$覆盖的$\vec{a}$ ，
-使得$R(\vec{a},\vec{b},1)$ 可满足。
+行\ref{testsat}检测是否仍然存在尚未被$FSAT_R(\vec{a})$覆盖，
+且使得$R(\vec{a},\vec{b},1)$ 可满足的$\vec{a}$ 。
 行\ref{cofact1} 和\ref{cofact2} 将可满足赋值中$\vec{b}$的取值分别赋予
 $R(\vec{a},\vec{b},1)$ 和$R(\vec{a},\vec{b},0)$ 。
-这将使得$\vec{b}$ 不在出现在这两个公式中。
+这将使得$\vec{b}$ 不再出现在这两个公式中。
 
 因此，
 $\phi_A\wedge \phi_B$ 在行\ref{ab} 是不可满足的。
@@ -362,7 +362,7 @@ $ITP(\vec{a})$ 将在行\ref{add}被加入$FSAT_R(\vec{a})$  并在行\ref{tests
 本质上是一系列Craig插值结果的析取。
 然而，
 正如小节\ref{sec_craigchar}所指出的，
-Craig插值结果是一个包含大量自由组合的与门和或门的电路，
+Craig插值结果是一个包含大量自由组合的与门、或门和反相器的电路，
 结构非常不规则。
 
 对于不同的应用需求，
@@ -370,7 +370,7 @@ Craig插值结果是一个包含大量自由组合的与门和或门的电路，
 \begin{enumerate}
 \item 对于特征化解码器的情形，
 由于这些解码器在进行物理实现的时候，
-还需要经由Design Compiler这样的逻辑综合器进行处理。
+还需要经由Design Compiler\upcite{DesignCompiler}这样的逻辑综合器进行处理，
 而这些工具具有非常强大的优化能力。
 因此不规则的Craig插值结果并不会对此类应用产生不良影响。
 \item 然而对于特征化控制流谓词这样的应用，
@@ -386,7 +386,7 @@ Craig插值结果是一个包含大量自由组合的与门和或门的电路，
 遍历并导出每个Cube，
 形成多个合取项的析取形式。
 
-该方法的具有其独特的优点和缺点,
+该方法的具有其独特的优点和缺点，
 并进而导致了对其应用场合的不同选择：
 
 \begin{enumerate}

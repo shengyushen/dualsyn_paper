@@ -39,7 +39,7 @@
 编码器的输入变量$\vec{i}$总能够被输出变量$\vec{o}$的一个有限长度序列唯一决定。
 
 然而，
-许多高速通讯系统的编码器带有流控功能\upcite{flowcontrol}，
+许多高速通讯系统的编码器带有流控机制\upcite{flowcontrol}，
 而该功能直接违反了上述假设。
 图\ref{fig:nonuniq}a)展示了一个带有流控机制的通讯系统的结构。
 其中一个传输器(transmitter)和一个接收器(receiver)通过一个编码器(encoder)和一个解码器(decoder)连接在一起。
@@ -49,7 +49,7 @@
 图\ref{fig:nonuniq}b)给出了编码器如何将
 $f$和$d$映射到输出变量$\vec{o}$的编码表。
 
-流控机制的工作原理为：
+该流控机制的工作原理为：
 \begin{enumerate}
 \item
 当接收器能够跟上发送器的速度时，
@@ -68,7 +68,7 @@ $f$和$d$映射到输出变量$\vec{o}$的编码表。
 
 上述流控机制能够防止快速发送器发送过多数据以至于接收器无法处理。
 然而该机制违反了迄今为止所有对偶综合算法
-\upcite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+\upcite{ShenICCAD09,ShenICCAD11,ShenTCAD10,DBLP:conf/fmcad/ShenQZL10,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 的基本假设，
 因为$d$无法被$I$唯一决定。
 很明显，
@@ -95,16 +95,16 @@ $d$是无意义的，可以无需考虑。
 该算法在$\vec{f}$上特征化一个流控谓词$valid(\vec{f})$，
 使得剩余的所有输入变量均能被输出唯一决定。
 最后，
-该算法产生解码器的布尔函数。
+该算法调用Craig插值算法\upcite{interp_McMillan}产生解码器的布尔函数。
 
-该算法的第二步类似于\upcite{ShenTCAD12}，
+该算法的第二步类似于Shen et al.\upcite{ShenTCAD12}，
 因为他们都试图得到使得$\vec{d}$或者$\vec{i}$被唯一决定的谓词。
-然而他们的根本区别在于
+然而他们的根本区别在于文献
 \upcite{ShenTCAD12}的算法推导的是一个全局谓词，
-必须在整个展开的迁移关系上都成立。
+必须在整个展开的迁移关系序列上都成立。
 % so that the encoder eventually reaches and never leaves the unique state set,
 而本文算法得到的是仅应用于当前步的谓词，以恢复$\vec{d}$。
-因此本文算法可以视为\upcite{ShenTCAD12}的一般化。
+因此本文算法可以视为文献\upcite{ShenTCAD12}的一般化。
 
 实验结果表明，
 对于多个来自于工业界的复杂编码器(如以太网 \upcite{IEEE8023_S4}和PCI Express \upcite{pcie})，
@@ -581,7 +581,7 @@ $d$ 也将被算法\ref{alg_fofc}识别为流控变量。
 因为这些$d$的解码器函数也将在节\ref{sec_char_chap3}中被正确特征化。
 
 
-\subsection{使用增量SAT求解加速识别算法}\label{incSAT}
+\subsection{使用增量SAT求解器加速识别算法}\label{incSAT}
 
 通过小节\ref{subsec_incsat}中的MiniSat增量求解机制，
 我们能进一步加速算法\ref{alg_fofc} 。
@@ -695,10 +695,10 @@ A_{LN}(p,l,r):=
 
 
 很明显$C_{PC}$ 和$C_{LN}$ 是独立于特定$i\in \vec{i}$的，
-所以他们可以使用$addClause(C_{PC})$ 或$addClause(C_{LN})$来被添加进入MiniSat的短句数据库。
+所以可以使用$addClause(C_{PC})$ 或$addClause(C_{LN})$来将它们一次性添加进入MiniSat的短句数据库。
 于此同时，
 $A_{PC}$ 和$A_{LN}$ 中的短句只包含单个文字，
-因此他们可以作为调用$solve$ 函数时的假设集合。
+因此它们可以作为调用$solve$ 函数时的假设集合。
 
 因此，
 基于上述等式，
@@ -835,10 +835,8 @@ $A_{PC}$ 和$A_{LN}$ 中的短句只包含单个文字，
 
 
 如图\ref{fig_mono_chap3}所示，
-我们将首先在小节\ref{subsub_nonloop}中定义$\neg FSAT_{PC}(p,l,r)$，
-$valid(\vec{f})$ 的一个单调增长的下估计。
-然后我们将在小节\ref{subsub_loop}中定义$\neg FSAT_{LN}(p,l,r)$，
-$valid(\vec{f})$ 的一个单调递减的上估计。
+我们将首先在小节\ref{subsub_nonloop}中定义$valid(\vec{f})$ 的一个单调增长的下估计。
+然后我们将在小节\ref{subsub_loop}中定义$valid(\vec{f})$ 的一个单调递减的上估计。
 然后在小节\ref{subsub_overal}中我们指出这两个估计将收敛至$valid(\vec{f})$ 。
 小节\ref{subsec_proofterm}将证明该算法的正确性。
 
@@ -936,9 +934,9 @@ F'^d_{PC}(p,l,r,t):=
 % $\vec{f}_{p+l}$ can be uniquely determined,
 % so we do not need to consider $\vec{f'}_{p+l}$.
 则$\vec{a}\cup\vec{b}$ 包含了两个迁移函数展开序列上的所有输入状态向量$<\vec{i}_0,\dots,\vec{i}_{p+l+r}>$ and $<\vec{i'}_0,\dots,\vec{i'}_{p+l+r}>$。
-他同时也包含了两个展开序列的初始状态$\vec{s}_0$ 和 $\vec{s'}_0$。
+它同时也包含了两个展开序列的初始状态$\vec{s}_0$ 和 $\vec{s'}_0$。
 进一步的，
-等式(\ref{fpcq})前两行的迁移关系$T$
+等式(\ref{fpcq})前两行的迁移关系序列
 能够从输入序列和初始状态唯一的计算出输出序列。
 因此$\vec{a}$ 和$\vec{b}$ 能够唯一决定$F'^d_{PC}(p,l,r,t)$中$t$ 的取值。
 因此，
@@ -1124,7 +1122,7 @@ $\neg FSAT_{PC}(p,l,r)$即为$valid(\vec{f})$。
 
 直观的，
 如图\ref{fig_pcmap}所示，
-通过将$(p'+l')$和$(p+l)$步对准，
+通过将第$(p'+l')$和$(p+l)$步对准，
 我们能够将$F'^d_{PC}(p',l',r',1)$的状态变量，输入变量和输出变量赋值映射到$F'^d_{PC}(p,l,r,1)$。
 并淘汰前置和后置的状态序列。
 形式化的，
@@ -1169,7 +1167,7 @@ $FSAT_{PC}(p,l,r)$ 针对$p$， $l$ 和$r$单调递减。
 \end{lemma}
 \begin{proof}
 对于任意$p'>p$，$l'>l$ 和$r'>l$，
-假设$A:\vec{f}_{p+l}\to B$ 是流控变量子在第$(p+l)$步的赋值。
+假设$A:\vec{f}_{p+l}\to B$ 是流控变量在第$(p+l)$步的赋值。
 进一步假设$A$ 被$FSAT_{LN}(p,l,r)$覆盖。
 
 因此$A$能够使$F'^d_{LN}(p,l,r,1)$ 可满足。
@@ -1267,7 +1265,7 @@ $\vec{d}$ 对特定的$p$， $l$ 和$r$不能被唯一决定。
 
 \subsection{压缩$l$ 和$r$}\label{reduceing_chap3}
 由于我们在算法\ref{algo_infer}中同步增长$p$，$l$ 和$r$的值。
-这导致他们的值有可能包含冗余。
+这导致它们的值有可能包含冗余。
 这将导致产生的解码器的面积和时序上有不必要的额外开销。
 
 例如，
@@ -1351,7 +1349,7 @@ $l$仅影响解码器的电路面积，
 解码器的输入$\vec{i}$ 被划分为两个向量：
 流控向量$\vec{f}$ 和数据向量$\vec{d}$。
 为这两个向量分别产生解码器函数的算法是不同的，
-因此他们将在下面两个小节中分别描述。
+在下面两个小节中分别描述。
 
 \subsection{产生$\vec{f}$的解码器函数}\label{subsec_fdec}
 

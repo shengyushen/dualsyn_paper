@@ -533,9 +533,10 @@ Qin et al. \upcite{QinTODAES15} 首次提出了能够处理流控机制的对偶
 如图\ref{fig_pipeenc}所示，
 我们假设编码器包含$n$个流水线级$\vec{stg}^j$，
 其中$0\le j \le n-1$。
+和上一章的图\ref{fig_pipeenc_chap4}不同的是，
 每一个流水线级$\vec{stg}^j$ 能够被进一步划分为流控向量$\vec{f}^j$ 和数据向量$\vec{d}^j$。
 而输入向量$\vec{i}$，
-和\upcite{QinTODAES15}一样，
+和Qin et al.\upcite{QinTODAES15}一样，
 也能被划分为流控向量$\vec{f}$ 和数据向量$\vec{d}$。
 如果将组合逻辑块$C^j$ 视为一个函数，
 则该编码器可以使用下列等式定义：
@@ -581,7 +582,7 @@ $\vec{stg}^j$ 是第$j$个流水线级。
  \item 在小节\ref{sec_pipeinfer}，
  找到每一个流水线级$\vec{stg}^j$中的$\vec{f}^j$ 和$\vec{d}^j$ 。
  \item 在小节\ref{sec_char_chap6}中特征化每一个流水线级$\vec{stg}^j$和输入$\vec{i}$的布尔函数，
- 即图\ref{fig_pipeenc}中每一个组合逻辑函数$C^j$的反$(C^j)^{-1}$。
+ 即图\ref{fig_pipeenc}中每一个组合逻辑函数$C^j$的反$(C^j)^{-1}$，
  以构造最终的解码器。
 \end{enumerate}
 
@@ -592,11 +593,11 @@ $\vec{stg}^j$ 是第$j$个流水线级。
 
 \subsection{压缩$r$ 和$l$}\label{reduceing}
 
-\begin{algorithm}[t]
+\begin{algorithm}[b]
 \begin{algorithmic}[1]
 \FOR{$r':=r \to 0$}
 \label{testr_1}
-  \IF{$r'\equiv 0$ or $F_{PC}(p,l,r'-1)\wedge valid(\vec{f}_{p+l})$ 对于某些$i\in \vec{i}$可满足}
+  \IF{$r'\equiv 0$ or $F_{PC}(p,l,r'-1)\wedge valid(\vec{f}_{p+l})\wedge valid(\vec{f'}_{p+l})$ 对于某些$i\in \vec{i}$可满足}
     \STATE break
   \ENDIF
 \ENDFOR
@@ -614,7 +615,7 @@ $\vec{stg}^j$ 是第$j$个流水线级。
 在行\ref{testr_1}，
 我们将推导的谓词$valid(\vec{f})$ 和$F_{PC}(p,l,r'-1)$与在一起。
 当该公式可满足时，
-则$r'$ 是最后一个使得$F_{PC}(p,l,r')\wedge valid(\vec{f}_{p+l})$ 不可满足的值，
+则$r'$ 是最后一个使得$F_{PC}(p,l,r')\wedge valid(\vec{f}_{p+l})\wedge valid(\vec{f'}_{p+l})$ 不可满足的值，
 我们将其直接直接返回。
 另一方面，
 当$r'\equiv 0$，
@@ -627,7 +628,7 @@ $F_{PC}(p,l,0)$ 肯定已经在上一个迭代中被测试，
 我们从算法\ref{algo_remove2}得到了一个压缩的$r$，
 使得$\vec{i}_{p+l}$ 可以被$<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$唯一决定。
 
-\begin{figure}[b]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{pc1_pred}
 \end{center}
@@ -639,7 +640,7 @@ $F_{PC}(p,l,0)$ 肯定已经在上一个迭代中被测试，
 \begin{enumerate}
  \item 如图\ref{fig_pc1}所示，
  $l$ 可以被削减为0。
- 这意味着$\vec{i}_{p}$ 可以被$<\vec{o}_{p},\dots,\vec{o}_{p+r}>$唯一决定。
+ 这意味着$\vec{i}_{p}$ 可以被$<\vec{o}_{p},\dots,\vec{o}_{p+r}>$唯一决定，
  即所有的未来输出。
  \item 上述的输出序列$<\vec{o}_{p},\dots,\vec{o}_{p+r}>$
  能被进一步压缩为$\vec{o}_{p+r}$。
@@ -647,7 +648,7 @@ $F_{PC}(p,l,0)$ 肯定已经在上一个迭代中被测试，
 \end{enumerate}
 
 检验这两个要求等价于
-检查$F'_{PC}(p,r)\wedge valid(\vec{f}_{p+l})$的不可满足性
+检查$F'_{PC}(p,r)\wedge valid(\vec{f}_{p})\wedge valid(\vec{f'}_{p})$的不可满足性
 其中$F'_{PC}(p,r)$ 定义如下：
 
 \begin{equation}\label{uniqt11}
@@ -666,9 +667,9 @@ F'_{PC}(p,r):=
 \}
 \\
 \wedge&\vec{o}_{p+r}\equiv \vec{o'}_{p+r} \\
-\wedge& i_{p}\equiv 1 \wedge  i'_{p}\equiv 0
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\wedge& i_{p}\equiv 1 \wedge  i'_{p}\equiv 0\\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i}_m) \\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i'}_m)
 \end{array}
 \right\}
 % \end{split}
@@ -705,21 +706,21 @@ F''_{PC}(p,r,v,j,\vec{w},k):=
 \}
 \\
 \wedge&\vec{w}_{k}\equiv \vec{w'}_{k} \\
-\wedge& v_{j}\equiv 1 \wedge  v'_{j}\equiv 0
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\wedge& v_{j}\equiv 1 \wedge  v'_{j}\equiv 0\\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i}_m) \\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i'}_m)
 \end{array}
 \right\}
 % \end{split}
 \end{equation}
 
 很明显，
-当$F''_{PC}(p,r,v,j,\vec{w},k)$ 不可满足时，
+当$F''_{PC}(p,r,v,j,\vec{w},k)\wedge valid(\vec{f}_{p})\wedge valid(\vec{f'}_{p})$ 不可满足时，
 $\vec{w}_k$ 能唯一决定$v_j$.
 
 对于$0\le j\le n-1$，
 在第$j$流水线级$\vec{stg}^j$，
-其流控向量$\vec{f}^j$ 包含所有的
+其流控向量$\vec{f}^j$ 包含所有
 能够在第$j-((n-1)-(p+r))$-th 步被$\vec{o}$
 在第$p+r$步唯一决定的状态变量$s\in \vec{s}$。
 注意在这里不需要约束$valid(\vec{f}_p)$。
@@ -756,7 +757,7 @@ $\vec{o}$ 在第$p+r$步唯一决定的所有$s\in \vec{s}$。
  \left\{
  s\in \vec{s} ~|
  \begin{array}{cc}
- F''_{PC}(p,r,s,j-D,\vec{o},p+r)\wedge valid(\vec{f}_p)\\
+ F''_{PC}(p,r,s,j-D,\vec{o},p+r)\wedge valid(\vec{f}_{p})\wedge valid(\vec{f'}_{p})\\
  ~is~unsatisfiable
  \end{array}
 \right\}
@@ -800,8 +801,8 @@ F^f_{PC}(p,l,r):=
 \wedge&\vec{o}_{p+r}\equiv \vec{o'}_{p+r} \\
 \wedge& \vec{f}^j_{j-D}\equiv \vec{f}'^j_{j-D} \\
 \wedge& \vec{d}^j_{j-D}\ne \vec{d}'^j_{j-D} \\
-\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i}_m) \\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i'}_m)
 \end{array}
 \right\}
 % \end{split}
@@ -811,7 +812,7 @@ F^f_{PC}(p,l,r):=
 第三行约束它们的输出在$p+r$步相等。
 第四行约束它们在第j级流水线的流控向量$\vec{f}^j$在第$j-D$步相等。
 这里的$D$定义于公式(\ref{stgn_def})。
-第五行约束它们在第j级流水线的数据向量$\vec{d}^j$在第$j-D$步不等。
+第五行约束它们在第$j$级流水线的数据向量$\vec{d}^j$在第$j-D$步不等。
 
 如果上述$F^f_{PC}(p,l,r)$ 是可满足的，
 则$\vec{d}^j_{j-D}$ 无法被$\vec{o}_{p+r}$唯一决定。
@@ -848,8 +849,8 @@ F'^f_{PC}(p,l,r):=
 \wedge& t\equiv T_{PC}(p,l,r)\\
 \wedge& \vec{f}^j_{j-D}\equiv \vec{f}'^j_{j-D} \\
 \wedge& \vec{d}^j_{j-D}\ne \vec{d}'^j_{j-D} \\
-\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-\wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i}_m) \\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i'}_m)
 \end{array}
 \right\}
 % \end{split}
@@ -902,7 +903,7 @@ valid(\vec{f}^j):=\neg FSAT^j_{PC}(p,l,r)
 \subsection{特征化最后一个流水线级的布尔函数}
 
 从公式(\ref{stgn_fj})可知，
-每个状态变量$s\in \vec{f}^{n-1}$ 能过被$\vec{o}$ 在第$p+r$步唯一决定。
+每个状态变量$s\in \vec{f}^{n-1}$ 能够被$\vec{o}$ 在第$p+r$步唯一决定。
 也就是，
 $F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 不可满足且可以划分为:
 
@@ -915,7 +916,8 @@ $F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 不可满足且可以划分为:
 (\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
 \}
 \\
-\wedge& s_{p+r}\equiv 1
+\wedge& s_{p+r}\equiv 1 \\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i}_m) 
 \end{array}
 \right\}
 \end{equation}
@@ -931,9 +933,8 @@ $F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 不可满足且可以划分为:
 \}
 \\
 \wedge&\vec{o}_{p+r}\equiv \vec{o'}_{p+r} \\
-\wedge& s'_{p+r}\equiv 0
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\wedge& s'_{p+r}\equiv 0 \\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i'}_m)
 \end{array}
 \right\}
 % \end{split}
@@ -948,15 +949,17 @@ $\phi_A$ 相对于$\phi_B$ 的Craig插值$\phi_I$可以被计算出来，
 只引用$\vec{o}_{p+r}$，
 并且覆盖所有能使$s_{p+r}\equiv 1$的$\vec{o}_{p+r}$ 。
 同时，
-$\phi_I\wedge \phi_B$ 不可满足
+$\phi_I\wedge \phi_B$ 不可满足。
 这意味着$\phi_I$ 并不覆盖任何使得$s_{p+r}\equiv 0$的$\vec{o}_{p+r}$ 。
 
 因此，
 $\phi_I$ 可以作为
 从$\vec{o}$恢复$s\in \vec{f}^{n-1}$的布尔函数。
 
-通过将$F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 替换为$F''_{PC}(p,r,s,p+r,\vec{o},p+r)\wedge valid(f_p)$，
+通过将$F''_{PC}(p,r,s,p+r,\vec{o},p+r)$ 替换为$F''_{PC}(p,r,s,p+r,\vec{o},p+r)\wedge valid(\vec{f}_p)\wedge valid(\vec{f'}_p)$，
 我们可以类似的特征化恢复$s\in\vec{d}^{n-1}$的布尔函数。
+注意此时$valid(\vec{f}_p)$应属于$\phi_A$，
+而$valid(\vec{f'}_p)$应属于$\phi_B$。
 
 \subsection{特征化恢复其他流水线级的布尔函数}
 根据图\ref{fig_pipeenc}，
@@ -974,7 +977,8 @@ $\vec{f}^j$ 在第$j-D$步可以被$\vec{stg}^{j+1}$ 在第$j-D+1$步唯一决�
 (\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
 \}
 \\
-\wedge& s_{j-D}\equiv 1
+\wedge& s_{j-D}\equiv 1\\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i}_m) 
 \end{array}
 \right\}
 \end{equation}
@@ -990,9 +994,8 @@ $\vec{f}^j$ 在第$j-D$步可以被$\vec{stg}^{j+1}$ 在第$j-D+1$步唯一决�
 \}
 \\
 \wedge&\vec{stg}^{j+1}_{j-D+1}\equiv \vec{stg'}^{j+1}_{j-D+1} \\
-\wedge& s'_{j-D}\equiv 0
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\wedge& s'_{j-D}\equiv 0\\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i'}_m)
 \end{array}
 \right\}
 % \end{split}
@@ -1004,8 +1007,10 @@ $\phi_A$ 相对于$\phi_B$ 的Craig插值$\phi_I$可以被构造出来，
 
 类似的，
 将$F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)$  替换为
-$F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)\wedge valid(f_p)$ ，
+$F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)\wedge valid(\vec{f}_p)\wedge valid(\vec{f'}_p)$ ，
 我们能特征化从$\vec{stg}^{j+1}$恢复$s\in\vec{d}^{j}$的布尔函数。
+注意此时$valid(\vec{f}_p)$应属于$\phi_A$，
+而$valid(\vec{f'}_p)$应属于$\phi_B$。
 
 \subsection{特征化从第0级流水线恢复输入向量的布尔函数}
 
@@ -1023,9 +1028,8 @@ $F''_{PC}(p,r,i,p,\vec{stg}^0,p)$ 不可满足并可以划分为以下两个公�
 (\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
 \}
 \\
-\wedge& i_{p}\equiv 1
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\wedge& i_{p}\equiv 1\\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i}_m) 
 \end{array}
 \right\}
 % \end{split}
@@ -1042,9 +1046,8 @@ $F''_{PC}(p,r,i,p,\vec{stg}^0,p)$ 不可满足并可以划分为以下两个公�
 \}
 \\
 \wedge&\vec{stg}^0_p\equiv \vec{stg'}^0_p \\
-\wedge& i'_{p}\equiv 0
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m)
+\wedge& i'_{p}\equiv 0\\
+\wedge&\bigwedge_{m=0}^{p+r}assertion(\vec{i'}_m)
 \end{array}
 \right\}
 % \end{split}
@@ -1055,9 +1058,10 @@ $\phi_A$ 相对于$\phi_B$的Craig插值$\phi_I$
 可以被用作从$\vec{stg}^0$恢复$i\in\vec{f}$的布尔函数。
 
 类似的，
-通过替换$F''_{PC}(p,r,i,p,\vec{stg}^0,p)$ 为$F''_{PC}(p,r,i,p,\vec{stg}^0,p)\wedge valid(\vec{f}_p)$，
+通过替换$F''_{PC}(p,r,i,p,\vec{stg}^0,p)$ 为$F''_{PC}(p,r,i,p,\vec{stg}^0,p)\wedge valid(\vec{f}_p)\wedge valid(\vec{f'}_p)$，
 我们可以特征化从$\vec{stg}^0$恢复$i\in\vec{d}$的布尔函数。
-
+注意此时$valid(\vec{f}_p)$应属于$\phi_A$，
+而$valid(\vec{f'}_p)$应属于$\phi_B$。
 
 
 \section{实验结果}\label{sec_exp}
@@ -1068,10 +1072,10 @@ $\phi_A$ 相对于$\phi_B$的Craig插值$\phi_I$
 
 \subsection{比较时间和面积}
 表\ref{tab_bench} 给出本文中使用的测试电路。
-第2和3分别给出输入，输出和状态变量个数。
+第2和3列分别给出输入，输出和状态变量个数。
 第4列给出了将编码器映射至LSI10K 库所得到的面积。
 本文中，
-所有的面积和延迟使用同样的设置得到。
+所有的面积和延迟均使用同样的设置得到。
 
 
 \begin{table*}[t]
@@ -1111,7 +1115,10 @@ scrambler  &64/64    & 58      & 1034 & inserting                               
 我们研究并确认了这一点。
 他们的面积如此之大是因为使用了很宽的64到72 位数据路径。
 
-\subsection{PCIE推导的流水线结构}
+在下面各个小节中，
+我们分别给出针对各个测试电路推导出来的流水线结构。
+
+\subsection{针对PCIE推导的流水线结构}
 
 对于pcie，
 存在两个流水线级，
@@ -1138,7 +1145,7 @@ scrambler  &64/64    & 58      & 1034 & inserting                               
 我们研究了源代码，
 发现这些流水线状态变量全部都被直接送给输出向量。
 因此他们很明显都能够被$\vec{o}$唯一决定。
-伊霓裳这并不影响所产生的解码器的正确性。
+不过这并不影响所产生的解码器的正确性。
 
 
 
