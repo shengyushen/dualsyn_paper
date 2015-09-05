@@ -429,7 +429,7 @@ this algorithm can always generate pipelined decoders with flow control mechanis
 \section{Introduction}\label{sec_intro}
 One of the most difficult jobs in designing communication
 and multimedia chips is to design and verify complex encoder and decoder pairs.
-The encoder maps its input variables $\vec{i}$ to its output variables $\vec{o}$,
+The encoder maps its input $\vec{i}$ to its output  $\vec{o}$,
 % according to some predefined rules,
 % such as Ethernet \cite{IEEE8023_S4} and PCI Express \cite{pcie21},
 while the decoder recovers $\vec{i}$ from $\vec{o}$.
@@ -467,19 +467,6 @@ and then inferring a flow control predicate $valid(\vec{f})$ that
 % when enforced,
 can make $\vec{d}$ to be uniquely determined by $\vec{o}$.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\textwidth]{nonuniq}
-\caption{Encoder with flow control mechanism}
-\label{fig_fc}
-\end{figure}
-
-\begin{figure}[b]
-\centering
-\includegraphics[width=0.9\textwidth]{pipemod1}
-\caption{Encoder with pipeline and flow control mechanism}
-\label{pipemod}
-\end{figure}
 
 
 
@@ -500,6 +487,21 @@ It first applies Qin et al. \cite{QinTODAES15}'s algorithm to find out $\vec{f}$
 It then finds out all $\vec{d}^j$ and $\vec{f}^j$ in each pipeline stage $\vec{stg}^j$ respectively with and without enforcing $valid(\vec{f})$.
 It finally characterize the Boolean functions that recover each $\vec{stg}^j$ and $\vec{i}$ with 
 Jiang et al. \cite{InterpBoolFunction}'s algorithm.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.5\textwidth]{nonuniq}
+\caption{Encoder with flow control mechanism}
+\label{fig_fc}
+\end{figure}
+
+\begin{figure}[b]
+\centering
+\includegraphics[width=0.5\textwidth]{pipemod1}
+\caption{Encoder with pipeline and flow control mechanism}
+\label{pipemod}
+\end{figure}
+
 
 Experimental result indicates that the proposed algorithm can always 
 correctly generate pipelined decoder with flow control mechanism.
@@ -527,19 +529,14 @@ Section \ref{sec_conclude} sums up the conclusion.
 % We use a denotation similar to that of \cite{TuDAC13}.
 The Boolean value set is denoted as $\mathbb{B}=\{0,1\}$.
 A vector of variables is represented as $\vec{v}=(v,\dots)$.
-The number of variables in $\vec{v}$ is denoted as $|\vec{v}|$.
+$|\vec{v}|$ is the number of variables in $\vec{v}$. 
 If a variable $v$ is a member of $\vec{v}$,
-% that is $\vec{v}=(\dots,v,\dots)$,
 then we say $v\in\vec{v}$;
-otherwise we say $v\notin\vec{v}$.
-For a variable $v$ and a vector $\vec{v}$,
-if $v\notin\vec{v}$,
-then the new vector that contains both $v$ and all members of $\vec{v}$ is denoted as $v\cup\vec{v}$.
-If $v\in \vec{v}$,
-then the new vector that contains all members of $\vec{v}$ except $v$,
-is denoted as $\vec{v}-v$.
-For the two vectors $\vec{a}$ and $\vec{b}$,
-the new vector with all members of $\vec{a}$ and $\vec{b}$ is denoted as $\vec{a}\cup\vec{b}$.
+otherwise $v\notin\vec{v}$.
+$v\cup\vec{v}$ is the new vector that contains both $v$ and all members of $\vec{v}$
+$\vec{v}-v$ is he new vector that contains all members of $\vec{v}$ except $v$,
+$\vec{a}\cup\vec{b}$ is the new vector that contains  all members of $\vec{a}$ and $\vec{b}$ 
+
 % The set of truth valuations of $\vec{v}$ is denoted as $[\![\vec{v}]\!]$,
 % for instance,
 % $[\![(v_1,v_2)]\!]=\{(0,0),(0,1),(1,0),(1,1)\}$.
@@ -548,7 +545,7 @@ the new vector with all members of $\vec{a}$ and $\vec{b}$ is denoted as $\vec{a
 % with symbols $\neg$, $\wedge$, $\vee$ and $\Rightarrow$,
 % which stand for logical connectives negation, conjunction, disjunction, and implication, respectively.
 
-The propositional satisfiability problem (SAT) for a Boolean formula $F$ over a variable set $V$ 
+The SAT for a Boolean formula $F$ over a variable set $V$ 
 is to find a satisfying assignment $A:V\to \mathbb{B}$,
 so that $F$ can be evaluated to $1$.
 If $A$ exists, then $F$ is satisfiable;
@@ -652,9 +649,9 @@ while Line 4 forces their $i_{p+l}$ to be different.
 This approach is sound because when (\ref{uniqt1}) is unsatisfiable,
 $i$ is definitely a member of $\vec{f}$.
 
-\begin{equation}\label{uniqt1}
-% \begin{split}
-F_{PC}(p,l,r):=
+\begin{multline}\label{uniqt1}
+%\begin{split}
+F_{PC}(p,l,r):= \\
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+l+r}
@@ -673,12 +670,12 @@ F_{PC}(p,l,r):=
 % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
 \end{array}
 \right\}
-% \end{split}
-\end{equation}
+%\end{split}
+\end{multline}
 
 \begin{figure}[t]
 \begin{center}
-\includegraphics[width=\textwidth]{pc}
+\includegraphics[width=0.4\textwidth]{pc}
 \end{center}
 \caption{The sound and complete approximative approaches}
   \label{fig_pc}
@@ -758,7 +755,7 @@ It is a complete approach because if it is satisfiable,
 then by unrolling these three loops,
 we can prove the 2nd case and be sure that $i\notin \vec{f}$.
 
-\begin{equation}\label{uniqln}
+\begin{multline}\label{uniqln}
 % \begin{split}
 F_{LN}(p,l,r):=\\
 \left\{
@@ -770,7 +767,7 @@ F_{LN}(p,l,r):=\\
 \end{array}
 \right\}
 % \end{split}
-\end{equation}
+\end{multline}
 
 % LN in $F_{LN}$ stands for "loop non-complementary",
 % which means $F_{LN}(p,l,r)$ with three loops is used to check whether 
@@ -1056,9 +1053,9 @@ $FSAT_R(\vec{a}):= 0$ \;
 By replacing $i$ in Equation (\ref{uniqt1}) with $\vec{d}$ inferred in Algorithm \ref{alg_fofc},
 we have:
 
-\begin{equation}\label{uniqt1d}
+\begin{multline}\label{uniqt1d}
 % \begin{split}
-F^d_{PC}(p,l,r):=
+F^d_{PC}(p,l,r):=\\
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+l+r}
@@ -1078,7 +1075,7 @@ F^d_{PC}(p,l,r):=
 \end{array}
 \right\}
 % \end{split}
-\end{equation}
+\end{multline}
 
 % Here,
 % $\vec{d}_{p+l}\ne \vec{d}'_{p+l}$ means some bit in $\vec{d}_{p+l}$ 
@@ -1100,7 +1097,7 @@ T_{PC}(p,l,r):=\\
 
 \begin{figure}[b]
 \begin{center}
-\includegraphics[width=0.5\textwidth]{mono}
+\includegraphics[width=0.4\textwidth]{mono}
 \end{center}
 \caption{The monotonicity of $FSAT_{PC}(p,l,r)$ and $FSAT_{LN}(p,l,r)$}
   \label{fig_mono}
@@ -1108,9 +1105,9 @@ T_{PC}(p,l,r):=\\
 
 By substituting $T_{PC}(p,l,r)$ back into $F^d_{PC}(p,l,r)$,
 we have a new formula:
-\begin{equation}\label{fpcq}
+\begin{multline}\label{fpcq}
 % \begin{split}
-F'^d_{PC}(p,l,r,t):=
+F'^d_{PC}(p,l,r,t):=\\
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+l+r}
@@ -1130,7 +1127,7 @@ F'^d_{PC}(p,l,r,t):=
 \end{array}
 \right\}
 % \end{split}
-\end{equation}
+\end{multline}
 
 
 Obviously $F^d_{PC}(p,l,r)$ and $F'^d_{PC}(p,l,r,1)$ are equivalent.
@@ -1181,9 +1178,10 @@ for a particular combination of $p$, $l$ and $r$,
 the Boolean function over $\vec{f}_{p+l}$ that makes $F'^d_{PC}(p,l,r,1)$ satisfiable can be computed 
 by calling Algorithm \ref{alg_craigchar} with $F'^d_{PC}(p,l,r,t)$, $\vec{a}$ and $\vec{b}$ defined above:
 
-\begin{equation}\label{fsat_pc}
-FSAT_{PC}(p,l,r):=CharacterizingFormulaSAT(F'^d_{PC}(p,l,r,t),\vec{a},\vec{b},t)
-\end{equation}
+\begin{multline}\label{fsat_pc}
+FSAT_{PC}(p,l,r):=\\
+CharacterizingFormulaSAT(F'^d_{PC}(p,l,r,t),\vec{a},\vec{b},t)
+\end{multline}
 
 % So $FSAT_{PC}(p,l,r)$ is the set of $\vec{f}_{p+l}$ 
 % that makes $F^d_{PC}(p,l,r)$ satisfiable.
@@ -1245,7 +1243,7 @@ we can define :
 % we can prove that $\vec{d}_{p+l}$ cannot be uniquely determined for any larger $p$, $l$ and $r$.
 % We further define a new formula $T_{LN}(p,l,r)$ by collecting the 3rd line and the last three lines of Equation (\ref{uniqlnd}):
 
-\begin{equation}\label{tln}
+\begin{multline}\label{tln}
 % \begin{split}
 T_{LN}(p,l,r):=\\
 \left\{
@@ -1257,13 +1255,13 @@ T_{LN}(p,l,r):=\\
 \end{array}
 \right\}
 % \end{split}
-\end{equation}
+\end{multline}
 
 % By replacing the 3rd line and the last three lines of Equation (\ref{uniqlnd}) with $T_{LN}(p,l,r)$,
 % we got:
 
-\begin{equation}\label{lndef1}
-F'^d_{LN}(p,l,r,t):=
+\begin{multline}\label{lndef1}
+F'^d_{LN}(p,l,r,t):=\\
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+l+r}
@@ -1283,7 +1281,7 @@ F'^d_{LN}(p,l,r,t):=
 % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
 \end{array}
 \right\}
-\end{equation}
+\end{multline}
 
 % Obviously $F^d_{LN}(p,l,r)$ and $F'^d_{LN}(p,l,r,1)$ are equivalent.
 % Thus,
@@ -1374,7 +1372,7 @@ then this encoder can be represented by the following equations.
 
 \begin{figure}[b]
 \begin{center}
-\includegraphics[width=\textwidth]{pipemod1}
+\includegraphics[width=0.5\textwidth]{pipemod1}
 \end{center}
 \caption{A general structure of the encoder with pipeline stages and flow control mechanism}
   \label{fig_pipeenc}
@@ -1505,7 +1503,7 @@ which can make $\vec{i}_{p+l}$ to be uniquely determined by $<\vec{o}_{p},\dots,
 
 \begin{figure}[t]
 \begin{center}
-\includegraphics[width=0.5\textwidth]{pc1}
+\includegraphics[width=0.4\textwidth]{pc1}
 \end{center}
 \caption{Recovering input with reduced output sequence}
   \label{fig_pc1}
@@ -1527,9 +1525,9 @@ Checking these two requirements
 equals to checking the unsatisfiability of $F'_{PC}(p,r)\wedge valid(\vec{f}_{p+l})$,
 with $F'_{PC}(p,r)$ defined below:
 
-\begin{equation}\label{uniqt11}
+\begin{multline}\label{uniqt11}
 % \begin{split}
-F'_{PC}(p,r):=
+F'_{PC}(p,r):=\\
 \left\{
 \begin{array}{cc}
 &\bigwedge_{m=0}^{p+r}
@@ -1549,7 +1547,7 @@ F'_{PC}(p,r):=
 \end{array}
 \right\}
 % \end{split}
-\end{equation}
+\end{multline}
 
 
 This equation seems much stronger than the general requirement in Equation (\ref{uniqt1}).
@@ -1567,7 +1565,7 @@ can determine whether a particular variable $v$ at step $j$
 can be uniquely determined by a vector $\vec{w}$ at step $k$.
 Now $v$ and $\vec{w}$ can be either input, registers or output variables.
 
-\begin{equation}\label{uniqt2}
+\begin{multline}\label{uniqt2}
 % \begin{split}
 F''_{PC}(p,r,v,j,\vec{w},k):=
 \left\{
@@ -1589,7 +1587,7 @@ F''_{PC}(p,r,v,j,\vec{w},k):=
 \end{array}
 \right\}
 % \end{split}
-\end{equation}
+\end{multline}
 
 Obviously,
 when $F''_{PC}(p,r,v,j,\vec{w},k)$ is unsatisfiable,
@@ -2088,7 +2086,7 @@ The flow control predicates $valid(\vec{f}^2)$ and $valid(\vec{f}^3)$ for the la
 %
 %The incomplete problem has been addressed by \cite{ShengYuShen:fmcad10}, while \cite{ShengYuShen:tcad} addresses the second shortcoming by simplifying the SAT instance with unsatisfiable core extraction before building decoders.
 
-\subsection{Complementary synthesis}\label{subsec_compsyn_relat}
+%\subsection{Complementary synthesis}\label{subsec_compsyn_relat}
 The first complementary synthesis algorithm was proposed by \cite{ShenICCAD09}.
 It checks the decoder's existence by iteratively increasing the bound of unrolled transition function sequence,
 and generates the decoder's Boolean function by enumerating all satisfying assignments of the decoder's output.
@@ -2118,28 +2116,28 @@ that recover the encoder's input by considering its initial and reachable states
 % our algorithm is enough, 
 % and therefore we have not implemented their algorithm in our framework.
 
-
-\subsection{Program inversion}\label{subsec_proinv}
-According to Gulwani \cite{dim_syn},
-program inversion involves deriving a program $P^{-1}$
-that negates the computation of a given program $P$.
-So,
-the definition of program inversion is very similar to complementary synthesis.
-
-The initial work on deriving program inversion used proof-based approaches\cite{prog_inv},
-which could handle only very small programs and very simple syntax structures.
-
-Gl\"{u}ck et al. \cite{mtd_autoProginv} inverted first-order functional programs
-by eliminating nondeterminism with LR-based parsing methods.
-But,
-the use of functional languages in that work is incompatible with our complementary synthesis.
-
-Srivastava et al. \cite{prog_inv_rev,program_inversion_11} assumed that an inverse program was typically related to the original program,
-and so the space of possible inversions can be inferred by automatically
-mining the original program for expressions, predicates, and control flow.
-This is somewhat similar to our approach in inferring the pipeline stages.
-This algorithm inductively rules out invalid paths that cannot fulfill the requirement of inversion
-to narrow down the space of candidate programs until only the valid ones remain.
+%
+%\subsection{Program inversion}\label{subsec_proinv}
+%According to Gulwani \cite{dim_syn},
+%program inversion involves deriving a program $P^{-1}$
+%that negates the computation of a given program $P$.
+%So,
+%the definition of program inversion is very similar to complementary synthesis.
+%
+%The initial work on deriving program inversion used proof-based approaches\cite{prog_inv},
+%which could handle only very small programs and very simple syntax structures.
+%
+%Gl\"{u}ck et al. \cite{mtd_autoProginv} inverted first-order functional programs
+%by eliminating nondeterminism with LR-based parsing methods.
+%But,
+%the use of functional languages in that work is incompatible with our complementary synthesis.
+%
+%Srivastava et al. \cite{prog_inv_rev,program_inversion_11} assumed that an inverse program was typically related to the original program,
+%and so the space of possible inversions can be inferred by automatically
+%mining the original program for expressions, predicates, and control flow.
+%This is somewhat similar to our approach in inferring the pipeline stages.
+%This algorithm inductively rules out invalid paths that cannot fulfill the requirement of inversion
+%to narrow down the space of candidate programs until only the valid ones remain.
 % So,
 % it can only guarantee the existence of a solution,
 % but not the correctness of this solution if its assumptions do not hold.
@@ -2250,20 +2248,89 @@ correctly generate pipelined decoder with flow control mechanism.
 % http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
 % The IEEEtran BibTeX style support page is at:
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
-\bibliographystyle{../../bib/IEEEtranBST2/IEEEtran}
 % argument is your BibTeX string definitions and bibliography database(s)
-\bibliography{../../bib/IEEEtranBST2/IEEEabrv,../../bib/refs}
+
+% this is the correct form of reference
+% but it is too long
+% I replace it with simplified version
+%\bibliographystyle{../../bib/IEEEtranBST2/IEEEtran}
+%\bibliography{../../bib/IEEEtranBST2/IEEEabrv,../../bib/refs}
 %
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-% \begin{thebibliography}{1}
-% 
-% \bibitem{IEEEhowto:kopka}
-% H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-%   0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
-% 
-% \end{thebibliography}
+% Generated by IEEEtran.bst, version: 1.12 (2007/01/11)
+\begin{thebibliography}{10}
+
+
+\bibitem{ShenICCAD09}
+S.~Shen, J.~Zhang, Y.~Qin, and S.~Li, ``Synthesizing complementary circuits
+  automatically,'' in  ICCAD '09, pp. 381--388. 
+
+\bibitem{ShenTCAD11}
+S.~Shen, Y.~Qin, L.~Xiao, K.~Wang, J.~Zhang, and S.~Li., ``A halting algorithm
+  to determine the existence of the decoder,'' \emph{IEEE Transactions on
+  Computer-Aided Design of Integrated Circuits and Systems}, vol.~30, no.~10,
+  pp. 30:1556--30:1563. 
+
+\bibitem{ShenTCAD12}
+S.~Shen, Y.~Qin, K.~Wang, Z.~Pang, J.~Zhang, and S.~Li., ``Inferring assertion
+  for complementary synthesis,'' \emph{IEEE Transactions on Computer-Aided
+  Design of Integrated Circuits and Systems}, vol.~31, no.~8, pp.
+  31:1288--31:1292. 
+
+\bibitem{LiuICCAD11}
+H.-Y. Liu, Y.-C. Chou, C.-H. Lin, and J.-H.~R. Jiang, ``Towards completely
+  automatic decoder synthesis,'' in ICCAD '11, pp.
+  389--395. 
+
+\bibitem{LiuTCAD12}
+H.-Y. Liu, Y.-C. Chou, C.-H. Lin, and J.-H.~R. Jiang., ``Automatic decoder
+  synthesis: Methods and case studies,'' \emph{IEEE Transactions on
+  Computer-Aided Design of Integrated Circuits and Systems}, vol.~31, no.~9,
+  pp. 31:1319--31:1331.
+
+\bibitem{TuDAC13}
+K.-H. Tu and J.-H.~R. Jiang, ``Synthesis of feedback decoders for initialized
+  encoders,'' in DAC '13, pp. 1--6. 
+
+\bibitem{flowcontrol}
+D.~Abts and J.~Kim, \emph{High Performance Datacenter Networks}, 1st~ed., ser.
+  Synthesis Lectures on Computer Architecture.\hskip 1em plus 0.5em minus
+  0.4em\relax Morgan and Claypool, 2011, vol.~14, ch. 1.6, pp. 7--9. 
+
+\bibitem{QinTODAES15}
+Y.~Qin, S.~Shen, Q.~Wu, H.~Dai, and Y.~Jia., ``Complementary synthesis for
+  encoder with flow control mechanism,'' \emph{accepted by ACM Transactions on
+  Design Automation of Electronic Systems}.
+
+\bibitem{InterpBoolFunction}
+J.~R. Jiang, H.~Lin, and W.~Hung, ``Interpolating functions from large boolean
+  relations,'' in ICCAD'09, pp. 779--784.
+
+
+\bibitem{Craig}
+W.~Craig, ``Linear reasoning: A new form of the herbrand-gentzen theorem,''
+  \emph{The Journal of Symbolic Logic}, vol.~22, no.~3, pp. 250--268, Sep.
+  1957.
+
+\bibitem{interp_McMillan}
+K.~L. McMillan, ``Interpolation and sat-based model checking,'' in CAV'03, pp. 1--13. 
+
+\bibitem{EXTSAT}
+N.~E{\'{e}}n and N.~S{\"{o}}rensson, ``An extensible sat-solver,'' in SAT'03., pp. 502--518.
+
+\bibitem{pcie}
+M.~Jackson, R.~Budruk, J.~Winkles, and D.~Anderson, \emph{PCI Express
+  Technology 3.0}.\hskip 1em plus 0.5em minus 0.4em\relax Mindshare Press,
+  2012.
+
+\bibitem{IEEE8023_S4}
+IEEE, ``Ieee standard for ethernet section fourth,'' 2012. [Online]. Available:
+  \url{http://standards.ieee.org/getieee802/download/802.3-2012_section4.pdf}
+
+\end{thebibliography}
+
 
 
 
