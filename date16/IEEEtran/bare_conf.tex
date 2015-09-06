@@ -1584,6 +1584,8 @@ All experiments have been run on a server with 16 Intel Xeon E5648 processors at
 
 \subsection{Comparing timing and area}
 Table \ref{tab_bench} shows the benchmarks used in this paper.
+pcie is a PCI Express 2.0 \cite{pcie} encoder,
+while xgxs and t2eth are two Ethernet \cite{IEEE8023_S4} encoders.
 % They are listed in the order of circuit area.
 The 2nd and 3rd column show respectively the number of inputs, outputs and registers of each benchmark.
 The 4th column shows the area of the encoder when mapped to LSI10K library with Design Compiler.
@@ -1595,22 +1597,22 @@ all area and delay are obtained in the same setting.
 
 
 
-\begin{table*}[t]
+\begin{table}[b]
 \caption{Benchmarks and experimental results}
 \centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
 \hline
- Names     & \multicolumn{4}{|c|}{The encoders}                                  &   \multicolumn{3}{|c|}{decoder gener-}             &   \multicolumn{3}{|c|}{decoder gener-} \\    
-           & \multicolumn{4}{|c|}{}                                              &   \multicolumn{3}{|c|}{ated by \cite{ShenTCAD11}}  &   \multicolumn{3}{|c|}{ated by this paper} \\\cline{2-11}
-           &    \#   &   \#    &area  & Description                             &run  &delay&area                                     &run  &delay&area \\
-           & in/out  &  reg    &      &   of Encoders                            &time &(ns) &                                        &time &(ns) &    \\\hline\hline
- pcie      & 10/11   & 23      & 326  &PCIE 2.0 \cite{pcie}                    &0.37 &7.20 &624                                     &8.08 & 5.89&652 \\\hline
- xgxs      & 10/10   & 16      & 453  &     Ethernet clause 48 \cite{IEEE8023_S4}&0.21 &7.02 &540                                     &4.25 & 5.93&829 \\\hline
- t2eth     & 14/14   & 49      & 2252 &    Ethernet clause 36 \cite{IEEE8023_S4} &12.7 &6.54 &434                                     &430.4& 6.12&877 \\\hline
-scrambler  &64/64    & 58      & 1034 & inserting 01 flipping                    &     \multicolumn{6}{|c|}{no pipeline }\\\cline{1-5}
- xfi       & 72/66   & 72      & 7772 &     Ethernet clause 49 \cite{IEEE8023_S4}&     \multicolumn{6}{|c|}{stages found}\\\hline
+ Names     & \multicolumn{3}{|c|}{The encoders}                                  &   \multicolumn{3}{|c|}{decoder gener-}             &   \multicolumn{3}{|c|}{decoder gener-} \\    
+           & \multicolumn{3}{|c|}{}                                              &   \multicolumn{3}{|c|}{ated by \cite{ShenTCAD11}}  &   \multicolumn{3}{|c|}{ated by this paper} \\\cline{2-10}
+           &    \#   &   \#    &area                                             &run  &delay&area                                     &run  &delay&area \\
+           & in/out  &  reg    &                                                 &time &(ns) &                                        &time &(ns) &    \\\hline\hline
+ pcie      & 10/11   & 23      & 326                                             &0.37 &7.20 &624                                     &8.08 & 5.89&652 \\\hline
+ xgxs      & 10/10   & 16      & 453                                             &0.21 &7.02 &540                                     &4.25 & 5.93&829 \\\hline
+ t2eth     & 14/14   & 49      & 2252                                            &12.7 &6.54 &434                                     &430.4& 6.12&877 \\\hline
+% scrambler  &64/64    & 58      & 1034 & inserting 01 flipping                    &     \multicolumn{6}{|c|}{no pipeline }\\\cline{1-5}
+%  xfi       & 72/66   & 72      & 7772 &     Ethernet clause 49 \cite{IEEE8023_S4}&     \multicolumn{6}{|c|}{stages found}\\\hline
 \end{tabular}\label{tab_bench}
-\end{table*}
+\end{table}
 
 
 % \begin{table}[t]
@@ -1631,21 +1633,21 @@ scrambler  &64/64    & 58      & 1034 & inserting 01 flipping                   
 
 
 % Table \ref{tab_res} compares the old algorithm from \cite{ShenTCAD11} to this paper's algorithm.
-The 6th to 8th columns show respectively the run time of \cite{ShenTCAD11}'s algorithm to generate the decoder without pipeline,
+The 5th to 7th columns show respectively the run time of \cite{ShenTCAD11}'s algorithm to generate the decoder without pipeline,
 and the delay and area of the generated decoder.
-While the 9th to 11th columns show respectively the run time of this paper's algorithm to generate the pipelined decoder,
+While the 8th to 10th columns show respectively the run time of this paper's algorithm to generate the pipelined decoder,
 and the delay and area of the generated decoder.
 % The last column shows the number of registers in each pipeline stage.
 
-Comparing the 7th and the 10th column indicates that
+Comparing the 6th and the 9th column indicates that
 the decoders' delay have been significantly improved.
 % And the the last column shows that there actually exist very deep pipeline,
 % especially the t2eth with 4 pipeline stages.
 
-One thing that is a little bit surprise is,
-the two largest benchmarks scrambler and xfi do not have pipeline stages inside.
-We study their code and confirm that this is true.
-Their area are so large because they use much wider datapaths with 64 to 72 bits.
+% One thing that is a little bit surprise is,
+% the two largest benchmarks scrambler and xfi do not have pipeline stages inside.
+% We study their code and confirm that this is true.
+% Their area are so large because they use much wider datapaths with 64 to 72 bits.
 % Please refer to IEEE 802.3ae clause 49 \cite{IEEE8023_S4}  for more details.
 
 \subsection{Inferred pipeline stages of pcie}
@@ -1739,10 +1741,10 @@ The benchmark t2ether has four pipeline stages shown in Table \ref{tab_t2ether}.
 The inferred $valid(\vec{f})$ is:
 \begin{multline}
 \begin{array}{l}
-( tx\_enc\_ctrl\_sel[2]~\&~tx\_enc\_ctrl\_sel[3] ) | \\
-( tx\_enc\_ctrl\_sel[2]~\&~!tx\_enc\_ctrl\_sel[3]~\&~!tx\_enc\_ctrl\_sel[0]~\&~tx\_enc\_ctrl\_sel[1] ) | \\
-( !tx\_enc\_ctrl\_sel[2]~\&~tx\_enc\_ctrl\_sel[3] ) | \\
-( !tx\_enc\_ctrl\_sel[2]~\&~!tx\_enc\_ctrl\_sel[3]~\&~tx\_enc\_ctrl\_sel[0] )
+( tx\_enc\_ctrl\_sel[2]~\&~tx\_enc\_ctrl\_sel[3]~)~| \\
+( tx\_enc\_ctrl\_sel[2]~\&~!tx\_enc\_ctrl\_sel[3]~\& \\!tx\_enc\_ctrl\_sel[0]~\&~tx\_enc\_ctrl\_sel[1]~)~| \\
+( !tx\_enc\_ctrl\_sel[2]~\&~tx\_enc\_ctrl\_sel[3]~)~| \\
+( !tx\_enc\_ctrl\_sel[2]~\&~!tx\_enc\_ctrl\_sel[3]~\& \\~tx\_enc\_ctrl\_sel[0] )
 \end{array}
 \end{multline}
 
