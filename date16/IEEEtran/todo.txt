@@ -1,3 +1,4 @@
 1	referring to TODAES paper is not possible because it have not published
 2	the complete approach is not explained clearly, especially when it is sat
 3	draw a fig to show the super and sub script in unrolled TR
+4	why not compare in experimental result to todaes papers, we may need some real benchmarks that is more complex
