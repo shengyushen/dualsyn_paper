@@ -889,8 +889,7 @@ that can make $R(\vec{a},\vec{b},1)$ satisfiable:
 \end{multline}
 
 % This equation will be used frequently in the remainder of this paper.
-It implementation detials are not relevant to this paper, 
-so will not be presented here.
+Its implementation will not be presented here.
 
 % As shown in Figure \ref{fig_mono},
 Subsection 4.2 of \cite{QinTODAES15} proposed Algorithm \ref{algo_infer} to infer $valid(\vec{f})$ by iteratively increasesing $p$, $l$ and $r$,
@@ -1071,7 +1070,7 @@ $p$:= $0$;~$l$:= $0$;~$r$:= $0$ \;
 \section{Algorithm Framework}\label{sec_framework}
 
 
-\subsection{A general model for the encoder}
+% \subsection{A general model for the encoder}
 As shown in Figure \ref{fig_pipeenc},
 we assume that 
 the encoder has $n$ pipeline stages $\vec{stg}^j$,
@@ -1096,29 +1095,38 @@ then this encoder can be represented by the following equations.
 \begin{center}
 \includegraphics[width=0.5\textwidth]{pipemod1}
 \end{center}
-\caption{A general structure of the encoder with pipeline stages and flow control mechanism}
+\caption{The encoder's general structure with pipeline and flow control}
   \label{fig_pipeenc}
 \end{figure}
+
+
+% Thus,
+% each $C^j$ can be seen as a small encoder.
+% Assume that $(C^j)^{-1}$ is $C^j$'s decoder function,
+% then the pipelined decoder should be like this:
+% 
+% \begin{equation}\label{equ_genpipedecoder}
+% \begin{array}{cccc}
+% \vec{stg}^{n-1}       & := & (C^n)^{-1}(\vec{o}) &\\
+% \vec{stg}^{j-1}   & := & (C^j)^{-1}(\vec{stg}^j) & 1\le j\le n-1\\
+% \vec{i}   & := & (C^0)^{-1}(\vec{stg}^0)         &
+% \end{array}
+% \end{equation}
+
+
+
 
 
 % Thus,
 % each $C^j$ can be seen as a small encoder that computes $\vec{stg}^j$ or $\vec{o}$
 % from $\vec{stg}^{j-1}$ or $\vec{i}$.
 
-In the remainder of this paper,
-superscript always means the pipeline stage,
-while the subscript,
-as mentioned in Subsection \ref{subsec_fsm},
-always means the step index in the unrolled transition function.
-For example,
-$\vec{stg}^j$ is the $j$-th pipeline stage.
-While $\vec{stg}^j_i$ is the value of this $j$-th pipeline stage 
-at the $i$-th step in the unrolled state transition sequence.
 
-\subsection{Algorithm framework}
 
-With the encoder model shown in Figure \ref{fig_pipeenc},
-our overall algorithm framework is:
+% \subsection{Algorithm framework}
+
+With this encoder model,
+our algorithm framework is:
 
 \begin{enumerate}
  \item Calling Algorithm \ref{alg_fofc} to partition $\vec{i}$ into $\vec{f}$ and $\vec{d}$.
@@ -1145,11 +1153,97 @@ our overall algorithm framework is:
 
 \subsection{Minimizing $r$ and $l$}\label{reduceing}
 
+In the remainder of this paper,
+superscript always means the pipeline stage,
+while the subscript,
+as mentioned in Subsection \ref{subsec_fsm},
+always means the step index in the unrolled transition function.
+For example,
+$\vec{stg}^j$ is the $j$-th pipeline stage.
+While $\vec{stg}^j_i$ is the value of this $j$-th pipeline stage 
+at the $i$-th step in the unrolled state transition sequence.
+
+With this notation,
+we can substitute Equation (\ref{equ_genpipe}) into Figure \ref{fig_pc}a).
+This leads to the following observations,
+which is also shown intuitively in Figure \ref{fig_encexp}:
+
+\begin{enumerate}
+\item $\vec{i}_{p+l}$,
+the value of $\vec{i}$ at step $p+l$,
+can be uniquely determined by $\vec{stg}^0_{p+l}$,
+the value of $\vec{stg}^0$ at the same step $p+l$;
+ \item $\vec{stg}^0_{p+l}$,
+the value of $\vec{stg}^0$ at step $p+l$,
+can be uniquely determine by $\vec{stg}^{1}_{p+l+1}$,
+the value of $\vec{stg}^{1}$ at the next step $p+l+1$.
+ \item ...
+ \item $\vec{stg}^{j}_{p+l+j}$,
+ the value of $\vec{stg}^{j}$ at step $j$,
+ can be uniquely determine by $\vec{stg}^{j+1}_{p+l+j+1}$,
+ the value of $\vec{stg}^{j+1}$ at the next step $p+l+j+1$.
+ \item ...
+ \item $\vec{stg}^{r'}_{p+l+r'}$,
+ the value of $\vec{stg}^{r'}$ at step $p+l+r'$,
+ can be uniquely determined by $\vec{o}_{p+l+r'}$,
+ the value of $\vec{o}$ at the same step $p+l+r'$.
+\end{enumerate}
+
+
+
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{encexp}
+\end{center}
+\caption{Unrolled transition function with pipeline stages}
+  \label{fig_encexp}
+\end{figure}
+
+With these observations,
+it is obvious that $\vec{i}_{p+l}$ can be uniquely determined by $\vec{o}_{p+l+r'}$.
+By comparing this conclusion to Figure \ref{fig_pc} and Algorithm \ref{alg_fofc},
+we can be sure that $r'\le r$.
+To find out $r'$, 
+we define the following new formula:
+
+
+
+% As Algorithm \ref{algo_infer} increases $p$, $l$ and $r$ simultaneously,
+% there may be some redundancy in the value of $l$ and $r$.
+% So we need to first minimize $r$ in Algorithm \ref{algo_remove2}.
+
+
+
+\begin{multline}\label{uniqt11}
+% \begin{split}
+F'_{PC}(p,l,r'):=\\
+\left\{
+\begin{array}{cc}
+&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
+\}
+\\
+\wedge&\bigwedge_{m=0}^{p+r}
+\{
+(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
+\}
+\\
+\wedge&\vec{o}_{p+r}\equiv \vec{o'}_{p+r} \\
+\wedge& i_{p}\equiv 1 \wedge  i'_{p}\equiv 0 
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
+% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
+\end{array}
+\right\}
+% \end{split}
+\end{multline}
+
+
 \begin{algorithm}[t]
 \SetAlgoVlined
 \For{$r':=r \to 0$} {
 \ShowLnLabel{testr_1}
-  \If{$r'\equiv 0$ or $F_{PC}(p,l,r'-1)\wedge valid(\vec{f}_{p+l})$ is satisfiable for some $i\in \vec{i}$} {
+  \If{$r'\equiv 0$ or $F_{PC}(p+l,0,r'-1)\wedge valid(\vec{f}_{p+l})$ is satisfiable for some $i\in \vec{i}$} {
     break
   }
 }
@@ -1158,24 +1252,21 @@ return $r'$
 \label{algo_remove2}
 \end{algorithm}
 
-As Algorithm \ref{algo_infer} increases $p$, $l$ and $r$ simultaneously,
-there may be some redundancy in the value of $l$ and $r$.
-So we need to first minimize $r$ in Algorithm \ref{algo_remove2}.
-
-
+Algorithm \ref{algo_remove2} is proposed to find out $r'$.
 % To simplify the presentation,
 % we will only introduce the $r$ case.
 In Line \ref{testr_1},
-we enforce the inferred flow control predicate $valid(\vec{f})$ by
-conjugating it with $F_{PC}(p,l,r'-1)$.
-When it is satisfiable,
-then $r'$ is the last one that makes $F_{PC}(p,l,r')\wedge valid(\vec{f}_{p+l})$ unsatisfiable,
+it conjugates the inferred flow control predicate $valid(\vec{f})$  with $F_{PC}(p+l,0,r'-1)$.
+When this is satisfiable,
+then $r'$ is the last one that makes $F_{PC}(p+l,0,r')\wedge valid(\vec{f}_{p+l})$ unsatisfiable,
 we return it directly.
 On the other hand,
 when $r'\equiv 0$,
 $F_{PC}(p,l,0)$ must have been tested in last iteration,
 and the result must be unsatisfiable.
 In this case we return $0$.
+
+
 
 % Minimizing $l$ is similar but with two exceptions:
 % First, 
@@ -1219,57 +1310,35 @@ In this case we return $0$.
 % while the subscripts of $i$ and $i'$ in the last line refer to $p$ only,
 % $l$ are removed.
 
-Now, 
-we have a minimized $r$ from Algorithm \ref{algo_remove2},
-which can make $\vec{i}_{p+l}$ to be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
+% Now, 
+% we have a minimized $r$ from Algorithm \ref{algo_remove2},
+% which can make $\vec{i}_{p+l}$ to be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
+% 
+% \begin{figure}[b]
+% \begin{center}
+% \includegraphics[width=0.25\textwidth]{pc1}
+% \end{center}
+% \caption{Recovering input with reduced output sequence}
+%   \label{fig_pc1}
+% \end{figure}
+% 
+% We further require that :
+% \begin{enumerate}
+%  \item As shown in Figure \ref{fig_pc1},
+%  $l$ can be reduced to 0,
+%  which means $\vec{i}_{p}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+r}>$,
+%  that is,
+%  the set of future outputs.
+%  \item The above mentioned output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+r}>$ 
+%  can be further reduced to $\vec{o}_{p+r}$.
+%  This means $\vec{o}_{p+r}$ is the only output vector needed to recover the input vector $\vec{i}_p$.
+% \end{enumerate}
+% 
+% Checking these two requirements
+% equals to checking the unsatisfiability of $F'_{PC}(p,r)\wedge valid(\vec{f}_{p+l})$,
+% with $F'_{PC}(p,r)$ defined below:
 
-\begin{figure}[b]
-\begin{center}
-\includegraphics[width=0.25\textwidth]{pc1}
-\end{center}
-\caption{Recovering input with reduced output sequence}
-  \label{fig_pc1}
-\end{figure}
 
-We further require that :
-\begin{enumerate}
- \item As shown in Figure \ref{fig_pc1},
- $l$ can be reduced to 0,
- which means $\vec{i}_{p}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+r}>$,
- that is,
- the set of future outputs.
- \item The above mentioned output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+r}>$ 
- can be further reduced to $\vec{o}_{p+r}$.
- This means $\vec{o}_{p+r}$ is the only output vector needed to recover the input vector $\vec{i}_p$.
-\end{enumerate}
-
-Checking these two requirements
-equals to checking the unsatisfiability of $F'_{PC}(p,r)\wedge valid(\vec{f}_{p+l})$,
-with $F'_{PC}(p,r)$ defined below:
-
-\begin{multline}\label{uniqt11}
-% \begin{split}
-F'_{PC}(p,r):=\\
-\left\{
-\begin{array}{cc}
-&\bigwedge_{m=0}^{p+r}
-\{
-(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
-\}
-\\
-\wedge&\bigwedge_{m=0}^{p+r}
-\{
-(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
-\}
-\\
-\wedge&\vec{o}_{p+r}\equiv \vec{o'}_{p+r} \\
-\wedge& i_{p}\equiv 1 \wedge  i'_{p}\equiv 0 
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
-\end{array}
-\right\}
-% \end{split}
-\end{multline}
 
 
 This equation seems much stronger than the general requirement in Equation (\ref{uniqt1}).
@@ -1662,9 +1731,8 @@ The inferred $valid(\vec{f})$ is $CNTL\_TXEnable\_P0$.
 \begin{tabular}{|c|c|c|c|}
 \hline
                        & input                  & pipeline stage 0          &  pipeline stage 1    \\\hline\hline
-$\vec{f}$              &CNTL\_TXEnable\_P0      & InputDataEnable\_P0       & OutputData\_P0[9:0]\\
-or                     &                        &                           & OutputElecIdle\_P0 \\
-$\vec{f}^j$            &                        &                           &  \\\hline
+$\vec{f}$ or           &CNTL\_TXEnable\_P0      & InputDataEnable\_P0       & OutputData\_P0[9:0]\\
+$\vec{f}^j$            &                        &                           & OutputElecIdle\_P0 \\\hline
 % flow control           &CNTL\_TXEnable\_P0      & InputDataEnable\_P0\_reg  & true \\
 % predicate              &                        &                           &  \\\hline
 $\vec{d}$ or           &TXDATA[7:0]             & InputData\_P0[7:0]        & \\
