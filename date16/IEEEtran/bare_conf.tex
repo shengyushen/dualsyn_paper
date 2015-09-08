@@ -1853,16 +1853,16 @@ $\vec{d}$ or $\vec{d}^j$&encode\_data\_in[7:0]  &ip\_data\_latch[2:0] \\
 \hline
                        & input                        & pipeline                  &  pipeline          \\
                        &                              & stage 0                   &  stage 1           \\\hline\hline
-$\vec{f}$              & tx\_enc\_ctrl\_sel[3:0]      &qout\_reg\_0\_8            & qout\_reg\_0\_9    \\
-or                     &                              &qout\_reg\_2\_4            & qout\_reg\_1\_5    \\
-$\vec{f}^j$            &                              &qout\_reg\_1\_4            & qout\_reg\_2\_5    \\
+$\vec{f}$ or $\vec{f}^j$& tx\_enc\_ctrl\_sel[3:0]     &qout\_reg\_0\_8            & qout\_reg\_0\_9    \\
+                       &                              &qout\_reg\_2\_4            & qout\_reg\_1\_5    \\
+                       &                              &qout\_reg\_1\_4            & qout\_reg\_2\_5    \\
                        &                              &                           & qout\_reg\_0\_10   \\\hline
 $\vec{d}$ or $\vec{d}^j$&txd[7:0]                     &qout\_reg[7:0]             &qout\_reg[7:0]\_1   \\\hline\hline
                        &  pipeline                    &  \multicolumn{2}{|c|}{pipeline}                \\
                        &  stage 2                     &  \multicolumn{2}{|c|}{stage 3}                 \\\hline\hline
-$\vec{f}$              &qout\_reg[9:0]\_2             &qout\_reg[7:1]\_3 &qout\_reg\_0\_7              \\
-or                     &                              &qout\_reg\_8\_1   &sync1\_reg1                  \\
-$\vec{f}^j$            &                              &qout\_reg\_9\_1   &sync1\_reg                   \\
+$\vec{f}$ or $\vec{f}^j$&qout\_reg[9:0]\_2            &qout\_reg[7:1]\_3 &qout\_reg\_0\_7              \\
+                       &                              &qout\_reg\_8\_1   &sync1\_reg1                  \\
+                       &                              &qout\_reg\_9\_1   &sync1\_reg                   \\
                        &                              &qout\_reg\_3\_4   &Q\_reg1                      \\
                        &                              &qout\_reg\_0\_4   &Q\_reg                       \\
                        &                              &qout\_reg\_3\_5   &                             \\\hline
