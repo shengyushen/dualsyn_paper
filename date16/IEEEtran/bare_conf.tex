@@ -392,9 +392,6 @@
 \begin{abstract}
 Complementary synthesis automatically generates an encoder's decoder
 that recovers the encoder's inputs from its output.
-% But none of the existing algorithms can handle the flow control and
-% pipeline mechanism widely employed in modern encoders.
-% Thus,
 This paper proposes the first complementary synthesis algorithm that can handle
 flow control and pipeline mechanism widely employed in modern encoders.
 First,
@@ -432,7 +429,7 @@ The encoder maps its input $\vec{i}$ to its output  $\vec{o}$,
 % such as Ethernet \cite{IEEE8023_S4} and PCI Express \cite{pcie21},
 while the decoder recovers $\vec{i}$ from $\vec{o}$.
 Complementary synthesis 
-\cite{ShenICCAD09,ShenTCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
+\cite{ShenICCAD09,ShenTCAD10,ShenTCAD11,ShenICCAD11,ShenTCAD12,LiuICCAD11,LiuTCAD12,TuDAC13}
 eases this job by
 automatically generating a decoder from an encoder,
 with the assumption that $\vec{i}$ can always be
@@ -1955,11 +1952,16 @@ and generates the decoder's Boolean functions by enumerating all satisfying assi
 Its major shortcomings are that it may not halt and it is too slow
 in building the decoder.
 
-Shen et al.\cite{ShenTCAD11} and Liu et al.\cite{LiuICCAD11} tackled the halting problem independently by searching for loops in the state sequence,
-while the runtime overhead problem was addressed in \cite{ShenTCAD12,LiuICCAD11} by Craig interpolant\cite{Craig}.
+Shen et al.\cite{ShenTCAD11} and Liu et al.\cite{LiuICCAD11} tackled the halting problem independently by searching for loops in the state sequence.
 
-Shen et al.\cite{ShenTCAD12} automatically inferred an assertion for configuration pins, 
+Shen et al.\cite{ShenTCAD10} speedups building decoder by inferring hidden XOR gates that makes the solution space irregular,
+while Shen et al.\cite{ShenTCAD12} and Liu et al. \cite{LiuICCAD11} 
+finds out a much better solution based on Craig interpolant\cite{Craig}.
+
+Shen et al.\cite{ShenICCAD11} automatically inferred an assertion for configuration pins, 
 which can lead to the decoder's existence.
+Shen et al.\cite{ShenTCAD12} further discovers that there may exists multiple decoders for a single assertion inferred by \cite{ShenICCAD11}.
+It iteratively find outs all these decoders and their corresponding refined assertions with functional dependency\cite{scalableFuncDep}.
 % It can be seen as a special case of Algorithm \ref{algo_pcln} in Section \ref{sec_infer},
 % with the restriction that the inferred assertion must hold on all cycles,
 % to prevent the encoder from leaving the unique state set.
@@ -2117,8 +2119,8 @@ correctly generate pipelined decoder with flow control mechanism.
 % this is the correct form of reference
 % but it is too long
 % I replace it with simplified version
-%\bibliographystyle{../../bib/IEEEtranBST2/IEEEtran}
-%\bibliography{../../bib/IEEEtranBST2/IEEEabrv,../../bib/refs}
+% \bibliographystyle{../../bib/IEEEtranBST2/IEEEtran}
+% \bibliography{../../bib/IEEEtranBST2/IEEEabrv,../../bib/refs}
 %
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
@@ -2129,34 +2131,44 @@ correctly generate pipelined decoder with flow control mechanism.
 
 \bibitem{ShenICCAD09}
 S.~Shen, J.~Zhang, Y.~Qin, and S.~Li, ``Synthesizing complementary circuits
-  automatically,'' in  ICCAD '09, pp. 381--388. 
+  automatically,'' in  ICCAD '09, pp. 381--388,2009. 
 
-\bibitem{ShenTCAD11}
+\bibitem{ShenTCAD10}
+S.~Shen, Y.~Qin, K.~Wang, L.~Xiao, J.~Zhang, and S.~Li., ``Synthesizing
+  complementary circuits automatically,'' \emph{IEEE Transactions on
+  Computer-Aided Design of Integrated Circuits and Systems}, vol.~29, no.~8,
+  pp. 29:1191--29:1202, August 2010. 
+
+  \bibitem{ShenTCAD11}
 S.~Shen, Y.~Qin, L.~Xiao, K.~Wang, J.~Zhang, and S.~Li., ``A halting algorithm
   to determine the existence of the decoder,'' \emph{IEEE Transactions on
   Computer-Aided Design of Integrated Circuits and Systems}, vol.~30, no.~10,
-  pp. 30:1556--30:1563. 
+  pp. 30:1556--30:1563,2011. 
+
+\bibitem{ShenICCAD11}
+S.~Shen, Y.~Qin, and J.~Zhang, ``Inferring assertion for complementary
+  synthesis,'' in ICCAD'11, pp. 404--411, 2011. 
 
 \bibitem{ShenTCAD12}
 S.~Shen, Y.~Qin, K.~Wang, Z.~Pang, J.~Zhang, and S.~Li., ``Inferring assertion
   for complementary synthesis,'' \emph{IEEE Transactions on Computer-Aided
   Design of Integrated Circuits and Systems}, vol.~31, no.~8, pp.
-  31:1288--31:1292. 
-
+  31:1288--31:1292,2012. 
+  
 \bibitem{LiuICCAD11}
 H.-Y. Liu, Y.-C. Chou, C.-H. Lin, and J.-H.~R. Jiang, ``Towards completely
   automatic decoder synthesis,'' in ICCAD '11, pp.
-  389--395. 
+  389--395,2011. 
 
 \bibitem{LiuTCAD12}
 H.-Y. Liu, Y.-C. Chou, C.-H. Lin, and J.-H.~R. Jiang., ``Automatic decoder
   synthesis: Methods and case studies,'' \emph{IEEE Transactions on
   Computer-Aided Design of Integrated Circuits and Systems}, vol.~31, no.~9,
-  pp. 31:1319--31:1331.
+  pp. 31:1319--31:1331,2012.
 
 \bibitem{TuDAC13}
 K.-H. Tu and J.-H.~R. Jiang, ``Synthesis of feedback decoders for initialized
-  encoders,'' in DAC '13, pp. 1--6. 
+  encoders,'' in DAC '13, pp. 1--6,2013. 
 
 \bibitem{flowcontrol}
 D.~Abts and J.~Kim, \emph{High Performance Datacenter Networks}, 1st~ed., ser.
@@ -2171,7 +2183,7 @@ Y.~Qin, S.~Shen, Q.~Wu, H.~Dai, and Y.~Jia., ``Complementary synthesis for
 
 \bibitem{InterpBoolFunction}
 J.~R. Jiang, H.~Lin, and W.~Hung, ``Interpolating functions from large boolean
-  relations,'' in ICCAD'09, pp. 779--784.
+  relations,'' in ICCAD'09, pp. 779--784,2009.
 
 
 \bibitem{Craig}
@@ -2183,7 +2195,7 @@ W.~Craig, ``Linear reasoning: A new form of the herbrand-gentzen theorem,''
 % K.~L. McMillan, ``Interpolation and sat-based model checking,'' in CAV'03, pp. 1--13. 
 
 \bibitem{EXTSAT}
-N.~E{\'{e}}n and N.~S{\"{o}}rensson, ``An extensible sat-solver,'' in SAT'03., pp. 502--518.
+N.~E{\'{e}}n and N.~S{\"{o}}rensson, ``An extensible sat-solver,'' in SAT'03., pp. 502--518,2003.
 
 \bibitem{pcie}
 M.~Jackson, R.~Budruk, J.~Winkles, and D.~Anderson, \emph{PCI Express
@@ -2194,6 +2206,12 @@ M.~Jackson, R.~Budruk, J.~Winkles, and D.~Anderson, \emph{PCI Express
 IEEE, ``Ieee standard for ethernet section fourth,'' 2012. [Online]. Available:
   \url{http://standards.ieee.org/getieee802/download/802.3-2012_section4.pdf}
 
+\bibitem{scalableFuncDep}
+C.~Lee, J.~R. Jiang, C.~Huang, and A.~Mishchenko, ``Scalable exploration of
+  functional dependency by interpolation and incremental SAT solving,'' in ICCAD'07,
+  pp. 227--233,2007.
+
+  
 \end{thebibliography}
 
 
