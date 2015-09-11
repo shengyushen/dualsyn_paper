@@ -8,4 +8,5 @@
 7	more benchmarks
 8	says about we pipelining the encoder and compare them to unpipelined version, including their pipeline stages
 9	explain the flow and 
-
+10	state that the todaes paper can `not handle pipeline , which is to show our algo's efficency
+:
