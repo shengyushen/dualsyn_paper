@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.9.5)  12 SEP 2015 09:20
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.9.5)  12 SEP 2015 09:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -369,83 +369,93 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: pipeline.pdf Graphic file (type pdf)
  <use pipeline.pdf>
 Package pdftex.def Info: pipeline.pdf used on input line 520.
-(pdftex.def)             Requested size: 206.39685pt x 79.87683pt.
+(pdftex.def)             Requested size: 258.0pt x 99.8525pt.
 
+Overfull \hbox (6.0pt too wide) in paragraph at lines 520--521
+ [] 
+ []
 
-LaTeX Warning: Reference `mealy' on page 1 undefined on input line 607.
-
-<pc.pdf, id=2, 270.50961pt x 278.71729pt>
-File: pc.pdf Graphic file (type pdf)
- <use pc.pdf>
-Package pdftex.def Info: pc.pdf used on input line 649.
-(pdftex.def)             Requested size: 206.39685pt x 212.66515pt.
+<mealy.pdf, id=2, 104.72926pt x 95.7189pt>
+File: mealy.pdf Graphic file (type pdf)
+ <use mealy.pdf>
+Package pdftex.def Info: mealy.pdf used on input line 598.
+(pdftex.def)             Requested size: 103.19843pt x 94.32089pt.
  [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
 
- <./pipeline.pdf>]
-<pipemod.pdf, id=33, 467.55577pt x 75.71968pt>
+ <./pipeline.pdf> <./mealy.pdf>]
+<pc.pdf, id=51, 270.50961pt x 278.71729pt>
+File: pc.pdf Graphic file (type pdf)
+ <use pc.pdf>
+Package pdftex.def Info: pc.pdf used on input line 655.
+(pdftex.def)             Requested size: 206.39685pt x 212.66515pt.
+
+Underfull \vbox (badness 8151) has occurred while \output is active []
+
+
+<pipemod.pdf, id=52, 467.55577pt x 75.71968pt>
 File: pipemod.pdf Graphic file (type pdf)
  <use pipemod.pdf>
-Package pdftex.def Info: pipemod.pdf used on input line 1068.
+Package pdftex.def Info: pipemod.pdf used on input line 1074.
 (pdftex.def)             Requested size: 258.0pt x 41.78459pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 1068--1069
+Overfull \hbox (6.0pt too wide) in paragraph at lines 1074--1075
  [] 
  []
 
-[2 <./pc.pdf> <./pipemod.pdf>] <encexp.pdf, id=83, 351.32254pt x 113.80016pt>
+[2 <./pc.pdf> <./pipemod.pdf>] <encexp.pdf, id=102, 351.32254pt x 113.80016pt>
 File: encexp.pdf Graphic file (type pdf)
 
 <use encexp.pdf>
-Package pdftex.def Info: encexp.pdf used on input line 1158.
+Package pdftex.def Info: encexp.pdf used on input line 1164.
 (pdftex.def)             Requested size: 258.0pt x 83.57176pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 1158--1159
+Overfull \hbox (6.0pt too wide) in paragraph at lines 1164--1165
  [] 
  []
 
 
-LaTeX Warning: Reference `algo_infer' on page 3 undefined on input line 1331.
+LaTeX Warning: Reference `algo_infer' on page 3 undefined on input line 1337.
 
 [3 <./encexp.pdf>]
 
-LaTeX Warning: Reference `algo_infer' on page 4 undefined on input line 1522.
+LaTeX Warning: Reference `algo_infer' on page 4 undefined on input line 1528.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1614--1618
+Underfull \hbox (badness 10000) in paragraph at lines 1620--1624
 []\OT1/ptm/m/n/10 Similar to Equa-tion (11[]) and (12[]), by re-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1614--1618
+Underfull \hbox (badness 10000) in paragraph at lines 1620--1624
 \OT1/ptm/m/n/10 plac-ing $\OML/cmm/m/it/10 F[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10
  p; l; r[]; s[]; [][]\OT1/cmr/m/n/10 )$ \OT1/ptm/m/n/10 with
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1667--1670
+Underfull \hbox (badness 10000) in paragraph at lines 1673--1676
 []\OT1/ptm/m/n/10 Similar to Equa-tion (11[]) and (12[]), by re-plac-ing
  []
 
 
-Underfull \hbox (badness 1389) in paragraph at lines 1667--1670
+Underfull \hbox (badness 1389) in paragraph at lines 1673--1676
 \OML/cmm/m/it/10 F[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 p; l; r[]; i[]; [][]\OT1/
 cmr/m/n/10 )$ \OT1/ptm/m/n/10 with $\OML/cmm/m/it/10 F[]\OT1/cmr/m/n/10 (\OML/c
 mm/m/it/10 p; l; r[]; i[]; [][]\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 ^
  []
 
 
-Overfull \hbox (28.50258pt too wide) in paragraph at lines 1707--1719
+Overfull \hbox (28.50258pt too wide) in paragraph at lines 1713--1725
  [][][] 
  []
 
 [4]
-Overfull \hbox (12.62785pt too wide) in paragraph at lines 1766--1776
+Overfull \hbox (12.62785pt too wide) in paragraph at lines 1772--1782
  [][][] 
  []
 
 
-Underfull \hbox (badness 10000) detected at line 1852
+Underfull \hbox (badness 10000) detected at line 1858
  []$[]  []$ []  
  []
 
@@ -461,21 +471,16 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[6
-
-] (./bare_conf.aux)
+[6] (./bare_conf.aux)
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
- 4588 strings out of 495028
- 65437 string characters out of 6181498
- 160304 words of memory out of 5000000
- 7733 multiletter control sequences out of 15000+600000
+ 4593 strings out of 495028
+ 65505 string characters out of 6181498
+ 164312 words of memory out of 5000000
+ 7737 multiletter control sequences out of 15000+600000
  42309 words of font info for 87 fonts, out of 8000000 for 9000
  17 hyphenation exceptions out of 8191
  38i,15n,26p,335b,390s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -494,10 +499,10 @@ are/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/tex
 mf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/
 type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times
 /utmri8a.pfb>
-Output written on bare_conf.pdf (6 pages, 316509 bytes).
+Output written on bare_conf.pdf (6 pages, 330202 bytes).
 PDF statistics:
- 166 PDF objects out of 1000 (max. 8388607)
- 116 compressed objects within 2 object streams
+ 185 PDF objects out of 1000 (max. 8388607)
+ 129 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 
