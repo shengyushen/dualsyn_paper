@@ -1,0 +1,64 @@
+This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: bare_conf.aux
+The style file: ../../bib/IEEEtranBST2/IEEEtran.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: ../../bib/IEEEtranBST2/IEEEabrv.bib
+Database file #2: ../../bib/refs.bib
+I was expecting a `,' or a `}'---line 895 of file ../../bib/refs.bib
+ :   
+ :   month =   "",
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+-- IEEEtran.bst version 1.12 (2007/01/11) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+Warning--empty year in QinTODAES15
+
+Done.
+You've used 15 entries,
+            4024 wiz_defined-function locations,
+            1310 strings with 18380 characters,
+and the built_in function-call counts, 15050 in all, are:
+= -- 1212
+> -- 374
+< -- 147
++ -- 207
+- -- 59
+* -- 783
+:= -- 2185
+add.period$ -- 37
+call.type$ -- 15
+change.case$ -- 20
+chr.to.int$ -- 372
+cite$ -- 16
+duplicate$ -- 996
+empty$ -- 1162
+format.name$ -- 73
+if$ -- 3469
+int.to.chr$ -- 0
+int.to.str$ -- 15
+missing$ -- 170
+newline$ -- 92
+num.names$ -- 21
+pop$ -- 385
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 2
+skip$ -- 1124
+stack$ -- 0
+substring$ -- 882
+swap$ -- 898
+text.length$ -- 23
+text.prefix$ -- 0
+top$ -- 5
+type$ -- 15
+warning$ -- 1
+while$ -- 66
+width$ -- 17
+write$ -- 206
+(There was 1 error message)

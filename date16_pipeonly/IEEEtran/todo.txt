@@ -1,0 +1,12 @@
+1	referring to TODAES paper is not possible because it have not published
+2	the complete approach is not explained clearly, especially when it is sat
+3	draw a fig to show the super and sub script in unrolled TR
+4	why not compare in experimental result to todaes papers, we may need some real benchmarks that is more complex
+5	area is not a concern because of the continuously improving process,
+	delay is not a concern because throught put is primary
+6	more figure and explanations
+7	more benchmarks
+8	says about we pipelining the encoder and compare them to unpipelined version, including their pipeline stages
+9	explain the flow and 
+10	state that the todaes paper can `not handle pipeline , which is to show our algo's efficency
+:
