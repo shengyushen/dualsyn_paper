@@ -517,7 +517,7 @@ Section \ref{sec_conclude} sums up the conclusion.
 
 \begin{figure}[t]
 \begin{center}
-\includegraphics[width=0.4\textwidth]{pipeline}
+\includegraphics[width=0.5\textwidth]{pipeline}
 \end{center}
 \caption{The pipelined encoder and its decoders}
 \label{fig_pipe}
@@ -593,7 +593,13 @@ $\phi_I$ is the \textbf{interpolant} \cite{Craig} of $\phi_A$ with respect to $\
 
 \subsection{Finite state machine(FSM)}\label{subsec_fsm}
 
-
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=0.2\textwidth]{mealy}
+\end{center}
+\caption{Modeling the encoder with finite state machine}
+\label{fig_mealy}
+\end{figure}
 
 The encoder is modeled by a FSM $M=(\vec{s},\vec{i},\vec{o},T)$,
 consisting of a state variable vector $\vec{s}$,
@@ -604,7 +610,7 @@ an output variable vector $\vec{o}$,
 % and a transition function $T: [\![\vec{s}]\!]\times [\![\vec{i}]\!]\to [\![\vec{s}]\!]\times [\![\vec{o}]\!]$ 
 and a transition function $T: \vec{s}\times \vec{i}\to \vec{s}\times \vec{o}$ 
 that computes the next state and output variable vector from the current state and input variable vector.
-As shown in Fig. \ref{mealy},
+As shown in Fig. \ref{fig_mealy},
 as well as in the remainder of this paper,
 the state is represented as a gray round corner box,
 and the transition function $T$ is represented as a white rectangle.
