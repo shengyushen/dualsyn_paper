@@ -1,0 +1,223 @@
+% !Mode:: "Tex:UTF-8"
+%%
+%% This is file `thesis.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% nudtpaper.dtx  (with options: `thesis')
+%%
+%% This is a generated file.
+%%
+%% Copyright (C) 2012 by Liu Benyuan <liubenyuan@gmail.com>
+%%
+%% This file may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3a
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in:
+%%
+%% http://www.latex-project.org/lppl.txt
+%%
+%% and version 1.3a or later is part of all distributions of LaTeX
+%% version 2004/10/01 or later.
+%%
+%% To produce the documentation run the original source files ending with `.dtx'
+%% through LaTeX.
+%%
+%% Any Suggestions : LiuBenYuan <liubenyuan@gmail.com>
+%% Thanks Xue Ruini <xueruini@gmail.com> for the thuthesis class!
+%% Thanks sofoot for the original NUDT paper class!
+%%
+%1. 规范硕士导言
+% \documentclass[master,ttf]{nudtpaper}
+%2. 规范博士导言
+% \documentclass[doctor,twoside,ttf]{nudtpaper}
+%3. 如果使用是Vista
+% \documentclass[master,ttf,vista]{nudtpaper}
+%4. 建议使用OTF字体获得较好的页面显示效果
+%   OTF字体从网上获得，各个系统名称统一，不用加vista选项
+%   如果你下载的是最新的(1201)OTF 英文字体，建议修改nudtpaper.cls，使用
+%   Times New Roman PS Std
+% \documentclass[doctor,twoside,otf]{nudtpaper}
+%5. 如果想生成盲评，传递anon即可，仍需修改个人成果部分
+% \documentclass[master,otf,anon]{nudtpaper}
+%
+\documentclass[doctor,twoside,otf]{nudtpaper}
+\usepackage{mynudt}
+%\usepackage[linesnumbered,boxed,ruled]{algorithm2e}
+
+%
+%\newtheorem{Procedure}{\textbf{Procedure}}
+%\newtheorem{inference}{\textbf{Inference}}
+
+\classification{TP393}
+\serialno{10069066}
+\confidentiality{公开}
+\UDC{}
+\title{开放计算环境下可满足问题的安全外包}
+\displaytitle{开放计算环境下可满足问题的安全外包}
+\author{秦莹}
+\zhdate{\zhtoday}
+\entitle{Research on secure outsourcing SAT Solving in Open Environment}
+\enauthor{QIN Ying}
+\endate{\entoday}
+\subject{计算机科学与技术}
+\ensubject{Computer Science and Technology}
+\researchfield{计算机软件与理论}
+\supervisor{贾焰\quad{}教授}
+%\cosupervisor{\quad{}} % 没有就空着
+\ensupervisor{Professor JIA Yan}
+%\encosupervisor{}
+\papertype{工学}
+\enpapertype{Engineering}
+% 加入makenomenclature命令可用nomencl制作符号列表。
+
+\begin{document}
+\graphicspath{{figures/}}
+% 制作封面，生成目录，插入摘要，插入符号列表 \\
+% 默认符号列表使用denotation.tex，如果要使用nomencl \\
+% 需要注释掉denotation，并取消下面两个命令的注释。 \\
+% cleardoublepage% \\
+% printnomenclature% \\
+\maketitle
+\frontmatter
+\tableofcontents
+\listoftables
+\listoffigures
+
+\midmatter
+\input{data/abstract}
+%\input{data/denotation}
+
+%书写正文，可以根据需要增添章节; 正文还包括致谢，参考文献与成果
+\mainmatter
+% these are useful
+\input{data/chap01}
+\input{data/chap02}
+\input{data/chap03}
+%\input{data/chap04}
+%\input{data/chap05}
+
+
+% useless
+%%\input{data/chap06-ssy}
+%%\input{data/chap07}
+%%\input{data/chap08}
+%%\input{data/chap09}
+%%\input{data/chap10}
+%%\input{data/chap11}
+
+
+%useful
+\input{data/chap12}
+\input{data/ack}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{参考文献}
+\bibliographystyle{bstutf8}
+
+\bibliography{ref/refs}
+
+%%\begin{thebibliography}{26}
+%%
+%%\bibitem{SATtheory}
+%%D.Putnam.
+%%A Computing Procedure for Quantification Theory.
+%%Journal of the ACM 7 (3): 201.
+%%\bibitem{HardwareSAT}
+%%G. Hachtel, F. Somenzi.
+%%Logic synthesis and verification algorithms. Springer 2006: I-XXIII, 1-564.
+%%\bibitem{softwareSAT}
+%%E. Clarke, O. Grumberg, S. Jha, Y. Lu, H. Veith.
+%%Counterexample-Guided Abstraction Refinement.
+%%CAV'00, pp 154-169.
+%%\bibitem{cryptoSAT}
+%%M.Soos, K. Nohl, and C. Castelluccia. Extending SAT Solvers to Cryptographic Problems.
+%% Springer, LNCS 5584, pp. 244-257, 2009.
+%%\bibitem{Nordugrid}
+%%A. E. J. Hyvarinen, T. Junttila, and I. Niemel?a.
+%%Grid-Based SAT Solving with Iterative Partitioning and Clause Learning. In Proc. CP:385?399, 2011
+%%\bibitem{Tseitin}
+%%G. Tseitin.
+%%On the complexity of derivation in propositional calculus. Studies in Constr. Math. and Math. Logic, 1968.
+%%\bibitem{c.WANG}
+%%C. Wang, K. Ren, J. Wang.
+%%Secure and practical outsourcing of linear programming in Cloud computing. INFOCOM'11: 820-828.
+%%\bibitem{csLiequivalency}
+%%C. Li.
+%%Integrating equivalency reasoning into Davis-Putnam procedure. in AAAI'00, pp. 291-296.
+%%\bibitem{csOstrowski}	
+%%R. Ostrowski.
+%%Recovering and exploiting structural knowledge from cnf formulas, CP'02, pp. 185-199.
+%%\bibitem{csRoy}
+%%J.Roy, I.Markov,V. Bertacco.
+%%Restoring Circuit Structure from SAT Instances IWLS'04, pp. 361-368.
+%%\bibitem{csFu}
+%%Z. Fu, S. Malik.
+%%Extracting Logic Circuit Structure from Conjunctive Normal Form Descriptions.
+%%VLSI Design'07, pp 37-42.
+%%\bibitem{Minisat}
+%%MiniSat-SAT Algorithms and Applications Invited talk given by Niklas Sorensson at the CADE-20 workshop ESCAR.
+%%http://minisat.se/Papers.html
+%%\bibitem{AMI}
+%%Balduzzi, M., Zaddach, J., Balzarotti, D., Kirda, E., Loureiro, S. (2012).
+%%A security analysis of amazon's elastic compute Cloud service. the 27th Annual ACM Symposium on Applied Computing (pp. 1427-1434). ACM.
+%%\bibitem{InformationLeakageofCloud}	
+%%H. You.
+%%Get Off of My Cloud: Exploring Information Leakage in Third-Party Compute Clouds, CCS'09
+%%\bibitem{microgenSAT}
+%%D.Achlioptas,C.Gomes,H.Kautz,B.Selman.Generating Satisfiable Problem Instances.
+%% 12th National Conference on Artificial Intelligence (AAAI-2000) 2000, 256-301
+%%\bibitem{genSAT}
+%%M Jarvisalo. Equivalence checking hardware multiplier designs.
+%%SAT Competition 2007 benchmark description.
+%%\bibitem{OBfuscationd-CNFs}
+%%Z. Brakerski and G. Rothblum.
+%%Black-Box Obfuscation for d-CNFs.
+%%ITCS'14,pp. 235-250.
+%%\bibitem{R.Gennaro}
+%%R. Gennaro, C. Gentry, B. Parno.
+%%Non-interactive Verifiable Computing: Outsourcing Computation to Untrusted Workers.
+%%CRYPTO'10, pp 465-482.
+%%\bibitem{HV-grid}
+%%W. Du and M. Goodrich.
+%%Searching for High-Value Rare Events with Uncheatable Grid Computing.2004.
+%%\bibitem{t19}
+%%M. Atallah, K. Pantazopoulos, J. Rice, E. Spafford.
+%%Secure outsourcing of scientific computations.
+%%Advances in Computers 54: 215-272 (2001)
+%%\bibitem{t20}
+%%M. Atallah, J. Li.
+%%Secure outsourcing of sequence comparisons.
+%%Int. J. Inf. Sec. 4(4): 277-287 (2005).
+%%\bibitem{t32}	
+%%P. Golle and I. Mironov.
+%%Uncheatable distributed computations.
+%%CT-RSA'01, pp. 425-40.
+%%\bibitem{t33}
+%%D. Szajda, B. G. Lawson, and J. Owen.
+%%Hardening functions for large scale distributed computations.
+%%ISSP'03, pp. 216-224.
+%%\bibitem{CloudSMT}
+%%Paralleling OpenSMT Towards Cloud Computing http://www.inf.usi.ch/urop-Tsitovich-2-127208.pdf
+%%\bibitem{OneSpin}
+%%Formal in the Cloud OneSpin: New Spin on Cloud Computing.http://www. eejournal.com/archives/articles/20130627-onespin/?printView=true
+%%\bibitem{obfuscationBible}
+%%X.S. Zhang, F.L. He and W.l. Zuo. Theory and Practice of Program Obfuscation.
+%%Convergence and Hybrid Information Technologies, Book edited by: Marius Crisan, ISBN 978-953-307-068-1, pp. 426, March 2010, INTECH, Croatia.
+%%\bibitem{Partition} G. Karypis, R. Aggarwal, V. Kumar, and S. Shekhar.
+%%Multilevel Hypergraph Partitioning: Application in VLSI Do main, in Proc. DAC, pp. 526-529, 1997.
+%%%  \bibitem{IEEEhowto:kopka}
+%%% H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+%%%   0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+%%
+%%\end{thebibliography}
+
+\input{data/resume}
+%% 最后，需要的话还要生成附录，全文随之结束。
+%\appendix
+%\backmatter
+%%\input{data/appendix01}
+
+\end{document}
