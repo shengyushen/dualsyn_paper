@@ -5,11 +5,12 @@
 \section{引言}%
 在第三章中，假设攻击者仅仅会从分析CNF公式入手，获取结构信息。
 针对上述攻击模式，提出了CNF 公式结构隐私保护的的混淆算法。
-在本章中，将在前一章工作的基础上再进一步，
+
+而在本章中，将在前一章工作的基础上再进一步，
 假设攻击者已经确切知道公式中夹杂了噪音变量和子句，
 因而试图从分析解的角度出发，还原CNF公式，而后再获取其中携带的结构信息。
 
-本章针对上述的隐私保护威胁，对“解空间投影等价的混淆算法”进行了深入的研究，
+本章针对上述的隐私保护威胁，对“解空间投影等价的混淆算法”进行了深入的研究。
 通过引入具有簇形解的噪音CNF 公式，
 使噪音变量的取值不再唯一，
 消除攻击者利用ALLSAT还原CNF 公式的可能性，
@@ -18,28 +19,31 @@
 \section{问题描述}
 第三章提出的CNF混淆算法，通过在原始CNF公式中混入仅有唯一解的噪音CNF，在隐藏原有CNF 携带的结构信息的同时，还保证混淆前后的解空间等价。
 混入唯一解的噪音CNF，也就意味着在混淆后的解中，这些噪音变量都将只有唯一的取值。
-从解混淆攻击者的角度看，对混淆后CNF公式的攻击破解点之一就是寻找出赋值唯一的噪音变量。
-一旦确认噪音变量，就可能将按照嵌入规则添加到原子句中的额外文字取出，恢复原有子句，进而获得原始的CNF 公式，并取得其中的结构信息。
+从解混淆攻击者的角度看，对混淆后CNF公式的攻击破解点之一，就是寻找出赋值唯一的噪音变量。
+一旦确认噪音变量，就可能将按照嵌入规则添加到原始子句中的额外文字取出，恢复原有子句，进而获得原始的CNF 公式，并取得其中的结构信息。
 
 在详细描述之前，先介绍与之相关的术语。
 \subsection{ALLSAT求解}
 多数SAT问题具有一个以上的解，求解出SAT问题所有解的过程称为ALLSAT求解。
 直观上看，调用一次SAT求解器可以获得SAT的一个解。
-按照已知解构造出阻断（block）子句并加入到待求解的SAT问题公式中，以引导求解器避开已搜索过的解。
+将已知解中每一个变量的赋值求反，以获得其反文字，并将所有这样的反文字的合取作为阻断（block）子句并加入到待求解的SAT 问题公式中，以引导求解器避开已搜索过的解。
 通过多次重复，最终可以获得SAT问题所有的解。
 
-本文中给出基于Craig插值\upcite{InterpBoolFunction,DBLP:journals/jsyml/Craig57}的求解算法。
+本文中给出基于Craig插值\upcite{InterpBoolFunction,DBLP:journals/jsyml/Craig57} 的求解算法。
 Craig插值是一阶逻辑定理证明中的一个强大工具。
 为了简明起见，在这里将仅讨论命题逻辑中的Craig插值。
 Craig插值的定义是，对于两个命题逻辑公式$F_1$和$F_2$，假设他们的支撑集（输入变量集合）为$V_1$和$V_2$，
 且有$F_1\wedge F_2$不可满足，则存在$F_3$，使得$F_1\rightarrow F_3$成立，$F_3\wedgeF_2$不可满足，且$F_3$的支撑集为$V_1\cap V_2$。
 很显然，$F_3$是$F_1$的一个抽象，既包含了$F_1$的所有情形，又具有更少的支撑集变量。
-$F_3$就是一个graig插值。
+$F_3$就是一个Craig插值。
 %因此，Craig插值于2003年开始成为自动构造抽象模型的强大工具[30]。
 %从2007年开始，大部分的逻辑综合算法又都找到了基于Craig插值的高效实现，如函数相关性[47]、 逻辑分解[53][54]、特征化[41]、增量修正[55]和布尔函数匹配[56]。因此，Craig插值已经成为基于SAT的推理工具的另一个强大推理引擎。
 
-首先构造两个相互矛盾的公式，并从他们的不可满足证明中抽取Craig插值。
-在文献\upcite{interpNoProof}中，
+使用Craig插值的最常用和最高效算法是McMillian算法\upcite{interp_McMillan}：首先构造两个相互矛盾的公式，
+然后使用SAT求解器得到他们的不可满足证明，
+然后使用定义\upcite{def_gencraig}所描述的方法，
+从不可满足证明中抽取Craig 插值。
+而在文献\upcite{interpNoProof}中，
 Craig插值的产生过程类似于传统的可满足赋值遍历算法。
 不过其扩展算法包含两步，
 分别对应于两个参与计算的公式。
@@ -47,12 +51,19 @@ Craig插值的产生过程类似于传统的可满足赋值遍历算法。
 
 \subsection{基于ALLSAT求解和分区的攻击}
 根据前一章给出的CNF公式混淆算法，可知其中Husk变量的赋值是唯一的。
-根据SAT问题的特点可知，对混淆后的CNF公式进行ALLSAT求解，可以得到混淆后公式全部可满足解。
-因此，攻击者可以从中筛选出赋值唯一的变量，由于原始CNF中也可能存在赋值唯一的变量，例如用于属性验证时的属性变量；
-因此这些具有唯一赋值的变量可作为HUSK变量的候选者；攻击者可以通过构建仅包含这些唯一赋值变量的分区\upcite{Partition}，来获取HUSK公式，并识别出HUSK变量，从而恢复出原始公式。
+根据SAT问题的特点可知，对混淆后的CNF公式进行ALLSAT求解，可以得到混淆后公式的全部解。
+因此，攻击者可以从中筛选出赋值唯一的变量。
+由于原始CNF中也可能存在其他赋值唯一的变量，例如用于属性验证时的属性变量；
+因此这些具有唯一赋值的变量可作为Husk变量的候选者；
+攻击者可以通过构建仅包含这些唯一赋值变量的分区\upcite{Partition}，
+来获取Husk公式，并识别出Husk变量，从而恢复出原始公式。
 
-假设Husk变量数是m，原公式中取唯一赋值的变量数是n，完全找出m的概率为$1/{C_{m+n}^m}$。	
-由于原始公式中的n值一般为待验证属性变量，当n值较小时，解混淆攻击成功的概率将会变得很大。
+假设Husk变量的个数是$m$，
+原公式中取唯一赋值的变量数是$n$，
+完全找出$m$的概率为$1/{C_{m+n}^m}$。	
+由于原始公式中的$n$值一般为待验证属性变量，
+当$n$值较小时，
+解混淆攻击成功的概率将会变得很大。
 因此必须解决上述问题。
 
 
@@ -65,66 +76,52 @@ Craig插值的产生过程类似于传统的可满足赋值遍历算法。
 \begin{enumerate}
  \item
 %First,
-可移植性：目前的SAT求解器集成了冲突检测等高效机制，因此希望可以将其作为黑盒直接使用，而不是像\cite{OBfuscationd-CNFs}试图使用新的求解算法。
+可移植性：目前的SAT求解器集成了冲突检测\upcite{EFFCON}等高效求解机制，因此希望可以将其作为黑盒直接使用，而不是像文献\upcite{OBfuscationd-CNFs}试图使用新的求解算法。
  \item \label{4:g2}
 隐形性\upcite{obfuscationBible}：混淆算法可以保证电路结构信息无法通过对CNF公式的分析来获取。
 \item \label{4:g3}
-适应性\upcite{obfuscationBible}：求解框架应能防止包括运行于公共云上的求解器在内的第三方通过ALLSAT 来获取求解结果，进而识别出噪音变量。
+适应性\upcite{obfuscationBible}：求解框架应能防止第三方通过ALLSAT 来获取求解结果，进而识别出噪音变量。
  \item
 开销：混淆算法不应该引入太多的开销。
 \end{enumerate}
 %\subsection{解空间投影等价}
+
 根据上述目标,
 为了保持混淆后的CNF公式对求解计算的透明性，
 根据第\ref{chap:3}章中给出的SSH规则对原始CNF公式进行混淆,
 在CNF公式的子句中加入新的文字，并在公式中加入新的子句。
-新加入的文字和一部分新的子句来自于具有特殊解形式的可满足CNF公式，称这个公式为簇形Husks公式。
+新加入的文字和一部分新的子句来自于具有特殊解形式的可满足CNF公式，这个公式称为簇形Husks公式。
 SSH规则保证原始的CNF公式可以和簇形Husks公式无缝地混合在一起，以便于达到\ref{4:g2}) 和 \ref{4:g3}) 的要求。
 SSH规则在第\ref{chap:3}章中已经给出定义，出于本章叙述的完整性，
-在本章的\textit{\ref{4:embeded rules})}小节中仍旧会给出详细的定义。
+在本章的小节\textit{\ref{4:embeded rules}}中仍旧会给出详细的定义。
+
+\begin{definition}[簇形解]\label{4:Cubic-Husk-Solution-definition}
+假设CNF公式有$m+n$个变量，且$m$和$n$均大于0。
+公式有$k$个可满足解。
+其中$n$个变量的赋值在$k$ 个解中都相同，
+另外$m$个变量的赋值在$k$个解中不全相同。
+部分变量具有完全相同赋值的这$k$个解就构成一个簇形解。
+\end{definition}
 
 \begin{definition}[簇形Husks 公式]\label{4:Cubic-Husk-formula-definition}
 Husk公式是有簇形可满足解的CNF公式，并且解变量的赋值是非特异的（不是全0或全1）。
 \end{definition}
 
-\begin{definition}[簇形解]\label{4:Cubic-Husk-Solution-definition}
-簇形解是指，假设CNF公式有$m+n$个变量且$m$和$n$均大于0，公式有$k$个可满足解，其中$n$个变量的赋值在$k$ 个解中都相同，另外$m$个变量的赋值在$k$个解中不全相同，具有部分赋值完全相同的这$k$个解就构成一个簇形解。
-\end{definition}
 
-与第三章相同，基于混淆算法的SAT求解隐私保护框架包含GENERATOR， OBFUSCATOR， MAPPER 和 VERIFIER 算法，除了GENERATOR，其余算法和第三章相同。GENERATOR在\ref{4:genhusk}节介绍。
+与第三章相同，
+基于混淆算法的SAT求解隐私保护框架包含$GENERATOR$， $OBFUSCATOR$， $MAPPER$ 和 $VERIFIER$ 算法，
+除了$GENERATOR$，
+其余算法和第三章相同。
+新的$GENERATOR$在\ref{4:genhusk}节介绍。
 
 \subsection{簇形Husk公式的产生}\label{4:genhusk}
-产生可满足CNF公式的算法有多种\upcite{microgenSAT,genSAT}，
+产生可满足CNF公式的算法有多种\upcite{microgenSAT,genSAT}。
 本章中，定义\ref{4:Cubic-Husk-formula-definition} 中指出的簇形Husks公式采用质因数的方法构造\upcite{genSAT}。
+如算法\ref{4:algo2_gen}所示。
 
-%产生Husks公式的GENERATOR的实现在算法一\ref{4:algo2_gen}中描述。
-%%
-%\textbf{First},
-%given two primes $p_A \neq p_B$ (at line \ref{4:primenumber}),
-%% represented by a binary vector $p_A = <a_1,a_2,\dots,a_n>$, $p_B = <b_1,b_2,\dots,b_n>$,
-%we assign $p_A \cdot p_B$ to the output of a multiplier $M$ with constraint $I_1\ne 1$ and  $I_2\ne 1$ (at line \ref{4:multiplePrime}).
-%$I_1$ and $I_2$ are inputs of $M$.
-%
-%\textbf{Second},
-%we convert the multiplier $M$ into CNF formula $Tseitin(M)$ (at line \ref{4:TseitinPHI}).
-\textbf{首先},
-给定两个质数$p_A \neq p_B$(第 \ref{4:primenumber} 行)，且两者具有如下的关系，
-其二进制向量表示$P_A=<a_1,a_2,\dots,a_n,a_{n+1},\dots,a_{n+m}>，
-P_B=<a_1,a_2,…,a_n,b_{n+1},…,b_{n+m}>$
-% represented by a binary vector $p_A = <a_1,a_2,\dots,a_n>$, $p_B = <b_1,b_2,\dots,b_n>$,
-将$p_A \cdot p_B$ 赋值给乘法器$M$的输出，并且限制$I_1\ne 1$ and  $I_2\ne 1$ (第\ref{4:multiplePrime}行)。
-其中，$I_1$和$I_2$ 是$M$的输入。
-
-\textbf{第二},
-将乘法器$M$编码为CNF公式$Tseitin(M)$(第\ref{4:TseitinPHI}行)。
-
-为了满足$Tseitin(M)$, $M$的两个输入一定是$\{I_1=p_A,I_2=p_B\}$ or $\{I_1=p_B,I_2=p_A\}$,
-这就使得$p_A|p_B$或$p_B|p_A$ 为$Tseitin(M)$的两个解。
-根据条件由于两个解具有部分相同的赋值,取其中相同的部分为$R_H=Common(p_A,p_B)=<a_1,a_2,\dots,a_n>$，
-$R_H$也称为该公式的簇形解公共赋值变量集。
 
 \begin{algorithm*}[b]
-\caption{GENERATOR}
+\caption{$GENERATOR$}
 \label{4:algo2_gen}
 \begin{algorithmic}[1]
 %%\SetAlgoLined
@@ -138,45 +135,94 @@ $R_H$也称为该公式的簇形解公共赋值变量集。
 \end{algorithmic}
 \end{algorithm*}
 
+%产生Husks公式的GENERATOR的实现在算法一\ref{4:algo2_gen}中描述。
+%%
+%\textbf{First},
+%given two primes $p_A \neq p_B$ (at line \ref{4:primenumber}),
+%% represented by a binary vector $p_A = <a_1,a_2,\dots,a_n>$, $p_B = <b_1,b_2,\dots,b_n>$,
+%we assign $p_A \cdot p_B$ to the output of a multiplier $M$ with constraint $I_1\ne 1$ and  $I_2\ne 1$ (at line \ref{4:multiplePrime}).
+%$I_1$ and $I_2$ are inputs of $M$.
+%
+%\textbf{Second},
+%we convert the multiplier $M$ into CNF formula $Tseitin(M)$ (at line \ref{4:TseitinPHI}).
+
+\begin{enumerate}
+\item \textbf{首先},
+给定两个质数$p_A \neq p_B$(第 \ref{4:primenumber} 行)，且两者具有如下的关系：
+其二进制向量表示为$p_A=<a_1,\dots,a_{n+m}>$和
+$p_B=<b_1,\dots,b_{n+m}>$。
+% represented by a binary vector $p_A = <a_1,a_2,\dots,a_n>$, $p_B = <b_1,b_2,\dots,b_n>$,
+将$p_A * p_B$ 赋值给乘法器$M$的输出，并且限制$I_1\ne 1$ and  $I_2\ne 1$ (第\ref{4:multiplePrime}行)。
+其中，$I_1$和$I_2$ 是$M$的输入。
+
+\item \textbf{其次}，
+将乘法器$M$编码为CNF公式$Tseitin(M)$(第\ref{4:TseitinPHI}行)。
+\end{enumerate}
+
+为了满足$Tseitin(M)$,
+$M$的两个输入一定是$\{I_1=p_A,I_2=p_B\}$ 或者 $\{I_1=p_B,I_2=p_A\}$。
+根据条件由于两个解具有部分相同的赋值。
+即存在$n$个正整数下标$\{i_j|1\le j\le n\}$，
+其中每个都满足$1\le i_j\le n$，
+使得$a_{i_j}\equiv b_{i_j}$。
+直观的，
+$\{i_j|1\le j\le n\}$是具有相同取值的$a_{i_j}$和$b_{i_j}$的下标$i_j$的集合。
+令$R_H=<a_{i_1},\dots,a_{i_n}>$。
+$R_H$也称为该公式的簇形解公共赋值变量集。
+
+
+
 \subsection{解空间投影等价的混淆}\label{4:obfuscating}
 
 为了防止CNF公式以及解的信息泄露，给出了一个隐私保护的策略，该策略基于下面的事实和期望：
-\\$\textbf{事实 1:}$ 改变公式中的CNF标记和关键子句可以使基于模式匹配或子图同构的电路结构恢复技术失效。
+\\$\textbf{事实 1:}$ 改变公式中的CNF标记和关键子句，可以使基于模式匹配或子图同构的电路结构恢复技术失效。
 \\$\textbf{事实 2:}$ 混淆后的解空间不应该被缩小，否则会误导真实应用，例如验证等。
 \\$\textbf{期望 1:}$ 鉴于事实2, 解空间可以被扩大，以便于误导公共云上包括SAT求解器在内的第三方。
-\\$\textbf{期望 2:}$ 可以通过投影的方式从混淆后的解中较快的恢复出原公式的解。
+\\$\textbf{期望 2:}$ 可以通过投影的方式，从混淆后公式的解中较快的恢复出原始公式的解。
 
-本文给出的隐私保护策略，称为OBFUSCATOR，使用解空间投影等价算法，
-将Husks公式$F_H$嵌入到原始公式$F_C$中，产生一个新的CNF公式$F_O$。
-OBFUSCATOR改变子句的文字集合以及公式中的子句集合，来防止公式中的电路结构被恢复。
+本文给出的隐私保护策略，称为$OBFUSCATOR$。
+该算法使用解空间投影等价算法，
+将Husks公式$F_H$嵌入到原始公式$F_C$中，
+产生一个新的CNF公式$F_O$。
+$OBFUSCATOR$改变子句的文字集合以及公式中的子句集合，
+来防止公式中的电路结构被恢复。
 通过SSH规则混淆后，原公式解空间被成倍数扩展，
-以便于在公共云上的SAT求解器都无法获取真实的解，
-其中倍数为簇形解公式的解个数，并且原始解可以通过投影的方式从混淆后的解中获取。
+以防止在公共云上的SAT求解器获取真实的解。
+其中倍数为簇形解公式的解个数，
+并且原始公式的解可以通过投影的方式从混淆后公式的解中获取。
 
 \subsubsection{解空间投影等价（SSP）算法}\label{4:embeded rules}
 
-让我们再第\ref{chap:3}章的基础之上，考虑一个更复杂一些的问题，将SAT问题编码为CNF公式外包到云中，由SAT求解器求解；
+让我们在第\ref{chap:3}章的基础之上，考虑一个更复杂一些的问题：
+将SAT问题编码为CNF公式外包到云中，由SAT 求解器求解；
 并且不希望SAT求解器知道实际的SAT问题以及它的解的个数。
-一个简单地方法就是，
-将真实的CNF公式和具有多个解，
-且在变量上和原始公式无交集的可满足公式，
+
+一个简单的方法是：
+将原始的CNF公式，
+和具有多个解，且和原始公式无共同变量的可满足公式
 混合在一起，并将混合后的CNF 公式外包的云上。
-真实公式的解将会混杂在混合后的解中，并且解的个数为两个CNF公式解的乘积。
+原始公式的解将会混杂在混合公式的解中，
+并且解的个数为两个CNF公式解的个数的乘积。
 但是，这种简单混合的可识别性很高，
 基于分区\upcite{Partition}的方法可以将两个不相关的公式分离开来，
-从而得到真实的CNF公式。
+从而得到原始的CNF公式。
 
-让我们考虑一个改进的方法:
-任意公式$F_C$，和一个可满足公式$F_H$及其一个解\textsl{${\textbf{R}}_{\textbf{H}}$},
-$F_C$和$F_H$没有公共变量, 也即：$V_{F_C}$ $\cap$ $V_{F_H}$ =$\phi$。
-我们将如第\ref{chap:3}章所给出的方法，
-将$F_C$和$F_H$无缝混合，以便于隐藏$F_C$。
-同时，保持$F_C$中的所有解都包含在新的公式中。
+一个改进的方法是:
+对任意公式$F_C$，
+和一个可满足公式$F_H$及其一个解$R_H$。
+$F_C$和$F_H$没有公共变量，也即：$V_{F_C}\cap V_{F_H}\equiv \phi$。
+我们将采用如第\ref{chap:3}章所给出的方法，
+将$F_C$和$F_H$无缝混合，
+以便于隐藏$F_C$。
+同时，
+保持$F_C$中的所有解都包含在新的公式中。
 
-为实现$F_C$和$F_H$无缝混合,
-直觉的方法是将$F_H$中的变量加入到$F_C$的子句中,
+为实现$F_C$和$F_H$无缝混合，
+直觉的方法是将$F_H$中的变量加入到$F_C$的子句中，
 并且使用$F_C$和$F_H$中的变量产生新的子句。
-由于CNF特性,对任何CNF公式$F_C$,在子句中加入新的文字可能会扩展解空间，
+由于CNF特性，
+导致对任何CNF公式$F_C$，
+在其子句中加入新的文字可能会扩展解空间，
 而加入包含$F_C$中变量的子句则会缩减解空间。
 那我们如何在此情况下保证$F_C$所有的解仍旧保留在新的公式中，
 并且新公式的解空间在原始变量上的投影和原始解空间完全等价。
@@ -185,11 +231,12 @@ $F_C$和$F_H$没有公共变量, 也即：$V_{F_C}$ $\cap$ $V_{F_H}$ =$\phi$。
 \begin{definition}[解包含关系 $S_C \subseteq S_O$]~
 CNF 式$F_C$和$F_O$具有$n_{F_C}$公共变量$x_1,...,x_{n_{F_C}}$ 并且有
 $|V_{F_C}|\equiv n_{F_C}$, $|V_{F_O}|\equiv n_{F_O}$, $ n_{F_O}\geqslant n_{F_C} > 0$。
-$S_C$和$S_O$分别是$F_C$和$F_O$的解,
-在$S_C$和$S_O$中，$n_{F_C}$ 个公共变量的赋值是相同的, 也就是
-$S_C=\{x_1=B_1,...,x_{n_{F_C}}=B_{n_{F_C}} | B_i \in \{T,F\},~1\leqslant i\leqslant n_{F_C} \}$,
-$S_O=\{x_1=B_1,...,x_{n_{F_C}}=B_{n_{F_C}},...,x_{n_{F_O}}=B_{n_{F_O}}|B_i\in \{T,F\},~ 1\leqslant i\leqslant n_{F_O} \}$。
-我们称解$S_C$包含于$S_O$,记为$S_C\subseteq S_O$。
+$S_C$和$S_O$分别是$F_C$和$F_O$的解。
+在$S_C$和$S_O$中，$n_{F_C}$ 个公共变量的赋值是相同的, 即
+对任何$1\le i\le n_{F_C}$，
+有$S_C(x_i)\equiv S_O(x_i)$。
+我们称解$S_C$包含于$S_O$，
+记为$S_C\subseteq S_O$。
 \end{definition}
 
 %\begin{definition}[解空间等价(SSE)]\label{4:SSEdefinition}~
@@ -200,8 +247,8 @@ $S_O=\{x_1=B_1,...,x_{n_{F_C}}=B_{n_{F_C}},...,x_{n_{F_O}}=B_{n_{F_O}}|B_i\in \{
 %\end{definition}
 
 \begin{definition}[解空间投影等价(SSP)]\label{4:SSPdefinition}~
-CNF公式$F_C$有$n$个解$\{S_{C_1},...,S_{C_n}\}$;
-CNF公式$F_O$有$n \cdot m$个解$\{S_{O_1},...,S_{O_{n \cdot m}}\}$,
+CNF公式$F_C$有$n$个解$\{S_{C_1},...,S_{C_n}\}$。
+CNF公式$F_O$有$n * m$个解$\{S_{O_1},...,S_{O_{n \cdot m}}\}$。
 对于任意$i \in [1,n]，j \in [0,m-1]$, $S_{C_i} \subseteq S_{O_{i + {n \cdot j}}}$，
 称$F_O$解空间投影等价于$F_C$,记为$F_C \equiv_{_{SSP}} F_O$。
 \end{definition}

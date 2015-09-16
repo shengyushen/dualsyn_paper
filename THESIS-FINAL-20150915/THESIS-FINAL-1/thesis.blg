@@ -242,6 +242,7 @@ Repeated entry---line 6859 of file ref/refs.bib
 I'm skipping whatever remains of this entry
 A bad cross reference---entry "softwareSAT"
 refers to entry "DBLP:conf/cav/2000", which doesn't exist
+Warning--I didn't find a database entry for "def_gencraig"
 Warning--I didn't find a database entry for "DBLP:conf/cav/2000"
 -- BUPTThesis.bst version 1.0 Beta 1 (2009/05/31) by Yu Zhang.
 -- http://code.google.com/p/buptthesis/
@@ -345,8 +346,10 @@ Warning--The refdate in DBLP:journals/tcad/ShenQWPZL12 is missing.
 Warning--The editor in Partition is missing.
 Warning--empty editor in Partition
 Warning--There is month but no year in genSAT
+Warning--The refdate in DBLP:journals/jsyml/Craig57 is missing.
 Warning--there's a publisher but no address in DBLP:conf/aaai/2000
 Warning--there's a publisher but no address in DBLP:conf/crypto/2010
+Warning--there's neither address nor publisher in DBLP:conf/acns/2005
 Warning--there's a publisher but no address in DBLP:conf/eurocrypt/2012
 Warning--there's a publisher but no address in DBLP:conf/eurocrypt/2010
 Warning--there's a publisher but no address in DBLP:conf/crypto/2011

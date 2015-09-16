@@ -21,3 +21,27 @@
 \contentsline {lemma}{{引理}{3.{4}}{Unique Negative literal SSE Obfuscation}}{36}{lemma.3.4}
 \contentsline {proof}{{证明}{3.{4}}{}}{36}{proof.3.4}
 \contentsline {proof}{{证明}{3.{5}}{}}{37}{proof.3.5}
+\contentsline {definition}{{定义}{4.{1}}{簇形解}}{45}{definition.4.1}
+\contentsline {definition}{{定义}{4.{2}}{簇形Husks 公式}}{45}{definition.4.2}
+\contentsline {definition}{{定义}{4.{3}}{解包含关系 $S_C \subseteq S_O$}}{47}{definition.4.3}
+\contentsline {definition}{{定义}{4.{4}}{解空间投影等价(SSP)}}{47}{definition.4.4}
+\contentsline {definition}{{定义}{4.{5}}{${\textbf {Obf(}}F_C,F_H,R_H\textbf {)}$}}{47}{definition.4.5}
+\contentsline {theorem}{{定理}{4.{1}}{SSP Obfuscation}}{47}{theorem.4.1}
+\contentsline {theorem}{{定理}{4.{2}}{}}{47}{theorem.4.2}
+\contentsline {lemma}{{引理}{4.{1}}{Cubic Husks Equation(CHE)}}{49}{lemma.4.1}
+\contentsline {proof}{{证明}{4.{1}}{}}{49}{proof.4.1}
+\contentsline {proof}{{证明}{4.{2}}{}}{50}{proof.4.2}
+\contentsline {definition}{{定义}{5.{1}}{Husks公式}}{55}{definition.5.1}
+\contentsline {definition}{{定义}{5.{2}}{CNF标记}}{56}{definition.5.2}
+\contentsline {definition}{{定义}{5.{3}}{解包含关系 $S_C \subseteq S_O$}}{59}{definition.5.3}
+\contentsline {definition}{{定义}{5.{4}}{解空间等价(SSE)}}{59}{definition.5.4}
+\contentsline {definition}{{定义}{5.{5}}{解空间上估计(SSO)}}{60}{definition.5.5}
+\contentsline {definition}{{定义}{5.{6}}{${\textbf {Obf(}}F_C,F_H,R_H\textbf {)}$}}{60}{definition.5.6}
+\contentsline {theorem}{{定理}{5.{1}}{SSO Obfuscation}}{60}{theorem.5.1}
+\contentsline {lemma}{{引理}{5.{1}}{Husks Equation(HE)}}{63}{lemma.5.1}
+\contentsline {proof}{{证明}{5.{1}}{}}{64}{proof.5.1}
+\contentsline {lemma}{{引理}{5.{2}}{OR Hold Obfuscation}}{65}{lemma.5.2}
+\contentsline {proof}{{证明}{5.{2}}{}}{65}{proof.5.2}
+\contentsline {lemma}{{引理}{5.{3}}{AND Hold Obfuscation}}{66}{lemma.5.3}
+\contentsline {proof}{{证明}{5.{3}}{}}{66}{proof.5.3}
+\contentsline {proof}{{证明}{5.{4}}{}}{67}{proof.5.4}

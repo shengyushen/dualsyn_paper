@@ -948,6 +948,22 @@ In Proceedings of the Seventeenth National Conference on Artificial
 Jarvisalo~M.
 Equivalence checking hardware multiplier designs.
 
+\bibitem{DBLP:journals/jsyml/Craig57}
+Craig~W.
+Linear Reasoning. {A} New Form of the Herbrand-Gentzen Theorem~[J/OL].
+J. Symb. Log.
+1957, 22~(3):  250--268.
+\url{http://dx.doi.org/10.2307/2963593}.
+
+\bibitem{DBLP:conf/acns/DuG05}
+Du~W, Goodrich~M~T.
+Searching for High-Value Rare Events with Uncheatable Grid
+  Computing~[C/OL]~//~Ioannidis~J, Keromytis~A~D, Yung~M.
+In Applied Cryptography and Network Security, Third International Conference,
+  {ACNS} 2005, New York, NY, USA, June 7-10, 2005, Proceedings.
+2005:  122--137.
+\url{http://dx.doi.org/10.1007/11496137_9}.
+
 \bibitem{DBLP:conf/aaai/2000}
 Kautz~H~A, Porter~B~W.
 Proceedings of the Seventeenth National Conference on Artificial Intelligence
@@ -960,6 +976,12 @@ Rabin~T.
 Advances in Cryptology - {CRYPTO} 2010, 30th Annual Cryptology Conference,
   Santa Barbara, CA, USA, August 15-19, 2010. Proceedings~[C/OL].
 Springer, 2010.
+
+\bibitem{DBLP:conf/acns/2005}
+Ioannidis~J, Keromytis~A~D, Yung~M.
+Applied Cryptography and Network Security, Third International Conference,
+  {ACNS} 2005, New York, NY, USA, June 7-10, 2005, Proceedings~[C].
+2005.
 
 \bibitem{DBLP:conf/eurocrypt/2012}
 Pointcheval~D, Johansson~T.
