@@ -236,7 +236,43 @@ Repeated entry---line 6766 of file ref/refs.bib
  : @proceedings{DBLP:conf/ccs/2006usa
  :                                   ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 6859 of file ref/refs.bib
+Repeated entry---line 6982 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/ih/KoushanfarQP01
+ :                                           ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6998 of file ref/refs.bib
+ : @proceedings{DBLP:conf/ih/2001
+ :                               ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7012 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/dac/SuhD07
+ :                                    ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7028 of file ref/refs.bib
+ : @proceedings{DBLP:conf/dac/2007
+ :                                ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7039 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/focs/GargGH0SW13
+ :                                          ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7060 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/date/RoyKM08
+ :                                      ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7076 of file ref/refs.bib
+ : @proceedings{DBLP:conf/date/2008
+ :                                 ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7087 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/dac/RoyKM08
+ :                                     ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7103 of file ref/refs.bib
+ : @proceedings{DBLP:conf/dac/2008
+ :                                ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7197 of file ref/refs.bib
  : @proceedings{DBLP:conf/sat/2009
  :                                ,
 I'm skipping whatever remains of this entry
@@ -303,6 +339,8 @@ Warning--The refdate in Improved-key-generation is missing.
 Warning--empty pages in DBLP:journals/corr/abs-1202-3321
 Warning--The refdate in DBLP:journals/corr/abs-1202-3321 is missing.
 Warning--The refdate in DBLP:journals/isci/CheonKLY15 is missing.
+Warning--The editor in DBLP:conf/coco/Regev10 is missing.
+Warning--empty editor in DBLP:conf/coco/Regev10
 Warning--The refdate in DBLP:journals/siamcomp/BrakerskiV14 is missing.
 Warning--The refdate in DBLP:journals/toct/BrakerskiGV14 is missing.
 Warning--The refdate in DBLP:journals/ac/AtallahPRS01 is missing.
@@ -326,17 +364,27 @@ Warning--The author in C_Gentry_phd is missing.
 Warning--There is month but no year in C_Gentry_phd
 Warning--The editor in DBLP:conf/focs/Yao82b is missing.
 Warning--empty editor in DBLP:conf/focs/Yao82b
+Warning--The refdate in DBLP:journals/jacm/BarakGIRSVY12 is missing.
 Warning--The editor in obfuscationBible is missing.
 Warning--empty editor in obfuscationBible
-Warning--The refdate in DBLP:journals/jacm/BarakGIRSVY12 is missing.
 Warning--The refdate in DBLP:journals/joc/GoldwasserR14 is missing.
 Warning--The editor in DBLP:conf/focs/GargGH0SW13 is missing.
 Warning--empty editor in DBLP:conf/focs/GargGH0SW13
 Warning--The author in Collberg_C is missing.
 Warning--There is month but no year in Collberg_C
-Warning--The refdate in DBLP:journals/tifs/Koushanfar12 is missing.
+Warning--The editor in 839821 is missing.
+Warning--empty editor in 839821
 Warning--The editor in DBLP:conf/dac/Oliveira99 is missing.
 Warning--empty editor in DBLP:conf/dac/Oliveira99
+Warning--The editor in DBLP:conf/isscc/SuHO07 is missing.
+Warning--empty editor in DBLP:conf/isscc/SuHO07
+Warning--The editor in DBLP:conf/dac/SuhD07 is missing.
+Warning--empty editor in DBLP:conf/dac/SuhD07
+Warning--The refdate in DBLP:journals/tifs/Koushanfar12 is missing.
+Warning--The editor in DBLP:conf/host/LiZ13 is missing.
+Warning--empty editor in DBLP:conf/host/LiZ13
+Warning--The editor in DBLP:conf/date/RoyKM08 is missing.
+Warning--empty editor in DBLP:conf/date/RoyKM08
 Warning--The refdate in DBLP:journals/tcad/Oliveira01 is missing.
 Warning--The editor in DBLP:conf/date/ShenQL05 is missing.
 Warning--empty editor in DBLP:conf/date/ShenQL05
@@ -356,4 +404,4 @@ Warning--there's a publisher but no address in DBLP:conf/crypto/2011
 Warning--there's a publisher but no address in DBLP:conf/ccs/2006usa
 
 Done.
-(There were 60 error messages)
+(There were 69 error messages)

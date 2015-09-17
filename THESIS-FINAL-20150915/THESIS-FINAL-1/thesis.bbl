@@ -506,6 +506,14 @@ Inf. Sci.
 2015, 310:  149--162.
 \url{http://dx.doi.org/10.1016/j.ins.2015.03.019}.
 
+\bibitem{DBLP:conf/coco/Regev10}
+Regev~O.
+The Learning with Errors Problem (Invited Survey)~[C/OL].
+In Proceedings of the 25th Annual {IEEE} Conference on Computational
+  Complexity, {CCC} 2010, Cambridge, Massachusetts, June 9-12, 2010.
+2010:  191--204.
+\url{http://doi.ieeecomputersociety.org/10.1109/CCC.2010.26}.
+
 \bibitem{DBLP:conf/eurocrypt/GentryHS12}
 Gentry~C, Halevi~S, Smart~N~P.
 Fully Homomorphic Encryption with Polylog Overhead~[C/OL]~//~Pointcheval~D,
@@ -648,14 +656,6 @@ In 24th International Conference on Distributed Computing Systems {(ICDCS}
 2004:  4--11.
 \url{http://dx.doi.org/10.1109/ICDCS.2004.1281562}.
 
-\bibitem{DBLP:conf/stoc/GoldwasserKR08}
-Goldwasser~S, Kalai~Y~T, Rothblum~G~N.
-Delegating computation: interactive proofs for muggles~[C/OL]~//~Dwork~C.
-In Proceedings of the 40th Annual {ACM} Symposium on Theory of Computing,
-  Victoria, British Columbia, Canada, May 17-20, 2008.
-2008:  113--122.
-\url{http://doi.acm.org/10.1145/1374376.1374396}.
-
 \bibitem{DBLP:conf/ctrsa/GolleM01}
 Golle~P, Mironov~I.
 Uncheatable Distributed Computations~[C/OL]~//~Naccache~D.
@@ -723,18 +723,26 @@ In 23rd Annual Symposium on Foundations of Computer Science, Chicago, Illinois,
 1982:  160--164.
 \url{http://doi.ieeecomputersociety.org/10.1109/SFCS.1982.38}.
 
-\bibitem{obfuscationBible}
-XS~Zhang~F~H, Zuo~W.
-Theory and Practice of Program Obfuscation~[C].
-In Convergence and Hybrid Information Technologies.
-2010:  426.
-
 \bibitem{DBLP:journals/jacm/BarakGIRSVY12}
 Barak~B, Goldreich~O, Impagliazzo~R, et~al.
 On the (im)possibility of obfuscating programs~[J/OL].
 J. {ACM}.
 2012, 59~(2): ~6.
 \url{http://doi.acm.org/10.1145/2160158.2160159}.
+
+\bibitem{obfuscationBible}
+XS~Zhang~F~H, Zuo~W.
+Theory and Practice of Program Obfuscation~[C].
+In Convergence and Hybrid Information Technologies.
+2010:  426.
+
+\bibitem{DBLP:conf/crypto/BarakGIRSVY01}
+Barak~B, Goldreich~O, Impagliazzo~R, et~al.
+On the (Im)possibility of Obfuscating Programs~[C/OL]~//~Kilian~J.
+In Advances in Cryptology - {CRYPTO} 2001, 21st Annual International Cryptology
+  Conference, Santa Barbara, California, USA, August 19-23, 2001, Proceedings.
+2001:  1--18.
+\url{http://dx.doi.org/10.1007/3-540-44647-8_1}.
 
 \bibitem{DBLP:conf/eurocrypt/LynnPS04}
 Lynn~B, Prabhakaran~M, Sahai~A.
@@ -770,6 +778,14 @@ In 54th Annual {IEEE} Symposium on Foundations of Computer Science, {FOCS}
 2013:  40--49.
 \url{http://dx.doi.org/10.1109/FOCS.2013.13}.
 
+\bibitem{DBLP:conf/crypto/BrakerskiR13}
+Brakerski~Z, Rothblum~G~N.
+Obfuscating Conjunctions~[C/OL]~//~Canetti~R, Garay~J~A.
+In Advances in Cryptology - {CRYPTO} 2013 - 33rd Annual Cryptology Conference,
+  Santa Barbara, CA, USA, August 18-22, 2013. Proceedings, Part {II}.
+2013:  416--434.
+\url{http://dx.doi.org/10.1007/978-3-642-40084-1_24}.
+
 \bibitem{DBLP:conf/cc/BatchelderH07}
 Batchelder~M, Hendren~L~J.
 Obfuscating Java: The Most Pain for the Least Gain~[C/OL]~//~Krishnamurthi~S,
@@ -784,6 +800,20 @@ In Compiler Construction, 16th International Conference, {CC} 2007, Held as
 Collberg C, Thomborson C, Low D. A Taxonomy of Obfuscating Transformations.
   Tech. Report, \#148, University of Auckland.
 
+\bibitem{839821}
+Lofstrom~K, Daasch~W, Taylor~D.
+IC identification circuit using device mismatch~[C].
+In Solid-State Circuits Conference, 2000. Digest of Technical Papers. ISSCC.
+  2000 IEEE International.
+Feb 2000:  372--373.
+
+\bibitem{DBLP:conf/dac/Oliveira99}
+Oliveira~A~L.
+Robust Techniques for Watermarking Sequential Circuit Designs~[C/OL].
+In {DAC}.
+1999:  837--842.
+\url{http://doi.acm.org/10.1145/309847.310082}.
+
 \bibitem{DBLP:conf/ih/KoushanfarQP01}
 Koushanfar~F, Qu~G, Potkonjak~M.
 Intellectual Property Metering~[C/OL]~//~Moskowitz~I~S.
@@ -791,6 +821,24 @@ In Information Hiding, 4th International Workshop, {IHW} 2001, Pittsburgh, PA,
   USA, April 25-27, 2001, Proceedings.
 2001:  81--95.
 \url{http://dx.doi.org/10.1007/3-540-45496-9_7}.
+
+\bibitem{DBLP:conf/isscc/SuHO07}
+Su~Y, Holleman~J, Otis~B~P.
+A 1.6pJ/bit 96{\%} Stable Chip-ID Generating Circuit using Process
+  Variations~[C/OL].
+In 2007 {IEEE} International Solid-State Circuits Conference, {ISSCC} 2007,
+  Digest of Technical Papers, San Francisco, CA, USA, February 11-15, 2007.
+2007:  406--611.
+\url{http://dx.doi.org/10.1109/ISSCC.2007.373466}.
+
+\bibitem{DBLP:conf/dac/SuhD07}
+Suh~G~E, Devadas~S.
+Physical Unclonable Functions for Device Authentication and Secret Key
+  Generation~[C/OL].
+In Proceedings of the 44th Design Automation Conference, {DAC} 2007, San Diego,
+  CA, USA, June 4-8, 2007.
+2007:  9--14.
+\url{http://doi.acm.org/10.1145/1278480.1278484}.
 
 \bibitem{DBLP:journals/tifs/Koushanfar12}
 Koushanfar~F.
@@ -809,12 +857,39 @@ In Proceedings of the 21st {ACM} Great Lakes Symposium on {VLSI} 2010,
 2011:  449--454.
 \url{http://doi.acm.org/10.1145/1973009.1973110}.
 
-\bibitem{DBLP:conf/dac/Oliveira99}
-Oliveira~A~L.
-Robust Techniques for Watermarking Sequential Circuit Designs~[C/OL].
-In {DAC}.
-1999:  837--842.
-\url{http://doi.acm.org/10.1145/309847.310082}.
+\bibitem{DBLP:conf/host/LiZ13}
+Li~L, Zhou~H.
+Structural transformation for best-possible obfuscation of sequential
+  circuits~[C/OL].
+In 2013 {IEEE} International Symposium on Hardware-Oriented Security and Trust,
+  {HOST} 2013, Austin, TX, USA, June 2-3, 2013.
+2013:  55--60.
+\url{http://dx.doi.org/10.1109/HST.2013.6581566}.
+
+\bibitem{DBLP:conf/date/RoyKM08}
+Roy~J~A, Koushanfar~F, Markov~I~L.
+{EPIC:} Ending Piracy of Integrated Circuits~[C/OL].
+In Design, Automation and Test in Europe, {DATE} 2008, Munich, Germany, March
+  10-14, 2008.
+2008:  1069--1074.
+\url{http://dx.doi.org/10.1109/DATE.2008.4484823}.
+
+\bibitem{DBLP:conf/dac/RoyKM08}
+Roy~J~A, Koushanfar~F, Markov~I~L.
+Protecting bus-based hardware {IP} by secret sharing~[C/OL]~//~Fix~L.
+In Proceedings of the 45th Design Automation Conference, {DAC} 2008, Anaheim,
+  CA, USA, June 8-13, 2008.
+2008:  846--851.
+\url{http://doi.acm.org/10.1145/1391469.1391684}.
+
+\bibitem{DBLP:conf/host/HuangL08}
+Huang~J, Lach~J.
+{IC} Activation and User Authentication for Security-Sensitive
+  Systems~[C/OL]~//~Tehranipoor~M, Plusquellic~J.
+In {IEEE} International Workshop on Hardware-Oriented Security and Trust,
+  {HOST} 2008, Anaheim, CA, USA, June 9, 2008. Proceedings.
+2008:  76--80.
+\url{http://dx.doi.org/10.1109/HST.2008.4559056}.
 
 \bibitem{DBLP:journals/tcad/Oliveira01}
 Oliveira~A~L.
@@ -823,6 +898,24 @@ Techniques for the creation of digital watermarks in sequentialcircuit
 {IEEE} Trans. on {CAD} of Integrated Circuits and Systems.
 2001, 20~(9):  1101--1117.
 \url{http://doi.ieeecomputersociety.org/10.1109/43.945306}.
+
+\bibitem{DBLP:conf/host/KoushanfarA10}
+Koushanfar~F, Alkabani~Y.
+Provably Secure Obfuscation of Diverse Watermarks for Sequential
+  Circuits~[C/OL]~//~Plusquellic~J, Mai~K.
+In {HOST} 2010, Proceedings of the 2010 {IEEE} International Symposium on
+  Hardware-Oriented Security and Trust (HOST), 13-14 June 2010, Anaheim
+  Convention Center, California, {USA}.
+2010:  42--47.
+\url{http://dx.doi.org/10.1109/HST.2010.5513115}.
+
+\bibitem{DBLP:conf/ih/YuanQ04}
+Yuan~L, Qu~G.
+Information Hiding in Finite State Machine~[C/OL]~//~Fridrich~J~J.
+In Information Hiding, 6th International Workshop, {IH} 2004, Toronto, Canada,
+  May 23-25, 2004, Revised Selected Papers.
+2004:  340--354.
+\url{http://dx.doi.org/10.1007/978-3-540-30114-1_24}.
 
 \bibitem{DBLP:conf/atva/ShenQL04}
 Shen~S, Qin~Y, Li~S.

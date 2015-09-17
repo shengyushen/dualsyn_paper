@@ -5,9 +5,9 @@
 \contentsline {figure}{\numberline {1.5}{\ignorespaces 冲突指导的子句学习\relax }}{6}{figure.caption.11}
 \contentsline {figure}{\numberline {1.6}{\ignorespaces 超图和二分图\relax }}{12}{figure.caption.12}
 \contentsline {figure}{\numberline {1.7}{\ignorespaces 本文研究内容\relax }}{13}{figure.caption.13}
-\contentsline {figure}{\numberline {3.1}{\ignorespaces 基于CNF公式混淆的安全可验证SAT求解框架\relax }}{28}{figure.caption.16}
-\contentsline {figure}{\numberline {3.2}{\ignorespaces 混淆前后$a$和$e$的CNF标记\relax }}{39}{figure.caption.17}
-\contentsline {figure}{\numberline {5.1}{\ignorespaces 输入输出隐私保护的SAT求解框架\relax }}{55}{figure.caption.21}
-\contentsline {figure}{\numberline {5.2}{\ignorespaces 将AND2门改变为AND3门.\relax }}{62}{figure.caption.22}
-\contentsline {figure}{\numberline {5.3}{\ignorespaces 混淆前后门$a$和门$e$的CNF标记\relax }}{70}{figure.caption.23}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces 基于CNF公式混淆的安全可验证SAT求解框架\relax }}{30}{figure.caption.16}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces 混淆前后$a$和$e$的CNF标记\relax }}{41}{figure.caption.17}
+\contentsline {figure}{\numberline {5.1}{\ignorespaces 输入输出隐私保护的SAT求解框架\relax }}{57}{figure.caption.21}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces 将AND2门改变为AND3门.\relax }}{64}{figure.caption.22}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces 混淆前后门$a$和门$e$的CNF标记\relax }}{72}{figure.caption.23}
 \contentsfinish 

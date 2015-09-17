@@ -41,7 +41,7 @@ $F_3$就是一个Craig插值。
 
 使用Craig插值的最常用和最高效算法是McMillian算法\upcite{interp_McMillan}：首先构造两个相互矛盾的公式，
 然后使用SAT求解器得到他们的不可满足证明，
-然后使用定义\upcite{def_gencraig}所描述的方法，
+然后使用定义\ref{def_gencraig}所描述的方法，
 从不可满足证明中抽取Craig 插值。
 而在文献\upcite{interpNoProof}中，
 Craig插值的产生过程类似于传统的可满足赋值遍历算法。
@@ -249,8 +249,9 @@ $S_C$和$S_O$分别是$F_C$和$F_O$的解。
 \begin{definition}[解空间投影等价(SSP)]\label{4:SSPdefinition}~
 CNF公式$F_C$有$n$个解$\{S_{C_1},...,S_{C_n}\}$。
 CNF公式$F_O$有$n * m$个解$\{S_{O_1},...,S_{O_{n \cdot m}}\}$。
-对于任意$i \in [1,n]，j \in [0,m-1]$, $S_{C_i} \subseteq S_{O_{i + {n \cdot j}}}$，
-称$F_O$解空间投影等价于$F_C$,记为$F_C \equiv_{_{SSP}} F_O$。
+对于任意$1\le i\le n,0\le j\le m-1$，有$S_{C_i} \subseteq S_{O_{i + {n * j}}}$，
+则称$F_O$解空间投影等价于$F_C$，
+记为$F_C \equiv_{_{SSP}} F_O$。
 \end{definition}
 
 %\begin{definition}[解空间上估计(SSO)]\label{4:SSOdefinition}~
@@ -261,8 +262,8 @@ CNF公式$F_O$有$n * m$个解$\{S_{O_1},...,S_{O_{n \cdot m}}\}$。
 %并且对于任意$i \in [1,n]$, $S_{C_i} \subseteq S_{O_i}$。
 %我们称$F_O$ 的解空间是$F_C$ 的上估计,记为$F_C \vdash_{_{SSO}} F_O$。
 %\end{definition}
-为了在新公式中保持$F_C$公式中的所有解,
-仍然需要使用第\ref{chap:3}章提出的解空间保持(SSH)规则，
+为了在新公式中保持$F_C$公式中的所有解，
+仍然需要使用第\ref{chap:3}章提出的解空间保持(SSH)规则。
 与第\ref{chap:3}章不同的是，使用公式$F_H$和其簇形解的公共赋值变量集合$R_H$来混淆公式$F_C$，
 以便于保证混淆后公式具有投影等价的解空间。
 
