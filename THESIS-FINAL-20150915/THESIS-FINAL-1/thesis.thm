@@ -24,13 +24,13 @@
 \contentsline {definition}{{定义}{4.{1}}{簇形解}}{47}{definition.4.1}
 \contentsline {definition}{{定义}{4.{2}}{簇形Husks 公式}}{47}{definition.4.2}
 \contentsline {definition}{{定义}{4.{3}}{解包含关系 $S_C \subseteq S_O$}}{49}{definition.4.3}
-\contentsline {definition}{{定义}{4.{4}}{解空间投影等价(SSP)}}{49}{definition.4.4}
+\contentsline {definition}{{定义}{4.{4}}{解空间投影等价(SSPE)}}{49}{definition.4.4}
 \contentsline {definition}{{定义}{4.{5}}{${\textbf {Obf(}}F_C,F_H,R_H\textbf {)}$}}{49}{definition.4.5}
-\contentsline {theorem}{{定理}{4.{1}}{SSP Obfuscation}}{49}{theorem.4.1}
-\contentsline {theorem}{{定理}{4.{2}}{}}{49}{theorem.4.2}
+\contentsline {theorem}{{定理}{4.{1}}{SSPE Obfuscation}}{49}{theorem.4.1}
+\contentsline {theorem}{{定理}{4.{2}}{}}{50}{theorem.4.2}
 \contentsline {lemma}{{引理}{4.{1}}{Cubic Husks Equation(CHE)}}{51}{lemma.4.1}
 \contentsline {proof}{{证明}{4.{1}}{}}{51}{proof.4.1}
-\contentsline {proof}{{证明}{4.{2}}{}}{52}{proof.4.2}
+\contentsline {proof}{{证明}{4.{2}}{}}{53}{proof.4.2}
 \contentsline {definition}{{定义}{5.{1}}{Husks公式}}{57}{definition.5.1}
 \contentsline {definition}{{定义}{5.{2}}{CNF标记}}{58}{definition.5.2}
 \contentsline {definition}{{定义}{5.{3}}{解包含关系 $S_C \subseteq S_O$}}{61}{definition.5.3}

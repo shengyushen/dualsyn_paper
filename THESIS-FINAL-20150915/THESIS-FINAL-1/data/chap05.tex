@@ -3,18 +3,21 @@
 \label{chap:5}
 第三、四章研究了SAT问题求解中CNF公式的隐私保护，也即SAT问题输入数据的保护。本章把保护的范围进一步扩展到输出数据，
 研究可同时保护SAT问题输入和输出数据隐私的
-方法，该方法基于解空解上估计的混淆算法和解恢复算法。
-通过解空间上估计的混淆算法，CNF公式被变换为具有不同电路结构的新公式，并且该公式的解空间为原公式的解空间的上估计。原始公式的解可通过映射方法从混淆后公式的解中恢复。
-理论分析证明了算法的正确性和有效性，理论分析和实验表明混淆算法具有多项式复杂度，而解恢复算法仅线性复杂度；在ISCAS89 测试集上的实验表明，该混淆算法引入了可接受的SAT 求解开销。
+方法。
+该方法基于解空间上估计的混淆算法和解恢复算法。
+通过该混淆算法，CNF公式被变换为具有不同电路结构的新公式，并且该公式的解空间为原公式的解空间的上估计。原始公式的解可通过映射方法从混淆后公式的解中恢复。
+理论分析证明了算法的正确性和有效性。
+理论分析和实验表明混淆算法具有多项式复杂度，而解恢复算法仅线性复杂度；
+在ISCAS89 测试集上的实验表明，该混淆算法引入了可接受的SAT 求解开销。
 \section{引言}
-命题可满足\upcite{SATtheory}（简称SAT）问题求解在软硬件验证\upcite{HardwareSAT,softwareSAT}、密码学\upcite{cryptoSAT} 等领域得到广泛应用。
-近年来，软硬件规模的日益扩大，服务于软硬件验证、密码破解的SAT问题规模也随之急剧膨胀。
+命题可满足\upcite{SATtheory}（简称SAT）问题求解在软硬件验证\upcite{HardwareSAT,softwareSAT}和密码学\upcite{cryptoSAT} 等领域得到广泛应用。
+近年来，软硬件规模的日益扩大，服务于软硬件验证和密码破解的SAT问题规模也随之急剧膨胀。
 另一方面，云计算、网格计算等依托开放环境的计算模式可以根据应用规模提供弹性的计算资源，
 将复杂的SAT问题外包到云或网格环境下成为一种有吸引的解决方案\upcite{Nordugrid,CloudSMT,OneSpin}。
 
 但是，对安全的担忧阻碍了大多数用户将其关键应用部署到开放环境中运行。
 由于网格计算是由松散耦合的高端计算设施组成\upcite{Nordugrid}，网格环境下恶意计算节点的威胁是可预见的\cite{HV-grid}；
-在云计算环境下，虽然云硬件平台提供商及其基础设施（虚拟层）是可被信赖，在其上运行的虚拟机却不总是可以信赖的，
+在云计算环境下，虽然云硬件平台提供商及其基础设施（虚拟层）是可被信赖，在其上运行的虚拟机却不总是可以信赖的。
 文献\upcite{AMI}指出，著名的云计算提供商亚马逊的EC2受到了虚拟机影像滥用的困扰，
 被污染虚拟机映像会迅速扩散到整个社区；
 而文献\upcite{InformationLeakageofCloud}则指出了处于同一台物理机器上的虚拟机之间攻击的可能性。
@@ -29,7 +32,7 @@
 %Moreover, the SAT solver deployed in grid or Cloud may also be compromised by adversary,
 %who may compel SAT solver to return incorrect result to  mislead verification.
 这些事实指出，外包到云计算或网格环境下的SAT问题，
-其输入和输出数据可能会被未授权的第三方访问，
+其输入和输出数据可能会被未授权的第三方访问。
 这些潜在的威胁者可能会从这些数据中获取有价值的信息。
 例如，来源于软硬件验证的SAT问题，可能遭受硬件结构信息泄露的问题。
 Roy\upcite{csRoy}和Fu\upcite{csFu}的工作指出了从CNF公式中抽取电路结构信息的可能性。
@@ -76,7 +79,8 @@ Roy\upcite{csRoy}和Fu\upcite{csFu}的工作指出了从CNF公式中抽取电路
 
 \section{问题描述}
 \subsection{系统假设}
-我们将以云计算环境为例来阐述SAT求解外包中可能遇到的安全威胁，就威胁模型而言，网格计算和云计算类似。
+本章以云计算环境为例来阐述SAT求解外包中可能遇到的安全威胁。
+就威胁模型而言，网格计算和云计算类似。
 %illustrate possible threats when outsourcing SAT solving,
 %since grid is same as Cloud as for threat model.
 
@@ -85,7 +89,7 @@ Roy\upcite{csRoy}和Fu\upcite{csFu}的工作指出了从CNF公式中抽取电路
 %While public Cloud can provide elastic computation and memory resource to deal with complex computation.
 %CNF formula will be generated from netlist or program in private Cloud,
 %while SAT solover is deployed in public Cloud to solve the CNF formula and return the solution to the private Cloud.
-在我们的研究中,存在两种类型的云，私有云和公共云。私有云是可信但是计算以及存储能力受限，适合处理简单计算；
+在我们的研究中,存在两种类型的云：私有云和公共云。私有云是可信的但是计算以及存储能力受限，适合处理简单计算；
 公共云可以提供弹性的计算和存储资源，可以承担复杂计算任务。
 CNF公式将在私有云中由网表产生，SAT求解器部署在公共云，用于求解CNF公式，并将结果返回给私有云。
 
@@ -110,7 +114,7 @@ Roy等人\upcite{csRoy}和Fu等人\upcite{csFu}给出了基于子图同构以及
 并能最大限度的恢复出CNF公式中的电路结构。这些技术可能会被潜在的攻击者利用来抽取敏感的电路结构信息。
 %As pointed out by literature \upcite{HV-grid}, since solutions to difficult instances of NP-complete problems are rare events,
 %with the practical importance of many of these problems, hoarding participants may keep these solutions for economic value.
-正如文献\upcite{HV-grid}指出，由于复杂SAT问题的解稀有事件，由于这些应用的实用重要性，恶意的计算参与可能回保留这些解，来获取经济利益。
+正如文献\upcite{HV-grid}指出，由于复杂SAT问题的解是稀有事件，且这些解具有很重要的实用价值，恶意的计算参与者可能会保留这些解，来获取经济利益。
 %%Therefore both CNF formula and its solutions should  be treated as privacy that should be preserved.
 因此，同CNF公式一样，公式的解也应该被当做隐私加以保护。
 %As a result,
@@ -123,14 +127,16 @@ Roy等人\upcite{csRoy}和Fu等人\upcite{csFu}给出了基于子图同构以及
 %such as circuit structure information;
 %And if the solution are valuable, they may keep the computation results and leak it to third party.
 
-在我们的研究工作中，假设公共云环境下有“诚实且好奇“的计算参与者，他们会尽力完成所有的计算任务以便获得CNF公式的解，
-但是它们也试图从CNF公式或解中获得他们需要的信息，例如电路结构和解，以便于奇货可居。
+在我们的研究工作中，假设公共云环境下有“诚实且好奇“的计算参与者。
+他们会尽力完成所有的计算任务以便获得CNF公式的解，
+但是它们也试图从CNF公式或解中获得他们需要的信息，例如电路结构和解。
 
 \section{系统设计}
 
 \subsection{基于混淆的SAT求解框架}
 %When we design the Cloud or grid oriented SAT solving framework, the following four goals are taken into consideration:
-当我们设计基于云或是网格的SAT求解框架，将考虑下面四个因素：
+结合以上的系统假设，
+当我们设计基于云或是网格的SAT求解框架时，将考虑下面四个因素：
 %\begin{enumerate}
 % \item
 %%First,
@@ -154,7 +160,7 @@ Roy等人\upcite{csRoy}和Fu等人\upcite{csFu}给出了基于子图同构以及
 \begin{enumerate}
  \item
 %First,
-可移植性：目前的SAT求解器集成了冲突检测等高效机制，因此我们希望可以将其作为黑盒直接使用，而不是像\cite{OBfuscationd-CNFs}试图使用新的求解算法。
+可移植性：目前的SAT求解器集成了冲突检测等高效机制，因此我们希望可以将其作为黑盒直接使用，而不是像\upcite{OBfuscationd-CNFs}那样试图使用新的求解算法。
 %instead of developing new algorithms like \upcite{OBfuscationd-CNFs}.
  \item \label{g2}
 %  Second,
@@ -188,7 +194,7 @@ Roy等人\upcite{csRoy}和Fu等人\upcite{csFu}给出了基于子图同构以及
 根据后续章节介绍的SSH规则和CSA策略,
 在CNF公式的子句中加入新的文字，并在公式中加入新的子句。
 新加入的文字和一部分新的子句来自于另外一个CNF公式，称这个公式为Husks公式。
-SSH规则和CSA策略保证原始的CNF公式可以和Husk公式无缝地混合在一起，已达到\ref{g2}) 和 \ref{g3})的要求。
+SSH规则和CSA策略保证原始的CNF公式可以和Husk公式无缝地混合在一起，以达到\ref{g2}) 和 \ref{g3})的要求。
 SSH规则和CSA策略将在\textit{\ref{embeded rules})} 和 \textit{\ref{embeded strategy})} 小节中介绍。
 
 %\begin{definition}[Singular Husk formula]\label{Singular-Husk-formula-definition}
@@ -265,7 +271,7 @@ GENERATOR， OBFUSCATOR， MAPPER 和 VERIFIER 算法将在 \ref{genhusk}， \re
 %GENERATOR algorithm to generate Husks formula is shown in Algorithm \ref{algo2_gen}.
 
 产生可满足CNF公式的算法有多种\upcite{microgenSAT,genSAT}。本文中，定义\ref{Husks-formula-definition}中指出的Husks公式采用质因数的方法构造\upcite{genSAT}。
-产生Husks公式的GENERATOR的实现在算法一\ref{5:algo2_genSAT}中描述。
+产生Husks公式的GENERATOR的实现在算法\ref{5:algo2_genSAT}中描述。
 %
 %\textbf{First},
 %given two primes $p_A \neq p_B$ (at line \ref{primenumber}),
@@ -278,13 +284,13 @@ GENERATOR， OBFUSCATOR， MAPPER 和 VERIFIER 算法将在 \ref{genhusk}， \re
 \textbf{首先},
 给定两个质数$p_A \neq p_B$(第 \ref{primenumber}行)，
 % represented by a binary vector $p_A = <a_1,a_2,\dots,a_n>$, $p_B = <b_1,b_2,\dots,b_n>$,
-将$p_A \cdot p_B$ 赋值给乘法器$M$的输出，并且限制$I_1\ne 1$ and  $I_2\ne 1$ (第\ref{multiplePrime}行)。
+将$p_A * p_B$ 赋值给乘法器$M$的输出，并且限制$I_1\ne 1$ and  $I_2\ne 1$ (第\ref{multiplePrime}行)。
 其中，$I_1$和$I_2$ 是$M$的输入。
 
 \textbf{第二},
 将乘法器$M$编码为CNF公式$Tseitin(M)$(第\ref{TseitinPHI}行)。
 
-为了满足$Tseitin(M)$, $M$的两个输入一定是$\{I_1=p_A,I_2=p_B\}$ or $\{I_1=p_B,I_2=p_A\}$,
+为了满足$Tseitin(M)$, $M$的两个输入一定是$\{I_1=p_A,I_2=p_B\}$ 或 $\{I_1=p_B,I_2=p_A\}$,
 这就使得$p_A|p_B$或$p_B|p_A$ 为$Tseitin(M)$的两个解。
 我们取其中一个为$R_H$。
 %
@@ -304,8 +310,8 @@ GENERATOR， OBFUSCATOR， MAPPER 和 VERIFIER 算法将在 \ref{genhusk}， \re
 %by constraining $p_A\equiv p_B$.
 %仅有一个可满足解的单一Husk公式(见定义\ref{Singular-Husk-formula-definition})也可采用算法\ref{5:algo2_genSAT}的方法构造，限制$p_A\equiv p_B$。
 
-构造具有两个以上部分赋值解(见定义\ref{4:Cubic-Husk-formula-definition})的Husk公式也可采用类似的方法，
-给出一个简单构造方法：以一个两质数构成合数$P_B$×$P_C$替换原有质数$P_B$作为新输入，由构造过程可知，使CNF满足的输入可以是($I_1=P_A$,$I_2=P_B×P_C$)、($I_1=P_B×P_C$,$I_2=P_A$)、($I_1=P_A×P_B$,$I_2=P_C$)、($I_1=P_C$,$I_2=P_A×P_B$)、
+构造具有两个以上部分赋值解(见定义\ref{4:Cubic-Husk-formula-definition})的Husk公式也可采用类似的方法。
+这里给出一个简单构造方法：以两个质数$P_B$和$P_C$构成的合数替换原有的一个输入$P_B$作为新输入，由构造过程可知，使CNF满足的输入可以是($I_1=P_A$,$I_2=P_B×P_C$)、($I_1=P_B×P_C$,$I_2=P_A$)、($I_1=P_A×P_B$,$I_2=P_C$)、($I_1=P_C$,$I_2=P_A×P_B$)、
 ($I_ 1=P_A×P_C$,$I_2=P_B$)、($I_1=P_B$,$I_2=P_A×P_C$)，这六种组合就构成了该公式的六个解，不妨任取其中四个解，取解中赋值相同的变量集合作为$R_H$；取另外两个解中赋值相同的变量集合作为$S_H$；我们将得到两个部分赋值解，且两个部分赋值解所包含的解个数比例为2：1。使用类似的方法，通过选择合适的合数作为输入并且选择适当的解组合为部分赋值解，我们可以构造解空间不同的Husks公式。
 
 
@@ -386,8 +392,8 @@ GENERATOR， OBFUSCATOR， MAPPER 和 VERIFIER 算法将在 \ref{genhusk}， \re
 \end{algorithm}
 
 \subsection{解空间上估计的混淆}\label{obfuscating}
-\subsubsection{CNF公式中的结构}\label{CNF structure}
-%\textbf{Circuit structure in CNF formula}\label{CNF structure}
+\subsubsection{CNF公式中的结构}\label{CNF structure5}
+%\textbf{Circuit structure in CNF formula}\label{CNF structure5}
 %Since we want to protect circuit structure in CNF formula,
 %let's first study how the circuit can be recovered from CNF formula.
 %Literatures\upcite{csRoy,csFu} have proposed algorithms to recover circuit structure from CNF formula in details.
@@ -845,7 +851,7 @@ $F_O$和$F_C$可以使用同样的SAT solver求解,
 %
 %Since gates are basic blocks to construct circuit,
 %and CNF signature and key clause are clues to detect circuit structure,
-%as mentioned in Subsection \textit{\ref{CNF structure})}.
+%as mentioned in Subsection \textit{\ref{CNF structure5})}.
 %We try to change the CNF signature and key clause of gate by adding literals and clauses.
 %Furthermore, in order to mislead adversary,
 %literals and clauses added may construct new legal CNF signature with clauses in original CNF signature,
@@ -864,7 +870,7 @@ $F_O$和$F_C$可以使用同样的SAT solver求解,
 为了防止电路结构被恢复，在哪种子句中加入文字，创建何种类型的新子句，仍然是悬而未决的问题。
 
 由于门是电路的基本构件，
-并且\textit{\ref{CNF structure})}小节指出CNF标记和关键子句是检测电路结构的关键。
+并且\textit{\ref{CNF structure5})}小节指出CNF标记和关键子句是检测电路结构的关键。
 我们试图通过增加变量和子句来改变CNF的标记。
 为了误导潜在的攻击值，新加入得文字和子句还应该和原有的子句构成新的合法标记，以便于将原始的公式无缝隐藏。
 
@@ -1099,7 +1105,6 @@ $M[var].formula$ (第\ref{formula}行)表示var所属于的公式，可以是$F_
 
 \begin{algorithm}[t]
 \caption{MAPPER-VERIFIER}
-\label{algo_map}
 %\SetAlgoNoLine
 \begin{algorithmic}[1]
 % \SetAlgoNoLine

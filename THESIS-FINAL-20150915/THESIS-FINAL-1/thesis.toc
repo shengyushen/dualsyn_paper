@@ -60,8 +60,8 @@
 \contentsline {section}{\numberline {4.3}解空间投影等价的混淆算法}{46}{section.4.3}
 \contentsline {subsection}{\numberline {4.3.1}簇形Husk公式的产生}{47}{subsection.4.3.1}
 \contentsline {subsection}{\numberline {4.3.2}解空间投影等价的混淆}{48}{subsection.4.3.2}
-\contentsline {subsubsection}{\numberline {4.3.2.1}解空间投影等价（SSP）算法}{48}{subsubsection.4.3.2.1}
-\contentsline {subsubsection}{\numberline {4.3.2.2}\textsl {OBFUSCATOR 算法}}{50}{subsubsection.4.3.2.2}
+\contentsline {subsubsection}{\numberline {4.3.2.1}解空间投影等价（SSPE）算法}{48}{subsubsection.4.3.2.1}
+\contentsline {subsubsection}{\numberline {4.3.2.2}$OBFUSCATOR$算法}{50}{subsubsection.4.3.2.2}
 \contentsline {subsection}{\numberline {4.3.3}解恢复和验证算法}{50}{subsection.4.3.3}
 \contentsline {section}{\numberline {4.4}理论分析和证明}{51}{section.4.4}
 \contentsline {subsection}{\numberline {4.4.1}正确性证明}{51}{subsection.4.4.1}

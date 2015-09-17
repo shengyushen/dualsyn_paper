@@ -131,7 +131,7 @@ Husk公式是有簇形可满足解的CNF公式，并且解变量的赋值是非�
 \STATE Generating prime numbers $p_A$ and $p_B$  ; \label{4:primenumber}
 \STATE $\Phi= M(I_1 \neq 1, I_2\neq 1, O=p_A*p_B)$ ;\label{4:multiplePrime}
 \STATE $F_H=Tseitin(\Phi)$ ;\label{4:TseitinPHI}
-\STATE $R_H=Common(p_A,p_B)$ ;
+\STATE $R_H=\{a_{i_j}|1\le i_j\le n,a_{i_j}\equiv b_{i_j}\}$ ;
 \end{algorithmic}
 \end{algorithm*}
 
@@ -159,43 +159,44 @@ $p_B=<b_1,\dots,b_{n+m}>$。
 将乘法器$M$编码为CNF公式$Tseitin(M)$(第\ref{4:TseitinPHI}行)。
 \end{enumerate}
 
-为了满足$Tseitin(M)$,
+为了满足$Tseitin(M)$，
 $M$的两个输入一定是$\{I_1=p_A,I_2=p_B\}$ 或者 $\{I_1=p_B,I_2=p_A\}$。
-根据条件由于两个解具有部分相同的赋值。
+根据条件两个解具有部分相同的赋值，
 即存在$n$个正整数下标$\{i_j|1\le j\le n\}$，
 其中每个都满足$1\le i_j\le n$，
 使得$a_{i_j}\equiv b_{i_j}$。
 直观的，
 $\{i_j|1\le j\le n\}$是具有相同取值的$a_{i_j}$和$b_{i_j}$的下标$i_j$的集合。
-令$R_H=<a_{i_1},\dots,a_{i_n}>$。
+令$R_H=\{a_{i_j}|1\le i_j\le n,a_{i_j}\equiv b_{i_j}\}$。
 $R_H$也称为该公式的簇形解公共赋值变量集。
 
 
 
 \subsection{解空间投影等价的混淆}\label{4:obfuscating}
 
-为了防止CNF公式以及解的信息泄露，给出了一个隐私保护的策略，该策略基于下面的事实和期望：
-\\$\textbf{事实 1:}$ 改变公式中的CNF标记和关键子句，可以使基于模式匹配或子图同构的电路结构恢复技术失效。
-\\$\textbf{事实 2:}$ 混淆后的解空间不应该被缩小，否则会误导真实应用，例如验证等。
-\\$\textbf{期望 1:}$ 鉴于事实2, 解空间可以被扩大，以便于误导公共云上包括SAT求解器在内的第三方。
-\\$\textbf{期望 2:}$ 可以通过投影的方式，从混淆后公式的解中较快的恢复出原始公式的解。
+为了防止CNF公式以及解的信息泄露，给出了一个隐私保护的策略。
+该策略基于下面的事实和期望：
+\\$\textbf{事实 1：}$ 改变公式中的CNF标记和关键子句，可以使基于模式匹配或子图同构的电路结构恢复技术失效。
+\\$\textbf{事实 2：}$ 混淆后的解空间不应该被缩小，否则会误导真实应用，例如验证等。
+\\$\textbf{期望 1：}$ 鉴于事实2, 解空间可以被扩大，以便于误导公共云上包括SAT求解器在内的第三方。
+\\$\textbf{期望 2：}$ 可以通过投影的方式，从混淆后公式的解中较快的恢复出原始公式的解。
 
-本文给出的隐私保护策略，称为$OBFUSCATOR$。
+本文给出的隐私保护算法，称为$OBFUSCATOR$。
 该算法使用解空间投影等价算法，
 将Husks公式$F_H$嵌入到原始公式$F_C$中，
 产生一个新的CNF公式$F_O$。
 $OBFUSCATOR$改变子句的文字集合以及公式中的子句集合，
 来防止公式中的电路结构被恢复。
 通过SSH规则混淆后，原公式解空间被成倍数扩展，
-以防止在公共云上的SAT求解器获取真实的解。
+以防止在公共云上的SAT求解器获取原始公式的解。
 其中倍数为簇形解公式的解个数，
 并且原始公式的解可以通过投影的方式从混淆后公式的解中获取。
 
-\subsubsection{解空间投影等价（SSP）算法}\label{4:embeded rules}
+\subsubsection{解空间投影等价（SSPE）算法}\label{4:embeded rules}
 
 让我们在第\ref{chap:3}章的基础之上，考虑一个更复杂一些的问题：
 将SAT问题编码为CNF公式外包到云中，由SAT 求解器求解；
-并且不希望SAT求解器知道实际的SAT问题以及它的解的个数。
+并且不希望SAT求解器知道原始公式以及它的解的个数。
 
 一个简单的方法是：
 将原始的CNF公式，
@@ -207,9 +208,9 @@ $OBFUSCATOR$改变子句的文字集合以及公式中的子句集合，
 基于分区\upcite{Partition}的方法可以将两个不相关的公式分离开来，
 从而得到原始的CNF公式。
 
-一个改进的方法是:
+一个改进的方法是：
 对任意公式$F_C$，
-和一个可满足公式$F_H$及其一个解$R_H$。
+产生一个可满足公式$F_H$及其一个解$R_H$。
 $F_C$和$F_H$没有公共变量，也即：$V_{F_C}\cap V_{F_H}\equiv \phi$。
 我们将采用如第\ref{chap:3}章所给出的方法，
 将$F_C$和$F_H$无缝混合，
@@ -229,11 +230,13 @@ $F_C$和$F_H$没有公共变量，也即：$V_{F_C}\cap V_{F_H}\equiv \phi$。
 在给出具体答案之前，首先澄清下面的概念。
 
 \begin{definition}[解包含关系 $S_C \subseteq S_O$]~
-CNF 式$F_C$和$F_O$具有$n_{F_C}$公共变量$x_1,...,x_{n_{F_C}}$ 并且有
-$|V_{F_C}|\equiv n_{F_C}$, $|V_{F_O}|\equiv n_{F_O}$, $ n_{F_O}\geqslant n_{F_C} > 0$。
+CNF 式$F_C$和$F_O$具有$n_{F_C}$个公共变量$x_1,...,x_{n_{F_C}}$ 。
+并且有
+$|V_{F_C}|\equiv n_{F_C}$，$|V_{F_O}|\equiv n_{F_O}$，
+且$ n_{F_O}\geqslant n_{F_C} > 0$。
 $S_C$和$S_O$分别是$F_C$和$F_O$的解。
-在$S_C$和$S_O$中，$n_{F_C}$ 个公共变量的赋值是相同的, 即
-对任何$1\le i\le n_{F_C}$，
+在$S_C$和$S_O$中，$n_{F_C}$ 个公共变量的赋值是相同的，
+即对任何$1\le i\le n_{F_C}$，
 有$S_C(x_i)\equiv S_O(x_i)$。
 我们称解$S_C$包含于$S_O$，
 记为$S_C\subseteq S_O$。
@@ -246,12 +249,13 @@ $S_C$和$S_O$分别是$F_C$和$F_O$的解。
 %我们称$F_O$解空间等价于$F_C$,记为$F_C \equiv_{_{SSE}} F_O$。
 %\end{definition}
 
-\begin{definition}[解空间投影等价(SSP)]\label{4:SSPdefinition}~
+\begin{definition}[解空间投影等价(SSPE)]\label{4:SSPEdefinition}~
 CNF公式$F_C$有$n$个解$\{S_{C_1},...,S_{C_n}\}$。
 CNF公式$F_O$有$n * m$个解$\{S_{O_1},...,S_{O_{n \cdot m}}\}$。
-对于任意$1\le i\le n,0\le j\le m-1$，有$S_{C_i} \subseteq S_{O_{i + {n * j}}}$，
+对于任意$1\le i\le n$和$0\le j\le m-1$，
+有$S_{C_i} \subseteq S_{O_{i + {n * j}}}$，
 则称$F_O$解空间投影等价于$F_C$，
-记为$F_C \equiv_{_{SSP}} F_O$。
+记为$F_C \equiv_{_{SSPE}} F_O$。
 \end{definition}
 
 %\begin{definition}[解空间上估计(SSO)]\label{4:SSOdefinition}~
@@ -264,7 +268,8 @@ CNF公式$F_O$有$n * m$个解$\{S_{O_1},...,S_{O_{n \cdot m}}\}$。
 %\end{definition}
 为了在新公式中保持$F_C$公式中的所有解，
 仍然需要使用第\ref{chap:3}章提出的解空间保持(SSH)规则。
-与第\ref{chap:3}章不同的是，使用公式$F_H$和其簇形解的公共赋值变量集合$R_H$来混淆公式$F_C$，
+与第\ref{chap:3}章不同的是，
+本章使用公式$F_H$和其簇形解的公共赋值变量集合$R_H$来混淆公式$F_C$，
 以便于保证混淆后公式具有投影等价的解空间。
 
 %\textbf{解空间保持（SSH）规则: }
@@ -292,10 +297,13 @@ CNF公式$F_O$有$n * m$个解$\{S_{O_1},...,S_{O_{n \cdot m}}\}$。
 %\end{definition}
 
 \begin{definition}[${\textbf{Obf(}}F_C,F_H,R_H\textbf{)}$]\label{4:OBFUSCATORSSH}
-对任意公式$F_C$, 和可满足公式$F_H$及其一个部分赋值$R_H$,
+对任意公式$F_C$，
+和可满足公式$F_H$及其一个部分赋值$R_H$，
 $Obf(F_C,F_H,R_H)$ 是在基于SSH规则将$F_C$和$F_H$混合后得到的公式。
 %如果$f_h$是单一hUSK公式并且$r_h$是它的唯一解, 就称$oBF(f_c,f_h,r_h)$为${\TEXTBF{sse OBFUSCATION}}$。
-如果$F_H$是簇形Husks公式并且$R_H$是它簇形解公共赋值变量集合, 就称$Obf(F_C,F_H,R_H)$ 为${\textbf{SSP obfuscation}}$。
+如果$F_H$是簇形Husks公式，
+并且$R_H$是其簇形解公共赋值变量集合，
+就称$Obf(F_C,F_H,R_H)$ 为${\textbf{SSPE 混淆}}$。
 \end{definition}
 % \begin{definition}[${\textbf{Obf(}}F_C,F_H,R_H\textbf{)}$]\label{4:OBFUSCATORSSH}
 % For arbitrary formula $F_C$, and satisfiable formula $F_H$ with $R_H$ as one of its solutions,
@@ -305,7 +313,7 @@ $Obf(F_C,F_H,R_H)$ 是在基于SSH规则将$F_C$和$F_H$混合后得到的公式
 % \end{definition}
 
 %For SSH based obfuscation, we have following theorems.
-对基于SSP混淆，下列定理成立。
+对SSPE混淆，下列定理成立。
 
 %\begin{theorem}[SPE Obfuscation]\label{4:SSEtheorem}
 %
@@ -317,31 +325,38 @@ $Obf(F_C,F_H,R_H)$ 是在基于SSH规则将$F_C$和$F_H$混合后得到的公式
 %则 $Obf(F_C,F_{_SH},R_{_SH}) \equiv F_C\wedge F_{_SH}$。
 %\end{theorem}
 
-\begin{theorem}[SSP Obfuscation]\label{4:SSPtheorem}
+\begin{theorem}[SSPE Obfuscation]\label{4:SSPEtheorem}
+对任意CNF公式$F_C$，以及簇形Husks公式$F_H$，如果
+$V_{F_C}\cap V_{F_H}\equiv \phi$，
+并且$R_H$是$F_H$的一个簇形解的公共赋值变量集，
+并设
 
-对任意CNF公式$F_C$, 以及簇形Husks公式$F_H$, 如果
+\begin{equation}
+F_O=Obf(F_C,F_H,R_H)
+\end{equation}
 
-~~$V_{F_C}$ $\cap$ $V_{F_H}$ = $\phi$, 并且
-$R_H$是$F_H$的一个簇形解的公共赋值变量集，
-$F_O=Obf(F_C,F_H,R_H)$。
-
-则 $F_O \equiv F_C \wedge F_H  $。
+则有
+\begin{equation}
+F_O \equiv F_C \wedge F_H
+\end{equation}
 % \textbf{then} $F_C\wedge F_H \vdash F_O$.
 \end{theorem}
 
+该定理的证明见小节\ref{4:correctness}。
+
 %According to Theorem \ref{4:SSEtheorem} and Definition \ref{4:SSEdefinition}, we have:
-基于定理\ref{4:SSPtheorem}和定义\ref{4:SSPdefinition},我们有:
-% inference \ref{4:SSEinference}.
-%\begin{inference}\label{4:SSEinference}
-\begin{theorem}\label{4:SSPinference}
-对任意CNF公式 $F_C$,和簇形Husk公式$F_{_SH}$,如果
+基于定理\ref{4:SSPEtheorem}和定义\ref{4:SSPEdefinition}，
+我们有：
 
-~~$V_{F_C}$ $\cap$ $V_{F_{_SH}}$ =$\phi$, and
-$R_{_SH}$是$F_{_SH}$的簇形解的公共赋值变量,
 
-则 $Obf(F_C,F_{_SH},R_{_SH}) \equiv_{_{SSP}} F_C$。
+\begin{theorem}\label{4:SSPEinference}
+对任意CNF公式 $F_C$,和簇形Husk公式$F_H$，
+如果$V_{F_C} \cap V_{F_H}\equiv \phi$，
+并且$R_H$是$F_H$的簇形解的公共赋值变量，
+则 $Obf(F_C,F_H,R_H) \equiv_{SSPE} F_C$。
 \end{theorem}
-%\end{inference}
+
+该定理的证明见小节\ref{4:correctness}。
 
 %Theorem \ref{4:SSEtheorem} and \ref{4:SSOtheorem} will be proved in Subsection \ref{4:correctness}.
 %定理\ref{4:SPEtheorem}证明将在\ref{4:correctness}小节给出。
@@ -349,7 +364,7 @@ $R_{_SH}$是$F_{_SH}$的簇形解的公共赋值变量,
 %An obfuscated CNF formula $F_O=Obf(F_C,F_H,R_H)$ generated by SSO obfuscation
 %consists of all the variables of $F_C$ and $F_H$.
 
-经过SSP混淆生成的CNF公式$F_O=Obf(F_C,F_H,R_H)$，包含了$F_C$和$F_H$中的所有变量。
+经过SSPE混淆生成的CNF公式$F_O=Obf(F_C,F_H,R_H)$，包含了$F_C$和$F_H$中的所有变量。
 
 %由于$F_H$中的变量仅当被赋值为$S_{H_i}$时，混淆后公式$F_O$才可能得到满足。
 %$F_O(S_{H_i}/V_{F_O})
@@ -367,17 +382,20 @@ $R_{_SH}$是$F_{_SH}$的簇形解的公共赋值变量,
 %\end{enumerate}
 %
 %因此
-$F_O$的解可被划分为$F_C$ 和$F_H$的解，$F_C$的解可以从$F_O$的解中通过投影获得。
+$F_O$的解可被划分为$F_C$ 和$F_H$的解，
+$F_C$的解可以从$F_O$的解中通过投影获得。
 %%
 %如果$F_H$中的变量被赋值为$S_{H_i}$之外的解,$F_H$将不可满足,因此
 $F_O$解的个数等于$F_C$ 解个数和$F_H$解个数的乘积。
 %
 %
+
 综上所述，$F_O$的解空间是$F_C$解空间的上估计。
-$F_O$和$F_C$可以使用同样的SAT求解器求解,
-并且即使通过ALLSAT求解出所有$F_O$的解的情况下，
-仅仅可以确定$R_H$，却无法推断$F_H$中除$R_H$之外的变量，
-这就使噪音变量的完全识别变得不可实现。
+$F_O$和$F_C$可以使用同样的SAT求解器求解。
+即使通过ALLSAT求解出所有$F_O$的解，
+也仅仅可以确定$R_H$，
+而无法推断$F_H$中除$R_H$之外其他变量的赋值。
+这就使噪音变量的完全识别变得不可能。
 
 %\subsubsection{电路结构感知（CSA）策略}\label{4:embeded strategy}
 %Through SSH, OBFUSCATOR can insert new literals into clauses and generate new clauses,
@@ -423,7 +441,7 @@ $F_O$和$F_C$可以使用同样的SAT求解器求解,
 %\label{4:fig_AND2}
 %\end{figure}
 
-\subsubsection{\textsl{OBFUSCATOR 算法}}
+\subsubsection{$OBFUSCATOR$算法}
 
 %The proposed OBUFSCATOR algorithm obfuscates CNF formula $F_C$ with SSH rules and CSA strategies,
 %so as to prevent structure of $F_C$ and its accurate solution from being known by adversary.
@@ -437,10 +455,16 @@ $F_O$和$F_C$可以使用同样的SAT求解器求解,
 %so we only present the implementation of $mark$ for AND2 in Algorithm \ref{4:algo_mark}.
 %Similarly, we also present only the implementation of $\mathbf{generate\_new\_clause}$ for AND2 in Algorithm \ref{4:algo_mark}.
 %These two algorithms can transform a CNF signature of AND2 to that of AND3.
-OBUFSCATOR算法遵循上述SSH规则并选取具有簇形解的Husk公式，混淆CNF公式$F_C$，从而防止$F_C$的携带的电路结构和它的真实解被潜在的攻击者获取。
 
-为了达到上述目标，OBFUSCATOR 首先会随机在CNF公式中的特征子句中加入新的文字,并使用Husk中的文字生成新的子句，
-以便于改变原有的标记.
+$OBUFSCATOR$算法遵循上述SSH规则，
+并选取具有簇形解的Husk公式$F_H$，
+混淆CNF公式$F_C$，
+从而防止$F_C$携带的电路结构和它的真实解被潜在的攻击者获取。
+
+为了达到上述目标，
+$OBFUSCATOR$ 首先会在CNF公式中的特征子句里随机加入新的文字，
+并使用Husk公式$F_H$中的文字生成新的子句，
+以改变原有公式的标记。
 %OBFUSCATOR的详细实现在算法\ref{4:algo_obs}中,其中使用$mark$(第$\ref{4:mark}$行)来检测CNF公式中的关键子句和输出变量，
 %并使用$generate\_new\_clause$(第$\ref{4:gennewclause}$行)产生新的子句。
 %由于AND2是最常见的门,
@@ -571,39 +595,25 @@ OBUFSCATOR算法遵循上述SSH规则并选取具有簇形解的Husk公式，混
 % \textbf{SSO obfuscation with SSH rule and CSA strategy}
 %\begin{procedure}[${Obf_{SSH\_CSA}}$]\label{4:obsprocedure}~
 \begin{enumerate}
-\item[]\label{4:obsprocedure} 输入：公式$F_C$, Husks 公式$F_H$, 解$R_H$.
-\item[] 输出: Formula $F_O$.
+\item[]\label{4:obsprocedure} 输入：公式$F_C$(其中包含了\textbf{关键子句集合$F_{Ck}$}
+和\textbf{非关键子句集合$F_{Cn}$})，Husks 公式$F_H$以及其解$R_H$。
+\item[] 输出：混淆结果$F_O$。
 \end{enumerate}
-%根据算法\ref{4:algo_obs},
-$F_C$包含了\textbf{关键子句}
-%(第\ref{4:keyclause}行)
-和\textbf{非关键子句},
-相应的子句集合表示为\textbf{$F_{Ck}$}和\textbf{$F_{Cn}$}.
 
- $~~~~R_H$是$F_H$解的公共赋值变量集合.
 \textbf{步骤1}:
-对关键子句$c\in F_{Ck}$,
-从$R_H$中取出文字$lit$,根据SSH规则1
-将$\neg lit$加入到$c$
-%(算法\ref{4:algo_obs}的\ref{4:rule1}, \ref{4:rule1-2}行).
-% if variable is $T$ in $R_H$, insert its negative literal;
-% if variable is $F$ in $R_H$, insert its positive literal.
-生成子句的集合记为$S_3$ .
+对关键子句$c\in F_{Ck}$，
+从$R_H$中取出文字$lit$。
+根据SSH规则1，
+将$\neg lit$加入到$c$。
+按照该规则生成的子句集合记为$S_3$ .
 
 \textbf{步骤2}:
 根据SSH规则2，
-使用$R_H$中文字lit和$c$中的输出变量，产生新的子句
-%(算法 \ref{4:algo_obs}的\ref{4:gennewclause}行,
-% 算法\ref{4:algo_mark}的\ref{4:rule2} 行)。
-% %generating new clauses with literals from $R_H$ and variables in $F_C$ according to the SSH rule 2:
-% if variable is $T$ in $R_H$, insert positive literal into clause;
-% if variable is $F$ in $R_H$, insert negative literal into clause;
-% %Literal of output variable is extracted directly from the key clause and inverted.
+使用$R_H$中文字$lit$和$c$中的输出变量，产生新的子句。
 新产生的子句集合记为$S_4$.
 
 \textbf{步骤3}:
-将$S_3$, $S_4$, $F_H$, 和$F_{Cn}$, 混合产生$F_O$
-%(算法\ref{4:algo_obs}的\ref{4:rule1}, \ref{4:rule1-2}, \ref{4:blendclause1} \ref{4:blendclause2} 行).
+将$S_3$，$S_4$，$F_H$和$F_{Cn}$混合产生$F_O$。
 
 \textit{\textbf{end Procedure}}.
 %\end{procedure}
@@ -628,8 +638,10 @@ $F_C$包含了\textbf{关键子句}
 %$M[var].variable$ (at Line \ref{4:var}) represents the original variables name of var,
 %and $M[var].formula$ (at Line \ref{4:formula}) may be $F_C$ or $F_H$, which the var belongs to.
 
-在公共云上的求解器完成求解并给出$F_O$解$S_O$，并返回给私有云中。
-和混淆器相对应，在私有云中使用MAPPER和VERIFIER将$F_C$的解从$S_O$中过滤出来.
+在公共云上的求解器完成求解，
+并将$F_O$的解$S_O$返回给私有云。
+和混淆器相对应，
+在私有云中使用算法\ref{3:algo_map}中的$MAPPER$和$VERIFIER$将$F_C$的解从$S_O$中过滤出来。
 解的恢复和验证算法和第\ref{chap:3}章相同。
 %MAPPER和VERIFIER的实现在算法\ref{4:algo_map}中.
 %
@@ -654,38 +666,40 @@ $F_C$包含了\textbf{关键子句}
 %original CNF formula can be blended with Husks formula seamless, without narrowing down the solution space.
 %In this section, we prove these theorems.
 %First of all, let's introduce some lemmas.
-根据定理\ref{4:SSPtheorem}，在SSH规则下，
-原始的CNF公式可以和Husks公式无缝混合, 并会保持解空间的投影等价.
-本节证明这些定理，在证明之前，首先给出以下的引理。
+根据定理\ref{4:SSPEtheorem}，在SSH规则下，
+原始的CNF公式可以和Husks公式无缝混合, 并会保持解空间的投影等价。
+本节证明这些定理。
+在证明之前，首先给出以下的引理。
 
 \begin{lemma}[Cubic Husks Equation(CHE)]\label{4:CHE}
 
-对簇形Husk公式 ${F_H}$且$|V_{F_H}|= n$,
-其公共赋值变量集合$R_H=\{c_i|1\leqslant i\leqslant n_c\}$,
-$n_c$为簇形解中公共赋值变量的个数。
-它的全部$m$个解$\{S_{H_l}|1\leqslant l\leqslant m $且 $m \geqslant 2\}$,
-其解
+对簇形Husk公式 ${F_H}$，
+记$|V_{F_H}|= n$。
+其公共赋值变量集合$R_H=\{c_i|1\leqslant i\leqslant n_c\}$，
+其中$n_c$为簇形解中公共赋值变量的个数。
+它的全部$m$个解记为$\{S_{H_l}|1\leqslant l\leqslant m $且 $m \geqslant 2\}$。
+其中每个解记为
 $S_{H_l}=\{c_i=B_i, y_{l_i}=B_{l_i}|B_i,B_{l_i} \in \{T,F\}, 1\leqslant i\leqslant n_c \lessdot {l_i}\leqslant n\}$。
 
 
 根据公共赋值变量集合$R_H$，令$F_{_RH}=
 (\bigwedge_{1\leqslant i\leqslant n_c}^{B_i\equiv T} c_i)\wedge
-(\bigwedge_{1\leqslant j\leqslant n_c}^{B_j\equiv F}\neg c_j)$
+(\bigwedge_{1\leqslant j\leqslant n_c}^{B_j\equiv F}\neg c_j)$。
 %(\bigwedge_{n_c\lessdot l_i\leqslant n}^{B_{l_i}\equiv T} y_i)\wedge
 %(\bigwedge_{n_c\lessdot l_j\leqslant n}^{B_{l_j}\equiv F}\neg y_j)$
 
-则对簇形Husk公式的任一解$S_{H_l}$, 令$F_{slH}=F_{_RH}\wedge
+则对簇形Husk公式的任一解$S_{H_l}$，令$F_{slH}=F_{_RH}\wedge
 (\bigwedge_{n_c\lessdot l_i\leqslant n}^{B_{l_i}\equiv T} y_{l_i})\wedge
-(\bigwedge_{n_c\lessdot l_j\leqslant n}^{B_{l_j}\equiv F}\neg y_{l_j})$
+(\bigwedge_{n_c\lessdot l_j\leqslant n}^{B_{l_j}\equiv F}\neg y_{l_j})$。
 
-并且令$F_{_SH}=\bigvee_{1\leqslant l\leqslant m}F_{slH}$,
+并且令$F_{_SH}=\bigvee_{1\leqslant l\leqslant m}F_{slH}$。
 
-\textbf{则有}  $F_{_SH} \equiv F_H $.
+\textbf{则有}  $F_{_SH} \equiv F_H $。
 \end{lemma}
 
 \begin{proof}
 
-1) 由于 $F_{_SH} \equiv T$ 则必然存在
+1) 由于 $F_{_SH}$可满足，则必然存在可满足公式：
 % $F_{slH}\equiv T$, for
 \begin{equation}
 F_{slH}=F_{_RH}\wedge
@@ -695,46 +709,49 @@ F_{slH}=F_{_RH}\wedge
 %(\bigwedge_{1\leqslant j\leqslant n_c}^{C_j\equiv F}\neg y_j)\wedge
 %(\bigwedge_{n_c\lessdot l_i\leqslant n}^{B_{l_i}\equiv T} y_i)\wedge
 %(\bigwedge_{n_c\lessdot l_j\leqslant n}^{B_{l_j}\equiv F}\neg y_j)
- \equiv T
 \end{equation}
 则有:
-\begin{equation}
+\begin{multline}
 %S_{H_l}=\{y_{i}=T,y_{j}=F|B_{l_i}\equiv T, B_{l_j}\equiv F, 1\leqslant i, j\leqslant n \}
 S_{H_l}=\{c_{i}=T,c_{j}=F,y_{l_i}=T,y_{l_j}=F|
+\\
 B_i\equiv T, B_j\equiv F,
 B_{l_i}\equiv T, B_{l_j}\equiv F,　
 1\leqslant i,j\leqslant n_c,
 n_c\lessdot l_i,l_j\leqslant n,
 \}
-\end{equation}
+\end{multline}
 令$B_i,B_{l_i}$和$B_j,B_{l_j}$分别替换$c_{i}=T$,$y_{l_i}=T$中的$T$和$c_{j}=F$、$y_{l_j}=F$中的$F$, 则有：
-\begin{equation}\label{4:SHL}
+\begin{multline}\label{4:SHL}
 S_{H_l}=\{(c_i=B_i,c_j=B_j,y_{l_i}=B_{l_i},y_{l_j}=B_{l_j})|
+\\
 B_i\equiv T, B_j\equiv F, 1\leqslant i, j\leqslant n_c,
 B_{l_i}\equiv T, B_{l_j}\equiv F, n_c\leqslant l_i, l_j\leqslant n
 \}
-\end{equation}
+\end{multline}
 
-下标$i$和$j$取值范围相同，统一用$i$表示，
-下标$l_i$和$l_j$取值范围相同，统一用$l_i$表示，
-
-式\ref{4:SHL}可以简化表示为
+下标$i$和$j$取值范围相同，统一用$i$表示。
+下标$l_i$和$l_j$取值范围相同，统一用$l_i$表示。
+则式\ref{4:SHL}可以简化表示为：
 \begin{equation}
 S_{H_l}=\{c_i=B_i, y_{l_i}=B_{l_i}|B_i,B_{l_j} \in \{T,F\}, 1\leqslant i\leqslant n_c \lessdot l_i\leqslant n\}
 \end{equation}
+
 因为$S_{H_l}$是$F_H$的一个解，则有$F_H(S_H/V_{F_H})\equiv T$。 则有:
 \begin{equation}\label{4:left}
  F_{_SH} \vdash F_H
 \end{equation}
-2) 由于 $F_H\equiv T$, 必然存在$F_H$的解，如式(\ref{4:solution_hl})所示, 可以使$F_H(S_{H_1}/V_{F_H})$ 为真。
+
+2) 由于 $F_H$可满足，
+必然存在$F_H$的解，如式(\ref{4:solution_hl})所示, 可以使$F_H(S_{H_1}/V_{F_H})$ 为真。
 \begin{equation}\label{4:solution_hl}
-S_{H_l}=\{c_i=B_i, y_{l_i}=B_{l_i}|B_i,B_{l_i} \in \{T,F\}, 1\leqslant i\leqslant n_c \lessdot l_j\leqslant n\}
+S_{H_1}=\{c_i=B_i, y_{l_i}=B_{l_i}|B_i,B_{l_i} \in \{T,F\}, 1\leqslant i\leqslant n_c \lessdot l_j\leqslant n\}
 %S_{H_1}=\{y_k=B_{1_k}|B_{1_k} \in \{T,F\}, 1\leqslant k\leqslant n\}.
 \end{equation}
 根据式(\ref{4:solution_hl}) 构造 $F_{s1H}$ ，则有:
 %式(\ref{4:SH})
 \begin{equation}\label{4:s1H}
-F_{slH}=
+F_{s1H}=
 (\bigwedge_{1\leqslant i\leqslant n_c}^{B_i\equiv T} c_i)\wedge
 (\bigwedge_{1\leqslant j\leqslant n_c}^{B_j\equiv F}\neg c_j)\wedge
 (\bigwedge_{n_c\lessdot l_i\leqslant n}^{B_{l_i}\equiv T} y_i)\wedge
@@ -756,11 +773,13 @@ F_{_SH} \equiv T
 \begin{equation}\label{4:right}
 F_H \vdash F_{_SH}
 \end{equation}
-According to Equation (\ref{4:left}) and (\ref{4:right}), 则有:
+根据公式(\ref{4:left})和(\ref{4:right}), 则有:
 \begin{equation}
  F_{_SH} \equiv F_H
 \end{equation}
 %\textit{end proof.}
+
+证明完成。
 \end{proof}
 
 %
@@ -1230,48 +1249,47 @@ According to Equation (\ref{4:left}) and (\ref{4:right}), 则有:
 %%\end{proof}
 %
 %
-接下来我们来讨论基于簇形Husk 公式的可实现解空间投影等价的SSP混淆。
+接下来讨论基于簇形Husk 公式的，可实现解空间投影等价的SSPE混淆。
 
-\textbf{Theorem \ref{4:SSPtheorem} 解空间投影等价(SSP)混淆}
+\textbf{Theorem \ref{4:SSPEtheorem} 解空间投影等价(SSPE)混淆}
 
-对任意CNF公式$F_C$和有n个变量m个解的簇形Husk公式$F_{_SH}$, 如果
+对任意CNF公式$F_C$和有$n$个变量$m$个解的簇形Husk公式$F_{_SH}$，如果
 \begin{enumerate}
  \item[-] $V_{F_C}$ $\cap$ $V_{F_H}$ = $\phi$ 。
- \item[-] $F_H$簇形解的公共赋值集合$R_H$=$\{c_i=B_i| B_i \in \{T,F\}, 1\leqslant i\leqslant n_c \leqslant n-1 \}$。
+ \item[-] $F_H$簇形解的公共赋值集合$R_H$=$\{c_i=B_i| B_i \in \{T,F\}, 1\leqslant i\leqslant n_c\}$。其中$n_c$满足 $n_c \leqslant n-1$。 
  \item[-] $F_O=Obf(F_C,F_H,R_H)$.
 \end{enumerate}
-%~~~则 $F_C\wedge F_H \equiv_{_{SSP}} F_O$.
-~~~则 $F_C\wedge F_H \equiv F_O$.
-~~~且有 $F_C \equiv_{_{SSP}} F_O$
+%~~~则 $F_C\wedge F_H \equiv_{_{SSPE}} F_O$.
+则 $F_C\wedge F_H \equiv F_O$，且有 $F_C \equiv_{_{SSPE}} F_O$。
 
 \begin{proof}
 
 根据\textbf{Procedure}\ref{4:obsprocedure}, 按下列步骤构造$F_O$:
 \begin{enumerate}
 \item \label{4:Fop}
-令 $F_{Op}=F_C$.  \\
+令 $F_{Op}=F_C$。  \\
 % for all $B_i\equiv T$, let
 对$y_i \in \{y_i|(y_i=B_{i})\in R_H \parallel B_i\equiv T)\}$, 令
 \begin{itemize}
- \item[] $F_{Op}$=$Obf(F_{Op},B=y_i,{y_i\equiv B_i})$.
+ \item[] $F_{Op}$=$Obf(F_{Op},B=y_i,{y_i\equiv B_i})$。
 \end{itemize}
 \item  \label{4:Fonp}
-令 $F_{On}=F_{Op}$. \\
+令 $F_{On}=F_{Op}$。 \\
 % for all $B_j\equiv F$, let
 对$y_j \in \{y_j|(y_j=B_j)\in R_H \parallel B_j\equiv F)\}$, 令
 \begin{itemize}
- \item[] $F_{On}$= $Obf(F_{On},B=\neg y_j,{y_j\equiv B_j})$.
+ \item[] $F_{On}$= $Obf(F_{On},B=\neg y_j,{y_j\equiv B_j})$。
 \end{itemize}
 \item  \label{4:SSEFOend}
-$F_{O}=F_{On}\wedge F_H$.
+$F_{O}=F_{On}\wedge F_H$。
 \end{enumerate}
 %根据引理\ref{3:ANDrelation-Holding-Obfuscation}, \ref{3:UPSSE-lemma}以及步骤\ref{4:Fop}), 有:
-根据引理\ref{3:ANDrelation-Holding-Obfuscation}、\ref{3:UPSSE-lemma}以及步骤\ref{4:Fop}), 有:
+根据引理\ref{3:ANDrelation-Holding-Obfuscation}、\ref{3:UPSSE-lemma}以及步骤\ref{4:Fop})，有：
 \begin{equation}\label{4:SSEFOP}
 F_{Op} \equiv F_C\wedge (\bigwedge_{1\leqslant i\leqslant n_c}^{B_i \equiv T}y_i)
 \end{equation}
 %根据Lemma \ref{4:ANDrelation-Holding-Obfuscation}, \ref{4:UNSSE-lemma}以及步骤\ref{4:Fonp}), 有:
-根据引理\ref{3:ANDrelation-Holding-Obfuscation}、\ref{3:UNSSE-lemma} 以及步骤\ref{4:Fonp}), 有:
+根据引理\ref{3:ANDrelation-Holding-Obfuscation}、\ref{3:UNSSE-lemma} 以及步骤\ref{4:Fonp})，有：
 \begin{equation}\label{4:SSEFON}
 F_{On} \equiv F_{Op}\wedge (\bigwedge_{1\leqslant j\leqslant n_c}^{B_j \equiv F}\neg y_j).
 \end{equation}
@@ -1281,40 +1299,40 @@ F_{On} \equiv F_{Op}\wedge (\bigwedge_{1\leqslant j\leqslant n_c}^{B_j \equiv F}
 % (\bigwedge_{1\leqslant i\leqslant n}^{B_i \equiv T}y_i)\wedge
 % (\bigwedge_{1\leqslant j\leqslant n}^{B_j \equiv F}\neg y_j)\\
 % \end{equation}
-根据步骤\ref{4:SSEFOend})和式(\ref{4:SSEFOP}) (\ref{4:SSEFON}), 有:
+根据步骤\ref{4:SSEFOend})和式(\ref{4:SSEFOP}) (\ref{4:SSEFON})，有：
 \begin{equation}\label{4:SSEFO}
 F_{O} \equiv F_C \wedge
 (\bigwedge_{1\leqslant i\leqslant n_c}^{B_i \equiv T}c_i)\wedge
 (\bigwedge_{1\leqslant j\leqslant n_c}^{B_j \equiv F}\neg c_j) \wedge F_H
 \end{equation}
 
-因为${R_H}$是$F_H$的簇形解的公共赋值变量集合,令
+因为${R_H}$是$F_H$的簇形解的公共赋值变量集合，令
 \begin{equation}\label{4:SSERH}
 F_{_RH}=
 (\bigwedge_{1\leqslant i\leqslant n_c}^{B_i\equiv T} c_i)\wedge
 (\bigwedge_{1\leqslant j\leqslant n_c}^{B_j\equiv F}\neg c_j)
 \end{equation}
 
-对簇形Husk公式的任一解$S_{H_l}$, 构造公式
-\begin{equation}\label{4:SSPRH}
+对簇形Husk公式的任一解$S_{H_l}$，构造公式
+\begin{equation}\label{4:SSPERH}
 F_{slH}=F_{_RH}\wedge
 (\bigwedge_{n_c\lessdot l_i\leqslant n}^{B_{l_i}\equiv T} y_i)\wedge
 (\bigwedge_{n_c\lessdot l_j\leqslant n}^{B_{l_j}\equiv F}\neg y_j)
 \end{equation}
 
-构造公式$F_{_SH}=\bigvee_{1\leqslant l\leqslant m}F_{slH}$,则有
+构造公式$F_{_SH}=\bigvee_{1\leqslant l\leqslant m}F_{slH}$，则有
 \begin{equation}
 F_{_SH}=\bigvee_{1\leqslant l\leqslant m}(F_{_RH}\wedge
 (\bigwedge_{n_c\lessdot l_i\leqslant n}^{B_{l_i}\equiv T} y_i)\wedge
 (\bigwedge_{n_c\lessdot l_j\leqslant n}^{B_{l_j}\equiv F}\neg y_j))
 \end{equation}
-根据引理\ref{4:CHE}, 有:
-\begin{equation}\label{4:SSPFH}
+根据引理\ref{4:CHE}，有：
+\begin{equation}\label{4:SSPEFH}
 F_H=F_{_SH}=\bigvee_{1\leqslant l\leqslant m}(F_{_RH}\wedge
 (\bigwedge_{n_c\lessdot l_i\leqslant n}^{B_{l_i}\equiv T} y_i)\wedge
 (\bigwedge_{n_c\lessdot l_j\leqslant n}^{B_{l_j}\equiv F}\neg y_j))
 \end{equation}
-由式\ref{4:SSPFH}，以及分配律有：
+由式\ref{4:SSPEFH}，以及分配律有：
 \begin{equation}\label{4:SSEFH}
 F_H=F_{_RH}\wedge (\bigvee_{1\leqslant l\leqslant m}(
 (\bigwedge_{n_c\lessdot l_i\leqslant n}^{B_{l_i}\equiv T} y_i)\wedge
@@ -1322,19 +1340,19 @@ F_H=F_{_RH}\wedge (\bigvee_{1\leqslant l\leqslant m}(
 \end{equation}
 %F_H \wedge (\bigwedge_{1\leqslant i\leqslant n}^{B_i \equiv T}y_i)\wedge
 %(\bigwedge_{1\leqslant j\leqslant n}^{B_j\equiv F}\neg y_j)\equiv F_H
-根据式(\ref{4:SSEFO}),(\ref{4:SSERH})有:
-\begin{equation}\label{4:SSPFO}
+根据式(\ref{4:SSEFO})，(\ref{4:SSERH})有：
+\begin{equation}\label{4:SSPEFO}
 F_O\equiv F_C \wedge F_{_RH}\wedge F_H
 \end{equation}
-根据式(\ref{4:SSPFO}), (\ref{4:SSEFH}),以及吸收律有:
+根据式(\ref{4:SSPEFO})，(\ref{4:SSEFH})，以及吸收律有：
 \begin{equation}\label{4:SSEEND}
 F_O\equiv F_C \wedge F_H
 \end{equation}
-由于$F_H$ 可满足, $V_{F_C}$ $\cap$ $V_{F_H}$ = $\phi$, 并且$F_H$的解的个数n大于1，
-根据定义\ref{4:SSPdefinition}则有下式成立:
-%定理\ref{4:SSPinference}
+由于$F_H$ 可满足，$V_{F_C}\cap V_{F_H}\equiv \phi$，并且$F_H$的解的个数n大于1。
+根据定义\ref{4:SSPEdefinition}则有下式成立：
+%定理\ref{4:SSPEinference}
 \begin{equation}
-F_O\equiv_{_{SSP}}  F_C
+F_O\equiv_{_{SSPE}}  F_C
 \end{equation}
 %\textit{end proof.}
 \end{proof}
@@ -1608,7 +1626,7 @@ F_O\equiv_{_{SSP}}  F_C
 %这也就意味着，SAT求解器都无法确切知道真实的解。
 %首先，他们无法区分原始公式的变量和Husk公式的变量，而Husk公式的变量的赋值对验证毫无意义。
 %其次，他们无法确认一个可满足解也意味着原始SAT问题也是可满足，因为混淆会引入假解。
-%通过解空间上估计,我们把一个Rare Events转变为了一个Camouflaged Rare Events,这也是文献\upcite{HV-grid}曾经期待的事情。
+%通过解空间上估计,我们把一个Rare Events转变为了一个Camouflaged Rare Events,这也是文献\upcite{HV-grid} 曾经期待的事情。
 %
 %\subsection{算法复杂性评估}
 %\textbf{混淆算法的复杂性}
@@ -1793,4 +1811,4 @@ F_O\equiv_{_{SSP}}  F_C
 %%with polynomial complexity and without narrowing down its solution space.
 \section{本章小结}
 本文给出了电路结构感知的CNF 混淆算法，可防止在SAT问题外包计算时，CNF公式中的电路结构以及解被窃取。
-理论分析和实验表明，算法可以有效的改变结构，同时还将扩展CNF公式的解空间。
+理论分析表明，算法可以有效的改变结构，同时还将扩展CNF公式的解空间。

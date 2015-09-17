@@ -5,4 +5,4 @@ bibtex thesis
 bibtex thesis
 xelatex thesis
 xelatex thesis
-acrobat thesis.pdf
+

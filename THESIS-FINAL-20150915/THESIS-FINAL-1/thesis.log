@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.3-0.9997.5 (MiKTeX 2.9) (preloaded format=xelatex 2015.9.2)  17 SEP 2015 16:23
+This is XeTeX, Version 3.1415926-2.3-0.9997.5 (MiKTeX 2.9) (preloaded format=xelatex 2015.9.2)  17 SEP 2015 22:44
 entering extended mode
 **thesis
 (F:\dualsyn_paper\THESIS-FINAL-20150915\THESIS-FINAL-1\thesis.tex
@@ -1176,18 +1176,12 @@ Package: nomencl 2005/09/22 v4.2 Nomenclature package (LN)
 \nom@tempdim=\dimen267
 \nomitemsep=\skip85
 ))
-(F:\dualsyn_paper\THESIS-FINAL-20150915\THESIS-FINAL-1\thesis.aux
-
-LaTeX Warning: Label `CNF structure' multiply defined.
-
-
-LaTeX Warning: Label `algo_map' multiply defined.
-
-)
+(F:\dualsyn_paper\THESIS-FINAL-20150915\THESIS-FINAL-1\thesis.aux)
 LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 75.
 LaTeX Font Info:    Try loading font information for OML+txmi on input line 75.
 
- (C:\CTEX\MiKTeX\tex\latex\txfonts\omltxmi.fd
+
+(C:\CTEX\MiKTeX\tex\latex\txfonts\omltxmi.fd
 File: omltxmi.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    ... okay on input line 75.
@@ -1883,52 +1877,18 @@ Missing character: There is no  in font txr!
  [45
 
 
-] [46] [47] [48] [49]
+] [46] [47] [48]
+Overfull \hbox (12.00812pt too wide) in paragraph at lines 232--243
+[]  \EU1/TimesNewRoman(0)/m/n/12.045 CNF \xeCJK@kai/bx/n/12.045 式 $\OML/txmi/
+m/it/12.045 F[]$ \xeCJK@kai/bx/n/12.045 和 $\OML/txmi/m/it/12.045 F[]$ \xeCJK@
+kai/bx/n/12.045 具 有 $\OML/txmi/m/it/12.045 n[]$ \xeCJK@kai/bx/n/12.045 个 
+公 共 变 量 $\OML/txmi/m/it/12.045 x[]; :::; x[]$
+ []
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 583.
-
-
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 583.
-
-
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 583.
-
-
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 583.
-
-[50]
+[49] [50]
 Missing character: There is no 　 in font txr!
-
-Overfull \hbox (37.26677pt too wide) detected at line 709
-\OML/txmi/m/it/12.045 S[] \OT1/txr/m/n/12.045 = \OMS/txsy/m/n/12.045 f\OML/txmi
-/m/it/12.045 c[] \OT1/txr/m/n/12.045 = \OML/txmi/m/it/12.045 T; c[] \OT1/txr/m/
-n/12.045 = \OML/txmi/m/it/12.045 F; y[] \OT1/txr/m/n/12.045 = \OML/txmi/m/it/12
-.045 T; y[] \OT1/txr/m/n/12.045 = \OML/txmi/m/it/12.045 F\OMS/txsy/m/n/12.045 j
-\OML/txmi/m/it/12.045 B[] \OMS/txsy/m/n/12.045 ^^Q \OML/txmi/m/it/12.045 T; B[]
- \OMS/txsy/m/n/12.045 ^^Q \OML/txmi/m/it/12.045 F; B[] \OMS/txsy/m/n/12.045 ^^Q
- \OML/txmi/m/it/12.045 T; B[] \OMS/txsy/m/n/12.045 ^^Q \OML/txmi/m/it/12.045 F;
- \OT1/txr/m/n/12.045 1 \U/txsya/m/n/12.045 6 \OML/txmi/m/it/12.045 i; j \U/txsy
-a/m/n/12.045 6 \OML/txmi/m/it/12.045 n[]; n[] \U/txsyb/m/n/12.045 l \OML/txmi/m
-/it/12.045 l[]; l[] \U/txsya/m/n/12.045 6 \OML/txmi/m/it/12.045 n; \OMS/txsy/m/
-n/12.045 g
- []
-
-
-Overfull \hbox (65.17918pt too wide) detected at line 716
-\OML/txmi/m/it/12.045 S[] \OT1/txr/m/n/12.045 = \OMS/txsy/m/n/12.045 f\OT1/txr/
-m/n/12.045 (\OML/txmi/m/it/12.045 c[] \OT1/txr/m/n/12.045 = \OML/txmi/m/it/12.0
-45 B[]; c[] \OT1/txr/m/n/12.045 = \OML/txmi/m/it/12.045 B[]; y[] \OT1/txr/m/n/1
-2.045 = \OML/txmi/m/it/12.045 B[]; y[] \OT1/txr/m/n/12.045 = \OML/txmi/m/it/12.
-045 B[]\OT1/txr/m/n/12.045 )\OMS/txsy/m/n/12.045 j\OML/txmi/m/it/12.045 B[] \OM
-S/txsy/m/n/12.045 ^^Q \OML/txmi/m/it/12.045 T; B[] \OMS/txsy/m/n/12.045 ^^Q \OM
-L/txmi/m/it/12.045 F; \OT1/txr/m/n/12.045 1 \U/txsya/m/n/12.045 6 \OML/txmi/m/i
-t/12.045 i; j \U/txsya/m/n/12.045 6 \OML/txmi/m/it/12.045 n[]; B[] \OMS/txsy/m/
-n/12.045 ^^Q \OML/txmi/m/it/12.045 T; B[] \OMS/txsy/m/n/12.045 ^^Q \OML/txmi/m/
-it/12.045 F; n[] \U/txsya/m/n/12.045 6 \OML/txmi/m/it/12.045 l[]; l[] \U/txsya/
-m/n/12.045 6 \OML/txmi/m/it/12.045 n\OMS/txsy/m/n/12.045 g
- []
-
-[51] [52] [53])
+Missing character: There is no 　 in font txr!
+ [51] [52] [53])
 (F:\dualsyn_paper\THESIS-FINAL-20150915\THESIS-FINAL-1\data/chap05.tex [54]
 [55
 
@@ -1944,45 +1904,45 @@ Missing character: There is no × in font txr!
 Missing character: There is no × in font txr!
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 364.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 370.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 364.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 370.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 366.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 372.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 366.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 372.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 366.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 372.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 366.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 372.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 368.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 374.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 368.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 374.
 
 [58] [59] [60]
 
 LaTeX Font Warning: Font shape `EU1/TimesNewRoman(0)/bx/sl' undefined
-(Font)              using `EU1/TimesNewRoman(0)/bx/n' instead on input line 559
+(Font)              using `EU1/TimesNewRoman(0)/bx/n' instead on input line 565
 .
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 611.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 617.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 612.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 618.
 
 [61] [62]
 File: figures/AND2.eps Graphic file (type eps)
  <figures/AND2.eps>
-Overfull \hbox (8.60123pt too wide) in paragraph at lines 902--910
+Overfull \hbox (8.60123pt too wide) in paragraph at lines 908--916
 \xeCJK@song/m/n/12.045 仅 给 出 \EU1/TimesNewRoman(0)/m/sl/12.045 AND2 \xeCJ
 K@song/m/n/12.045 门 的 $[]$ 算 法，| 同 样\EU1/TimesNewRoman(0)/m/sl/12
 .045 , \xeCJK@song/m/n/12.045 我 们 也 仅 仅 给 出 \EU1/TimesNewRoman(0)
@@ -1991,59 +1951,59 @@ K@song/m/n/12.045 门 的 $[]$ 算 法，| 同 样\EU1/TimesNewRoman(0)/m/sl/12
 
 [63]
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 1114.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 1119.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 1114.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 1119.
 
 [64] [65] [66] [67] [68]
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 1927.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 1932.
 
 [69] [70] [71]
 File: figures/AND2-2.eps Graphic file (type eps)
  <figures/AND2-2.eps> [72]
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2410.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2415.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2410.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2415.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2411.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2416.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2411.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2416.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2412.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2417.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2412.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2417.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2413.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2418.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2413.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2418.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2414.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2419.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2414.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2419.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2428.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2433.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2428.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2433.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2428.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2433.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2428.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 2433.
 
 [73]
 File: figures/Experiment.eps Graphic file (type eps)
@@ -2384,14 +2344,11 @@ Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 223.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: There were multiply-defined labels.
-
  ) 
 Here is how much of TeX's memory you used:
  27393 strings out of 430478
- 497638 string characters out of 3191503
- 554889 words of memory out of 3000000
+ 497649 string characters out of 3191503
+ 554896 words of memory out of 3000000
  30040 multiletter control sequences out of 15000+200000
  68350 words of font info for 286 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191

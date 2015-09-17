@@ -278,7 +278,6 @@ Repeated entry---line 7197 of file ref/refs.bib
 I'm skipping whatever remains of this entry
 A bad cross reference---entry "softwareSAT"
 refers to entry "DBLP:conf/cav/2000", which doesn't exist
-Warning--I didn't find a database entry for "def_gencraig"
 Warning--I didn't find a database entry for "DBLP:conf/cav/2000"
 -- BUPTThesis.bst version 1.0 Beta 1 (2009/05/31) by Yu Zhang.
 -- http://code.google.com/p/buptthesis/
