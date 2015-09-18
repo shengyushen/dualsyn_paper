@@ -456,19 +456,7 @@ as shown in Fig. \ref{fig_pipe}c),
 should cut this huge logic block $C^0*C^1$ into two small pieces with the pipeline stage $\vec{stg}^0$,
 just like its encoder.
 
-% At the same time,
-% % as shown in Fig. \ref{pipemod},
-% many encoders contain
-% pipeline stages $\vec{stg}^j$ to cut their datapath into multiple segments $C^j$,
-% such that the encoder can run in higher frequency.
-% Just like $\vec{i}$,
-% each pipeline stage $\vec{stg}^j$ can also be partitioned into flow control vector $\vec{f}^j$ and data vector $\vec{d}^j$.
 
-% Qin et al. \cite{QinTODAES15} handle such encoders by
-% first finding out all inputs $i\in\vec{f}$ that can by uniquely determined by $\vec{o}$,
-% and then inferring a flow control predicate $valid(\vec{f})$ that
-% % when enforced,
-% can make $\vec{d}$ to be uniquely determined by $\vec{o}$.
 
 
 
@@ -479,31 +467,13 @@ It first identify the encoder's pipeline registers in each pipeline stage,
 and then build the decoder by characterizing the Boolean functions that recover each pipeline stage and the encoder's input
 with Craig interpolant. \cite{InterpBoolFunction}.
 
-% \begin{figure}[t]
-% \centering
-% \includegraphics[width=0.5\textwidth]{nonuniq}
-% \caption{Encoder with flow control mechanism}
-% \label{fig_fc}
-% \end{figure}
-
-
-% \begin{figure}[b]
-% \centering
-% \includegraphics[width=0.5\textwidth]{pipemod1}
-% \caption{Encoder with pipeline and flow control mechanism}
-% \label{pipemod}
-% \end{figure}
 
 
 Experimental result indicates that this algorithm can always 
-generate pipelined decoder with flow control mechanism.
+generate pipelined decoder with significantly improved timing.
 
 \emph{This paper is organized as follows}.
-%Section \ref{sec_casestudy} explains our ideas with a simple example.
 Section \ref{sec_prem} introduces the background material;
-% Section \ref{sec_findfc} identifies the flow control variables,
-% and infers the predicate that enables $\vec{d}$ 
-% to be uniquely determined by a bounded sequence of $\vec{o}$;
 Section \ref{sec_framework} presents our algorithm framework.
 Section \ref{sec_pipeinfer} identifies each pipeline stages $\vec{stg}^j$,
 while Section \ref{sec_char} characterizes the decoder's Boolean functions that recover each $\vec{stg}^j$ and the input $\vec{i}$.
@@ -513,7 +483,6 @@ Section \ref{sec_conclude} sums up the conclusion.
 
 \section{Preliminaries}\label{sec_prem}
 
-% \subsection{Flow control mechanism}\label{subsec_fc}
 
 \begin{figure}[t]
 \begin{center}
@@ -595,7 +564,7 @@ $\phi_I$ is the \textbf{interpolant} \cite{Craig} of $\phi_A$ with respect to $\
 
 \begin{figure}[b]
 \begin{center}
-\includegraphics[width=0.2\textwidth]{mealy}
+\includegraphics[width=0.3\textwidth]{mealy}
 \end{center}
 \caption{Modeling the encoder with finite state machine}
 \label{fig_mealy}
@@ -610,6 +579,7 @@ an output variable vector $\vec{o}$,
 % and a transition function $T: [\![\vec{s}]\!]\times [\![\vec{i}]\!]\to [\![\vec{s}]\!]\times [\![\vec{o}]\!]$ 
 and a transition function $T: \vec{s}\times \vec{i}\to \vec{s}\times \vec{o}$ 
 that computes the next state and output variable vector from the current state and input variable vector.
+
 As shown in Fig. \ref{fig_mealy},
 as well as in the remainder of this paper,
 the state is represented as a gray round corner box,
@@ -626,13 +596,12 @@ A \textbf{loop} is a path $<\vec{s}_n,\dots,\vec{s}_m>$ with $\vec{s}_n\equiv \v
 
 
 
-\subsection{The halting algorithm that determines whether $i\in\vec{f}$}\label{subsec_chkextdec}
+\subsection{The halting algorithm that determines whether $i\in\vec{i}$ can be uniquely determined by a bounded sequence of $\vec{o}$}\label{subsec_chkextdec}
 
-\begin{algorithm}[b]
+\begin{algorithm}[t]
 \SetAlgoVlined
 \KwIn{The input variable $i\in\vec{i}$.}
-% \KwOut{$\vec{f}\subset \vec{i}$, and the maximal $p$, $l$ and $r$ reached.}
-% $\vec{f}: = \{\}$;$\vec{d}:= \{\}$;
+\KwOut{the answer of whether $i$ can be uniquely determined, and the maximal $p$, $l$ and $r$ reached.}
 $p$:= 0 ;~$l$:= 0 ;~$r$:= 0 \;
 \ShowLnLabel{while}\While{$true$}{
 %   assume $i\in\vec{i}$\;
@@ -650,15 +619,9 @@ $p$:= 0 ;~$l$:= 0 ;~$r$:= 0 \;
 \label{alg_fofc}
 \end{algorithm}
 
-\begin{figure}[t]
-\begin{center}
-\includegraphics[width=0.4\textwidth]{pc}
-\end{center}
-\caption{The sound and complete approximative approaches}
-  \label{fig_pc}
-\end{figure}
 
-Qin et al. \cite{QinTODAES15} proposed Algorithm \ref{alg_fofc}
+
+Shen et al. \cite{ShenTCAD11} proposed Algorithm \ref{alg_fofc}
 to determine whether an input variable $i\in\vec{i}$ can be uniquely determined by a bounded sequence of $\vec{o}$,
 by iteratively calling 
 a sound and a complete approaches until they converge.
@@ -706,8 +669,16 @@ F_{PC}(p,l,r):= \\
 %\end{split}
 \end{multline}
 
+This approach is sound because when $F_{PC}(p,l,r)$ is unsatisfiable for a particular $p$. $l$ and $r$,
+$i\in\vec{i}$ can always be uniquely determined by $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$.
 
-
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.4\textwidth]{pc}
+\end{center}
+\caption{The sound and complete approximative approaches}
+  \label{fig_pc}
+\end{figure}
 
 % Here,
 % $p$ is the length of the prefix state transition sequence.
@@ -765,9 +736,7 @@ on the three state sequences $<\vec{s}_{0},\dots,\vec{s}_{p}>$, $<\vec{s}_{p+1},
 $<\vec{s}_{p+l+1},\dots,\vec{s}_{p+l+r}>$.
 It is formally defined as $F_{LN}(p,l,r)$ in Equation (\ref{uniqln}) 
 with the last three lines corresponding to the three new constraints.
-If $F_{LN}(p,l,r)$ is satisfiable,
-then by unrolling the three loops,
-we can be sure that any larger  $p$, $l$ and $r$ can also make $F_{LN}(p,l,r)$ and $F_{PC}(p,l,r)$ satisfiable.
+
 % So we can stop increasing $p$, $l$ and $r$.
 
 \begin{multline}\label{uniqln}
@@ -784,7 +753,14 @@ F_{LN}(p,l,r):=\\
 % \end{split}
 \end{multline}
 
-Algorithm \ref{alg_fofc} is a halting algorithm because 
+This approach is complete because 
+when $F_{LN}(p,l,r)$ is satisfiable,
+then by unrolling the three loops,
+we can be sure that any larger  $p$, $l$ and $r$ can also make $F_{LN}(p,l,r)$ and $F_{PC}(p,l,r)$ satisfiable.
+This means $i\in\vec{i}$ can never be uniquely determined by a bounded sequence of $\vec{o}$.
+
+Thus,
+Algorithm \ref{alg_fofc} is a halting one because 
 if there indeed exists such $p$, $l$ and $r$ that make $F_{PC}(p,l,r)$ unsatisfiable,
 then they can eventually be found in Line \ref{adduniq};
 Otherwise,
@@ -810,253 +786,34 @@ Both cases will terminate the loop.
 % then $i_{p+l}$ cannot be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$ for all larger $p$, $l$ and $r$.
 % \end{proposition}
 
-% \subsubsection{Identifying flow control vector $\vec{f}$ with Algorithm \ref{alg_fofc}}\label{subsubsec_findfc}
-% % To facilitate the presentation of our algorithm,
-% % We assume that the input variable vector $\vec{i}$ can be partitioned into 
-% % the flow control vector $\vec{f}$ and the data vector $\vec{d}$.
-% % The flow control vector $\vec{f}$ is used to indicate the validness of $\vec{d}$.
-% % So,
-% % for a properly designed encoder,
-% % $\vec{f}$ should always be uniquely determined by a bounded sequence of the encoder's output vector $\vec{o}$,
-% % or else the decoder cannot recognize the validness of $\vec{d}$.
-% % 
-% % Thus,
-% % Algorithm \ref{alg_fofc} is proposed to identify $\vec{f}$.
-% % At Line \ref{initfd},
-% % the initial value of $f$ and $d$ are set to empty vector.
-% % At Line \ref{initplr},
-% % the initial value of $p$, $l$ and $r$ are all set to 0.
-% % At Line \ref{while},
-% % a while loop is used to iterate on all $i\in\vec{i}$.
-% At Line \ref{adduniq},
-% the input $i$ that can be uniquely determined will be moved to vector $\vec{f}$.
-% % On the other hand,
-% If $F_{LN}(p,l,r)$ is satisfiable at Line \ref{nonuniqres},
-% the input $i$ that can NOT be uniquely determined will be moved to vector $\vec{d}$.
-% Please refer to \cite{QinTODAES15} for its termination and correctness.
 
 
-
-
-% \section{Inferring the flow control predicate $valid(\vec{f})$}
-
-
-% Furthermore,
-% the validness of $\vec{d}$ is indicated by a predicate $valid(\vec{f})$.
-% So for a properly designed encoder,
-% $valid(\vec{f})$ should make $\vec{d}$ to be uniquely determined by the encoder's output.
-
-% In Subsection \ref{subsec_craig},
-% we propose  an algorithm 
-% to characterize a Boolean function that makes a Boolean formula satisfiable.
-% In Subsection \ref{subsec_infer},
-% we apply this algorithm to infer $valid(\vec{f})$,
-% % the predicate that enable $\vec{d}$ to be uniquely determined by a bounded sequence of $\vec{o}$.
-% the predicate that enables $\vec{d}$ to be uniquely determined.
-
-% 
-% \subsection{Inferring $valid(\vec{f})$ that makes $\vec{d}$ to be uniquely determined}\label{subsec_infer}
-% 
-% For Boolean relation $R(\vec{a},\vec{b},t)$ with $R(\vec{a},\vec{b},0)\wedge R(\vec{a},\vec{b},1)$ unsatisfiable,
-% Subsection 4.1 of \cite{QinTODAES15} proposes an algorithm 
-% to characterize a Boolean function 
-% that covers exactly all the valuations of $\vec{a}$ 
-% that can make $R(\vec{a},\vec{b},1)$ satisfiable:
-% \begin{multline}\label{eq_charsat}
-%  CharacterizingFormulaSAT(R,\vec{a},\vec{b},t):=\\\{\vec{a}|\exists \vec{b},R(\vec{a},\vec{b},1)~is~satisfiable\}
-% \end{multline}
-% 
-% % This equation will be used frequently in the remainder of this paper.
-% Its implementation will not be presented here.
-% 
-% % As shown in Fig. \ref{fig_mono},
-% Subsection 4.2 of \cite{QinTODAES15} proposed Algorithm \ref{algo_infer} to infer $valid(\vec{f})$ by iteratively increasesing $p$, $l$ and $r$,
-% and calling $CharacterizingFormulaSAT$ to characterize $Under(p,l,r)$,
-% a monotonically growing under-approximation of $valid(\vec{f})$,
-% and $Over(p,l,r)$,
-% a monotonically shrinking over-approximation of $valid(\vec{f})$.
-% They will eventually converge to $valid(\vec{f})$.
-% Please refer to \cite{QinTODAES15} for details.
-% % 
-% % \subsubsection{Monotonically growing under-approximation}\label{subsub_nonloop}
-% % By replacing $i$ in Equation (\ref{uniqt1}) with $\vec{d}$ inferred in Algorithm \ref{alg_fofc},
-% % and collecting the 3rd line of (\ref{uniqt1}) into Equation (\ref{tpc}):
-% % 
-% % 
-% % 
-% % \begin{equation}\label{tpc}
-% % % \begin{split}
-% % T_{PC}(p,l,r):=\\
-% % \left\{
-% % \begin{array}{cc}
-% %       &\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
-% % \end{array}
-% % \right\}
-% % % \end{split}
-% % \end{equation}
-% % 
-% % \begin{figure}[b]
-% % \begin{center}
-% % \includegraphics[width=0.4\textwidth]{mono}
-% % \end{center}
-% % \caption{The monotonicity of $FSAT_{PC}(p,l,r)$ and $FSAT_{LN}(p,l,r)$}
-% %   \label{fig_mono}
-% % \end{figure}
-% % 
-% % we have:
-% % 
-% % \begin{multline}\label{fpcq}
-% % % \begin{split}
-% % F'^d_{PC}(p,l,r,t):=\\
-% % \left\{
-% % \begin{array}{cc}
-% % &\bigwedge_{m=0}^{p+l+r}
-% % \{
-% % (\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
-% % \}
-% % \\
-% % \wedge&\bigwedge_{m=0}^{p+l+r}
-% % \{
-% % (\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
-% % \}
-% % \\
-% % \wedge& t\equiv T_{PC}(p,l,r)\\
-% % \wedge& \vec{d}_{p+l}\ne \vec{d'}_{p+l} \\
-% % % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% % % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
-% % \end{array}
-% % \right\}
-% % % \end{split}
-% % \end{multline}
-% % 
-% % 
-% % If $F'^d_{PC}(p,l,r,1)$ is satisfiable,
-% % then $\vec{d}_{p+l}$ can't be uniquely determined by $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$.
-% % We further define:
-% % 
-% % 
-% % \begin{multline}\label{pcdef1}
-% % \begin{array}{l}
-% % \vec{a}:=  \vec{f}_{p+l}\\
-% % \vec{b}:= \vec{s}_0\cup \vec{s'}_0\cup\bigcup_{0\le x\le p+l+r}(\vec{i}_{x}\cup\vec{i'}_{x}) - \vec{a}
-% % % R(\vec{a},\vec{b},t):=  F'^d_{PC}(p,l,r,t)
-% % \end{array}
-% % \end{multline}
-% % 
-% % 
-% % Thus,
-% % as shown in Fig. \ref{fig_pc}a),
-% % $\vec{a}\cup\vec{b}$ contains all the input variable vectors $\vec{i}_j$ and $\vec{i'}_j$.
-% % It also contains the two initial states vectors $\vec{s}_0$ and $\vec{s'}_0$.
-% % So $\vec{a}$ and $\vec{b}$ can uniquely determine the value of $t$ in $F'^d_{PC}(p,l,r,t)$,
-% % which means $F'^d_{PC}(p,l,r,1)\wedge F'^d_{PC}(p,l,r,0)$ is unsatisfiable.
-% % Thus,
-% % the Boolean function over $\vec{f}_{p+l}$ that makes $F'^d_{PC}(p,l,r,1)$ satisfiable can be computed 
-% % by calling $CharacterizingFormulaSAT$ in Equation (\ref{eq_charsat}) with $F'^d_{PC}(p,l,r,t)$, $\vec{a}$ and $\vec{b}$:
-% % 
-% % \begin{multline}\label{fsat_pc}
-% % FSAT_{PC}(p,l,r):=\\
-% % CharacterizingFormulaSAT(F'^d_{PC}(p,l,r,t),\vec{a},\vec{b},t)
-% % \end{multline}
-% % 
-% % As shown in Fig. \ref{fig_mono},
-% % $\neg FSAT_{PC}(p,l,r)$ is an under-approximation of $valid(\vec{f})$ monotonically growing with respect to 
-% % $p$, $l$ and $r$.
-% % 
-% % 
-% % 
-% % 
-% % \subsubsection{Computing monotonically shrinking over-approximation}\label{subsub_loop}
-% % Similarly,
-% % we can define :
-% % 
-% % \begin{multline}\label{tln}
-% % % \begin{split}
-% % T_{LN}(p,l,r):=\\
-% % \left\{
-% % \begin{array}{cc}
-% %       &\bigwedge_{m=p}^{p+l+r}\vec{o}_m\equiv \vec{o'}_m \\
-% % \wedge&\bigvee_{x=0}^{p-1}\bigvee_{y=x+1}^{p} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
-% % \wedge&\bigvee_{x=p+1}^{p+l-1}\bigvee_{y=x+1}^{p+l} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\} \\
-% % \wedge&\bigvee_{x=p+l+1}^{p+l+r-1}\bigvee_{y=x+1}^{p+l+r} \{\vec{s}_x\equiv \vec{s}_y\wedge \vec{s'}_x\equiv \vec{s'}_y\}
-% % \end{array}
-% % \right\}
-% % % \end{split}
-% % \end{multline}
-% % 
-% % 
-% % \begin{multline}\label{lndef1}
-% % F'^d_{LN}(p,l,r,t):=\\
-% % \left\{
-% % \begin{array}{cc}
-% % &\bigwedge_{m=0}^{p+l+r}
-% % \{
-% % (\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
-% % \}
-% % \\
-% % \wedge&\bigwedge_{m=0}^{p+l+r}
-% % \{
-% % (\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
-% % \}
-% % \\
-% % % \wedge& \vec{f}_{p+l}\equiv \vec{f'}_{p+l}\\
-% % \wedge& t\equiv T_{LN}(p,l,r)\\
-% % \wedge& \vec{d}_{p+l}\ne \vec{d'}_{p+l} \\
-% % % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% % % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
-% % \end{array}
-% % \right\}
-% % \end{multline}
-% % 
-% % 
-% % \begin{multline}\label{fsat_ln}
-% % FSAT_{LN}(p,l,r):=\\
-% % CharacterizingFormulaSAT(F'^d_{LN}(p,l,r,t),\vec{a},\vec{b},t)
-% % \end{multline}
-% % 
-% % As shown in Fig. \ref{fig_mono},
-% % $\neg FSAT_{LN}(p,l,r)$ is an over-approximation of $valid(\vec{f})$ monotonically shrinking with respect to
-% % $p$, $l$ and $r$.
-% % 
-% % 
-% % 
-% % 
-% % \subsubsection{Inferring $valid(\vec{f})$ with Algorithm \ref{algo_infer}}\label{subsub_overal}
-% \begin{algorithm}[t]
-% \SetAlgoVlined
-% % \KwIn{The Boolean formula $R(\vec{a},\vec{b},t)$, 
-% % its important variable vector $\vec{a}$,
-% % its non-important variable vector $\vec{b}$,
-% % and its target variable $t$.}
-% % \KwOut{$F_i(\vec{a})$ that makes $R(\vec{a},\vec{b},1)$ satisfiable.}
-% % $p$:= $0$;~$l$:= $0$;~$r$:= $0$ \;
-% \While { $Under(p,l,r)\ne Over(p,l,r)$ } {
-%   $p$ ++ ;~$l$ ++ ;~$r$ ++ \;
-% }
-% \KwRet {$Under(p,l,r)$}
-% \caption{Inferring $valid(\vec{f}_{p+l})$}
-% \label{algo_infer}
-% \end{algorithm}
-% 
-% % It just iteratively increases the value of $p$, $l$ and $r$, 
-% % until $FSAT_{PC}(p,l,r)$ and $FSAT_{LN}(p,l,r)$ converge.
-% % Please refer to \cite{QinTODAES15} for the proofs of its termination and correctness.
-% 
-% 
 
 
 \section{Algorithm Framework}\label{sec_framework}
 
+\begin{figure}[b]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{pipemod}
+\end{center}
+\caption{The encoder's general structure with pipeline}
+  \label{fig_pipeenc}
+\end{figure}
 
 % \subsection{A general model for the encoder}
 As shown in Fig. \ref{fig_pipeenc},
 we assume that 
 the encoder has $n$ pipeline stages $\vec{stg}^j$,
 where $0\le j \le n-1$.
-And each pipeline stage $\vec{stg}^j$ can be further partitioned into flow control vector $\vec{f}^j$ and data vector $\vec{d}^j$.
-The input vector $\vec{i}$,
-as in \cite{QinTODAES15},
-can also be partitioned into flow control vector $\vec{f}$ and data vector $\vec{d}$.
+Obviously the set of all state variables in pipeline stages are a subset of $\vec{s}$,
+that is:
+
+\begin{equation}
+\vec{s} \supseteq \bigcup _{0\le j \le n-1} \vec{stg}_j
+\end{equation}
+
+
+
 If we take the combinational logic block $C^j$ as a function,
 then this encoder can be represented by the following equations.
 
@@ -1069,56 +826,52 @@ then this encoder can be represented by the following equations.
 \end{equation}
 
 
-\begin{figure}[b]
-\begin{center}
-\includegraphics[width=0.5\textwidth]{pipemod}
-\end{center}
-\caption{The encoder's general structure with pipeline and flow control}
-  \label{fig_pipeenc}
-\end{figure}
 
-
-% Thus,
-% each $C^j$ can be seen as a small encoder.
-% Assume that $(C^j)^{-1}$ is $C^j$'s decoder function,
-% then the pipelined decoder should be like this:
-% 
-% \begin{equation}\label{equ_genpipedecoder}
-% \begin{array}{cccc}
-% \vec{stg}^{n-1}       & := & (C^n)^{-1}(\vec{o}) &\\
-% \vec{stg}^{j-1}   & := & (C^j)^{-1}(\vec{stg}^j) & 1\le j\le n-1\\
-% \vec{i}   & := & (C^0)^{-1}(\vec{stg}^0)         &
-% \end{array}
-% \end{equation}
-
-
-
-
-
-% Thus,
-% each $C^j$ can be seen as a small encoder that computes $\vec{stg}^j$ or $\vec{o}$
-% from $\vec{stg}^{j-1}$ or $\vec{i}$.
-
-
-
-% \subsection{Algorithm framework}
+So,
+as shown in Fig. \ref{fig_Tparalleldecomp},
+the transition function $T$ can be seen as a parallel composition $C^0|C^1\dots|C^{n-1}|C^n$.
 
 With this encoder model,
 our algorithm framework is:
 
 \begin{enumerate}
- \item In Section \ref{sec_plr}, 
- calling Algorithm \ref{alg_fofc} to find out $(p,l,r)$.
-%  \item Calling Algorithm \ref{algo_infer} to infer $valid(\vec{f})$ that enables $\vec{d}$ 
-%  to be uniquely determined with parameters $p$, $l$ and $r$.
+%  \item In Section \ref{sec_plr}, 
+%  calling Algorithm \ref{alg_fofc} to find out $(p,l,r)$.
  \item In Section \ref{sec_pipeinfer}, 
- identifying $\vec{f}^j$ and $\vec{d}^j$ in each pipeline stage $\vec{stg}^j$. 
+ identifying all state variables in each pipeline stage $\vec{stg}^j$. 
  \item In Section \ref{sec_char}, 
- characterizing the decoder's Boolean functions that recover each pipeline stages $\vec{stg}^j$
- and input vector $\vec{i}$.
+ characterizing $(C^j)^{-1}$,
+ the inverse functions of $C^j$ shown in Fig. \ref{fig_pipeenc} ,
+ to recover each pipeline stages $\vec{stg}^j$
+ and input vector $\vec{i}$ from the next pipeline stage $\vec{stg}^{j+1}$ or the output vector $\vec{o}$.
 \end{enumerate}
 
-\section{Finding out $p$,$l$ and $r$}\label{sec_plr}
+\section{Identifying pipeline stages}\label{sec_pipeinfer}
+
+\subsection{Finding out $p$,$l$ and $r$}
+
+
+We first call Algorithm \ref{uniqt1} for each $i\in\vec{i}$.
+If there exists an $i$ that make Algorithm \ref{uniqt1} to return $(false,0,0,0)$,
+then their must be a bug in the encoder that prevents $i$ from being recovered from $\vec{o}$.
+
+Otherwise,
+assume that Algorithm \ref{uniqt1} returns $p_i$, $l_i$ and $r_i$ for $i\in\vec{i}$,
+we set the final $p$, $l$ and $r$ to the largest ones returned from Algorithm \ref{uniqt1}:
+
+\begin{IEEEeqnarray*}{rCl}\label{eqn_plr}
+  p:=max_{i\in\vec{i}}\{p_i\}\\
+  l:=max_{i\in\vec{i}}\{l_i\}\IEEEyesnumber\\
+  r:=max_{i\in\vec{i}}\{r_i\}
+\end{IEEEeqnarray*}
+
+Obviously,
+for every $i\in\vec{i}$,
+the clause set of $F_{PC}(p,l,r)$ is a super set of $F_{PC}(p_i,l_i,r_i)$.
+So $F_{PC}(p,l,r)$ is also unsatisfiable for $i\in\vec{i}$.
+This means all $i\in\vec{i}$ can be uniquely determined by $<\vec{o}_p,\dots,\vec{o}_{p+l+r}>$.
+
+
 \subsection{Minimizing $r$}\label{reduceing}
 
 In the remainder of this paper,
@@ -1159,7 +912,7 @@ the value of the 2nd pipeline stage $\vec{stg}^{1}$ at the next step $p+l+1$.
 
 
 
-\begin{figure}[b]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{encexp}
 \end{center}
@@ -1207,11 +960,11 @@ F'_{PC}(p,l,r'):=\\
 \end{multline}
 
 
-\begin{algorithm}[t]
+\begin{algorithm}[b]
 \SetAlgoVlined
 \For{$r':=r \to 0$} {
 \ShowLnLabel{testr_1}
-  \If{$r'\equiv 0$ or $F'_{PC}(p,l,r'-1)\wedge valid(\vec{f}_{p+l})$ is satisfiable for some $i\in \vec{i}$} {
+  \If{$r'\equiv 0$ or $F'_{PC}(p,l,r'-1)$ is satisfiable for some $i\in \vec{i}$} {
     break
   }
 }
@@ -1228,9 +981,8 @@ Algorithm \ref{algo_remove2} is proposed to use this new formula to find out $r'
 % To simplify the presentation,
 % we will only introduce the $r$ case.
 In Line \ref{testr_1},
-it conjugates the inferred flow control predicate $valid(\vec{f})$  with $F'_{PC}(p,l,r'-1)$.
-If it is satisfiable,
-then $r'$ is the last one that makes $F'_{PC}(p,l,r')\wedge valid(\vec{f}_{p+l})$ unsatisfiable,
+if $F'_{PC}(p,l,r'-1)$ is satisfiable for $i\in\vec{i}$,
+then $r'$ is the last one that makes $F'_{PC}(p,l,r')$ unsatisfiable,
 we return it directly.
 On the other hand,
 when $r'\equiv 0$,
@@ -1240,84 +992,7 @@ In this case we return $0$.
 
 
 
-% Minimizing $l$ is similar but with two exceptions:
-% First, 
-% the range of $l'$ to be enumerated contains some negative value,
-% which means $i$ only depend on the value of $o$ in the future.
-% Second,
-% to be compatible with such cases,
-% we use a new formula $F'_{PC}$ in Line \ref{testr_2}.
-% When $l\ge 0$,
-% $F'_{PC}$ equals to $F_{PC}$.
-% But when $l<0$,
-% $F'_{PC}$ is define below:
-% 
-% \begin{multline}\label{uniqt11}
-% % \begin{split}
-% F'_{PC}(p,l,r):=\\
-% \left\{
-% \begin{array}{cc}
-% &\bigwedge_{m=0}^{p+l+r}
-% \{
-% (\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
-% \}
-% \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}
-% \{
-% (\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
-% \}
-% \\
-% \wedge&\bigwedge_{m=p-l}^{p+r}\vec{o}_m\equiv \vec{o'}_m \\
-% \wedge& i_{p}\equiv 1 \wedge  i'_{p}\equiv 0 
-% % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% % \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
-% \end{array}
-% \right\}
-% % \end{split}
-% \end{multline}
-% 
-% The only change of Equation (\ref{uniqt11}) compared to Equation (\ref{uniqt1})
-% are that 
-% the range of output vector is change to $p-l\le m\le p+r$,
-% while the subscripts of $i$ and $i'$ in the last line refer to $p$ only,
-% $l$ are removed.
 
-% Now, 
-% we have a minimized $r$ from Algorithm \ref{algo_remove2},
-% which can make $\vec{i}_{p+l}$ to be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+l+r}>$.
-% 
-% \begin{figure}[b]
-% \begin{center}
-% \includegraphics[width=0.25\textwidth]{pc1}
-% \end{center}
-% \caption{Recovering input with reduced output sequence}
-%   \label{fig_pc1}
-% \end{figure}
-% 
-% We further require that :
-% \begin{enumerate}
-%  \item As shown in Fig. \ref{fig_pc1},
-%  $l$ can be reduced to 0,
-%  which means $\vec{i}_{p}$ can be uniquely determined by $<\vec{o}_{p},\dots,\vec{o}_{p+r}>$,
-%  that is,
-%  the set of future outputs.
-%  \item The above mentioned output sequence $<\vec{o}_{p},\dots,\vec{o}_{p+r}>$ 
-%  can be further reduced to $\vec{o}_{p+r}$.
-%  This means $\vec{o}_{p+r}$ is the only output vector needed to recover the input vector $\vec{i}_p$.
-% \end{enumerate}
-% 
-% Checking these two requirements
-% equals to checking the unsatisfiability of $F'_{PC}(p,r)\wedge valid(\vec{f}_{p+l})$,
-% with $F'_{PC}(p,r)$ defined below:
-
-
-
-
-% This equation seems much stronger than the general requirement in Equation (\ref{uniqt1}).
-% But we will show in experimental results that 
-% they are always fulfilled.
-
-\section{Identifying pipeline stages}\label{sec_pipeinfer}
 
 % \subsection{Inferring $p$, $l$ and $r$}\label{subsec_inferplr}
 % Before inferring the pipeline stages,
@@ -1334,7 +1009,7 @@ In this case we return $0$.
 % \subsection{Identifying pipeline stages}\label{subsec_inferstage}
 
 Now,
-with $p$ and $l$ inferred by Algorithm \ref{algo_infer} and $r'$ founded by Algorithm \ref{algo_remove2},
+with $p$ and $l$ defined in Equation (\ref{eqn_plr}) and $r'$ founded by Algorithm \ref{algo_remove2},
 we need to generalize $F'_{PC}$ in Equation (\ref{uniqt11}) to the following new formula that
 can determine whether $v_j$,
 the value of variable $v$ at step $j$
@@ -1372,15 +1047,15 @@ $\vec{w}_k$ can uniquely determine $v_j$.
 
 According to Fig. \ref{fig_encexp},
 for $0\le j\le r'$,
-the flow control vector $\vec{f}^j$ in the $j$-th pipeline stage
+the state variable set in the $j$-th pipeline stage
 is exactly the set of state variables $s\in \vec{s}$ 
 that can be uniquely determined at the $p+l+j$-th step by $\vec{o}$ 
-at the $p+l+r'$-th step without enforcing $valid(\vec{f}_{p+l})$.
+at the $p+l+r'$-th step.
 % With Equation (\ref{uniqt2}),
 It can be formally defined as:
 
 \begin{equation}\label{stgn_fj}
-\vec{f}^{j} := 
+\vec{stg}^{j} := 
  \left\{
  s\in \vec{s} ~| 
 \begin{array}{cc}
@@ -1390,88 +1065,12 @@ It can be formally defined as:
 \right\}
 \end{equation}
 
-% with:
-% 
-% \begin{equation}\label{stgn_def}
-% \begin{array}{ccc}
-% % S             & := & \vec{s}/\bigcup_{j<k\le n-2}\vec{stg}^{k}\\
-% D             & := & (n-1)-(p+r')\\
-% \end{array}
-% \end{equation}
-
-While the data vector $\vec{d}^j$ in the $j$-th pipeline stage 
-is the set of state variables $s\in \vec{s}$ 
-that can be uniquely determined at the same $p+l+j$-th step 
-by $\vec{o}$ at the $p+l+r'$-th step with enforcing $valid(\vec{f}_{p+l})$.
-% With Equation (\ref{uniqt2}),
-It can be formally defined as:
-
-\begin{multline}\label{stgn_dj}
-\vec{d}^{j} := \\
- \left\{
- s\in \vec{s} ~| 
- \begin{array}{cc}
- F''_{PC}(p,l,r',s_{p+l+j},\vec{o}_{p+l+r'})\wedge valid(\vec{f}_{p+l})\\
- \wedge valid(\vec{f'}_{p+l})~is~unsatisfiable
- \end{array}
-\right\}
-\end{multline}
-
-With Equation (\ref{stgn_fj}) and (\ref{stgn_dj}),
-pipeline stages can all be identified:
-
-\begin{equation}
- \vec{stg}^j := \vec{d}^j\cup\vec{f}^j
-\end{equation}
-
-
-% Similarly,
-% for $0\le j\le n-2$,
-% $\vec{f}^j$ at $j-((n-2)-(p+r-1))$-th step
-% can be uniquely determined at the $p+r$-th step by $\vec{o}$ without enforcing $valid(\vec{f})$.
-% So we can recursively defined $\vec{f}^j$ as :
-% 
-% \begin{equation}\label{stgn_def}
-% \begin{array}{ccc}
-% S             & := & \vec{s}/\bigcup_{j<k\le n-2}\vec{stg}^{k}\\
-% D             & := & (n-2)-(p+r-1)\\
-% \end{array}
-% \end{equation}
-% 
-% \begin{equation}\label{stgn_j}
-% \vec{stg}^{j} := 
-%  \left\{
-%  s\in S ~| 
-% % \begin{array}{cc}
-%  F''_{PC}(p,r,s,j-D,\vec{stg}^{j+1},j-D+1)
-%  ~is~unsatisfiable
-% % \end{array}
-% \right\}
-% \end{equation}
-% 
-% With Equation (\ref{stgn_1}) and (\ref{stgn_j}),
-% all the pipeline stages can now be inferred.
-
-% \subsection{Inferring the pipeline stage that uniquely determines input vector}\label{subsec_inferinput}
-% 
-% According to Fig. \ref{fig_pipeenc},
-% $\vec{stg}^0$ defined in Equation (\ref{stgn_j}) is
-% exactly the pipeline stage that uniquely determined the input vector $\vec{i}$.
-% 
-% But in real encoders,
-% this may not be the case.
-% So we need to search for the smallest $j$ from $0$ to $n-1$ that can make $\vec{i}$ to be uniquely determined by $\vec{stg}^j$,
-% that is,
-% the smallest $j$ that can make $F''_{PC}(p,r,i,p,\vec{stg}^{j},j-D)$ unsatisfiable for all $i\in \vec{i}$,
-% with $D$ defined in Equation (\ref{stgn_def}).
-
-% \subsection{Finding out the flow control vectors in each pipeline stage}
 
 \section{Characterizing the Boolean functions recovering input variables and pipeline stages}\label{sec_char}
 \subsection{Characterizing the Boolean functions recovering the last pipeline stage $\vec{stg}^{r'}$}
 
 According to Equation (\ref{stgn_fj}),
-every state variable $s\in \vec{f}^{r'}$ at the $p+l+r'$-th step can be uniquely determined by $\vec{o}_{p+l+r'}$.
+every state variable $s\in \vec{stg}^{r'}$ at the $p+l+r'$-th step can be uniquely determined by $\vec{o}_{p+l+r'}$.
 That is,
 $F''_{PC}(p,l,r',s_{p+l+r'},\vec{o}_{p+l+r'})$ is unsatisfiable and can be partitioned into :
 
@@ -1523,60 +1122,15 @@ which means $\phi_I$ covers nothing that can make $s_{p+l+r'}\equiv 0$.
 
 Thus,
 $\phi_I$ can be used as the decoder's Boolean function 
-that recovers $s\in \vec{f}^{r'}$ from $\vec{o}$.
+that recovers $s\in \vec{stg}^{r'}$ from $\vec{o}$.
 
-According to Algorithm \ref{algo_infer},
-the inferred flow control predicate $valid(\vec{f}_{p+l})$ can
-enable $\vec{d}_{p+l}$ to be uniquely determined by $\vec{o}_{p+l+r'}$.
-By further referring to Fig. \ref{fig_encexp},
-this predicate $valid(\vec{f}_{p+l})$ can also enable $\vec{d}^{r'}_{p+l+r'}$ 
-in the last pipeline stage to be uniquely determined by output $\vec{o}_{p+l+r'}$.
-So,
-for each $s\in \vec{d}^{r'}$,
-the formula $F''_{PC}(p,l,r',s_{p+l+r'},\vec{o}_{p+l+r'})\wedge valid(\vec{f}_{p+l})\wedge valid(\vec{f'}_{p+l})$ is unsatisfiable 
-and can be partitioned into :
-
-\begin{equation}\label{eqn_char_dlast_A}
- \phi_A := 
- \left\{
-\begin{array}{cc}
-&\bigwedge_{m=0}^{p+l+r'}
-\{
-(\vec{s}_{m+1},\vec{o}_m)\equiv T(\vec{s}_m,\vec{i}_m)
-\}
-\\
-\wedge& s_{p+l+r'}\equiv 1 \\
-\wedge& valid(\vec{f}_{p+l})
-\end{array}
-\right\}
-\end{equation}
-
-\begin{equation}\label{eqn_char_dlast_B}
-% \begin{split}
-\phi_B := 
-\left\{
-\begin{array}{cc}
-&\bigwedge_{m=0}^{p+l+r'}
-\{
-(\vec{s'}_{m+1},\vec{o'}_m)\equiv T(\vec{s'}_m,\vec{i'}_m)
-\}
-\\
-\wedge&\vec{o}_{p+l+r'}\equiv \vec{o'}_{p+l+r'} \\
-\wedge& s'_{p+l+r'}\equiv 0 \\
-\wedge& valid(\vec{f'}_{p+l})
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i}_m) \\
-% \wedge&\bigwedge_{m=0}^{p+l+r}assertion(\vec{i'}_m) 
-\end{array}
-\right\}
-% \end{split}
-\end{equation}
 
 
 \subsection{Characterizing the Boolean functions recovering other pipeline stages $\vec{stg}^j$}
 According to Fig. \ref{fig_encexp},
 % Similar to last subsection,
-$\vec{f}^j_{p+l+j}$ can be uniquely determined by $\vec{stg}^{j+1}_{p+l+j+1}$.
-So for every $s\in\vec{f}^j$,
+$\vec{stg}^j_{p+l+j}$ can be uniquely determined by $\vec{stg}^{j+1}_{p+l+j+1}$.
+So for every $s\in\vec{stg}^j$,
 we can partition the unsatisfiable formula $F''_{PC}(p,l,r',s_{p+l+j},\vec{stg}^{j+1}_{p+l+j+1})$ 
  into:
 
@@ -1615,18 +1169,15 @@ we can partition the unsatisfiable formula $F''_{PC}(p,l,r',s_{p+l+j},\vec{stg}^
 
 Again,
 a Craig interpolant $\phi_I$ of $\phi_A$ with respect to $\phi_B$ can be constructed,
-and used as the decoder's Boolean function that recovers $s\in\vec{f}^{j}$ from $\vec{stg}^{j+1}$.
+and used as the decoder's Boolean function that recovers $s\in\vec{stg}^{j}$ from $\vec{stg}^{j+1}$.
 
-Similar to Equation (\ref{eqn_char_dlast_A}) and (\ref{eqn_char_dlast_B}),
-by replacing $F''_{PC}(p,l,r',s_{p+l+j},\vec{stg}^{j+1}_{p+l+j+1})$  with 
-$F''_{PC}(p,l,r',s_{p+l+j},\vec{stg}^{j+1}_{p+l+j+1})\wedge valid(\vec{f}_{p+l})\wedge valid(\vec{f'}_{p+l})$ ,
-we can characterize the Boolean function that recovers each $s\in\vec{d}^{j}$ from $\vec{stg}^{j+1}$.
+
 
 \subsection{Characterizing the Boolean functions recovering the encoder's input variables}
 
 According to Fig. \ref{fig_encexp},
-$\vec{f}_{p+l}$ can be uniquely determined by the 1st pipeline stage $\vec{stg}^0_{p+l}$.
-So for every flow control input $i\in\vec{f}$,
+$\vec{i}_{p+l}$ can be uniquely determined by the 1st pipeline stage $\vec{stg}^0_{p+l}$.
+So for every input $i\in\vec{i}$,
 $F''_{PC}(p,l,r',i_{p+l},\vec{stg}^0_{p+l})$ is unsatisfiable and can be partitioned into :
 
 \begin{equation}
@@ -1668,11 +1219,8 @@ $F''_{PC}(p,l,r',i_{p+l},\vec{stg}^0_{p+l})$ is unsatisfiable and can be partiti
 
 Again,
 the Craig interpolant $\phi_I$ of $\phi_A$ with respect to $\phi_B$ 
-can be used as the decoder's Boolean function that recovers $i\in\vec{f}$ from $\vec{stg}^0$.
+can be used as the decoder's Boolean function that recovers $i\in\vec{i}$ from $\vec{stg}^0$.
 
-Similar to Equation (\ref{eqn_char_dlast_A}) and (\ref{eqn_char_dlast_B}),
-by replacing $F''_{PC}(p,l,r',i_{p+l},\vec{stg}^0_{p+l})$ with $F''_{PC}(p,l,r',i_{p+l},\vec{stg}^0_{p+l})\wedge valid(\vec{f}_{p+l})\wedge valid(\vec{f'}_{p+l})$,
-we can characterize the Boolean function that recovers each $i\in\vec{d}$ from $\vec{stg}^0$.
 
 
 
