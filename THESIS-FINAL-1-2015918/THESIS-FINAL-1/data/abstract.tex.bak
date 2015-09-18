@@ -1,0 +1,151 @@
+% !Mode:: "Tex:UTF-8"
+\begin{cabstract}
+命题可满足(SAT)问题是指：
+对于一个命题逻辑公式(通常表示为CNF格式)，
+是否存在对其所有变量的一个真值赋值使之成立。
+该问题是计算机科学和工程领域的重要问题，
+被广泛用于软硬件形式化验证和密码领域。
+随着软硬件规模日益增大，
+验证过程中生成的SAT公式规模也相应的急剧增长。
+
+作为应对该挑战的一个有效手段，
+开放环境下的SAT求解服务，
+可利用云和网格等提供的弹性计算资源满足不同规模问题的求解需求。
+但是，
+开放环境在为用户提供使用便利的同时，
+未授权的第三方访问等问题对用户数据的隐私安全提出了严峻挑战。
+现有研究试图通过对计算数据进行全同态加密来达到隐私保护的目的，
+但是复杂的加密原语和随之带来的昂贵计算开销，限制了该方法的实用性。
+
+为解决该问题，
+本文针对软硬件设计验证中SAT问题隐私保护的需求，
+从提高求解效率的角度出发，
+研究了SAT求解中输入数据结构信息保护和输出数据隐藏问题，
+提出了基于加噪混淆的数据隐私保护方法。
+该方法通过在原始输入数据中混入特定的噪声数据，
+实现输入和输出信息的隐藏；
+并通过混淆规则保持解空间一致性，
+以保证混淆后的SAT 问题可直接使用原始求解器求解。
+本文以软硬件形式化验证和硬件对偶综合中的SAT问题为研究对象，
+系统研究了SAT问题求解中数据隐私保护的若干问题。
+本文的主要研究内容和创新点如下。
+
+1. 开放环境下基于加噪混淆的SAT求解框架。
+现有保护CNF公式隐私的方法包括基于加密和基于数据分割的两类。
+%其中加密方法利用了双射或多射群加密，
+%通过分段坡度编码对CNF 公式进行映射，
+%隐藏CNF 公式中携带的结构信息。
+%但是该方法改变了原有CNF 公式的外部表示，需要设计全新的，基于全空间遍历的求解算法。
+%而且基于群的加密原语开销较大，极大地降低了其实用性。
+%而另一方面，基于数据分割的方法将数据分散到不同处理单元求解，
+%从而防止任何一个求解单元获得全局数据。
+%和基于加密的方法类似，
+这些算法都依赖于全空间遍历求解，求解效率低下。
+本文通过对CNF公式自身逻辑特点的分析，
+提出了基于加噪混淆算法的伪装方法。
+该方法通过在原始CNF公式中无缝的混入噪音公式，
+在隐藏原有的结构信息的同时，
+保持原有的CNF数据形式和解空间，
+从而复用目前已有的求解算法。
+该算法在效率和隐私保护上取得了良好的折中。
+本文从理论上证明了该算法的正确性并通过大量的仿真实验证明了该算法的高效性。
+%CNF公式混淆是保证开放环境下的SAT求解隐私性的重要手段。现有的方法基于双射或多射群加密，通过分段坡度编码对CNF公式进行混淆，从而隐藏CNF公式中携带的结构信息，但是这种方法改变了原有CNF公式的外部表示，需要设计新的求解算法，并且在目前仅可使用全空间遍历的方法进行求解，无法利用已有成熟高效的SAT 求解算法，因此极大降低了其实用性。本文通过对CNF 公式自身逻辑特点的分析，提出了基于加噪思路的混淆算法，通过在原始CNF公式中无缝的混入噪音公式，在隐藏原有的结构信息的同时，保持原有的CNF数据形式和解空间，从而复用目前已有的求解算法；在算法的实用性和隐私保护上取得了良好的折中。本文从理论上证明了算法的正确性并通过大量的仿真实验验证了算法的性能。
+
+2. 结构感知的混淆策略。
+识别混淆后CNF公式结构的困难程度，
+是衡量混淆算法有效性的重要指标。
+本文研究了硬件设计中CNF公式携带的结构信息特征，
+提出结构感知的加噪策略。
+该策略将原始公式的结构映射至新的带噪声结构，
+使得该新结构与原始结构不存在明确对应，
+从而增大了第三方恢复出原始结构的难度。
+本文从理论上论证了结构感知混淆算法的有效性，
+并通过实验验证了方法的性能。
+
+3. 解空间投影等价的混淆策略。
+寻找特定CNF公式的所有解的算法，称为ALLSAT算法。
+该算法构成了对上述混淆算法的一个潜在威胁：
+通过求解出全空间的解，
+并将在所有解中具有相同唯一赋值的变量作为候选噪音变量，
+进而从混淆后的公式中识别出原始公式。
+为了解决该问题，
+本文研究了解空间投影等价的混淆策略，
+以打破噪音变量必然是相同单一赋值的断言，
+以抵御上述基于ALLSAT的攻击。
+
+4. 解空间上估计的CNF混淆算法。
+在研究了上述保护输入数据结构信息的算法后，
+本文进一步研究了隐藏SAT 问题求解结果的方法。
+针对输出信息隐藏，本文提出了解空间上估计的CNF混淆算法。
+通过扩展噪音公式解空间，使得混淆后SAT 问题的解空间为原始解空间的上估计。
+通过引入噪音解实现对原始解的隐藏。
+本文从理论上充分证明了算法的正确性，
+并通过大量的仿真实验验证了方法的有效性和性能。
+
+5. 解空间可调制的CNF混淆算法。
+由于上估计的CNF混淆算法可能会多次调用SAT求解，其调用的概率取决于真实解与噪音解的比率。
+本文讨论了将投影等价和上估计两种混淆特性结合来实现解空间可调制的混淆算法。
+
+%4. 跃变敏感的混淆策略。
+%混淆后公式的求解效率是在混淆算法有效性的一个特别重要的指标，也是加噪混淆算法区别于其他混淆算法的一个重要因素。由于加噪的过程改变了CNF公式的内在结构，由于SAT问题自身特点，其问题复杂度会随着公式结构的变化出现跃变。针对这一情况，本文针对硬件验证中常用的CNF结构进行分析，提出了跃变敏感的混淆策略，使得混淆后的CNF公式求解难度不会大于原始公式求解难度。特别针对对偶综合这一SAT问题的实例算法进行了分析，验证了方法的有效性和性能。
+
+6. CNF混淆算法的有效性评价。
+混淆算法通过混淆规则保证混淆后的CNF公式可复用已有的求解器，
+并且可以用较小的开销恢复出原始的解。
+但是除此之外，在开放环境下为保证SAT计算外包的顺利实施，
+混淆算法仍然需要满足其他的特性。
+结合程序混淆的有效性评价标准，
+本文抽象出CNF公式混淆的有效性评价标准，
+通过对混淆策略的细分，
+针对两种混淆策略，对混淆后公式的隐形性和适应力进行了定量分析和定性评价，
+为设计出更好的混淆策略提供依据。
+
+综上所述，
+本文对SAT问题外包中的若干关键问题进行了深入的研究，
+提出了具有高可用性、低开销的解决方案，
+并通过理论分析和大量的仿真实验验证了所提出算法的有效性和性能，
+对于促进SAT计算外包服务的实用化有一定的理论意义和应用价值。
+\end{cabstract}
+\ckeywords{开放环境；SAT求解；混淆；非等价解空间；解空间加噪；结构感知}
+
+%相变敏感
+
+\begin{eabstract}
+Propositional satisfiability\cite{SATtheory} has been widely used in hardware and software verification\cite{HardwareSAT,softwareSAT},
+cryptography\cite{cryptoSAT} etc.
+With the rapid increase of the hardware and software system size,
+the size of SAT problem generated from verification  also increases rapidly.
+On the other hand, Cloud and grid can provide elastic computing resource,
+which make outsourcing hard SAT problem to public Cloud or computation grid\cite{Nordugrid,CloudSMT,OneSpin} very attractive.
+
+However, security issues make many customers reluctant to move their critical computation tasks to grid or Cloud.
+Since the grid is constructed by loosely connecting a large number of readily available, high-end, heterogeneous computing facilities\cite{Nordugrid},
+the risks posed by hoarding participants in grid computing environments are real and immediate\cite{HV-grid}.
+While the Cloud vendors can be trusted and the Cloud infrastructure (i.e., the virtualization layer) can be assumed to be secure,
+the virtual machines cannot be trusted to be always honest and loyal.
+Literature\cite{AMI} points out security vulnerability that Amazon EC2 suffered from:
+Since Amazon Machine Image (AMI) are widely shared among the EC2 community,
+a malicious AMI could flood the community with hundreds of infected virtual instances.
+Literature \cite{InformationLeakageofCloud} also points out
+the possibility of attacking virtual machine
+through another virtual machine in the same physical machine.
+
+These facts show that input and output data of SAT problem may be exposed to untrusted third party,
+who may inspect valuable information from these data.
+For example, SAT program originated from verification may suffer from leakage of privacy, such as circuit structure information.
+Works carried out by Roy\cite{csRoy} and Fu \cite{csFu} suggest the possibility of extracting circuit information from CNF formula.
+Furthermore, Du\cite{HV-grid} called solution of hard SAT problem generating from cryptograph etc as high-value rare events,
+and point out that the solution of SAT problem should also be treated as privacy,
+because it may be leaked to third party by hoarding participants.
+Moreover, the SAT solver deployed in grid or Cloud may also be compromised by adversary,
+who may compel SAT solver to return incorrect result to  mislead verification.
+
+These threats put customers who plan to outsource SAT solving in a dilemma:
+using public Cloud or grid in open environment is cost-efficiently,
+but may suffer from leakage of privacy or incorrect result.
+In order to meet this challenge, we develop novel techniques for outsourcing SAT solving in Cloud or in computing grid securely,
+which can preserve privacy of input and output, without changing the solution.
+
+\end{eabstract}
+\ekeywords{Open Environment; SAT Solving; Obfuscation; Solution Space Over-approximation; Phrase Transition sensitive}
+

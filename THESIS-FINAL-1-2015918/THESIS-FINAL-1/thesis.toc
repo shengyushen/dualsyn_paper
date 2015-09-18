@@ -1,0 +1,146 @@
+\contentsline {chapter}{摘\hspace {1em}要}{i}{section*.4}
+\contentsline {chapter}{\textsf {ABSTRACT}}{iii}{section*.5}
+\contentsline {chapter}{\numberline {1}绪论}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}可满足问题}{1}{section.1.1}
+\contentsline {subsection}{\numberline {1.1.1}可满足问题以及相关概念}{1}{subsection.1.1.1}
+\contentsline {subsubsection}{\numberline {1.1.1.1}可满足问题}{1}{subsubsection.1.1.1.1}
+\contentsline {subsubsection}{\numberline {1.1.1.2}Tseitin编码}{2}{subsubsection.1.1.1.2}
+\contentsline {subsection}{\numberline {1.1.2}可满足问题求解}{3}{subsection.1.1.2}
+\contentsline {subsubsection}{\numberline {1.1.2.1}可满足问题的简单解法}{3}{subsubsection.1.1.2.1}
+\contentsline {subsubsection}{\numberline {1.1.2.2}布尔约束传播(BCP)}{3}{subsubsection.1.1.2.2}
+\contentsline {subsubsection}{\numberline {1.1.2.3}冲突指导的子句学习}{4}{subsubsection.1.1.2.3}
+\contentsline {subsubsection}{\numberline {1.1.2.4}MiniSat 求解器的递增求解机制}{5}{subsubsection.1.1.2.4}
+\contentsline {subsection}{\numberline {1.1.3}可满足赋值遍历}{5}{subsection.1.1.3}
+\contentsline {subsection}{\numberline {1.1.4}Craig插值的原理和实现}{6}{subsection.1.1.4}
+\contentsline {subsubsection}{\numberline {1.1.4.1}不可满足证明}{6}{subsubsection.1.1.4.1}
+\contentsline {subsubsection}{\numberline {1.1.4.2}Craig插值算法}{7}{subsubsection.1.1.4.2}
+\contentsline {section}{\numberline {1.2}面向软硬件设计验证的可满足问题求解}{8}{section.1.2}
+\contentsline {section}{\numberline {1.3}开放环境下数据隐私的安全威胁}{9}{section.1.3}
+\contentsline {section}{\numberline {1.4}开放计算环境下可满足问题求解的隐私保护问题}{11}{section.1.4}
+\contentsline {subsection}{\numberline {1.4.1}CNF公式中的结构信息}{11}{subsection.1.4.1}
+\contentsline {subsection}{\numberline {1.4.2}SAT问题隐私保护的对象}{13}{subsection.1.4.2}
+\contentsline {section}{\numberline {1.5}本文的主要工作}{13}{section.1.5}
+\contentsline {subsection}{\numberline {1.5.1}已有工作的局限}{13}{subsection.1.5.1}
+\contentsline {subsection}{\numberline {1.5.2}研究内容与创新点}{14}{subsection.1.5.2}
+\contentsline {section}{\numberline {1.6}论文组织结构}{15}{section.1.6}
+\contentsline {chapter}{\numberline {2}相关研究}{17}{chapter.2}
+\contentsline {section}{\numberline {2.1}外包计算的隐私保护研究}{17}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}基于同态加密的方法}{17}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}基于数据伪装的方法}{19}{subsection.2.1.2}
+\contentsline {section}{\numberline {2.2}计算完整性验证研究}{20}{section.2.2}
+\contentsline {section}{\numberline {2.3}混淆技术研究}{22}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}混淆理论研究}{22}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.3.2}程序混淆}{23}{subsection.2.3.2}
+\contentsline {subsection}{\numberline {2.3.3}电路混淆}{24}{subsection.2.3.3}
+\contentsline {subsubsection}{\numberline {2.3.3.1}硬件计量}{24}{subsubsection.2.3.3.1}
+\contentsline {subsubsection}{\numberline {2.3.3.2}硬件水印}{24}{subsubsection.2.3.3.2}
+\contentsline {section}{\numberline {2.4}本章小结}{25}{section.2.4}
+\contentsline {chapter}{\numberline {3}基于余因子和Craig插值的迭代特征化算法}{27}{chapter.3}
+\contentsline {section}{\numberline {3.1}引言}{27}{section.3.1}
+\contentsline {section}{\numberline {3.2}Craig插值的原理和实现}{28}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}相关背景知识和记法}{28}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}不可满足证明}{28}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Craig插值算法}{29}{subsection.3.2.3}
+\contentsline {section}{\numberline {3.3}非迭代的特征化算法}{30}{section.3.3}
+\contentsline {section}{\numberline {3.4}迭代的特征化算法}{31}{section.3.4}
+\contentsline {section}{\numberline {3.5}可选的BDD整理和化简}{32}{section.3.5}
+\contentsline {section}{\numberline {3.6}本章小结}{33}{section.3.6}
+\contentsline {chapter}{\numberline {4}面向流控机制的对偶综合}{35}{chapter.4}
+\contentsline {section}{\numberline {4.1} 引言}{35}{section.4.1}
+\contentsline {section}{\numberline {4.2}背景知识}{36}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}有限状态机}{36}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}基于迁移关系(函数)展开的形式化验证算法的一般性原理}{37}{subsection.4.2.2}
+\contentsline {section}{\numberline {4.3}对偶综合研究现状}{38}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}早期的充分非完备算法}{38}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}完备停机算法}{41}{subsection.4.3.2}
+\contentsline {section}{\numberline {4.4}识别流控变量}{43}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}识别流控变量$\mathaccentV {vec}17E{f}$}{43}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.2}使用增量SAT求解器加速识别算法}{44}{subsection.4.4.2}
+\contentsline {section}{\numberline {4.5}推导使得数据变量向量被唯一决定的谓词}{45}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}计算$valid(\mathaccentV {vec}17E{f})$的单调增长的下估计}{47}{subsection.4.5.1}
+\contentsline {subsection}{\numberline {4.5.2}计算$valid(\mathaccentV {vec}17E{f})$的单调递减上估计}{48}{subsection.4.5.2}
+\contentsline {subsection}{\numberline {4.5.3}计算$valid(\mathaccentV {vec}17E{f})$的算法}{50}{subsection.4.5.3}
+\contentsline {subsection}{\numberline {4.5.4}停机和正确性证明}{50}{subsection.4.5.4}
+\contentsline {section}{\numberline {4.6}压缩迁移关系展开序列的长度}{53}{section.4.6}
+\contentsline {subsection}{\numberline {4.6.1}压缩$l$ 和$r$}{53}{subsection.4.6.1}
+\contentsline {subsection}{\numberline {4.6.2}另一种可能的算法结构}{53}{subsection.4.6.2}
+\contentsline {section}{\numberline {4.7}产生解码器函数}{54}{section.4.7}
+\contentsline {subsection}{\numberline {4.7.1}产生$\mathaccentV {vec}17E{f}$的解码器函数}{54}{subsection.4.7.1}
+\contentsline {subsection}{\numberline {4.7.2}产生$\mathaccentV {vec}17E{d}$的解码函数}{55}{subsection.4.7.2}
+\contentsline {section}{\numberline {4.8}实验结果}{56}{section.4.8}
+\contentsline {subsection}{\numberline {4.8.1}测试集}{56}{subsection.4.8.1}
+\contentsline {subsection}{\numberline {4.8.2}PCI Express 2.0 编码器}{57}{subsection.4.8.2}
+\contentsline {subsection}{\numberline {4.8.3}10G 以太网编码器XGXS}{58}{subsection.4.8.3}
+\contentsline {subsection}{\numberline {4.8.4}UltraSPARC T2 以太网编码器}{59}{subsection.4.8.4}
+\contentsline {subsection}{\numberline {4.8.5}针对不具备流控机制的编码器比较我们的算法和Liu et al.\textsuperscript {\cite {LiuTCAD12}}算法}{60}{subsection.4.8.5}
+\contentsline {subsection}{\numberline {4.8.6}比较两种可能性：同时增长$p$， $l$ 和$r$ 或者单独增长}{61}{subsection.4.8.6}
+\contentsline {subsection}{\numberline {4.8.7}在压缩和不压缩$l$ 和$r$的两种算法之间比较运行时间、电路面积和延迟}{62}{subsection.4.8.7}
+\contentsline {subsection}{\numberline {4.8.8}在我们的算法和手工书写的解码器之间比较电路面积和延迟}{63}{subsection.4.8.8}
+\contentsline {section}{\numberline {4.9}结论}{63}{section.4.9}
+\contentsline {chapter}{\numberline {5}结构感知的CNF混淆算法}{65}{chapter.5}
+\contentsline {section}{\numberline {5.1}引言}{65}{section.5.1}
+\contentsline {section}{\numberline {5.2}问题描述}{65}{section.5.2}
+\contentsline {section}{\numberline {5.3}基于CNF混淆的SAT求解方法}{66}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}SAT求解框架}{66}{subsection.5.3.1}
+\contentsline {subsection}{\numberline {5.3.2}单一Husk公式产生算法}{68}{subsection.5.3.2}
+\contentsline {subsection}{\numberline {5.3.3}解空间保持的混淆算法}{68}{subsection.5.3.3}
+\contentsline {subsubsection}{\numberline {5.3.3.1}解空间保持规则}{69}{subsubsection.5.3.3.1}
+\contentsline {subsubsection}{\numberline {5.3.3.2}\textsl {OBFUSCATOR 算法}}{71}{subsubsection.5.3.3.2}
+\contentsline {subsection}{\numberline {5.3.4}映射和验证算法}{71}{subsection.5.3.4}
+\contentsline {section}{\numberline {5.4}理论分析和实验评估}{73}{section.5.4}
+\contentsline {subsection}{\numberline {5.4.1}理论分析}{73}{subsection.5.4.1}
+\contentsline {subsubsection}{\numberline {5.4.1.1}正确性证明}{73}{subsubsection.5.4.1.1}
+\contentsline {subsubsection}{\numberline {5.4.1.2}有效性分析}{78}{subsubsection.5.4.1.2}
+\contentsline {subsubsection}{\numberline {5.4.1.3}算法复杂性分析}{79}{subsubsection.5.4.1.3}
+\contentsline {subsection}{\numberline {5.4.2}实验评估}{80}{subsection.5.4.2}
+\contentsline {subsubsection}{\numberline {5.4.2.1}实验设计}{80}{subsubsection.5.4.2.1}
+\contentsline {subsubsection}{\numberline {5.4.2.2}实验结果分析}{80}{subsubsection.5.4.2.2}
+\contentsline {section}{\numberline {5.5}本章小结}{81}{section.5.5}
+\contentsline {chapter}{\numberline {6}解空间投影等价的混淆算法}{83}{chapter.6}
+\contentsline {section}{\numberline {6.1}引言}{83}{section.6.1}
+\contentsline {section}{\numberline {6.2}问题描述}{83}{section.6.2}
+\contentsline {subsection}{\numberline {6.2.1}ALLSAT求解}{83}{subsection.6.2.1}
+\contentsline {subsection}{\numberline {6.2.2}基于ALLSAT求解和分区的攻击}{84}{subsection.6.2.2}
+\contentsline {section}{\numberline {6.3}解空间投影等价的混淆算法}{84}{section.6.3}
+\contentsline {subsection}{\numberline {6.3.1}簇形Husk公式的产生}{85}{subsection.6.3.1}
+\contentsline {subsection}{\numberline {6.3.2}解空间投影等价的混淆}{86}{subsection.6.3.2}
+\contentsline {subsubsection}{\numberline {6.3.2.1}解空间投影等价（SSPE）算法}{86}{subsubsection.6.3.2.1}
+\contentsline {subsubsection}{\numberline {6.3.2.2}$OBFUSCATOR$算法}{88}{subsubsection.6.3.2.2}
+\contentsline {subsection}{\numberline {6.3.3}解恢复和验证算法}{88}{subsection.6.3.3}
+\contentsline {section}{\numberline {6.4}理论分析和证明}{89}{section.6.4}
+\contentsline {subsection}{\numberline {6.4.1}正确性证明}{89}{subsection.6.4.1}
+\contentsline {section}{\numberline {6.5}本章小结}{92}{section.6.5}
+\contentsline {chapter}{\numberline {7}解空间上估计的混淆算法}{93}{chapter.7}
+\contentsline {section}{\numberline {7.1}引言}{93}{section.7.1}
+\contentsline {section}{\numberline {7.2}问题描述}{94}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}系统假设}{94}{subsection.7.2.1}
+\contentsline {section}{\numberline {7.3}系统设计}{94}{section.7.3}
+\contentsline {subsection}{\numberline {7.3.1}基于混淆的SAT求解框架}{94}{subsection.7.3.1}
+\contentsline {subsection}{\numberline {7.3.2}Husks公式的产生}{95}{subsection.7.3.2}
+\contentsline {subsection}{\numberline {7.3.3}解空间上估计的混淆}{96}{subsection.7.3.3}
+\contentsline {subsubsection}{\numberline {7.3.3.1}CNF公式中的结构}{96}{subsubsection.7.3.3.1}
+\contentsline {subsubsection}{\numberline {7.3.3.2}SAT问题解的类型}{97}{subsubsection.7.3.3.2}
+\contentsline {subsubsection}{\numberline {7.3.3.3}输入输出隐私保护策略}{98}{subsubsection.7.3.3.3}
+\contentsline {subsubsection}{\numberline {7.3.3.4}解空间保持（SSH）规则}{99}{subsubsection.7.3.3.4}
+\contentsline {subsubsection}{\numberline {7.3.3.5}电路结构感知（CSA）策略}{101}{subsubsection.7.3.3.5}
+\contentsline {subsubsection}{\numberline {7.3.3.6}\textsl {OBFUSCATOR 算法}}{101}{subsubsection.7.3.3.6}
+\contentsline {subsection}{\numberline {7.3.4}真实解的恢复}{102}{subsection.7.3.4}
+\contentsline {section}{\numberline {7.4}理论分析}{103}{section.7.4}
+\contentsline {subsection}{\numberline {7.4.1}正确性证明}{103}{subsection.7.4.1}
+\contentsline {subsection}{\numberline {7.4.2}有效性分析}{110}{subsection.7.4.2}
+\contentsline {subsubsection}{\numberline {7.4.2.1}输入数据隐藏}{110}{subsubsection.7.4.2.1}
+\contentsline {subsubsection}{\numberline {7.4.2.2}输出数据隐藏}{110}{subsubsection.7.4.2.2}
+\contentsline {subsection}{\numberline {7.4.3}算法复杂性分析}{111}{subsection.7.4.3}
+\contentsline {subsubsection}{\numberline {7.4.3.1}混淆算法的复杂性}{111}{subsubsection.7.4.3.1}
+\contentsline {subsubsection}{\numberline {7.4.3.2}解恢复算法的复杂性}{111}{subsubsection.7.4.3.2}
+\contentsline {section}{\numberline {7.5}实验评估}{111}{section.7.5}
+\contentsline {subsection}{\numberline {7.5.1}实验设计}{111}{subsection.7.5.1}
+\contentsline {subsection}{\numberline {7.5.2}实验结果分析}{111}{subsection.7.5.2}
+\contentsline {section}{\numberline {7.6}结论}{112}{section.7.6}
+\contentsline {chapter}{\numberline {8}结束语}{113}{chapter.8}
+\contentsline {section}{\numberline {8.1}工作总结}{113}{section.8.1}
+\contentsline {section}{\numberline {8.2}研究展望}{114}{section.8.2}
+\contentsline {chapter}{致谢}{115}{chapter*.46}
+\contentsline {chapter}{参考文献}{117}{section*.47}
+\contentsline {chapter}{作者在学期间取得的学术成果}{139}{chapter*.49}
+\contentsfinish 

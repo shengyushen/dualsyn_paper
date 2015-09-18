@@ -1,0 +1,457 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: thesis.aux
+The style file: bstutf8.bst
+Database file #1: ref/refs.bib
+Repeated entry---line 2507 of file ref/refs.bib
+ : @proceedings{DBLP:conf/aaai/2000
+ :                                 ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 2842 of file ref/refs.bib
+ : @article{DBLP:journals/ac/AtallahPRS01
+ :                                       ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 3319 of file ref/refs.bib
+ : @proceedings{DBLP:conf/infocom/2011
+ :                                    ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 3332 of file ref/refs.bib
+ : @article{DBLP:journals/ac/AtallahPRS01
+ :                                       ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 3458 of file ref/refs.bib
+ : @proceedings{DBLP:conf/crypto/2010
+ :                                   ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 3474 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/ccs/AtallahF10
+ :                                        ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 3490 of file ref/refs.bib
+ : @proceedings{DBLP:conf/ccs/2010asia
+ :                                    ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 3505 of file ref/refs.bib
+ : @incollection{Tseitin
+ :                      
+I'm skipping whatever remains of this entry
+Repeated entry---line 3905 of file ref/refs.bib
+ : @proceedings{DBLP:conf/sat/2009
+ :                                ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 3954 of file ref/refs.bib
+ : @article{DBLP:journals/cacm/Shamir79
+ :                                     ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 4156 of file ref/refs.bib
+ : @proceedings{DBLP:conf/sat/2009
+ :                                ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 4215 of file ref/refs.bib
+ : @proceedings{DBLP:conf/iccad/2009
+ :                                  ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 4262 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/stoc/GoldwasserM82
+ :                                            ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 4279 of file ref/refs.bib
+ : @proceedings{DBLP:conf/stoc/STOC14
+ :                                   ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 4294 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/eurocrypt/Paillier99
+ :                                              ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 4309 of file ref/refs.bib
+ : @proceedings{DBLP:conf/eurocrypt/99
+ :                                    ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 4399 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/ctrsa/GolleM01
+ :                                        ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 4414 of file ref/refs.bib
+ : @proceedings{DBLP:conf/ctrsa/2001
+ :                                  ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 4428 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/sp/SzajdaLO03
+ :                                       ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 4444 of file ref/refs.bib
+ : @proceedings{DBLP:conf/sp/2003
+ :                               ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 4486 of file ref/refs.bib
+ : @article{DBLP:journals/tpds/WangRWW13
+ :                                      ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 4645 of file ref/refs.bib
+ : @proceedings{DBLP:conf/acns/2005
+ :                                 ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 4829 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/vmcai/ShenQL05
+ :                                        ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 4846 of file ref/refs.bib
+ : @proceedings{DBLP:conf/vmcai/2005
+ :                                  ,
+I'm skipping whatever remains of this entry
+I was expecting a `,' or a `}'---line 5115 of file ref/refs.bib
+ : 
+ : @article{DBLP:journals/jacm/BarakGIRSVY12,
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You're missing a field name---line 5542 of file ref/refs.bib
+ :  
+ :  % timestamp = {Wed, 08 Dec 2010 10:32:54 +0100},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You're missing a field name---line 5558 of file ref/refs.bib
+ :  
+ :  % timestamp = {Wed, 08 Dec 2010 10:32:54 +0100},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Repeated entry---line 5826 of file ref/refs.bib
+ : @proceedings{DBLP:conf/crypto/2010
+ :                                   ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 5995 of file ref/refs.bib
+ : @proceedings{DBLP:conf/eurocrypt/2010
+ :                                      ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6031 of file ref/refs.bib
+ : @proceedings{DBLP:conf/crypto/2011
+ :                                   ,
+I'm skipping whatever remains of this entry
+You're missing an entry type---line 6047 of file ref/refs.bib
+ : @
+ :  124
+I'm skipping whatever remains of this entry
+Repeated entry---line 6065 of file ref/refs.bib
+ : @proceedings{DBLP:conf/eurocrypt/2012
+ :                                      ,
+I'm skipping whatever remains of this entry
+You're missing an entry type---line 6083 of file ref/refs.bib
+ : @
+ :  125
+I'm skipping whatever remains of this entry
+Repeated entry---line 6102 of file ref/refs.bib
+ : @proceedings{DBLP:conf/eurocrypt/2012
+ :                                      ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6191 of file ref/refs.bib
+ : @article{DBLP:journals/concurrency/ChrabakhW07
+ :                                               ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6208 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/IEEEcloud/BrunM12
+ :                                           ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6223 of file ref/refs.bib
+ : @proceedings{DBLP:conf/IEEEcloud/2012
+ :                                      ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6337 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/icdcs/DuJMM04
+ :                                       ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6354 of file ref/refs.bib
+ : @proceedings{DBLP:conf/icdcs/2004
+ :                                  ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6368 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/iccad/ShenQZ11
+ :                                        ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6384 of file ref/refs.bib
+ : @proceedings{DBLP:conf/iccad/2011
+ :                                  ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6399 of file ref/refs.bib
+ : @article{DBLP:journals/tcad/ShenQWPZL12
+ :                                        ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6419 of file ref/refs.bib
+ : @article{DBLP:journals/tcad/ShenQXWZL11
+ :                                        ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6439 of file ref/refs.bib
+ : @article{DBLP:journals/tcad/ShenQWXZL10
+ :                                        ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6459 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/iccad/ShenZQL09
+ :                                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6476 of file ref/refs.bib
+ : @proceedings{DBLP:conf/iccad/2009
+ :                                  ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6493 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/aspdac/ShenQL05
+ :                                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6510 of file ref/refs.bib
+ : @proceedings{DBLP:conf/aspdac/2005
+ :                                   ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6522 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/charme/ShenQL05
+ :                                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6539 of file ref/refs.bib
+ : @proceedings{DBLP:conf/charme/2005
+ :                                   ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6555 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/date/ShenQL05
+ :                                       ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6572 of file ref/refs.bib
+ : @proceedings{DBLP:conf/date/2005
+ :                                 ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6583 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/vmcai/ShenQL05
+ :                                        ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6600 of file ref/refs.bib
+ : @proceedings{DBLP:conf/vmcai/2005
+ :                                  ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6614 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/atva/ShenQL04
+ :                                       ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6631 of file ref/refs.bib
+ : @proceedings{DBLP:conf/atva/2004
+ :                                 ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6646 of file ref/refs.bib
+ : @article{DBLP:journals/tc/Bryant86
+ :                                   ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6766 of file ref/refs.bib
+ : @proceedings{DBLP:conf/ccs/2006usa
+ :                                   ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6982 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/ih/KoushanfarQP01
+ :                                           ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 6998 of file ref/refs.bib
+ : @proceedings{DBLP:conf/ih/2001
+ :                               ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7012 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/dac/SuhD07
+ :                                    ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7028 of file ref/refs.bib
+ : @proceedings{DBLP:conf/dac/2007
+ :                                ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7039 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/focs/GargGH0SW13
+ :                                          ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7060 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/date/RoyKM08
+ :                                      ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7076 of file ref/refs.bib
+ : @proceedings{DBLP:conf/date/2008
+ :                                 ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7087 of file ref/refs.bib
+ : @inproceedings{DBLP:conf/dac/RoyKM08
+ :                                     ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7103 of file ref/refs.bib
+ : @proceedings{DBLP:conf/dac/2008
+ :                                ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 7197 of file ref/refs.bib
+ : @proceedings{DBLP:conf/sat/2009
+ :                                ,
+I'm skipping whatever remains of this entry
+A bad cross reference---entry "softwareSAT"
+refers to entry "DBLP:conf/cav/2000", which doesn't exist
+A bad cross reference---entry "DBLP:conf/cav/ClarkeGJLV00"
+refers to entry "DBLP:conf/cav/2000", which doesn't exist
+A bad cross reference---entry "DBLP:conf/dac/YuanAAP03"
+refers to entry "DBLP:conf/dac/2003", which doesn't exist
+A bad cross reference---entry "DBLP:conf/fmcad/AmlaM04"
+refers to entry "DBLP:conf/fmcad/2004", which doesn't exist
+A bad cross reference---entry "DBLP:conf/tacas/BiereCCZ99"
+refers to entry "DBLP:conf/tacas/1999", which doesn't exist
+A bad cross reference---entry "DBLP:conf/cav/KroeningOSWW11"
+refers to entry "DBLP:conf/cav/2011", which doesn't exist
+Warning--I didn't find a database entry for "DBLP:conf/cav/2000"
+Warning--I didn't find a database entry for "DBLP:conf/dac/2003"
+Warning--I didn't find a database entry for "DBLP:conf/fmcad/2004"
+Warning--I didn't find a database entry for "DBLP:conf/tacas/1999"
+Warning--I didn't find a database entry for "DBLP:conf/cav/2011"
+-- BUPTThesis.bst version 1.0 Beta 1 (2009/05/31) by Yu Zhang.
+-- http://code.google.com/p/buptthesis/
+-- See the "userguide.pdf" manual for usage information.
+Warning--The refdate in SATtheory is missing.
+Warning--there's a publisher but no address in HardwareSAT
+Warning--The refdate in HardwareSAT is missing.
+Warning--The editor in softwareSAT is missing.
+Warning--empty editor in softwareSAT
+Warning--The author in CloudSMT is missing.
+Warning--There is month but no year in CloudSMT
+Warning--The author in OneSpin is missing.
+Warning--There is month but no year in OneSpin
+Warning--The editor in csFu is missing.
+Warning--empty editor in csFu
+Warning--The refdate in DBLP:journals/concurrency/ChrabakhW07 is missing.
+Warning--The refdate in DBLP:journals/iacr/SahaiW04 is missing.
+Warning--The refdate in DBLP:journals/iacr/GoyalPSW06 is missing.
+Warning--The refdate in DBLP:journals/iacr/CurtmolaGKO06 is missing.
+Warning--The refdate in DBLP:journals/jcs/CurtmolaGKO11 is missing.
+Warning--There is month but no year in Minisat
+Warning--empty journal in Tseitin
+Warning--empty pages in Tseitin
+Warning--The editor in CONFLICTLEARN is missing.
+Warning--empty editor in CONFLICTLEARN
+Warning--The editor in REPARAM is missing.
+Warning--empty editor in REPARAM
+Warning--The editor in PRIMECLAUSE is missing.
+Warning--empty editor in PRIMECLAUSE
+Warning--The editor in EFFSATUSMCCO is missing.
+Warning--empty editor in EFFSATUSMCCO
+Warning--The editor in InterpBoolFunction is missing.
+Warning--empty editor in InterpBoolFunction
+Warning--The refdate in DBLP:journals/tcs/McMillan05 is missing.
+Warning--The editor in Brummayer06localtwo-level is missing.
+Warning--empty editor in Brummayer06localtwo-level
+Warning--empty pages in Brummayer06localtwo-level
+Warning--The refdate in DBLP:journals/tc/Bryant86 is missing.
+Warning--The author in washingtonPostSaleForce is missing.
+Warning--There is month but no year in washingtonPostSaleForce
+Warning--The author in googelFiresTwoEmployees is missing.
+Warning--There is month but no year in googelFiresTwoEmployees
+Warning--The author in gartner70 is missing.
+Warning--There is month but no year in gartner70
+Warning--The author in rsaSafe is missing.
+Warning--There is month but no year in rsaSafe
+Warning--The author in oneSpinsafe is missing.
+Warning--There is month but no year in oneSpinsafe
+Warning--empty pages in DBLP:journals/corr/abs-0901-0131
+Warning--The refdate in DBLP:journals/corr/abs-0901-0131 is missing.
+Warning--The refdate in DBLP:journals/cacm/RivestSA78 is missing.
+Warning--The author in Implementing-fully-homomorphic is missing.
+Warning--empty author in Implementing-fully-homomorphic
+Warning--empty journal in Implementing-fully-homomorphic
+Warning--The refdate in Implementing-fully-homomorphic is missing.
+Warning--The author in Improved-key-generation is missing.
+Warning--empty author in Improved-key-generation
+Warning--empty journal in Improved-key-generation
+Warning--The refdate in Improved-key-generation is missing.
+Warning--empty pages in DBLP:journals/corr/abs-1202-3321
+Warning--The refdate in DBLP:journals/corr/abs-1202-3321 is missing.
+Warning--The refdate in DBLP:journals/isci/CheonKLY15 is missing.
+Warning--The editor in DBLP:conf/coco/Regev10 is missing.
+Warning--empty editor in DBLP:conf/coco/Regev10
+Warning--The refdate in DBLP:journals/siamcomp/BrakerskiV14 is missing.
+Warning--The refdate in DBLP:journals/toct/BrakerskiGV14 is missing.
+Warning--The refdate in DBLP:journals/ac/AtallahPRS01 is missing.
+Warning--The editor in c.WANG is missing.
+Warning--empty editor in c.WANG
+Warning--The refdate in DBLP:journals/tpds/WangRWW13 is missing.
+Warning--The editor in qyMemocode14 is missing.
+Warning--empty editor in qyMemocode14
+Warning--The refdate in DBLP:journals/ijisec/AtallahL05 is missing.
+Warning--The refdate in DBLP:journals/cacm/Shamir79 is missing.
+Warning--The editor in DBLP:conf/icdcs/DuJMM04 is missing.
+Warning--empty editor in DBLP:conf/icdcs/DuJMM04
+Warning--The editor in DBLP:conf/sp/SzajdaLO03 is missing.
+Warning--empty editor in DBLP:conf/sp/SzajdaLO03
+Warning--The editor in DBLP:conf/socialcom/BlantonZF11 is missing.
+Warning--empty editor in DBLP:conf/socialcom/BlantonZF11
+Warning--there's a publisher but no address in DBLP:conf/IEEEcloud/2012
+Warning--The editor in 6740233 is missing.
+Warning--empty editor in 6740233
+Warning--The author in C_Gentry_phd is missing.
+Warning--There is month but no year in C_Gentry_phd
+Warning--The editor in DBLP:conf/focs/Yao82b is missing.
+Warning--empty editor in DBLP:conf/focs/Yao82b
+Warning--The refdate in DBLP:journals/jacm/BarakGIRSVY12 is missing.
+Warning--The editor in obfuscationBible is missing.
+Warning--empty editor in obfuscationBible
+Warning--The refdate in DBLP:journals/joc/GoldwasserR14 is missing.
+Warning--The editor in DBLP:conf/focs/GargGH0SW13 is missing.
+Warning--empty editor in DBLP:conf/focs/GargGH0SW13
+Warning--The author in Collberg_C is missing.
+Warning--There is month but no year in Collberg_C
+Warning--The editor in 839821 is missing.
+Warning--empty editor in 839821
+Warning--The editor in DBLP:conf/dac/Oliveira99 is missing.
+Warning--empty editor in DBLP:conf/dac/Oliveira99
+Warning--The editor in DBLP:conf/isscc/SuHO07 is missing.
+Warning--empty editor in DBLP:conf/isscc/SuHO07
+Warning--The editor in DBLP:conf/dac/SuhD07 is missing.
+Warning--empty editor in DBLP:conf/dac/SuhD07
+Warning--The refdate in DBLP:journals/tifs/Koushanfar12 is missing.
+Warning--The editor in DBLP:conf/host/LiZ13 is missing.
+Warning--empty editor in DBLP:conf/host/LiZ13
+Warning--The editor in DBLP:conf/date/RoyKM08 is missing.
+Warning--empty editor in DBLP:conf/date/RoyKM08
+Warning--The refdate in DBLP:journals/tcad/Oliveira01 is missing.
+Warning--there's a publisher but no address in nda
+Warning--The editor in DBLP:conf/cav/ClarkeGJLV00 is missing.
+Warning--empty editor in DBLP:conf/cav/ClarkeGJLV00
+Warning--The editor in DBLP:conf/dac/YuanAAP03 is missing.
+Warning--empty editor in DBLP:conf/dac/YuanAAP03
+Warning--The editor in DBLP:conf/fmcad/AmlaM04 is missing.
+Warning--empty editor in DBLP:conf/fmcad/AmlaM04
+Warning--The author in DesignCompiler is missing.
+Warning--There is month but no year in DesignCompiler
+Warning--The author in cudd is missing.
+Warning--There is month but no year in cudd
+Warning--The editor in ShenICCAD09 is missing.
+Warning--empty editor in ShenICCAD09
+Warning--The refdate in ShenTCAD10 is missing.
+Warning--The refdate in ShenTCAD11 is missing.
+Warning--The editor in ShenICCAD11 is missing.
+Warning--empty editor in ShenICCAD11
+Warning--The refdate in ShenTCAD12 is missing.
+Warning--The editor in LiuICCAD11 is missing.
+Warning--empty editor in LiuICCAD11
+Warning--The refdate in LiuTCAD12 is missing.
+Warning--The editor in TuDAC13 is missing.
+Warning--empty editor in TuDAC13
+Warning--empty editor in flowcontrol
+Warning--empty booktitle in flowcontrol
+Warning--there's a publisher but no address in flowcontrol
+Warning--there's a publisher but no address in pcie
+Warning--The editor in DBLP:conf/tacas/BiereCCZ99 is missing.
+Warning--empty editor in DBLP:conf/tacas/BiereCCZ99
+Warning--The editor in DBLP:conf/cav/KroeningOSWW11 is missing.
+Warning--empty editor in DBLP:conf/cav/KroeningOSWW11
+Warning--there's neither address nor publisher in encode6466
+Warning--there's a publisher but no address in OCaml
+Warning--The author in ABC is missing.
+Warning--The refdate in encode8b10b is missing.
+Warning--The editor in DBLP:conf/date/ShenQL05 is missing.
+Warning--empty editor in DBLP:conf/date/ShenQL05
+Warning--The refdate in DBLP:journals/tcad/ShenQWXZL10 is missing.
+Warning--The refdate in DBLP:journals/tcad/ShenQXWZL11 is missing.
+Warning--The refdate in DBLP:journals/tcad/ShenQWPZL12 is missing.
+Warning--The editor in Partition is missing.
+Warning--empty editor in Partition
+Warning--There is month but no year in genSAT
+Warning--The refdate in DBLP:journals/jsyml/Craig57 is missing.
+Warning--there's a publisher but no address in DBLP:conf/aaai/2000
+Warning--there's a publisher but no address in DBLP:conf/crypto/2010
+Warning--there's neither address nor publisher in DBLP:conf/acns/2005
+Warning--there's a publisher but no address in DBLP:conf/eurocrypt/2012
+Warning--there's a publisher but no address in DBLP:conf/eurocrypt/2010
+Warning--there's a publisher but no address in DBLP:conf/crypto/2011
+Warning--there's a publisher but no address in DBLP:conf/ccs/2006usa
+
+Done.
+(There were 74 error messages)
