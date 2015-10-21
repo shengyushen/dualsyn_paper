@@ -1,0 +1,38 @@
+ intel
+
+
+ 
+Job Description - ASIC Design Application and Solution Engineer (769697)
+Job Description 
+ASIC Design Application and Solution Engineer - 769697 
+Description
+ The ASIC Design Application and Solution Engineer (ASE) is the primary interface for Intel Custom Foundry (ICF) customers in the area of ASIC design. The candidate will provide high quality ASIC design solutions, services and technical support to ICF customers and enable our foundry customers to realize their full potential with Intel 22nm, 14nm and/or 10nm process technology. Specific ASIC Design ASE responsibilities include:
+- Provide high quality ASIC design solutions, services and technical support to ICF customers covering areas such as Logic Synthesis, Placement, Routing and Timing.
+- Quickly ramp our first-time customers and external eco-system partners on the design flow, techniques and recipes for implementing high quality and proficient designs on Intel technology.
+- Provide in-depth technical advice and hands-on guidance to design engineers from customer's team as well as performing design study and execution on customers' complex and critical design blocks.
+- Channel customer design issues and constraints to internal development teams and co-define the ASIC design capabilities and solutions needed to deliver the most competitive solutions for our foundry customers.
+- Work with global ICF development teams to define the ASIC design capabilities and solutions needed to deliver the most competitive solutions for our foundry customers.
+- Improve overall quality of service to our foundry customers through enhanced technical documentation and efficient customer issue resolution processes.
+ 
+Qualifications
+ - Bachelor, Master or Doctorate degree in relevant fields with 5+ years of experience in hands-on role in design activities of complex ASIC development projects
+- In-depth understanding of ASIC design methodologies, design flows, and design collateral is a required skill.
+- Expert level hands-on experience with Logic Synthesis, Automated Place-and-Route, Physical Verification (LVS/DRC), Static Timing Analysis (STA) and Full-Chip Integration
+- Proven track record of uncompromising customer orientation to deliver leading-edge solutions
+- In depth understanding of product design and development on leading edge silicon technologies
+- In depth understanding of the external foundry and eco-system design enablement offerings and trends is a significant plus
+- Complex problem solving and decision making with a proven record of results orientation
+- Ability to work effectively with global teams in a variety of geographies
+- Excellent communication skills with an ability to synthesize complex info into easy to digest form for senior executives
+ 
+
+Job Category: Engineering 
+Primary Location: China-PRC, Shanghai 
+Full/Part Time: Full Time 
+Job Type: Experienced 
+Regular/Temporary: Regular 
+Posting Date: Jul 29, 2015 
+Apply Before: Jul 29, 2016 
+
+Business Group As the world's largest chip manufacturer, Intel strives to make every facet of semiconductor manufacturing state-of-the-art -- from semiconductor process development and manufacturing, through yield improvement to final test and optimization, and lastly packaging. Employees in the Technology and Manufacturing group are part of a worldwide network of manufacturing and assembly/test facilities.  
+Posting Statement: N/A 
