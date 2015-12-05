@@ -2,7 +2,7 @@
 
 ##Papers related to complementary synthesis, which automatically generate a decoder from its encoder
 
-Complementary Synthesis for Encoder with Flow Control Mechanism, accepted by TODAES. https://github.com/shengyushen/dualsyn_paper/blob/master/todaes14_final/files/v2-acmsmall-sample.pdf
+Ying Qin, Shengyu Shen, Qingbo Wu, Huadong Dai, and Yan Jia: Complementary Synthesis for Encoder with Flow Control Mechanism, ACM Transactions on Design Automation of Electronic Systems, Vol. 21, No. 1, Article 12. https://github.com/shengyushen/dualsyn_paper/blob/master/todaes14_final/files/v2-acmsmall-sample.pdf
 
 ShengYu Shen, Ying Qin, Kefei Wang, Zhengbin Pang, Jianmin Zhang, Sikun Li: Inferring Assertion for Complementary Synthesis. IEEE Trans. on CAD of Integrated Circuits and Systems 31(8): 1288-1292 (2012) https://github.com/shengyushen/dualsyn_paper/blob/master/tcad12/tcad_final/tcad_final/bare_jrnl.pdf
 
